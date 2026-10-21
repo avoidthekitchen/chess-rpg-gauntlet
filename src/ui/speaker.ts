@@ -18,14 +18,14 @@ const NAMES: Record<PieceSymbol, string> = {
 };
 
 /**
- * Pieces with a detailed figurine, and how to frame its head. The rest use
+ * Pieces with a detailed figurine, and how to frame its head and headgear in the tall portrait. The rest use
  * their board token, which is already a head-and-headgear bust.
  */
 const PORTRAITS: Partial<Record<PieceSymbol, { name: string; size: string; pos: string }>> = {
-  n: { name: 'knight', size: '165%', pos: '46% 18%' },
-  r: { name: 'rook', size: '115%', pos: '30% 60%' },
-  b: { name: 'bishop', size: '165%', pos: '52% 14%' },
-  k: { name: 'king', size: '165%', pos: '52% 12%' },
+  n: { name: 'knight', size: '135%', pos: '46% 8%' },
+  r: { name: 'rook', size: '105%', pos: '30% 50%' },
+  b: { name: 'bishop', size: '128%', pos: '52% 3%' },
+  k: { name: 'king', size: '130%', pos: '52% 3%' },
 };
 
 type Event = 'checkmate' | 'promotion' | 'fork' | 'check' | 'capture' | 'move';

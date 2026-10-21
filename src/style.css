@@ -553,8 +553,9 @@ section h2 {
 }
 .speaker .portrait {
   flex: none;
+  /* Tall, like a portrait, so headgear and shoulders both fit. */
   width: 76px;
-  height: 76px;
+  height: 104px;
   border-radius: 10px;
   background-color: #3a2c22;
   background-repeat: no-repeat;
@@ -604,6 +605,10 @@ section h2 {
     z-index: 20;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     pointer-events: none;
+  }
+  .speaker .portrait {
+    width: 62px;
+    height: 86px;
   }
   .speaker.enter {
     animation: speaker-pop 4s ease-out forwards;

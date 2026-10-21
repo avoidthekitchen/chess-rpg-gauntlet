@@ -12,7 +12,7 @@ A fantasy tactics RPG that teaches real chess. You are a king who starts with al
 
 1. **The rules of chess are sacred on the board.** No terrain that changes movement, no extra moves, no rule-bending powers. The RPG lives around the board, so every skill carries over to real chess.
 2. **Short, sharp battles.** Most battles last 5 to 10 moves and have a clear goal. Full games are saved for bosses.
-3. **Every reward teaches.** Prices, unlocks and bonus goals all reinforce a chess idea, like piece values, tactical patterns or safe-move habits.
+3. **Every reward teaches.** Prices, boss budgets and bonus goals all reinforce a chess idea, like piece values, tactical patterns or safe-move habits.
 4. **Mistakes are cheap, lessons are clear.** Losing a battle or a piece never ruins a run. A review after each battle always shows what went wrong.
 5. **Help that fades.** Assists like threat highlights scale down with difficulty and skill, so players build the habit instead of leaning on the hint.
 
@@ -157,7 +157,7 @@ The Campaign, with regions that build chess skills in order, is the core of the 
 - a town with a tavern (hire pieces), an academy (lessons), and a bounty board (puzzles for gold)
 - a boss duel against the faction leader
 
-Lessons learned and pieces unlocked are permanent. Losing a battle never costs the save; how much it costs depends on difficulty.
+Lessons learned, pieces hired and heroes recruited are permanent. Losing a battle never costs the save; how much it costs depends on difficulty.
 
 | Difficulty | Losing a battle costs |
 | --- | --- |

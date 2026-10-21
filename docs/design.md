@@ -57,19 +57,21 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 4. **Promotion run:** escort a squire to the far rank, where it's knighted in a promotion ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
 
+**Your pieces in battle.** Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario, made of piece types you own, and your named companion appears in it. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values (about 15 points as a first guess), and place it on your back two ranks. Every captured piece comes back after the battle, win or lose.
+
 **Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. A banner must only appear when the tactic really works, or it teaches the wrong lesson: a "fork" where the forking piece simply gets captured is not a fork. So each banner needs two checks: a board rule spots the pattern, and the engine confirms the move actually wins something.
 
 - **At launch (clear board rules):** checkmate, fork, double check, discovered attack, pin, skewer, back-rank mate, promotion.
 - **Puzzles only (need judgment):** deflection, attraction, overloaded piece, zwischenzug, clearance, interference. These are hard to name automatically in live play, so they appear in puzzles, where the Lichess database already tags them.
 - The prototype already detects checkmate, fork, check, promotion and capture, without the engine check yet.
 
-**Scenario format** (one JSON file per battle): starting position (FEN), goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
+**Scenario format** (one JSON file per battle): starting position (FEN) or, for bosses, the points budget and enemy setup; goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
 
 ## Your army
 
 You start as a king with one companion and two squires, and build toward a full chess set by learning and earning.
 
-**Starter companion.** Pick a frog knight, a heron mage (bishop) or a tortoise golem (rook), Pokémon-style. The starter is a named character who acts as your main tutor: they speak in dialogue, comment on your moves, level up and stay with you all game. Each starter comes with 2 mouse squires (pawns), because King + Bishop or King + Knight alone can't checkmate a lone king.
+**Starter companion.** Pick a frog knight, an owl mage (bishop) or a tortoise golem (rook), Pokémon-style. The starter is a named character who acts as your main tutor: they speak in dialogue, comment on your moves, level up and stay with you all game. Each starter comes with 2 mouse squires (pawns), because King + Bishop or King + Knight alone can't checkmate a lone king.
 
 **Hiring rules**
 
@@ -81,14 +83,14 @@ You start as a king with one companion and two squires, and build toward a full 
 | --- | --- | --- | --- | --- |
 | Pawn | Mouse squire | Small, and there are many | 1 | 10g |
 | Knight | Frog | Jumps over other pieces | 3 | 30g |
-| Bishop | Heron or owl mage | Robed and scholarly | 3 | 30g |
+| Bishop | Owl mage | Robed and scholarly | 3 | 30g |
 | Rook | Tortoise | Castle on its back, moves in straight lines | 5 | 50g |
 | Queen | Fox sorceress | Fast, goes anywhere | 9 | 90g |
-| King | Stag or lion | Regal; this is you | — | — |
+| King | Lion | Regal; this is you | — | — |
 
-**Wounds, not permadeath.** A captured piece is wounded and sits out the next battle. If you win, sacrificed pieces return right away with a Valor bonus. Permadeath would teach players never to sacrifice, which is bad chess.
+**No wounds.** Captured pieces return after every battle, so a sacrifice never has a lasting cost. Losing material still hurts inside the battle, which is the real chess lesson.
 
-**Pieces as tutors.** Besides the starter, each piece type has a character voice that teaches its tactics: the frog knight teaches forks, the heron mage teaches pins and long diagonals, the tortoise teaches back-rank mates. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
+**Pieces as tutors.** Besides the starter, each piece type has a character voice that teaches its tactics: the frog knight teaches forks, the owl mage teaches pins and long diagonals, the tortoise teaches back-rank mates. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
 
 **Avoiding grind.** Gold comes from varied, short content: battle rewards, bonus objectives, side quests, and a tavern bounty board of puzzles. No required replays of the same practice game.
 
@@ -109,7 +111,7 @@ An optional Bog Goblin boss could use the Horde chess variant (36 pawns, no king
 
 **AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see Powers and rewind). The Iron Legion warlord always grabs free material, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates.
 
-**Human-like mistakes.** Stockfish at low skill levels mixes perfect moves with random blunders, which feels unnatural. Early enemies should make believable mistakes, like missing a fork or leaving a piece undefended. Use a small custom engine or a shallow search with noise early on, and bring in Stockfish for later regions.
+**Human-like mistakes.** Stockfish at low skill levels mixes perfect moves with random blunders, which feels unnatural. Early enemies should make believable mistakes, like missing a fork or leaving a piece undefended. The prototype does this by picking among several Stockfish candidate moves within a centipawn window; weaker enemies get a wider window.
 
 **Difficulty in two layers**
 
@@ -123,7 +125,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 | Context | Undo | Hints | Why |
 | --- | --- | --- | --- |
 | Lessons and training grounds | Unlimited | Free | Safe space to explore |
-| Battles | Rewind charges (start with 1) | Paid with powers | Consequences build the blunder-check habit |
+| Battles | Rewind charges (set by difficulty) | Paid with powers | Consequences build the blunder-check habit |
 | After every battle | Full review | Best move shown | Learn from the biggest mistake |
 
 **Rewind relics.** Rewind can be upgraded: more charges per battle, or rewinding two moves at once.
@@ -157,9 +159,9 @@ Lessons learned and pieces unlocked are permanent. Losing a battle never costs t
 | Difficulty | Losing a battle costs |
 | --- | --- |
 | Squire | Nothing: retry right away, pieces recover |
-| Knight | Captured pieces are wounded and sit out the next battle |
-| Champion | Wounds, plus a quarter of your gold |
-| Grandmaster | Wounds, gold, and the battle is gone from the map with its reward |
+| Knight | A tenth of your gold (first guess) |
+| Champion | A quarter of your gold |
+| Grandmaster | A quarter of your gold, and the battle is gone from the map with its reward |
 
 **Gauntlet (deferred).** A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Lesson unlocks would carry over between runs. Deferred until the campaign works; revisit if players want more.
 
@@ -183,20 +185,19 @@ Tier 4 needs our own lessons: Lichess Learn covers only board setup and castling
 
 Storybook fantasy in an animal world, at least as polished as Into the Breach, with XCOM-style dramatic moments. The style reference is inked outlines, painted textures, and muted olive, plum and leather tones with jewel-colored accents.
 
-**Board pieces are figurines.** Each board piece looks like a piece from a themed chess set: an animal character on a round base, wearing headgear that echoes the classic piece's top. It reads as both a character and a chess piece at a glance.
+**Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. The detailed figurines become talking-head portraits in a side panel when a piece moves, captures or speaks. A separate spike is exploring token legibility on small screens.
 
-| Piece | Classic shape it echoes | Figurine |
+| Piece | Species | Chess cue on the token and figurine |
 | --- | --- | --- |
-| Pawn | Round head on a small body | Mouse squire in a round helmet |
-| Knight | Horse head | Frog in a horse-head helm |
-| Bishop | Mitre with a slit | Heron or owl mage in a tall slit hood |
-| Rook | Crenellated tower | Tortoise with a castle-tower shell |
-| Queen | Pointed coronet | Fox sorceress in a pointed crown |
-| King | Crown with a cross | Stag or lion in a cross-topped crown |
+| Pawn | Mouse squire | Round helmet |
+| Knight | Frog | Horse-head helm |
+| Bishop | Owl mage | Tall mitre with a slit |
+| Rook | Tortoise | Castle-tower shell |
+| Queen | Fox sorceress | Pointed coronet |
+| King | Lion | Crown with a cross |
 
-- **Two levels of art.** Board figurines use bold silhouettes and a faction-colored base that still read at about 45 px per square on a phone. Full illustrations are for portraits, dialogue, the shop and capture moments.
 - **Classic pieces toggle.** Players can switch to standard chess pieces, so what they learn carries over to real chess.
-- **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the heron glides diagonally.
+- **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the owl glides diagonally.
 - **XCOM-style moments in 2D.** A capture gets a short illustrated close-up, a brief freeze and screen shake.
 - **Asset pipeline.** AI image generation (through OpenRouter) for concepts and sprites, cleaned up by hand to a locked style sheet. Animation uses tweens (hops, squash and stretch, particles) rather than frame-by-frame drawing.
 
@@ -221,7 +222,7 @@ Use a web stack built on TypeScript, not Godot, because the chess tools (rules, 
 
 **Board scene behind one interface.** The game rules (`src/game`) contain no screen code. The battle scene talks to them through a small interface: show a position, animate a move, highlight squares, play a capture. If 3D is wanted later, only the battle scene's board is rebuilt.
 
-**Three.js later, if 3D is worth it.** A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Full 3D characters (modeling, rigging and animating about 36 of them) are the expensive part, not the engine.
+**Three.js later, if 3D is worth it.** A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Full 3D characters (modeling, rigging and animating about 36 of them) are the expensive part, not the engine. A separate spike is testing Three.js models now.
 
 **Why not Godot.** A slow export step, bridging to Stockfish yourself, a bigger web download, and every menu built in Godot's UI system.
 
@@ -244,24 +245,29 @@ Decided: the game is open source under GPL-3, so Stockfish ships with it.
 
 ## Prototype plan
 
-A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat Sight, rewind, tactic banners, difficulty levels, and a Stockfish enemy with a personality layer. It uses a plain DOM board and placeholder art, and feels like a compelling direction. Next steps:
+A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat Sight, rewind, tactic banners, difficulty levels, and a Stockfish enemy with a personality layer. An art spike added figurine sprites on a PixiJS board, and king and bishop candidates settled on the lion and the owl. Two spikes are running in a separate session: token legibility on small phone screens, and Three.js models. Next steps:
 
-1. **Art spike:** a Phaser board with figurines for two species and the hop and stomp animations, tested on a phone-sized screen, plus candidate figurines (stag or lion, heron or owl) to pick species from.
+1. **Phaser board:** port the board to Phaser 4 with simplified tokens and talking-head portraits, once the legibility spike settles the token style.
 2. **Scrying Orb ladder:** shouting Bog Goblins, the Orb, then Far Sight.
 3. **Starter companion:** pick a starter and hear their tutor lines in battle.
 4. **One town:** hiring by value, one academy lesson, and a bounty board with 50 puzzles from the Lichess database.
-5. **Region 1 boss:** the goblin chief duel.
-6. **Playtest:** watch 3 to 5 people play, ideally beginners, before building more.
+5. **Region 1 boss:** the goblin chief duel, with a points-budget army.
+6. **Playtest:** watch 3 to 5 people play, ideally players who know the moves but lose to tactics, before building more.
 
 ## Open questions
 
-- [ ] King species: stag or lion? Bishop: heron or owl? Candidates are in `art/candidates/`.
-- [ ] How do battles use your army, and do wounds stay? Proposal: most battles give a set lineup from pieces you own, boss battles let you pick pieces up to a points budget, and wounds are dropped.
+- [ ] How do players who already know the moves unlock piece types? "Finish its lesson" assumes movement lessons they don't need. Proposal: a lesson battle lends you a guest piece, and winning it unlocks hiring that type.
+- [ ] What if a lesson needs a piece you don't own yet, like region 1's rook checkmates with a knight starter? The guest-piece proposal above covers this too.
+- [ ] Knight difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
+- [ ] Boss points budget: about 15 points is a first guess; tune per region.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | King is a lion, bishop is an owl |
+| 2026-10-21 | Board uses simplified tokens that still show the animal and its chess role; detailed figurines become talking-head portraits |
+| 2026-10-21 | Lesson battles use a set lineup from pieces you own; boss battles use a points budget; wounds dropped |
 | 2026-10-21 | Tutorial entry: the game asks "Do you know how the pieces move?" |
 | 2026-10-21 | Champion difficulty loses a quarter of your gold on a lost battle; tune in playtests |
 | 2026-10-21 | Gauntlet mode deferred |
@@ -275,5 +281,5 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 | 2026-10-21 | Scrying Orb ladder: shouting Bog Goblins, then the Orb (threat), then Far Sight (what-if upgrade) |
 | 2026-10-21 | Curriculum follows the Lichess Learn and Practice order as a spiral (Steps Method style): optional tutorial, 5 regions, final battle |
 | 2026-10-21 | Starter is a named companion who acts as the main tutor |
-| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; board pieces are figurines; classic pieces toggle |
+| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle |
 | 2026-10-21 | Battles are short scenarios; the rules of chess never change on the board |

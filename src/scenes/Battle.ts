@@ -1,0 +1,572 @@
+import { Chess, type Move, type PieceSymbol, type Square } from 'chess.js';
+import Phaser from 'phaser';
+import { chooseEnemyMove, fallbackMove } from '../ai/enemy';
+import { engine, engineStatus } from '../engineHost';
+import { Battle, type TurnResult } from '../game/battle';
+import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
+import { objectiveText, type Scenario } from '../game/scenarios';
+import type { TacticTag } from '../game/tactics';
+import { threatMap } from '../game/threats';
+import { store } from '../store';
+import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
+import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
+import { speakerCard } from '../ui/portrait';
+import { BaseScene } from '../ui/screen';
+import { pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
+import { C, CSS, SANS, SERIF } from '../ui/theme';
+import { button, eyebrow, panel, para } from '../ui/widgets';
+
+/** One-word names for status text, e.g. "Your tower takes the squire on d5". */
+const PIECE_SHORT: Record<PieceSymbol, string> = { k: 'king', q: 'sorceress', r: 'tower', b: 'mage', n: 'knight', p: 'squire' };
+
+const PLAYER_BANNER: Partial<Record<TacticTag, string>> = {
+  checkmate: 'Checkmate!',
+  fork: 'Fork!',
+  check: 'Check!',
+  promotion: 'Knighted!',
+  capture: 'Capture!',
+};
+const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
+  checkmate: 'Checkmated…',
+  fork: 'Enemy fork!',
+  check: 'Check! Protect your king',
+};
+
+export interface FinishView {
+  eyebrow?: string;
+  title: string;
+  html: string;
+  buttons: ModalButton[];
+}
+
+export interface BattleLaunch {
+  scenario: Scenario;
+  faction: FactionArt;
+  difficulty: DifficultyId;
+  /** Shown above the title, e.g. "The Bog · Squire". */
+  eyebrow: string;
+  /** Named characters, by the square they start on. Everyone else is unnamed militia. */
+  names?: Partial<Record<Square, string>>;
+  /** Fills the victory/defeat dialog. `retry` restarts and `rewind` undoes the last move. */
+  finish: (b: Battle, actions: { retry: () => void; rewind: (() => void) | null }) => FinishView;
+  /** Leave the battle (the ← button). */
+  exit: () => void;
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export class BattleScene extends BaseScene {
+  private launch!: BattleLaunch;
+  private battle!: Battle;
+  private board: PhaserBoard | null = null;
+  private panelLayer: Phaser.GameObjects.Container | null = null;
+  private speakerLayer: Phaser.GameObjects.Container | null = null;
+
+  private selected: Square | null = null;
+  private thinking = false;
+  private animating = false;
+  private aiToken = 0;
+  private threatSight = true;
+  private pieceStyle: PieceStyle = 'tokens';
+  private statusLine = '';
+  private speaker: SpeakerInfo | null = null;
+  private speakerAt = 0;
+  private names = new Map<Square, string>();
+  private finished = false;
+  private firstBuild = true;
+
+  constructor() {
+    super('battle');
+  }
+
+  init(data: BattleLaunch) {
+    this.launch = data;
+    this.pieceStyle = store.get('pieceStyle') === 'classic' ? 'classic' : 'tokens';
+    this.reset();
+  }
+
+  private get difficulty() {
+    return DIFFICULTIES[this.launch.difficulty];
+  }
+
+  private reset() {
+    this.aiToken++;
+    engine.stop();
+    this.battle = new Battle(this.launch.scenario, this.difficulty.rewinds);
+    this.threatSight = this.difficulty.threatSight;
+    this.selected = null;
+    this.thinking = false;
+    this.animating = false;
+    this.speaker = null;
+    this.finished = false;
+    this.statusLine = this.launch.scenario.intro;
+    this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
+    this.firstBuild = true;
+  }
+
+  protected canRebuild() {
+    return !this.board?.busy;
+  }
+
+  // ---------- layout ----------
+
+  private layout() {
+    const { W, H, safe } = this;
+    const topH = 52 + safe.top;
+    if (this.wide) {
+      const panelW = Math.min(380, Math.max(300, W * 0.32));
+      const sq = Math.min(80, (H - topH - 16) / BOARD_TALL, (W - panelW - 56) / BOARD_SPAN);
+      const bw = sq * BOARD_SPAN;
+      const total = bw + 24 + panelW;
+      const bx = Math.max(16, (W - total) / 2);
+      return { wide: true, topH, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
+    }
+    const sq = Math.min(W / BOARD_SPAN, (H - topH - 230 - safe.bottom) / BOARD_TALL, 64);
+    const bw = sq * BOARD_SPAN;
+    const bx = (W - bw) / 2;
+    const bh = sq * BOARD_TALL;
+    const pw = Math.min(W - 24, 560);
+    return { wide: false, topH, board: { x: bx, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + bh + 4, w: pw } };
+  }
+
+  protected build() {
+    const L = this.layout();
+    if (this.textures.exists('bg-battle-bog')) {
+      const img = this.add.image(this.W / 2, this.H / 2, 'bg-battle-bog');
+      img.setScale(Math.max(this.W / img.width, this.H / img.height));
+      this.add.rectangle(0, 0, this.W, this.H, 0x0c090f, 0.45).setOrigin(0);
+    } else this.add.rectangle(0, 0, this.W, this.H, C.bg).setOrigin(0);
+
+    this.drawTopBar(L.topH);
+    this.board = new PhaserBoard(this, L.board.x, L.board.y, L.board.w, {
+      faction: this.launch.faction,
+      style: this.pieceStyle,
+      intro: this.firstBuild,
+      onSquare: (sq) => this.onSquare(sq),
+    });
+    this.firstBuild = false;
+    this.panelLayer = null;
+    this.speakerLayer = null;
+    this.input.keyboard?.off('keydown-ESC');
+    this.input.keyboard?.on('keydown-ESC', () => {
+      this.selected = null;
+      this.refresh();
+    });
+    this.refresh();
+    this.drawSpeaker();
+  }
+
+  private drawTopBar(topH: number) {
+    const s = this.safe.top;
+    const g = this.add.graphics();
+    g.fillStyle(C.bg, 0.82).fillRect(0, 0, this.W, topH - 4);
+    g.lineStyle(1, C.line, 1).lineBetween(0, topH - 4, this.W, topH - 4);
+    button(this, 12, s + 7, '← Map', { w: 76, h: 34, kind: 'ghost', onClick: () => this.leave() });
+    const titleX = 100;
+    eyebrow(this, titleX, s + 6, this.launch.eyebrow);
+    const t = this.text(titleX, s + 19, this.launch.scenario.title, { fontFamily: SERIF, fontSize: '20px', fontStyle: 'bold' });
+    const maxW = this.W - titleX - 100;
+    if (t.width > maxW) t.setScale(maxW / t.width);
+    button(this, this.W - 88, s + 7, 'Restart', { w: 76, h: 34, kind: 'ghost', onClick: () => this.restart() });
+  }
+
+  // ---------- state → screen ----------
+
+  private boardView(): BoardView {
+    const b = this.battle;
+    return {
+      chess: b.chess,
+      selected: this.selected,
+      targets: new Set<Square>(this.selected ? b.legalMoves(this.selected).map((m) => m.to) : []),
+      lastMove: b.lastMove,
+      threats: this.threatSight ? threatMap(b.chess, b.player) : null,
+      villages: b.scenario.villages ?? [],
+    };
+  }
+
+  /** Redraws the board marks and the panel from the battle state. */
+  private refresh() {
+    if (!this.board) return;
+    this.board.render(this.boardView());
+    this.drawPanel();
+  }
+
+  private drawPanel() {
+    this.panelLayer?.destroy();
+    const L = this.layout();
+    const c = this.add.container(0, 0);
+    this.panelLayer = c;
+    const b = this.battle;
+    const o = b.scenario.objective;
+    const { x, w } = L.panel;
+    let y = L.panel.y;
+    if (L.wide) y += 132; // room for the talking head
+
+    // Objective and meters.
+    const meters: [string, string][] = [];
+    const left = b.movesLeft();
+    if (left !== undefined) meters.push(['Moves left', String(Math.max(0, left))]);
+    if (o.kind === 'winMaterial') meters.push(['Material won', `${fmt(b.materialGained())} / +${o.gain}`]);
+    if (o.kind === 'survive') meters.push(['Enemy turns', `${b.enemyMoves} / ${o.turns}`]);
+    meters.push(['Pieces lost', String(b.piecesLost)]);
+
+    const pad = 14;
+    const ob = eyebrow(this, x + pad, y + 12, `vs ${b.scenario.enemy.name}`);
+    const title = this.text(x + pad, y + 28, objectiveText(o), {
+      fontFamily: SERIF,
+      fontSize: L.wide ? '19px' : '17px',
+      color: CSS.gold,
+      fontStyle: 'bold',
+      wordWrap: { width: w - pad * 2, useAdvancedWrap: true },
+    });
+    let my = y + 28 + title.height + 8;
+    const mw = (w - pad * 2 - 8 * (meters.length - 1)) / meters.length;
+    const mg = this.add.graphics();
+    const meterObjs: Phaser.GameObjects.GameObject[] = [mg];
+    meters.forEach(([label, value], i) => {
+      const mx = x + pad + i * (mw + 8);
+      mg.fillStyle(C.surface2, 1).fillRoundedRect(mx, my, mw, 44, 8);
+      meterObjs.push(this.text(mx + 9, my + 5, label, { fontFamily: SANS, fontSize: '11px', color: CSS.muted }));
+      meterObjs.push(this.text(mx + 9, my + 19, value, { fontFamily: SANS, fontSize: '17px', fontStyle: 'bold' }));
+    });
+    my += 44 + 12;
+    const card = panel(this, x, y, w, my - y);
+    c.add([card, ob, title, ...meterObjs]);
+    y = my + 10;
+
+    // Controls.
+    const ctrl: { label: string; kind?: 'primary' | 'normal' | 'ghost'; pressed?: boolean; disabled?: boolean; onClick: () => void }[] = [
+      { label: `⟲ Rewind  ${b.rewindsLeft}`, kind: 'primary', disabled: !b.canRewind() || this.animating, onClick: () => this.rewind() },
+      { label: L.wide ? `◉ Threat Sight: ${this.threatSight ? 'On' : 'Off'}` : '◉ Threats', pressed: this.threatSight, onClick: () => this.toggleThreats() },
+      { label: L.wide ? `♞ Pieces: ${this.pieceStyle === 'tokens' ? 'Tokens' : 'Classic'}` : '♞ Pieces', onClick: () => this.togglePieces() },
+    ];
+    if (!L.wide) ctrl.push({ label: '✎ Lesson', onClick: () => this.showLesson() });
+    const cols = L.wide ? 2 : ctrl.length;
+    const bw = (w - 8 * (cols - 1)) / cols;
+    ctrl.forEach((k, i) => {
+      const bx = x + (i % cols) * (bw + 8);
+      const by = y + Math.floor(i / cols) * 46;
+      c.add(button(this, bx, by, k.label, { w: bw, h: 40, kind: k.kind, pressed: k.pressed, disabled: k.disabled, fontSize: L.wide ? 14 : 13, onClick: k.onClick }));
+    });
+    y += Math.ceil(ctrl.length / cols) * 46 + 4;
+
+    // Status.
+    const turnText = b.status !== 'playing' ? '' : this.thinking ? 'The enemy is plotting… ' : 'Your move. ';
+    const status = this.text(x + 2, y, '', {
+      fontFamily: SERIF,
+      fontSize: '15px',
+      color: CSS.ink,
+      wordWrap: { width: w - 4, useAdvancedWrap: true },
+    });
+    status.setText(`${turnText}${this.statusLine}`);
+    if (!L.wide) status.setMaxLines(3);
+    c.add(status);
+    y += Math.max(status.height, 40) + 10;
+
+    if (!L.wide) {
+      if (engineStatus === 'fallback') c.add(this.text(x + 2, y, 'Stockfish didn’t load: enemies use a simple fallback AI.', { fontFamily: SANS, fontSize: '12px', color: CSS.muted }));
+      return;
+    }
+
+    // Lesson (desktop only; phones open it from the ✎ button).
+    const lessonText = para(this, x + pad, y + 32, b.scenario.lesson, w - pad * 2, 15, CSS.muted);
+    const lh = lessonText.height + 44;
+    c.add([panel(this, x, y, w, lh), this.text(x + pad, y + 8, 'Lesson', { fontFamily: SERIF, fontSize: '17px', fontStyle: 'bold' }), lessonText]);
+    y += lh + 10;
+
+    if (this.threatSight) {
+      const lg = this.add.graphics();
+      lg.fillStyle(0xe2c49c, 1).fillRoundedRect(x + 2, y + 2, 16, 16, 4);
+      lg.lineStyle(2, 0xc82819, 0.55).strokeRoundedRect(x + 3, y + 3, 14, 14, 4);
+      lg.fillStyle(0xff3b1e, 0.85).fillCircle(x + 10, y + 34, 7);
+      c.add([lg, this.text(x + 26, y + 1, 'Squares the enemy attacks', { fontFamily: SANS, fontSize: '13px', color: CSS.muted })]);
+      c.add(this.text(x + 26, y + 25, 'Your piece can be won. Defend or move it!', { fontFamily: SANS, fontSize: '13px', color: CSS.muted }));
+      y += 50;
+      if (b.scenario.villages?.length) {
+        lg.lineStyle(2, C.green, 1).strokeRoundedRect(x + 3, y + 3, 14, 14, 3);
+        c.add(this.text(x + 26, y + 1, 'Village to protect', { fontFamily: SANS, fontSize: '13px', color: CSS.muted }));
+        y += 26;
+      }
+    }
+
+    // Battle log, as much as fits.
+    const room = this.H - y - 16;
+    if (room > 70) {
+      const rows = Math.floor((room - 34) / 20);
+      const log = b.log;
+      const pairs: string[] = [];
+      for (let i = 0; i < log.length; i += 2) pairs.push(`${i / 2 + 1}. ${log[i]}${log[i + 1] ? `   ${log[i + 1]}` : ''}`);
+      const shown = pairs.slice(-rows);
+      const body = shown.length ? shown.join('\n') : 'No moves yet.';
+      const lt = this.text(x + pad, y + 28, body, { fontFamily: SANS, fontSize: '14px', color: CSS.muted, lineSpacing: 4 });
+      const h = Math.min(room, lt.height + 40);
+      c.add([panel(this, x, y, w, h), eyebrow(this, x + pad, y + 10, 'Battle log'), lt]);
+      y += h + 8;
+    }
+    if (engineStatus === 'fallback') c.add(this.text(x + 2, Math.min(y, this.H - 22), 'Stockfish didn’t load: enemies use a simple fallback AI.', { fontFamily: SANS, fontSize: '12px', color: CSS.muted }));
+  }
+
+  /** The moving piece's talking head: beside the board on desktop, floating at the bottom on phones. */
+  private drawSpeaker() {
+    this.speakerLayer?.destroy();
+    this.speakerLayer = null;
+    if (!this.speaker) return;
+    const L = this.layout();
+    if (L.wide) {
+      const { container } = speakerCard(this, L.panel.x, L.panel.y, L.panel.w, this.speaker, this.launch.faction, false);
+      this.speakerLayer = container;
+      if (performance.now() - this.speakerAt < 300) {
+        container.alpha = 0;
+        container.y += 8;
+        this.tweens.add({ targets: container, alpha: 1, y: L.panel.y, duration: 350, ease: 'Cubic.easeOut' });
+      }
+      return;
+    }
+    // Phone: float over the bottom of the screen for a few seconds.
+    const age = performance.now() - this.speakerAt;
+    if (age > 4000) return;
+    const w = this.W - 24;
+    const { container, height } = speakerCard(this, 12, 0, w, this.speaker, this.launch.faction, true);
+    const y = this.H - height - Math.max(12, this.safe.bottom);
+    container.y = y;
+    container.setDepth(50);
+    this.speakerLayer = container;
+    if (age < 300) {
+      container.alpha = 0;
+      container.y = y + 12;
+      this.tweens.add({ targets: container, alpha: 1, y, duration: 320, ease: 'Cubic.easeOut' });
+    }
+    this.tweens.add({ targets: container, alpha: 0, y: y + 6, duration: 800, delay: Math.max(0, 3200 - age) });
+  }
+
+  private speak(res: TurnResult) {
+    const m = res.move;
+    this.speaker = speakerLine(m, res.tactics, {
+      faction: this.launch.faction,
+      characterName: m.color === 'w' ? this.names.get(m.to) : undefined,
+      commander: this.battle.scenario.enemy.name,
+    });
+    this.speakerAt = performance.now();
+    this.drawSpeaker();
+  }
+
+  private showBanner(text: string, kind: 'ally' | 'foe') {
+    if (!this.board) return;
+    const L = this.layout();
+    const cx = L.board.x + L.board.w / 2;
+    const cy = L.board.y + this.board.height * 0.52;
+    const t = this.text(cx, cy, text, {
+      fontFamily: SERIF,
+      fontSize: `${L.wide ? 52 : 38}px`,
+      fontStyle: 'bold',
+      color: kind === 'ally' ? '#ffd66b' : '#ff8a73',
+      stroke: '#1a0f08',
+      strokeThickness: 7,
+      shadow: { offsetX: 0, offsetY: 4, color: '#000000', blur: 12, fill: true, stroke: true },
+      padding: { x: 10, y: 8 },
+    });
+    t.setOrigin(0.5).setDepth(60).setScale(0.6).setAlpha(0);
+    this.tweens.chain({
+      targets: t,
+      tweens: [
+        { scale: 1.08, alpha: 1, duration: 220, ease: 'Back.easeOut' },
+        { scale: 1, duration: 120 },
+        { alpha: 0, y: cy - 28, duration: 420, delay: 650, ease: 'Cubic.easeIn' },
+      ],
+      onComplete: () => t.destroy(),
+    });
+  }
+
+  // ---------- turn flow ----------
+
+  private describe(res: TurnResult, who: 'you' | 'enemy'): string {
+    const m = res.move;
+    const verb = m.captured ? `takes the ${PIECE_SHORT[m.captured]} on ${m.to}` : `moves to ${m.to}`;
+    return `${who === 'you' ? 'Your' : 'Enemy'} ${PIECE_SHORT[m.piece]} ${verb}.`;
+  }
+
+  /** Keeps named characters attached to their pieces as they move. */
+  private trackNames(m: Move) {
+    if (m.captured) {
+      const victim = (m.flags.includes('e') ? `${m.to[0]}${m.from[1]}` : m.to) as Square;
+      this.names.delete(victim);
+    }
+    const name = this.names.get(m.from);
+    if (name) {
+      this.names.delete(m.from);
+      this.names.set(m.to, name);
+    }
+    if (m.flags.includes('k') || m.flags.includes('q')) {
+      const r = m.from[1];
+      const [rf, rt] = (m.flags.includes('k') ? [`h${r}`, `f${r}`] : [`a${r}`, `d${r}`]) as [Square, Square];
+      const n = this.names.get(rf);
+      if (n) {
+        this.names.delete(rf);
+        this.names.set(rt, n);
+      }
+    }
+  }
+
+  private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
+    const b = this.battle;
+    const res = b.playerMove({ from, to, promotion });
+    this.selected = null;
+    this.statusLine = this.describe(res, 'you');
+    this.trackNames(res.move);
+    await this.animate(res);
+    if (this.battle !== b) return; // restarted meanwhile
+    this.speak(res);
+    const tag = res.tactics.find((t) => PLAYER_BANNER[t]);
+    if (tag) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
+    this.refresh();
+    this.checkFinished();
+    if (b.isEnemyTurn()) void this.enemyTurn();
+  }
+
+  private async animate(res: TurnResult) {
+    if (!this.board) return;
+    this.animating = true;
+    this.refresh();
+    try {
+      await this.board.animateMove(res.move);
+    } finally {
+      this.animating = false;
+      this.flushLayout();
+    }
+  }
+
+  private async enemyTurn() {
+    const b = this.battle;
+    const token = ++this.aiToken;
+    this.thinking = true;
+    this.refresh();
+    const started = performance.now();
+    let uci: string;
+    try {
+      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
+    } catch (err) {
+      console.warn('Enemy AI failed, using fallback', err);
+      uci = fallbackMove(new Chess(b.fen));
+    }
+    // A short pause so the enemy's move doesn't feel instant.
+    const wait = 450 - (performance.now() - started);
+    if (wait > 0) await sleep(wait);
+    if (token !== this.aiToken || this.battle !== b || !b.isEnemyTurn()) return; // rewound or left meanwhile
+
+    const res = b.enemyMove(uci);
+    this.thinking = false;
+    this.statusLine = this.describe(res, 'enemy');
+    this.trackNames(res.move);
+    await this.animate(res);
+    if (token !== this.aiToken || this.battle !== b) return;
+    this.speak(res);
+    const tag = res.tactics.find((t) => ENEMY_BANNER[t]);
+    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
+    else if (res.move.captured) this.showBanner('Piece lost', 'foe');
+    this.refresh();
+    this.checkFinished();
+  }
+
+  private onSquare(sq: Square) {
+    const b = this.battle;
+    if (!b.isPlayerTurn() || this.thinking || this.animating || this.finished) return;
+    if (this.selected && b.legalMoves(this.selected).some((m) => m.to === sq)) {
+      const from = this.selected;
+      if (b.needsPromotion(from, sq)) this.askPromotion(from, sq);
+      else void this.playerMove(from, sq);
+      return;
+    }
+    const piece = b.chess.get(sq);
+    this.selected = piece?.color === b.player && this.selected !== sq ? sq : null;
+    this.refresh();
+  }
+
+  private askPromotion(from: Square, to: Square) {
+    const opts: PieceSymbol[] = ['q', 'r', 'b', 'n'];
+    const base = import.meta.env.BASE_URL;
+    showModal({
+      title: 'Knight your squire',
+      html: `<p>Choose what your squire becomes.</p><div class="promo">${opts
+        .map((p) => `<button data-p="${p}"><img src="${base}sprites/token-${pieceName(p)}-ally.webp" alt=""><small>${esc(PIECE_SHORT[p])}</small></button>`)
+        .join('')}</div>`,
+      buttons: [{ label: 'Cancel', kind: 'ghost', onClick: () => this.clearSelection() }],
+      onDismiss: () => this.clearSelection(),
+    });
+    for (const el of document.querySelectorAll<HTMLButtonElement>('.promo button')) {
+      el.addEventListener('click', () => {
+        closeModal();
+        void this.playerMove(from, to, el.dataset.p as PieceSymbol);
+      });
+    }
+  }
+
+  private clearSelection() {
+    this.selected = null;
+    this.refresh();
+  }
+
+  private checkFinished() {
+    const b = this.battle;
+    if (b.status === 'playing' || this.finished) return;
+    this.finished = true;
+    // Let the last banner land before the dialog covers the board.
+    this.time.delayedCall(900, () => {
+      if (this.battle !== b) return;
+      const canRewind = b.status === 'lost' && b.canRewind();
+      const view = this.launch.finish(b, {
+        retry: () => this.restart(),
+        rewind: canRewind ? () => this.rewind() : null,
+      });
+      showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons });
+    });
+  }
+
+  // ---------- controls ----------
+
+  private rewind() {
+    const b = this.battle;
+    if (!b.canRewind() || this.animating) return;
+    closeModal();
+    this.aiToken++;
+    engine.stop();
+    this.thinking = false;
+    this.selected = null;
+    this.finished = false;
+    b.rewind();
+    this.board?.rewindEffect();
+    this.statusLine = 'Time folds back. Try a different move.';
+    this.showBanner('Rewind', 'ally');
+    this.refresh();
+  }
+
+  private restart() {
+    closeModal();
+    this.reset();
+    this.rebuild();
+  }
+
+  private toggleThreats() {
+    this.threatSight = !this.threatSight;
+    this.refresh();
+  }
+
+  private togglePieces() {
+    if (this.animating) return;
+    this.pieceStyle = this.pieceStyle === 'tokens' ? 'classic' : 'tokens';
+    store.set('pieceStyle', this.pieceStyle);
+    this.rebuild();
+  }
+
+  private showLesson() {
+    showModal({ eyebrow: 'Lesson', title: this.battle.scenario.title, html: `<p>${esc(this.battle.scenario.lesson)}</p>`, buttons: [{ label: 'Got it', kind: 'primary', onClick: () => {} }], onDismiss: () => {} });
+  }
+
+  private leave() {
+    this.aiToken++;
+    engine.stop();
+    closeModal();
+    this.launch.exit();
+  }
+}
+
+const fmt = (n: number) => (n > 0 ? `+${n}` : String(n));

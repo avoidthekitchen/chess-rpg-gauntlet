@@ -1,0 +1,249 @@
+:root {
+  --bg: #15121a;
+  --surface: #211c27;
+  --surface-2: #2c2533;
+  --line: #3d3446;
+  --ink: #f0e7d4;
+  --muted: #b3a88f;
+  --gold: #e0ab45;
+  --gold-ink: #1d1505;
+  --red: #e25a43;
+  --green: #79c27c;
+  --serif: Alegreya, 'Iowan Old Style', Palatino, Georgia, serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 var(--sans);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ov-backdrop {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: rgba(12, 9, 15, 0.62);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+  animation: ov-fade 0.18s ease-out;
+}
+@keyframes ov-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.ov-dialog {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  animation: ov-rise 0.22s ease-out;
+}
+.ov-dialog.wide {
+  max-width: 560px;
+}
+@keyframes ov-rise {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+.ov-dialog h2 {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.ov-dialog.won h2 {
+  color: var(--gold);
+}
+.ov-dialog.lost h2 {
+  color: #ff8b76;
+}
+.ov-eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ov-body {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.45;
+}
+.ov-body.with-pic {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  text-align: left;
+}
+.ov-text {
+  min-width: 0;
+  flex: 1;
+}
+.ov-text p {
+  margin: 0 0 10px;
+}
+.ov-text .muted {
+  color: var(--muted);
+}
+.ov-text .who {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 2px;
+}
+.ov-text .who.foe {
+  color: #ff8a73;
+}
+.ov-text ul {
+  text-align: left;
+  margin: 6px 0 10px;
+  padding-left: 20px;
+}
+.ov-text .bonus {
+  color: var(--muted);
+  margin: 2px 0;
+}
+.ov-text .bonus.got {
+  color: var(--gold);
+}
+.ov-text .gold {
+  color: var(--gold);
+  font-weight: 700;
+}
+.ov-text .loss {
+  color: #ff8b76;
+}
+.ov-portrait {
+  flex: none;
+  width: 84px;
+  height: 116px;
+  border-radius: 10px;
+  background-color: #3a2c22;
+  background-repeat: no-repeat;
+  background-size: 130%;
+  background-position: 50% 4%;
+  box-shadow: inset 0 0 0 2px rgba(224, 171, 69, 0.55);
+}
+.ov-portrait.foe {
+  background-color: #2a2418;
+  box-shadow: inset 0 0 0 2px rgba(226, 90, 67, 0.55);
+}
+.ov-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.ov-btn {
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 9px 16px;
+  min-height: 40px;
+}
+.ov-btn:hover {
+  border-color: var(--gold);
+}
+.ov-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.ov-btn.primary {
+  background: var(--gold);
+  color: var(--gold-ink);
+  border-color: var(--gold);
+  font-weight: 700;
+}
+.ov-btn.ghost {
+  background: transparent;
+}
+.promo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 10px 0 0;
+}
+.promo button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.promo button:hover {
+  border-color: var(--gold);
+}
+.promo img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+.promo small {
+  color: var(--muted);
+}
+
+#boot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  color: var(--muted);
+  font-size: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ov-backdrop,
+  .ov-dialog {
+    animation: none;
+  }
+}

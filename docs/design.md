@@ -6,7 +6,7 @@ October 21, 2026 · Exported from the [Claude Doc](https://claude.ai/artifact/Ve
 
 A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces by learning how they work, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.
 
-**Audience:** players who know how the pieces move and want to get better. Total beginners can pick an optional "Teach me the moves" tutorial first.
+**Audience:** players who know how the pieces move and want to get better. The game opens by asking "Do you know how the pieces move?"; answering no starts the optional "Teach me the moves" tutorial.
 
 **Pillars**
 
@@ -161,7 +161,7 @@ Lessons learned and pieces unlocked are permanent. Losing a battle never costs t
 | Champion | Wounds, plus a quarter of your gold |
 | Grandmaster | Wounds, gold, and the battle is gone from the map with its reward |
 
-**Gauntlet (later, optional).** A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Lesson unlocks would carry over between runs. Built only if the campaign works and players want more.
+**Gauntlet (deferred).** A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Lesson unlocks would carry over between runs. Deferred until the campaign works; revisit if players want more.
 
 ## Curriculum
 
@@ -255,18 +255,19 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 
 ## Open questions
 
-- [ ] King species: stag or lion? Bishop: heron or owl? Decide after seeing candidate figurines.
-- [ ] Tutorial entry: ask "Do you know how the pieces move?", or offer a short placement test?
-- [ ] Is a quarter of your gold the right loss on Champion difficulty? Tune in playtests.
-- [ ] Gauntlet mode: build it after the campaign, or drop it?
+- [ ] King species: stag or lion? Bishop: heron or owl? Candidates are in `art/candidates/`.
+- [ ] How do battles use your army, and do wounds stay? Proposal: most battles give a set lineup from pieces you own, boss battles let you pick pieces up to a points budget, and wounds are dropped.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | Tutorial entry: the game asks "Do you know how the pieces move?" |
+| 2026-10-21 | Champion difficulty loses a quarter of your gold on a lost battle; tune in playtests |
+| 2026-10-21 | Gauntlet mode deferred |
 | 2026-10-21 | Phaser 4 for the map, town and board; Three.js only later, if 3D is worth it |
 | 2026-10-21 | Audience: players who know the moves; optional "Teach me the moves" tutorial for total beginners |
-| 2026-10-21 | Campaign first; Gauntlet is a possible later mode |
+| 2026-10-21 | Campaign first |
 | 2026-10-21 | Open source under GPL-3, so Stockfish ships with the game |
 | 2026-10-21 | Losing a battle costs more on harder difficulties, never the save |
 | 2026-10-21 | Tactic banners need a board rule plus engine confirmation; 8 patterns at launch |

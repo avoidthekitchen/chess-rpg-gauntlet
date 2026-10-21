@@ -8,6 +8,7 @@
 // alpha and have the magenta tint removed, so outlines don't glow pink.
 import { mkdirSync, readdirSync } from 'node:fs';
 import { basename, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import sharp from 'sharp';
 
 const RAW_DIR = join('art', 'raw');
@@ -21,8 +22,9 @@ const EDGE_BAND = 3; // pixels next to the background that get soft alpha + desp
 /** How strongly a pixel leans magenta: both red and blue above green. */
 const magenta = (r, g, b) => Math.max(0, Math.min(r, b) - g);
 
-async function processOne(file) {
-  const { data, info } = await sharp(join(RAW_DIR, file)).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+/** Cuts a raw magenta-background image out to a full-size RGBA sharp image, trimmed to the figure. */
+export async function cutOut(path) {
+  const { data, info } = await sharp(path).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const { width: w, height: h } = info;
   const px = (i) => [data[i * 4], data[i * 4 + 1], data[i * 4 + 2]];
   const isKey = (i) => {
@@ -83,10 +85,15 @@ async function processOne(file) {
     data[o + 2] = b - m;
   }
 
+  // Render to PNG first: trim() inside a chain that also resizes can measure the wrong image.
+  const png = await sharp(data, { raw: { width: w, height: h, channels: 4 } }).trim({ threshold: 1 }).png().toBuffer();
+  return sharp(png);
+}
+
+async function processOne(file) {
   const name = basename(file, '.png');
   const out = join(OUT_DIR, `${name}.webp`);
-  await sharp(data, { raw: { width: w, height: h, channels: 4 } })
-    .trim({ threshold: 1 })
+  await (await cutOut(join(RAW_DIR, file)))
     .resize({ width: sizeFor(name), height: sizeFor(name), fit: 'inside', kernel: 'lanczos3' })
     .webp({ quality: 90, alphaQuality: 100, effort: 6 })
     .toFile(out);
@@ -94,5 +101,7 @@ async function processOne(file) {
   console.log(`${name}: ${meta.width}x${meta.height} → ${out}`);
 }
 
-mkdirSync(OUT_DIR, { recursive: true });
-for (const f of readdirSync(RAW_DIR).filter((f) => f.endsWith('.png'))) await processOne(f);
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  mkdirSync(OUT_DIR, { recursive: true });
+  for (const f of readdirSync(RAW_DIR).filter((f) => f.endsWith('.png'))) await processOne(f);
+}

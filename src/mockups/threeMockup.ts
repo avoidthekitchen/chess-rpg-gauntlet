@@ -12,10 +12,16 @@
 import { gsap } from 'gsap';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { SERVICES, cloneDeep, loadModel, tintFoe, type Service } from './models';
 
 type Side = 'ally' | 'foe';
 type Kind = 'knight' | 'rook';
-type Style = 'toy' | 'cutout';
+/** Procedural toys, painted cutouts, or AI-generated models from one of the services. */
+type Style = 'toy' | 'cutout' | Service;
+const STYLES: Style[] = ['toy', 'cutout', ...SERVICES.map((s) => s.id)];
+const styleLabel = (s: Style) =>
+  s === 'toy' ? '3D toys' : s === 'cutout' ? 'Painted cutouts' : `${SERVICES.find((x) => x.id === s)!.label} models`;
+const isModelStyle = (s: Style): s is Service => s !== 'toy' && s !== 'cutout';
 
 interface Piece {
   kind: Kind;
@@ -308,6 +314,32 @@ function cutout(kind: Kind, side: Side): THREE.Group {
 
 let style: Style = 'toy';
 let pieces: Piece[] = [];
+/** Loaded AI models, keyed "service-kind". Bandit pieces are tinted copies of the ally model. */
+const templates = new Map<string, THREE.Object3D | null>();
+const MODEL_HEIGHT: Record<Kind, number> = { knight: 1.2, rook: 1.1 };
+
+async function loadStyle(s: Style) {
+  if (!isModelStyle(s)) return;
+  await Promise.all(
+    (['knight', 'rook'] as Kind[]).map(async (kind) => {
+      if (!templates.has(`${s}-${kind}`)) templates.set(`${s}-${kind}`, await loadModel(s, kind, MODEL_HEIGHT[kind]));
+    }),
+  );
+}
+
+function modelBody(kind: Kind, side: Side): THREE.Group | null {
+  const t = isModelStyle(style) ? templates.get(`${style}-${kind}`) : null;
+  if (!t) return null;
+  const m = cloneDeep(t);
+  if (side === 'foe') tintFoe(m);
+  const g = new THREE.Group();
+  g.add(m);
+  // A team ring on the board, since the generated bases all have gold trim.
+  const ring = part(new THREE.TorusGeometry(0.46, 0.03, 8, 48), side === 'ally' ? GOLD : CRIMSON, 0, 0.02, 0);
+  ring.rotation.x = Math.PI / 2;
+  g.add(ring);
+  return g;
+}
 let debris: Debris[] = [];
 let busy = false;
 
@@ -317,11 +349,16 @@ function makePiece(kind: Kind, side: Side, sq: string): Piece {
   const pose = new THREE.Group();
   const spin = new THREE.Group();
   spin.position.y = 0.45;
-  const body = style === 'toy' ? (kind === 'knight' ? frogKnight(side) : tortoiseRook(side)) : cutout(kind, side);
+  const body =
+    style === 'cutout'
+      ? cutout(kind, side)
+      : (modelBody(kind, side) ?? (kind === 'knight' ? frogKnight(side) : tortoiseRook(side)));
   body.position.y = -0.45;
   if (style === 'toy') {
     body.rotation.y = side === 'ally' ? 0.35 : -0.35; // three-quarter view
     body.scale.setScalar(1.15);
+  } else if (isModelStyle(style)) {
+    body.rotation.y = side === 'ally' ? 0.35 : -0.35;
   }
   spin.add(body);
   pose.add(spin);
@@ -667,8 +704,8 @@ const btn = (a: string) => document.querySelector<HTMLButtonElement>(`[data-acti
 function syncButtons() {
   btn('knight').disabled = busy || !find('knight', 'ally') || !find('rook', 'foe');
   btn('rook').disabled = busy || !find('rook', 'ally') || !find('knight', 'foe');
-  btn('style').textContent = `Style: ${style === 'toy' ? '3D toys' : 'Painted cutouts'}`;
-  btn('style').setAttribute('aria-pressed', String(style === 'cutout'));
+  btn('style').textContent = `Style: ${styleLabel(style)}`;
+  btn('style').setAttribute('aria-pressed', String(style !== 'toy'));
   btn('slowmo').textContent = `Slow motion: ${base < 1 ? 'on' : 'off'}`;
   btn('slowmo').setAttribute('aria-pressed', String(base < 1));
 }
@@ -683,10 +720,15 @@ document.addEventListener('click', (e) => {
     case 'rook':
       void rookCapture();
       break;
-    case 'style':
-      style = style === 'toy' ? 'cutout' : 'toy';
-      reset();
+    case 'style': {
+      const next = STYLES[(STYLES.indexOf(style) + 1) % STYLES.length];
+      btn('style').textContent = `Loading ${styleLabel(next)}…`;
+      void loadStyle(next).then(() => {
+        style = next;
+        reset();
+      });
       break;
+    }
     case 'slowmo':
       base = base < 1 ? 1 : 0.25;
       applyTimeScale();
@@ -704,6 +746,11 @@ Object.assign(window, {
     knight: knightCapture,
     rook: rookCapture,
     reset,
+    style: async (s: Style) => {
+      await loadStyle(s);
+      style = s;
+      reset();
+    },
     timeScale: (s: number) => {
       base = s;
       applyTimeScale();

@@ -51,7 +51,14 @@ In dev, `__gsap.globalTimeline.timeScale(0.1)` in the console plays animations i
 
 ## 3D mockup
 
-`mockups/three.html` (open `/mockups/three.html` on the dev server) is a standalone Three.js mockup, not part of the game build. It shows two scripted captures in 3D, with either procedural toy figurines or the painted sprites as upright cutouts: a frog knight flip, a tortoise rook stomp, a kill-cam swoop with slow motion, a flash and shockwave, and the captured piece breaking apart.
+`mockups/models.html` compares AI-generated 3D models of the frog knight and tortoise rook from three fal.ai services (Hunyuan3D v3, TRELLIS 2, Rodin) next to the original art. To regenerate:
+
+```bash
+node scripts/generate-3d.mjs           # needs FAL_AI (or FAL_KEY); raw GLBs → art/3d/raw/ (not committed)
+node scripts/optimize-3d.mjs           # ≤30k triangles, 1K WebP textures, meshopt → public/models/
+```
+
+`mockups/three.html` (open `/mockups/three.html` on the dev server) is a standalone Three.js mockup, not part of the game build. Its Style button cycles through procedural toys, painted cutouts and the three AI model sets. It shows two scripted captures in 3D, with either procedural toy figurines or the painted sprites as upright cutouts: a frog knight flip, a tortoise rook stomp, a kill-cam swoop with slow motion, a flash and shockwave, and the captured piece breaking apart.
 
 ## Adding a battle
 

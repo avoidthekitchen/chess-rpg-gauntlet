@@ -7,7 +7,8 @@ import { DIFFICULTIES, type DifficultyId } from './game/difficulty';
 import { SCENARIOS, objectiveText, type Scenario } from './game/scenarios';
 import type { TacticTag } from './game/tactics';
 import { threatMap } from './game/threats';
-import { PIECE_NAME, PIECE_SHORT, glyph, renderBoard } from './ui/board';
+import { PIECE_NAME, PIECE_SHORT, glyph, renderBoard, type BoardView } from './ui/board';
+import { PixiBoard, preloadFigurines } from './ui/pixiBoard';
 
 // ---------- small helpers ----------
 
@@ -54,6 +55,14 @@ let thinking = false;
 let aiToken = 0;
 let pendingPromotion: { from: Square; to: Square } | null = null;
 let statusLine = '';
+/** True while a move animates on the figurine board; input waits for it. */
+let animating = false;
+
+// Figurines (PixiJS) or the classic DOM board. The DOM board always renders too,
+// visually hidden, so screen readers and keyboards can still play.
+type BoardStyle = 'figurines' | 'classic';
+let boardStyle: BoardStyle = store.get('boardStyle') === 'classic' ? 'classic' : 'figurines';
+let figurines: PixiBoard | null = null;
 
 const app = $('#app');
 const difficulty = () => DIFFICULTIES[difficultyId];
@@ -114,6 +123,32 @@ function renderMap() {
 
 // ---------- battle screen ----------
 
+function mountBoard() {
+  figurines?.destroy();
+  figurines = null;
+  const stage = $('#stage');
+  const dom = $('#board');
+  const useFigurines = boardStyle === 'figurines';
+  stage.hidden = !useFigurines;
+  dom.classList.toggle('sr-only', useFigurines);
+  if (!useFigurines) return;
+  const board = new PixiBoard(stage, (sq) => onSquare(sq));
+  figurines = board;
+  board.init().then(
+    () => update(),
+    (err) => {
+      // No WebGL, or the sprites failed to load: fall back to the classic board.
+      console.warn('Figurine board failed, using the classic board', err);
+      if (figurines === board) {
+        board.destroy();
+        figurines = null;
+        stage.hidden = true;
+        dom.classList.remove('sr-only');
+      }
+    },
+  );
+}
+
 function startBattle(s: Scenario) {
   aiToken++;
   engine.stop();
@@ -121,6 +156,7 @@ function startBattle(s: Scenario) {
   threatSight = difficulty().threatSight;
   selected = null;
   thinking = false;
+  animating = false;
   pendingPromotion = null;
   statusLine = s.intro;
   view = 'battle';
@@ -135,6 +171,7 @@ function startBattle(s: Scenario) {
     </header>
     <main class="battle-layout">
       <section class="board-wrap">
+        <div class="stage" id="stage"></div>
         <div class="board" id="board" role="grid" aria-label="Chess board"></div>
         <div class="banner" id="banner" aria-live="polite"></div>
         <div id="overlay"></div>
@@ -142,6 +179,7 @@ function startBattle(s: Scenario) {
       <aside class="panel" id="panel"></aside>
     </main>`;
   window.scrollTo(0, 0);
+  mountBoard();
   update();
 }
 
@@ -150,14 +188,16 @@ function update() {
   const b = battle;
   const targets = new Set<Square>(selected ? b.legalMoves(selected).map((m) => m.to) : []);
 
-  renderBoard($('#board'), {
+  const boardView: BoardView = {
     chess: b.chess,
     selected,
     targets,
     lastMove: b.lastMove,
     threats: threatSight ? threatMap(b.chess, b.player) : null,
     villages: b.scenario.villages ?? [],
-  });
+  };
+  renderBoard($('#board'), boardView);
+  figurines?.render(boardView);
 
   const o = b.scenario.objective;
   const meters: string[] = [];
@@ -185,6 +225,10 @@ function update() {
         title="Show squares the enemy attacks and pieces you could lose">
         ◉ Threat Sight: ${threatSight ? 'On' : 'Off'}
       </button>
+      <button data-action="board-style" aria-pressed="${boardStyle === 'figurines'}"
+        title="Switch between illustrated figurines and standard chess pieces">
+        ♞ Pieces: ${boardStyle === 'figurines' ? 'Figurines' : 'Classic'}
+      </button>
       <button class="ghost" data-action="restart">Restart</button>
     </div>
 
@@ -202,7 +246,8 @@ function update() {
       ${logHtml(b.log)}
     </div>`;
 
-  $('#overlay').innerHTML = overlayHtml(b);
+  // Hold the victory/defeat dialog until the final move has finished animating.
+  $('#overlay').innerHTML = animating ? '' : overlayHtml(b);
 }
 
 const fmt = (n: number) => (n > 0 ? `+${n}` : String(n));
@@ -301,20 +346,36 @@ function describe(res: TurnResult, who: 'you' | 'enemy'): string {
   return `${who === 'you' ? 'Your' : 'Enemy'} ${PIECE_SHORT[m.piece]} ${verb}.`;
 }
 
-function playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
+async function playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
   if (!battle) return;
-  const res = battle.playerMove({ from, to, promotion });
+  const b = battle;
+  const res = b.playerMove({ from, to, promotion });
   selected = null;
   pendingPromotion = null;
   statusLine = describe(res, 'you');
-  const tag = res.tactics.find((t) => PLAYER_BANNER[t]);
-  if (tag) showBanner(PLAYER_BANNER[tag]!, 'ally');
-  if (battle.status === 'won') {
-    cleared.add(battle.scenario.id);
+  if (b.status === 'won') {
+    cleared.add(b.scenario.id);
     store.set('cleared', JSON.stringify([...cleared]));
   }
+  await animate(res);
+  if (battle !== b) return; // left or restarted meanwhile
+  const tag = res.tactics.find((t) => PLAYER_BANNER[t]);
+  if (tag) showBanner(PLAYER_BANNER[tag]!, 'ally');
   update();
-  if (battle.isEnemyTurn()) void enemyTurn();
+  if (b.isEnemyTurn()) void enemyTurn();
+}
+
+/** Plays the move's animation on the figurine board (no-op on the classic board). */
+async function animate(res: TurnResult) {
+  const anim = figurines?.animateMove(res.move);
+  if (!anim) return;
+  animating = true;
+  update();
+  try {
+    await anim;
+  } finally {
+    animating = false;
+  }
 }
 
 async function enemyTurn() {
@@ -338,6 +399,8 @@ async function enemyTurn() {
   const res = b.enemyMove(uci);
   thinking = false;
   statusLine = describe(res, 'enemy');
+  await animate(res);
+  if (token !== aiToken || battle !== b) return; // rewound or left during the animation
   const tag = res.tactics.find((t) => ENEMY_BANNER[t]);
   if (tag) showBanner(ENEMY_BANNER[tag]!, 'foe');
   else if (res.move.captured) showBanner('Piece lost', 'foe');
@@ -346,12 +409,12 @@ async function enemyTurn() {
 
 function onSquare(sq: Square) {
   const b = battle;
-  if (!b || !b.isPlayerTurn() || thinking || pendingPromotion) return;
+  if (!b || !b.isPlayerTurn() || thinking || animating || pendingPromotion) return;
   if (selected && b.legalMoves(selected).some((m) => m.to === sq)) {
     if (b.needsPromotion(selected, sq)) {
       pendingPromotion = { from: selected, to: sq };
       update();
-    } else playerMove(selected, sq);
+    } else void playerMove(selected, sq);
     return;
   }
   const piece = b.chess.get(sq);
@@ -382,18 +445,27 @@ app.addEventListener('click', (e) => {
       aiToken++;
       engine.stop();
       battle = null;
+      figurines?.destroy();
+      figurines = null;
       renderMap();
+      break;
+    case 'board-style':
+      boardStyle = boardStyle === 'figurines' ? 'classic' : 'figurines';
+      store.set('boardStyle', boardStyle);
+      mountBoard();
+      update();
       break;
     case 'restart':
       if (battle) startBattle(battle.scenario);
       break;
     case 'rewind':
-      if (battle?.canRewind()) {
+      if (battle?.canRewind() && !animating) {
         aiToken++;
         engine.stop();
         thinking = false;
         selected = null;
         battle.rewind();
+        figurines?.rewindEffect();
         statusLine = 'Time folds back. Try a different move.';
         showBanner('Rewind', 'ally');
         update();
@@ -404,7 +476,7 @@ app.addEventListener('click', (e) => {
       update();
       break;
     case 'promote':
-      if (pendingPromotion) playerMove(pendingPromotion.from, pendingPromotion.to, btn.dataset.piece as PieceSymbol);
+      if (pendingPromotion) void playerMove(pendingPromotion.from, pendingPromotion.to, btn.dataset.piece as PieceSymbol);
       break;
     case 'cancel-promo':
       pendingPromotion = null;
@@ -423,3 +495,5 @@ document.addEventListener('keydown', (e) => {
 });
 
 renderMap();
+// Load the figurine art while the player looks at the map.
+if (boardStyle === 'figurines') preloadFigurines().catch(() => {});

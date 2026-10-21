@@ -35,6 +35,20 @@ scripts/copy-engine.mjs  copies Stockfish from node_modules into public/engine
 
 `src/game` has no DOM code, so it can move to a Phaser/Pixi front end later.
 
+## Figurine board and art
+
+The battle board is drawn with PixiJS (`src/ui/pixiBoard.ts`): illustrated figurines, a knight that hops in an arc and leaves a dotted L, a rook that stomps square by square, and captures with a freeze frame and knock-out. Pieces without art yet use a wooden token with the classic glyph. The "Pieces" button switches to the classic DOM board, which also stays in the page (hidden) for screen readers and keyboard play.
+
+Art comes from OpenRouter's image models, styled after `art/reference/`:
+
+```bash
+node scripts/generate-art.mjs              # new sprites only; needs OPENROUTER_API_KEY_WITH_BUDGET
+node scripts/generate-art.mjs knight-ally  # regenerate one (about $0.14 each)
+node scripts/process-art.mjs               # cut out the magenta background → public/sprites/*.webp
+```
+
+In dev, `__gsap.globalTimeline.timeScale(0.1)` in the console plays animations in slow motion.
+
 ## Adding a battle
 
 Add an entry to `SCENARIOS`. The player is always White and moves first. The tests check that every position is legal, including that the enemy isn't already in check (chess.js doesn't catch that).

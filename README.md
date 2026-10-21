@@ -1,0 +1,54 @@
+# Gauntlet: battle prototype
+
+A chess tactics RPG in the spirit of Into the Breach. This prototype tests one question: **are short, objective-driven chess battles fun?**
+
+Rule of the design: the rules of chess never change on the board. The RPG lives around it.
+
+## Run it
+
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm test         # rules, threats, rewind and AI tests
+npm run build    # static site in dist/
+```
+
+## What's in it
+
+- **5 handmade battles** in `src/game/scenarios.ts`: a rook ladder mate, a knight fork, a village defense, a king-and-pawn race and a boss.
+- **Objectives** beyond checkmate: win material, survive N turns, promote safely, all with move limits.
+- **Threat Sight**: tints squares the enemy attacks and makes your at-risk pieces glow red.
+- **Rewind**: undo your last move and the enemy's reply. Charges depend on difficulty, and you can rewind out of a defeat.
+- **Tactic banners**: "Fork!", "Check!" and so on, detected in `src/game/tactics.ts`.
+- **Difficulty** (Squire → Grandmaster): sets enemy strength, rewinds and Threat Sight.
+- **Enemy AI**: Stockfish 19 lite (WASM, single-threaded) in a Web Worker. It asks for several candidate moves and picks one within a centipawn window, so weak enemies make human-looking mistakes. A "raider" personality hunts villages. If Stockfish fails to load, a simple fallback AI takes over.
+
+## Layout
+
+```
+src/game/   rules: battle.ts (objectives, rewind), scenarios, difficulty, threats, tactics
+src/ai/     engine.ts (UCI over a Web Worker), enemy.ts (move choice and personalities)
+src/ui/     board.ts (DOM board)
+src/main.ts screens and turn flow
+scripts/copy-engine.mjs  copies Stockfish from node_modules into public/engine
+```
+
+`src/game` has no DOM code, so it can move to a Phaser/Pixi front end later.
+
+## Adding a battle
+
+Add an entry to `SCENARIOS`. The player is always White and moves first. The tests check that every position is legal, including that the enemy isn't already in check (chess.js doesn't catch that).
+
+## Deploying
+
+`dist/` is plain static files, with no special headers needed. The largest file is the 1.8 MB engine `.wasm`. On Cloudflare:
+
+```bash
+npx wrangler pages deploy dist --project-name chess-rpg-gauntlet
+```
+
+`vite.config.ts` uses relative paths (`base: './'`), so the same build can be wrapped with Capacitor for iOS.
+
+## License
+
+Stockfish is GPL-3.0 (`public/engine/COPYING-stockfish.txt` ships with the build). Distributing a build that includes it means releasing this game's source under a GPL-compatible license. chess.js is BSD-2.

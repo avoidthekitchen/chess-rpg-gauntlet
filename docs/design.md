@@ -203,9 +203,11 @@ Two departures from Lichess's order: basic endgames come before advanced tactics
 
 ## Art direction
 
-Storybook fantasy in an animal world, at least as polished as Into the Breach, with XCOM-style dramatic moments. The style reference is inked outlines, painted textures, and muted olive, plum and leather tones with jewel-colored accents.
+The game is 2D. Storybook fantasy in an animal world, at least as polished as Into the Breach, with XCOM-style dramatic moments. The style reference is inked outlines, painted textures, and muted olive, plum and leather tones with jewel-colored accents. A 3D version was explored and deferred (see 3D exploration).
 
-**Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. The detailed figurines become talking-head portraits in a side panel when a piece moves, captures or speaks. A separate spike is exploring token legibility on small screens.
+**Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. Each token is a bust of the animal wearing its chess headgear on a round base, like a real chess piece, and stays about one square tall so it doesn't hide the piece behind it. The detailed figurines become talking-head portraits beside the board when a piece moves or captures: tall portrait cards in the side panel on desktop, and a card floating at the bottom of the screen on phones.
+
+**Prototype status.** The prototype's board already uses tokens for all six pieces in ally and bandit colors (`public/sprites/token-*.webp`), and talking-head portraits for the frog knight, tortoise rook, owl mage and lion king in both colors. The fox queen and mouse squire don't have detailed figurines yet, so their token stands in as the portrait. Portrait lines live in `src/ui/speaker.ts`.
 
 | Piece | Species | Chess cue on the token and figurine |
 | --- | --- | --- |
@@ -219,7 +221,39 @@ Storybook fantasy in an animal world, at least as polished as Into the Breach, w
 - **Classic pieces toggle.** Players can switch to standard chess pieces, so what they learn carries over to real chess.
 - **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the owl glides diagonally.
 - **XCOM-style moments in 2D.** A capture gets a short illustrated close-up, a brief freeze and screen shake.
-- **Asset pipeline.** AI image generation (through OpenRouter) for concepts and sprites, cleaned up by hand to a locked style sheet. Animation uses tweens (hops, squash and stretch, particles) rather than frame-by-frame drawing.
+- **Asset pipeline.** AI image generation (Gemini 3 Pro Image through OpenRouter, about $0.14 an image) on a flat magenta background, cut out to WebP by `scripts/process-art.mjs`. Bandit versions are generated from the ally image, so designs match. Animation uses tweens (hops, squash and stretch, particles) rather than frame-by-frame drawing.
+
+## 3D exploration (deferred)
+
+Decided: the game stays 2D. The prototype's 2D board, tokens and talking-head portraits already look good, and 2D keeps art cheap and iteration fast. The 3D work below is kept in the repo for reference, in case a 3D version is wanted later.
+
+**What was tried**
+
+| Experiment | Where | Finding |
+| --- | --- | --- |
+| Three.js board mockup | `mockups/three.html`, `src/mockups/threeMockup.ts` | 3D makes captures more dramatic: a kill-cam swoop, slow motion, a flash and shockwave, and the captured piece knocked off the board. Its Style button cycles through every option below. |
+| Procedural 3D toys | Same mockup, "3D toys" style | About one square tall, so they read on the board, but built from simple shapes, so they look like placeholder art. |
+| Painted cutouts in 3D | Same mockup, "Painted cutouts" style | The 2D art gets real lighting and shadows, but turns paper-thin when it flips or tumbles. |
+| AI-generated 3D models | `mockups/models.html`, `public/models/`, `scripts/generate-3d.mjs`, `scripts/optimize-3d.mjs` | Frog knight and tortoise rook from three fal.ai image-to-3D services, compared with the original art. |
+
+**AI 3D model comparison**
+
+| Service | Result | Speed |
+| --- | --- | --- |
+| Rodin (Hyper3D) | Best overall, slight edge: most faithful to the art, clean and bright | About 70 s |
+| Hunyuan3D v3 | Close second: crisp and clean | About 2.5 min |
+| TRELLIS 2 | Fastest and cheapest, but darker and muddier textures | About 25 s |
+
+- All three turned the tortoise to face forward with the tower on its back, because the 2D art shows it from the side. A front-facing source image would give more control.
+- Output is GLB (textured mesh). After `optimize-3d.mjs` (at most 30,000 triangles, 1K WebP textures, meshopt compression) each model is 0.7 to 0.8 MB.
+- Gaussian splats (.ply, .spz) aren't suited to game pieces: lighting is baked in, they cast no proper shadows, they're hard to break apart, and sorting them is heavy on phones.
+- Each model is one mesh, so a captured piece tumbles away whole rather than breaking into parts.
+- At board size on a phone, detailed 3D models have the same legibility problem the 2D tokens solved.
+- The six test models cost roughly $2 to $3.50 on fal.ai.
+
+**If 3D is revisited:** use Rodin (Hunyuan3D as backup), generate from front-facing art, and keep simplified pieces on the board with the detailed models for close-ups and portraits. Bandit versions need their own models; the mockup only tints the ally models. The Three.js board would sit on its own canvas layered with Phaser's (see Tech stack).
+
+**Housekeeping before launch:** the mockups aren't part of the game, but `public/models/` (about 4.4 MB) is copied into every build. Move it out of `public/` or exclude it before shipping.
 
 ## Tech stack and deployment
 
@@ -242,7 +276,7 @@ Use a web stack built on TypeScript, not Godot, because the chess tools (rules, 
 
 **Board scene behind one interface.** The game rules (`src/game`) contain no screen code. The battle scene talks to them through a small interface: show a position, animate a move, highlight squares, play a capture. If 3D is wanted later, only the battle scene's board is rebuilt.
 
-**Three.js later, if 3D is worth it.** A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Full 3D characters (modeling, rigging and animating about 36 of them) are the expensive part, not the engine. A separate spike is testing Three.js models now.
+**Three.js later, if 3D is worth it.** Deferred: the game is 2D for now (see 3D exploration). A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Because the pieces are statues on bases, they need no skeletons or character animation; AI image-to-3D services can make the models.
 
 **Why not Godot.** A slow export step, bridging to Stockfish yourself, a bigger web download, and every menu built in Godot's UI system.
 
@@ -267,7 +301,7 @@ Decided: the game is open source under GPL-3, so Stockfish ships with it.
 
 Build one complete region, the Bog Goblins, from start to boss, in Phaser. It's the smallest build that tests the whole loop: does winning battles, spending gold and facing the boss make players want region 2?
 
-**Starting point.** The battle prototype's rules, Stockfish enemy, Threat Sight, rewind and tactic banners carry over unchanged (`src/game`, `src/ai`). Spikes added board tokens, talking-head portraits and a Three.js board mockup; the token and portrait work moves into Phaser rather than being redone.
+**Starting point.** The battle prototype's rules, Stockfish enemy, Threat Sight, rewind and tactic banners carry over unchanged (`src/game`, `src/ai`). Spikes added board tokens, talking-head portraits, the move and capture animations (`src/ui/pixiBoard.ts`, PixiJS), a Three.js board mockup and an AI 3D model comparison. The token art, portraits and animation design move into Phaser rather than being redone; the 3D work stays as reference only.
 
 **In scope**
 
@@ -300,6 +334,9 @@ Build one complete region, the Bog Goblins, from start to boss, in Phaser. It's 
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |
+| 2026-10-21 | If 3D is revisited, use Rodin for AI-generated models (slight edge over Hunyuan3D; TRELLIS 2 not for hero pieces) |
+| 2026-10-21 | Talking-head portraits are tall portrait cards so headgear and shoulders fit |
 | 2026-10-21 | First implementation is one complete region, Region 1, in Phaser |
 | 2026-10-21 | Gauntlet unlocks after beating the Lich King and uses the puzzle themes the campaign doesn't |
 | 2026-10-21 | Bounty board: small, refreshes after each battle, follows the curriculum, pays more for harder puzzles, includes mistake bounties |

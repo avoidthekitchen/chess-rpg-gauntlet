@@ -6,6 +6,8 @@ October 21, 2026 · Exported from the [Claude Doc](https://claude.ai/artifact/Ve
 
 A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces by learning how they work, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.
 
+**Audience:** players who know how the pieces move and want to get better. Total beginners can pick an optional "Teach me the moves" tutorial first.
+
 **Pillars**
 
 1. **The rules of chess are sacred on the board.** No terrain that changes movement, no extra moves, no rule-bending powers. The RPG lives around the board, so every skill carries over to real chess.
@@ -55,7 +57,11 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 4. **Promotion run:** escort a squire to the far rank, where it's knighted in a promotion ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
 
-**Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. Start with patterns that are easy to detect reliably (fork, check plus attack, discovered attack, back-rank mate) and add more later.
+**Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. A banner must only appear when the tactic really works, or it teaches the wrong lesson: a "fork" where the forking piece simply gets captured is not a fork. So each banner needs two checks: a board rule spots the pattern, and the engine confirms the move actually wins something.
+
+- **At launch (clear board rules):** checkmate, fork, double check, discovered attack, pin, skewer, back-rank mate, promotion.
+- **Puzzles only (need judgment):** deflection, attraction, overloaded piece, zwischenzug, clearance, interference. These are hard to name automatically in live play, so they appear in puzzles, where the Lichess database already tags them.
+- The prototype already detects checkmate, fork, check, promotion and capture, without the engine check yet.
 
 **Scenario format** (one JSON file per battle): starting position (FEN), goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
 
@@ -138,7 +144,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 ## Campaign and Gauntlet
 
-The game has two modes: a Campaign that saves progress and teaches in order, and a Gauntlet roguelite for replay.
+The Campaign, with regions that build chess skills in order, is the core of the game and gets built first. A Gauntlet replay mode may come later.
 
 **Campaign.** An optional tutorial, then a map of 5 regions and the final battle. Each region has:
 
@@ -146,9 +152,16 @@ The game has two modes: a Campaign that saves progress and teaches in order, and
 - a town with a tavern (hire pieces), an academy (lessons), and a bounty board (puzzles for gold)
 - a boss duel against the faction leader
 
-Lessons learned and pieces unlocked are permanent. Losing a battle costs gold or renown, never the save.
+Lessons learned and pieces unlocked are permanent. Losing a battle never costs the save; how much it costs depends on difficulty.
 
-**Gauntlet.** A run with random battles, relics and a fresh army each time, unlocked after the first region. Knowledge (lesson unlocks) carries over between runs; army and gold do not. Losing your king ends the run. A Story difficulty option keeps runs forgiving for new players.
+| Difficulty | Losing a battle costs |
+| --- | --- |
+| Squire | Nothing: retry right away, pieces recover |
+| Knight | Captured pieces are wounded and sit out the next battle |
+| Champion | Wounds, plus a quarter of your gold |
+| Grandmaster | Wounds, gold, and the battle is gone from the map with its reward |
+
+**Gauntlet (later, optional).** A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Lesson unlocks would carry over between runs. Built only if the campaign works and players want more.
 
 ## Curriculum
 
@@ -156,7 +169,7 @@ The order follows how chess is commonly taught: the Lichess [Learn](https://lich
 
 | Tier | Region | Headline theme | Also revisits | Lichess source | Puzzle tags for bounties |
 | --- | --- | --- | --- | --- | --- |
-| 0 (optional) | Tutorial, skippable with a placement test | Movement, captures, check, mate in one | — | Learn: chess pieces, fundamentals | mateIn1 |
+| 0 (optional) | "Teach me the moves" tutorial, for total beginners only | Movement, captures, check, mate in one | — | Learn: chess pieces, fundamentals | mateIn1 |
 | 1 | Bog Goblins | Threat awareness, protection, safe trades, basic checkmates | Pawn promotion basics | Learn: protection, combat, piece value; Practice: Piece Checkmates I | hangingPiece, mateIn1 |
 | 2 | Bandit Riders | Forks, double attacks, mating patterns | Safe trades | Practice: The Fork, Double Check, Checkmate Patterns | fork, doubleCheck, mateIn2 |
 | 3 | Shadow Cult | Pins, skewers, discovered attacks, x-rays | Forks, mating patterns | Practice: fundamental tactics | pin, skewer, discoveredAttack, xRayAttack |
@@ -194,9 +207,8 @@ Use a web stack built on TypeScript, not Godot, because the chess tools (rules, 
 | Layer | Choice | Notes |
 | --- | --- | --- |
 | Build | Vite + TypeScript | Static output, instant reloads |
-| Menus, shop, dialogue | HTML/CSS (Svelte or React if it grows) | Far easier than menus inside a game engine |
-| Board and effects | PixiJS (leaning), Phaser also viable | Only the board is a canvas |
-| Animation | GSAP tweens + Pixi particles | Hops, stomps, screen shake, freeze frames |
+| Game screens | Phaser 4 | Region map, town and board all drawn on the canvas |
+| Long text and settings | HTML overlay | Settings, dialogue logs and accessibility text sit on top of the canvas |
 | Chess rules | chess.js (BSD) | Legal moves, FEN, game state |
 | AI | Stockfish lite WASM, single-threaded | Runs in a Web Worker; the prototype's engine file is 1.8 MB |
 | Enemy personalities | Choice among Stockfish's candidate moves | Picks within a centipawn window, so weak enemies make human-looking mistakes |
@@ -205,17 +217,17 @@ Use a web stack built on TypeScript, not Godot, because the chess tools (rules, 
 | iOS | Capacitor | Wraps the same web build |
 | Saves | Local storage first | Cloud sync later if needed |
 
-**Board renderer behind one interface.** The game rules (`src/game`) contain no screen code. The board is drawn by one module with a small interface: show a position, animate a move, highlight squares, play a capture. Switching to Phaser or Three.js later means rewriting that one module, not the game.
+**Why Phaser.** The region map and town are drawn on the canvas, not just the board, so a full game framework pays off: scenes for map, town and battle, asset loading, input, tweens, particles, camera shake and zoom, and sound. Phaser 4 is the current version (4.2.1 as of October 2026).
 
-**Why PixiJS over Phaser.** Only the board needs a canvas; menus, shop and dialogue stay in HTML. PixiJS is a renderer that drops into one part of the page. Phaser is a full framework (scenes, input, cameras, sound) that works best when it runs the whole app. Phaser's built-in camera shake and zoom are nice, but GSAP and a little Pixi code cover them.
+**Board scene behind one interface.** The game rules (`src/game`) contain no screen code. The battle scene talks to them through a small interface: show a position, animate a move, highlight squares, play a capture. If 3D is wanted later, only the battle scene's board is rebuilt.
 
-**Three.js later, not now.** A 3D look would be "HD-2D": the same 2D figurines standing in a lit 3D diorama with a moving camera. Sprites, rules and menus all carry over; only the board module is rewritten. Starting in 3D now would slow down gameplay iteration, and full 3D characters (modeling, rigging and animating about 36 of them) are the expensive part, not the engine.
+**Three.js later, if 3D is worth it.** A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Full 3D characters (modeling, rigging and animating about 36 of them) are the expensive part, not the engine.
 
 **Why not Godot.** A slow export step, bridging to Stockfish yourself, a bigger web download, and every menu built in Godot's UI system.
 
 ## Licensing
 
-Using Stockfish means the game should be open source under GPL-3. Decide this before writing code.
+Decided: the game is open source under GPL-3, so Stockfish ships with it.
 
 | Asset | License | What it means for us |
 | --- | --- | --- |
@@ -227,14 +239,14 @@ Using Stockfish means the game should be open source under GPL-3. Decide this be
 | Learn and Practice lesson text | Not checked | Write our own lessons; use theirs only as an outline |
 
 - GPL apps can ship on the App Store: the official Lichess mobile app is GPL-3 and on the App Store.
-- For closed source, drop Stockfish and chessground and use our own board and engine.
+- Every build ships Stockfish's license file; the prototype already does.
 - Keep "Lichess" out of the game's name and branding. The canonical code repo is lichess-org/lila; the alexbarrett/lichess link looks like an old copy.
 
 ## Prototype plan
 
 A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat Sight, rewind, tactic banners, difficulty levels, and a Stockfish enemy with a personality layer. It uses a plain DOM board and placeholder art, and feels like a compelling direction. Next steps:
 
-1. **Art spike:** a PixiJS board with figurines for two species and the hop and stomp animations, tested on a phone-sized screen.
+1. **Art spike:** a Phaser board with figurines for two species and the hop and stomp animations, tested on a phone-sized screen, plus candidate figurines (stag or lion, heron or owl) to pick species from.
 2. **Scrying Orb ladder:** shouting Bog Goblins, the Orb, then Far Sight.
 3. **Starter companion:** pick a starter and hear their tutor lines in battle.
 4. **One town:** hiring by value, one academy lesson, and a bounty board with 50 puzzles from the Lichess database.
@@ -243,23 +255,24 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 
 ## Open questions
 
-- [ ] Audience: total beginners, or players who know the moves and want to improve? Sets how much hand-holding the tutorial and region 1 need.
-- [ ] Build Campaign first, or Gauntlet first?
-- [ ] Open source under GPL (use Stockfish), or closed source (own engine and board)?
-- [ ] PixiJS or Phaser for the board?
-- [ ] King species: stag or lion? Bishop: heron or owl?
-- [ ] Should losing a battle cost gold, renown, or nothing in Campaign mode?
-- [ ] How many tactic patterns can be detected reliably for the first release?
-- [ ] Free rewind: is there a version simple enough to keep?
+- [ ] King species: stag or lion? Bishop: heron or owl? Decide after seeing candidate figurines.
+- [ ] Tutorial entry: ask "Do you know how the pieces move?", or offer a short placement test?
+- [ ] Is a quarter of your gold the right loss on Champion difficulty? Tune in playtests.
+- [ ] Gauntlet mode: build it after the campaign, or drop it?
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | Phaser 4 for the map, town and board; Three.js only later, if 3D is worth it |
+| 2026-10-21 | Audience: players who know the moves; optional "Teach me the moves" tutorial for total beginners |
+| 2026-10-21 | Campaign first; Gauntlet is a possible later mode |
+| 2026-10-21 | Open source under GPL-3, so Stockfish ships with the game |
+| 2026-10-21 | Losing a battle costs more on harder difficulties, never the save |
+| 2026-10-21 | Tactic banners need a board rule plus engine confirmation; 8 patterns at launch |
 | 2026-10-21 | Free rewind deferred: too confusing as designed |
 | 2026-10-21 | Scrying Orb ladder: shouting Bog Goblins, then the Orb (threat), then Far Sight (what-if upgrade) |
 | 2026-10-21 | Curriculum follows the Lichess Learn and Practice order as a spiral (Steps Method style): optional tutorial, 5 regions, final battle |
 | 2026-10-21 | Starter is a named companion who acts as the main tutor |
 | 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; board pieces are figurines; classic pieces toggle |
-| 2026-10-21 | Stay on the 2D web stack; board renderer behind one interface so Three.js HD-2D stays possible later |
 | 2026-10-21 | Battles are short scenarios; the rules of chess never change on the board |

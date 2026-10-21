@@ -9,6 +9,7 @@ import type { TacticTag } from './game/tactics';
 import { threatMap } from './game/threats';
 import { PIECE_NAME, PIECE_SHORT, glyph, renderBoard, type BoardView } from './ui/board';
 import { PixiBoard, preloadFigurines } from './ui/pixiBoard';
+import { preloadPortraits, showSpeaker } from './ui/speaker';
 
 // ---------- small helpers ----------
 
@@ -176,7 +177,10 @@ function startBattle(s: Scenario) {
         <div class="banner" id="banner" aria-live="polite"></div>
         <div id="overlay"></div>
       </section>
-      <aside class="panel" id="panel"></aside>
+      <aside class="side">
+        <div class="speaker" id="speaker" aria-live="polite" hidden></div>
+        <div class="panel" id="panel"></div>
+      </aside>
     </main>`;
   window.scrollTo(0, 0);
   mountBoard();
@@ -359,10 +363,17 @@ async function playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
   }
   await animate(res);
   if (battle !== b) return; // left or restarted meanwhile
+  speak(res);
   const tag = res.tactics.find((t) => PLAYER_BANNER[t]);
   if (tag) showBanner(PLAYER_BANNER[tag]!, 'ally');
   update();
   if (b.isEnemyTurn()) void enemyTurn();
+}
+
+/** The moving piece's talking head beside the board. */
+function speak(res: TurnResult) {
+  const el = document.getElementById('speaker');
+  if (el) showSpeaker(el, res.move, res.tactics);
 }
 
 /** Plays the move's animation on the figurine board (no-op on the classic board). */
@@ -401,6 +412,7 @@ async function enemyTurn() {
   statusLine = describe(res, 'enemy');
   await animate(res);
   if (token !== aiToken || battle !== b) return; // rewound or left during the animation
+  speak(res);
   const tag = res.tactics.find((t) => ENEMY_BANNER[t]);
   if (tag) showBanner(ENEMY_BANNER[tag]!, 'foe');
   else if (res.move.captured) showBanner('Piece lost', 'foe');
@@ -497,3 +509,4 @@ document.addEventListener('keydown', (e) => {
 renderMap();
 // Load the figurine art while the player looks at the map.
 if (boardStyle === 'figurines') preloadFigurines().catch(() => {});
+preloadPortraits();

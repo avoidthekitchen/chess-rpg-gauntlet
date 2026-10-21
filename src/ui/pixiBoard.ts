@@ -12,10 +12,22 @@ import { glyph, type BoardView } from './board';
 
 const FILES = 'abcdefgh';
 
-/** Illustrated figurines. Pieces without one fall back to a token with the classic glyph. */
-const FIGURINES: Partial<Record<PieceSymbol, { ally: string; foe: string; width: number }>> = {
-  n: { ally: 'knight-ally', foe: 'knight-foe', width: 0.98 },
-  r: { ally: 'rook-ally', foe: 'rook-foe', width: 1.1 },
+/**
+ * Board tokens: a simplified bust of each animal wearing its chess headgear, sized to
+ * stay close to one square so it doesn't hide the piece behind it. The detailed
+ * figurines are shown as talking-head portraits instead (see speaker.ts).
+ * A piece whose token is missing falls back to a wooden token with the classic glyph.
+ */
+const PIECE_FILE: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
+const tokenName = (type: PieceSymbol, color: Color) => `token-${PIECE_FILE[type]}-${color === 'w' ? 'ally' : 'foe'}`;
+/** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
+const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
+  p: [0.8, 0.86],
+  n: [0.92, 1.02],
+  b: [0.92, 1.02],
+  r: [0.95, 0.98],
+  q: [0.92, 1.04],
+  k: [0.95, 1.08],
 };
 
 const COLORS = {
@@ -66,17 +78,18 @@ let figurineTextures: Promise<Record<string, Texture>> | null = null;
 /** Starts loading the figurine sprites. Call early so the first battle opens instantly. */
 export function preloadFigurines(): Promise<Record<string, Texture>> {
   figurineTextures ??= (async () => {
-    const names = Object.values(FIGURINES).flatMap((f) => [f!.ally, f!.foe]);
+    const names = (Object.keys(PIECE_FILE) as PieceSymbol[]).flatMap((t) => [tokenName(t, 'w'), tokenName(t, 'b')]);
+    // A missing token isn't fatal: that piece falls back to the glyph token.
     const loaded = await Promise.all(
       names.map((n) =>
         Assets.load<Texture>({
           alias: `sprite-${n}`,
           src: `${import.meta.env.BASE_URL}sprites/${n}.webp`,
           data: { autoGenerateMipmaps: true },
-        }),
+        }).catch(() => null),
       ),
     );
-    return Object.fromEntries(names.map((n, i) => [n, loaded[i]]));
+    return Object.fromEntries(names.flatMap((n, i) => (loaded[i] ? [[n, loaded[i]]] : [])));
   })();
   // Let a failed load be retried next time.
   figurineTextures.catch(() => (figurineTextures = null));
@@ -386,12 +399,12 @@ export class PixiBoard {
 
   private makeBody(type: PieceSymbol, color: Color): Container {
     const W = this.W;
-    const fig = FIGURINES[type];
-    if (fig) {
-      const tex = this.textures[color === 'w' ? fig.ally : fig.foe];
+    const tex = this.textures[tokenName(type, color)];
+    if (tex) {
+      const [bw, bh] = TOKEN_BOX[type];
       const s = new Sprite(tex);
-      s.anchor.set(0.5, 0.985);
-      s.scale.set((fig.width * W) / tex.width);
+      s.anchor.set(0.5, 0.97);
+      s.scale.set(Math.min((bw * W) / tex.width, (bh * W) / tex.height));
       return s;
     }
     return this.makeToken(type, color);

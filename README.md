@@ -37,7 +37,7 @@ scripts/copy-engine.mjs  copies Stockfish from node_modules into public/engine
 
 ## Figurine board and art
 
-The battle board is drawn with PixiJS (`src/ui/pixiBoard.ts`): illustrated figurines, a knight that hops in an arc and leaves a dotted L, a rook that stomps square by square, and captures with a freeze frame and knock-out. Pieces without art yet use a wooden token with the classic glyph. The "Pieces" button switches to the classic DOM board, which also stays in the page (hidden) for screen readers and keyboard play.
+The battle board is drawn with PixiJS (`src/ui/pixiBoard.ts`): a knight that hops in an arc and leaves a dotted L, a rook that stomps square by square, and captures with a freeze frame and knock-out. Each piece is a simplified **token**, a bust of its animal wearing its chess headgear (mouse in a round helmet, frog in a horse-head helm, owl in a slit mitre, tortoise in a castle tower, fox in a pointed crown, lion in a cross-topped crown), sized to stay about one square tall. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures (`src/ui/speaker.ts`); on phones the card floats at the bottom of the screen. The "Pieces" button switches to the classic DOM board, which also stays in the page (hidden) for screen readers and keyboard play.
 
 Art comes from OpenRouter's image models, styled after `art/reference/`:
 

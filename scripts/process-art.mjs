@@ -12,7 +12,8 @@ import sharp from 'sharp';
 
 const RAW_DIR = join('art', 'raw');
 const OUT_DIR = join('public', 'sprites');
-const OUT_HEIGHT = 384; // about 3x the on-screen size of a figurine on desktop
+// Portraits are shown large in the side panel; board tokens are shown at 40-80 px.
+const sizeFor = (name) => (name.startsWith('token-') ? 256 : 384);
 const KEY_DIST = 130; // how close to pure magenta counts as background
 const SEED_DIST = 70; // pure enough to be background even when enclosed by the figure
 const EDGE_BAND = 3; // pixels next to the background that get soft alpha + despill
@@ -86,7 +87,7 @@ async function processOne(file) {
   const out = join(OUT_DIR, `${name}.webp`);
   await sharp(data, { raw: { width: w, height: h, channels: 4 } })
     .trim({ threshold: 1 })
-    .resize({ height: OUT_HEIGHT, fit: 'inside', kernel: 'lanczos3' })
+    .resize({ width: sizeFor(name), height: sizeFor(name), fit: 'inside', kernel: 'lanczos3' })
     .webp({ quality: 90, alphaQuality: 100, effort: 6 })
     .toFile(out);
   const meta = await sharp(out).metadata();

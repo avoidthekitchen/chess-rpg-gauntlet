@@ -49,6 +49,10 @@ node scripts/process-art.mjs               # cut out the magenta background → 
 
 In dev, `__gsap.globalTimeline.timeScale(0.1)` in the console plays animations in slow motion.
 
+## 3D mockup
+
+`mockups/three.html` (open `/mockups/three.html` on the dev server) is a standalone Three.js mockup, not part of the game build. It shows two scripted captures in 3D, with either procedural toy figurines or the painted sprites as upright cutouts: a frog knight flip, a tortoise rook stomp, a kill-cam swoop with slow motion, a flash and shockwave, and the captured piece breaking apart.
+
 ## Adding a battle
 
 Add an entry to `SCENARIOS`. The player is always White and moves first. The tests check that every position is legal, including that the enemy isn't already in check (chess.js doesn't catch that).

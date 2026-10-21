@@ -4,7 +4,7 @@ October 21, 2026 · Exported from the [Claude Doc](https://claude.ai/artifact/Ve
 
 ## Vision and pillars
 
-A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces by learning how they work, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.
+A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces with gold won in battle, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.
 
 **Audience:** players who know how the pieces move and want to get better. The game opens by asking "Do you know how the pieces move?"; answering no starts the optional "Teach me the moves" tutorial.
 
@@ -28,13 +28,13 @@ flowchart LR
     Battle --> Rewards["Rewards<br/>Gold, XP, bonus goals"]
     Rewards -->|to town| Town
     subgraph Town
-        Academy["Academy<br/>Lessons unlock pieces"] --> Tavern["Tavern<br/>Hire pieces with gold"]
-        Bounty["Bounty board<br/>Puzzles pay gold"] --> Tavern
+        Academy["Academy<br/>Lessons for each region"]
+        Bounty["Bounty board<br/>Puzzles pay gold"] --> Tavern["Tavern<br/>Hire pieces with gold"]
     end
     Town -->|next battle| Map
 ```
 
-Lessons at the academy unlock which pieces the tavern sells, and puzzle bounties top up gold. Clearing a region's battles opens its boss duel, which leads to the next region.
+The academy teaches each region's themes, and puzzle bounties top up gold. Clearing a region's battles opens its boss duel, which leads to the next region.
 
 ## Battles
 
@@ -57,7 +57,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 4. **Promotion run:** escort a squire to the far rank, where it's knighted in a promotion ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
 
-**Your pieces in battle.** Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario, made of piece types you own, and your named companion appears in it. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values (about 15 points as a first guess), and place it on your back two ranks. Every captured piece comes back after the battle, win or lose.
+**Your pieces in battle.** Every piece type can be used from the start, because players either finished the tutorial or said they know the moves. Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario: pieces you've hired appear as your named characters, and the rest as unnamed militia. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values. The budget grows by region, from about 10 points in region 1 to the full 39 of a complete chess set for the Lich King. Every captured piece comes back after the battle, win or lose.
 
 **Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. A banner must only appear when the tactic really works, or it teaches the wrong lesson: a "fork" where the forking piece simply gets captured is not a fork. So each banner needs two checks: a board rule spots the pattern, and the engine confirms the move actually wins something.
 
@@ -75,9 +75,10 @@ You start as a king with one companion and two squires, and build toward a full 
 
 **Hiring rules**
 
-- A piece type can only be hired after its lesson is done at the academy.
+- Every piece type can be hired from the start; gold is the only limit.
 - Army size is capped at a real chess set: 8 pawns, 2 knights, 2 bishops, 2 rooks, 1 queen.
 - Price equals standard piece value, so players learn values just by shopping.
+- Gold and the growing boss budget set the pace: owning more pieces than a boss budget allows gives you choices, not extra power.
 
 | Piece | Species | Why it fits | Value | Price |
 | --- | --- | --- | --- | --- |
@@ -91,6 +92,8 @@ You start as a king with one companion and two squires, and build toward a full 
 **No wounds.** Captured pieces return after every battle, so a sacrifice never has a lasting cost. Losing material still hurts inside the battle, which is the real chess lesson.
 
 **Pieces as tutors.** Besides the starter, each piece type has a character voice that teaches its tactics: the frog knight teaches forks, the owl mage teaches pins and long diagonals, the tortoise teaches back-rank mates. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
+
+**Named hero recruits.** Each region rewards you with a named hero who joins your party with a portrait and dialogue, for example a frog knight captain after beating the Bandit Riders. Heroes give each region a "new companion" moment without locking any piece types.
 
 **Avoiding grind.** Gold comes from varied, short content: battle rewards, bonus objectives, side quests, and a tavern bounty board of puzzles. No required replays of the same practice game.
 
@@ -167,19 +170,19 @@ Lessons learned and pieces unlocked are permanent. Losing a battle never costs t
 
 ## Curriculum
 
-The order follows how chess is commonly taught: the Lichess [Learn](https://lichess.org/learn) and [Practice](https://lichess.org/practice) sequences, arranged as a spiral like the Dutch Steps Method, a widely used six-step course. Each region has a headline theme but also brings back earlier themes at a harder level, so tactics, checkmates and endgames recur instead of appearing once. Lessons are our own writing; Lichess is the outline.
+The order follows how Lichess lays out its teaching: [Learn](https://lichess.org/learn) first, then [Practice](https://lichess.org/practice), then [puzzle themes](https://lichess.org/training/themes), then full games. Regions work through the Practice studies in order, arranged as a spiral like the Dutch Steps Method, a widely used six-step course: each region has a headline theme but also brings back earlier themes at a harder level. Lessons are our own writing; Lichess is the outline.
 
-| Tier | Region | Headline theme | Also revisits | Lichess source | Puzzle tags for bounties |
+| Tier | Region | Headline theme | Also revisits | Lichess Practice studies | Puzzle tags for bounties |
 | --- | --- | --- | --- | --- | --- |
-| 0 (optional) | "Teach me the moves" tutorial, for total beginners only | Movement, captures, check, mate in one | — | Learn: chess pieces, fundamentals | mateIn1 |
-| 1 | Bog Goblins | Threat awareness, protection, safe trades, basic checkmates | Pawn promotion basics | Learn: protection, combat, piece value; Practice: Piece Checkmates I | hangingPiece, mateIn1 |
-| 2 | Bandit Riders | Forks, double attacks, mating patterns | Safe trades | Practice: The Fork, Double Check, Checkmate Patterns | fork, doubleCheck, mateIn2 |
-| 3 | Shadow Cult | Pins, skewers, discovered attacks, x-rays | Forks, mating patterns | Practice: fundamental tactics | pin, skewer, discoveredAttack, xRayAttack |
-| 4 | Iron Legion | Development, king safety, open files, improving inactive pieces | All fundamental tactics, back-rank mates | Our own lessons | backRankMate, kingsideAttack |
-| 5 | Bone Wardens | Promotion, king activity, opposition, rook endgames | Tactics in the endgame | Practice: pawn and rook endgames | pawnEndgame, rookEndgame, promotion |
-| Final | The Lich King | Complete games | Everything | Practice: advanced tactics as bonus content | deflection, attraction, intermezzo |
+| 0 (skippable) | "Teach me the moves" tutorial | Movement, captures, check, mate in one | — | All of Learn: chess pieces, fundamentals, intermediate, advanced | mateIn1 |
+| 1 | Bog Goblins | Threat awareness, protection, safe trades, basic checkmates | Pawn promotion basics | Piece Checkmates I, Checkmate Patterns I | hangingPiece, mateIn1 |
+| 2 | Bandit Riders | Forks, double attacks, mating patterns | Safe trades | Checkmate Patterns II–IV, The Fork, Double Check | fork, doubleCheck, mateIn2 |
+| 3 | Shadow Cult | Pins, skewers, discovered attacks, x-rays | Forks, mating patterns | The Pin, The Skewer, Discovered Attacks, X-Ray, Overloaded Pieces, Zwischenzug | pin, skewer, discoveredAttack, xRayAttack |
+| 4 | Iron Legion | Development, king safety, open files, improving inactive pieces | Fundamental tactics, back-rank mates | Our own strategy lessons, Piece Checkmates II | backRankMate, kingsideAttack |
+| 5 | Bone Wardens | Promotion, king activity, opposition, rook endgames | Tactics in the endgame | Pawn Endgames, Rook Endgames | pawnEndgame, rookEndgame, promotion |
+| Final | The Lich King | Complete games | Everything | Advanced Tactics and Knight & Bishop Mate as bonus content | deflection, attraction, intermezzo |
 
-Tier 4 needs our own lessons: Lichess Learn covers only board setup and castling, and Practice and the puzzle themes barely touch opening principles or strategy. Puzzle tags follow the Lichess puzzle database's theme names; check exact spellings when building the pipeline.
+Two departures from Lichess's order: basic endgames come before advanced tactics, because most coaches teach them earlier, and region 4 adds strategy lessons Lichess doesn't have. Puzzle tags follow the Lichess puzzle database's theme names; check exact spellings when building the pipeline.
 
 ## Art direction
 
@@ -256,18 +259,20 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 
 ## Open questions
 
-- [ ] How do players who already know the moves unlock piece types? "Finish its lesson" assumes movement lessons they don't need. Proposal: a lesson battle lends you a guest piece, and winning it unlocks hiring that type.
-- [ ] What if a lesson needs a piece you don't own yet, like region 1's rook checkmates with a knight starter? The guest-piece proposal above covers this too.
 - [ ] Knight difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
-- [ ] Boss points budget: about 15 points is a first guess; tune per region.
+- [ ] Boss budget curve: about 10 points in region 1 rising to 39 for the Lich King; tune per region.
+- [ ] Gold pacing: how much gold battles and bounties pay per region so the army grows in step with the lessons.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | All pieces usable and hireable after the tutorial; gold and growing boss budgets pace the army |
+| 2026-10-21 | Each region rewards a named hero recruit |
+| 2026-10-21 | Regions map to Lichess Practice studies, with endgames before advanced tactics and a strategy region of our own |
 | 2026-10-21 | King is a lion, bishop is an owl |
 | 2026-10-21 | Board uses simplified tokens that still show the animal and its chess role; detailed figurines become talking-head portraits |
-| 2026-10-21 | Lesson battles use a set lineup from pieces you own; boss battles use a points budget; wounds dropped |
+| 2026-10-21 | Lesson battles use a set lineup chosen by the scenario; boss battles use a points budget; wounds dropped |
 | 2026-10-21 | Tutorial entry: the game asks "Do you know how the pieces move?" |
 | 2026-10-21 | Champion difficulty loses a quarter of your gold on a lost battle; tune in playtests |
 | 2026-10-21 | Gauntlet mode deferred |
@@ -279,7 +284,6 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 | 2026-10-21 | Tactic banners need a board rule plus engine confirmation; 8 patterns at launch |
 | 2026-10-21 | Free rewind deferred: too confusing as designed |
 | 2026-10-21 | Scrying Orb ladder: shouting Bog Goblins, then the Orb (threat), then Far Sight (what-if upgrade) |
-| 2026-10-21 | Curriculum follows the Lichess Learn and Practice order as a spiral (Steps Method style): optional tutorial, 5 regions, final battle |
 | 2026-10-21 | Starter is a named companion who acts as the main tutor |
 | 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle |
 | 2026-10-21 | Battles are short scenarios; the rules of chess never change on the board |

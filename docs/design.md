@@ -263,16 +263,32 @@ Decided: the game is open source under GPL-3, so Stockfish ships with it.
 - Every build ships Stockfish's license file; the prototype already does.
 - Keep "Lichess" out of the game's name and branding. The canonical code repo is lichess-org/lila; the alexbarrett/lichess link looks like an old copy.
 
-## Prototype plan
+## First implementation: Region 1
 
-A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat Sight, rewind, tactic banners, difficulty levels, and a Stockfish enemy with a personality layer. An art spike added figurine sprites on a PixiJS board, and king and bishop candidates settled on the lion and the owl. Two spikes are running in a separate session: token legibility on small phone screens, and Three.js models. Next steps:
+Build one complete region, the Bog Goblins, from start to boss, in Phaser. It's the smallest build that tests the whole loop: does winning battles, spending gold and facing the boss make players want region 2?
 
-1. **Phaser board:** port the board to Phaser 4 with simplified tokens and talking-head portraits, once the legibility spike settles the token style.
-2. **Scrying Orb ladder:** shouting Bog Goblins, the Orb, then Far Sight.
-3. **Starter companion:** pick a starter and hear their tutor lines in battle.
-4. **One town:** hiring by value, one academy lesson, and a bounty board with 50 puzzles from the Lichess database.
-5. **Region 1 boss:** the goblin chief duel, with a points-budget army.
-6. **Playtest:** watch 3 to 5 people play, ideally players who know the moves but lose to tactics, before building more.
+**Starting point.** The battle prototype's rules, Stockfish enemy, Threat Sight, rewind and tactic banners carry over unchanged (`src/game`, `src/ai`). Spikes added board tokens, talking-head portraits and a Three.js board mockup; the token and portrait work moves into Phaser rather than being redone.
+
+**In scope**
+
+1. **Phaser 4 game** with four screens: title, region map, town and battle. The title asks "Do you know how the pieces move?" The battle board uses tokens, talking-head portraits and the classic pieces toggle.
+2. **Starter choice:** frog knight, owl mage or tortoise golem, with a few tutor lines in battle.
+3. **Region 1 content:** about 5 lesson battles (threat awareness, protection, safe trades, basic checkmates), goblins that shout their next move, a goblin chief boss with a 10-point budget and no queen, and a named hero recruit for winning the region.
+4. **Town:** a tavern for hiring at piece value, one academy lesson (rook and queen checkmates), and a bounty board with a few hundred region 1 puzzles from the Lichess database, refreshed after each battle.
+5. **Loop basics:** gold, saving progress, Squire and Knight difficulties with their loss costs, and engine-checked banners for checkmate and fork.
+6. **Deploy** to Cloudflare so playtesters only need a link.
+
+**Out of scope for now:** regions 2 to 5 and the Lich King; the Scrying Orb, Far Sight and other powers; mistake bounties and the adaptive rating; the "Teach me the moves" tutorial; Champion and Grandmaster difficulties; sound, the iOS app, Three.js and Gauntlet.
+
+**Build order**
+
+1. Phaser game with the battle screen ported.
+2. Region 1 battles and shouting goblins.
+3. Town, gold and saving.
+4. Boss and hero reward.
+5. Deploy and playtest.
+
+**The test:** 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes. Watch where they get stuck or bored, and whether they ask for region 2.
 
 ## Open questions
 
@@ -284,6 +300,7 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | First implementation is one complete region, Region 1, in Phaser |
 | 2026-10-21 | Gauntlet unlocks after beating the Lich King and uses the puzzle themes the campaign doesn't |
 | 2026-10-21 | Bounty board: small, refreshes after each battle, follows the curriculum, pays more for harder puzzles, includes mistake bounties |
 | 2026-10-21 | Battles pay for the army; bounties pay for extras and catch-up |

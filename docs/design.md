@@ -57,7 +57,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 4. **Promotion run:** escort a squire to the far rank, where it's knighted in a promotion ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
 
-**Your pieces in battle.** Every piece type can be used from the start, because players either finished the tutorial or said they know the moves. Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario: pieces you've hired appear as your named characters, and the rest as unnamed militia. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values. The budget grows by region, from about 10 points in region 1 to the full 39 of a complete chess set for the Lich King. Every captured piece comes back after the battle, win or lose.
+**Your pieces in battle.** Every piece type can be used from the start, because players either finished the tutorial or said they know the moves. Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario: pieces you've hired appear as your named characters, and the rest as unnamed militia. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values. The budget grows by region, from about 10 points in region 1 to the full 39 of a complete chess set, which only the Lich King battle allows. A boss can also cap specific piece types when its lesson needs it, for example no queen in region 1. Every captured piece comes back after the battle, win or lose.
 
 **Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. A banner must only appear when the tactic really works, or it teaches the wrong lesson: a "fork" where the forking piece simply gets captured is not a fork. So each banner needs two checks: a board rule spots the pattern, and the engine confirms the move actually wins something.
 
@@ -96,6 +96,23 @@ You start as a king with one companion and two squires, and build toward a full 
 **Named hero recruits.** Each region rewards you with a named hero who joins your party with a portrait and dialogue, for example a frog knight captain after beating the Bandit Riders. Heroes give each region a "new companion" moment without locking any piece types.
 
 **Avoiding grind.** Gold comes from varied, short content: battle rewards, bonus objectives, side quests, and a tavern bounty board of puzzles. No required replays of the same practice game.
+
+## Bounty board and gold
+
+Battles pay for the army; bounties pay for extras and catch-up, and every bounty is practice the player needs. Because the boss budget caps your army in each boss battle, extra gold buys choices and powers, never a way past a boss.
+
+**Gold pacing**
+
+- Boss budgets are about 10, 16, 22, 28 and 34 points for regions 1 to 5, and the full 39 for the Lich King. Each step is about 6 points, or about 60 gold of pieces.
+- Battle rewards cover most of each region's budget increase, so players who skip puzzles aren't stuck.
+- Bounties pay for powers (Scrying Orb, Far Sight), extra piece choices, and recovering gold after a lost battle on harder difficulties.
+
+**Bounty board rules**
+
+- **Small and refreshing:** 3 to 4 bounties at a time, refreshed after each battle. It can't be ground, and it mixes puzzles in between battles, which helps players remember.
+- **Follows the curriculum:** most bounties match the current region's themes; one or two revisit earlier regions, as the spiral does.
+- **Pays for challenge:** puzzles are picked near the player's hidden rating. Ones above it pay more; ones far below pay little.
+- **Mistake bounties:** positions where you blundered in a battle come back later as puzzles, like Lichess's "learn from your mistakes".
 
 ## Enemies and difficulty
 
@@ -149,7 +166,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 ## Campaign and Gauntlet
 
-The Campaign, with regions that build chess skills in order, is the core of the game and gets built first. A Gauntlet replay mode may come later.
+The Campaign, with regions that build chess skills in order, is the core of the game and gets built first. A Gauntlet replay mode unlocks after beating the Lich King.
 
 **Campaign.** An optional tutorial, then a map of 5 regions and the final battle. Each region has:
 
@@ -166,7 +183,7 @@ Lessons learned, pieces hired and heroes recruited are permanent. Losing a battl
 | Champion | A quarter of your gold |
 | Grandmaster | A quarter of your gold, and the battle is gone from the map with its reward |
 
-**Gauntlet (deferred).** A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Lesson unlocks would carry over between runs. Deferred until the campaign works; revisit if players want more.
+**Gauntlet (after the campaign).** Unlocks after beating the Lich King and is built after the campaign. A replay mode like a run in Into the Breach or Slay the Spire: random battles, relics and a fresh army each time, and the run ends when you lose. Its battles and bounties use the [puzzle themes](https://lichess.org/training/themes) the campaign doesn't: the opening themes (Sicilian, French, Italian and more), most mate patterns (smothered, Anastasia's, Arabian, Boden's and more), knight, bishop and queen endgames, longer mates, and advanced motifs such as quiet moves, zugzwang, clearance and interference.
 
 ## Curriculum
 
@@ -260,13 +277,17 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 ## Open questions
 
 - [ ] Knight difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
-- [ ] Boss budget curve: about 10 points in region 1 rising to 39 for the Lich King; tune per region.
-- [ ] Gold pacing: how much gold battles and bounties pay per region so the army grows in step with the lessons.
+- [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
+- [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | Gauntlet unlocks after beating the Lich King and uses the puzzle themes the campaign doesn't |
+| 2026-10-21 | Bounty board: small, refreshes after each battle, follows the curriculum, pays more for harder puzzles, includes mistake bounties |
+| 2026-10-21 | Battles pay for the army; bounties pay for extras and catch-up |
+| 2026-10-21 | Boss budgets cap your army; only the Lich King battle allows a full chess set |
 | 2026-10-21 | All pieces usable and hireable after the tutorial; gold and growing boss budgets pace the army |
 | 2026-10-21 | Each region rewards a named hero recruit |
 | 2026-10-21 | Regions map to Lichess Practice studies, with endgames before advanced tactics and a strategy region of our own |
@@ -275,7 +296,6 @@ A battle prototype is built: 5 handmade battles, goals beyond checkmate, Threat 
 | 2026-10-21 | Lesson battles use a set lineup chosen by the scenario; boss battles use a points budget; wounds dropped |
 | 2026-10-21 | Tutorial entry: the game asks "Do you know how the pieces move?" |
 | 2026-10-21 | Champion difficulty loses a quarter of your gold on a lost battle; tune in playtests |
-| 2026-10-21 | Gauntlet mode deferred |
 | 2026-10-21 | Phaser 4 for the map, town and board; Three.js only later, if 3D is worth it |
 | 2026-10-21 | Audience: players who know the moves; optional "Teach me the moves" tutorial for total beginners |
 | 2026-10-21 | Campaign first |

@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "puzzles": "node scripts/build-puzzles.mjs",
-    "verify:battles": "vitest run --config vitest.verify.config.ts"
+    "verify:battles": "vitest run --config vitest.verify.config.ts",
+    "stage": "node scripts/stage-deploy.mjs",
+    "deploy": "npm run build && node scripts/stage-deploy.mjs && wrangler deploy"
   },
   "dependencies": {
     "@fontsource/alegreya": "^5.3.0",
@@ -30,6 +32,7 @@
     "sharp": "^0.35.5",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "^4.97.0"
   }
 }

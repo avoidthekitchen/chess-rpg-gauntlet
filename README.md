@@ -1,43 +1,59 @@
-# Gauntlet: battle prototype
+# Gauntlet
 
-A chess tactics RPG in the spirit of Into the Breach. This prototype tests one question: **are short, objective-driven chess battles fun?**
+A storybook chess tactics RPG in the spirit of Into the Breach. Rule of the design: **the rules of chess never change on the board.** The RPG lives around it. See `docs/design.md` for the design and `docs/progress.md` for the Region 1 build log.
 
-Rule of the design: the rules of chess never change on the board. The RPG lives around it.
+Play it: https://unformedideas.com/chess-rpg/
 
 ## Run it
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm test         # rules, threats, rewind and AI tests
-npm run build    # static site in dist/
+npm run dev              # http://localhost:5173
+npm test                 # rules, campaign, economy, bounty, boss and AI tests
+npm run verify:battles   # engine-backed playtests of every battle and the boss (a few minutes)
+npm run build            # static site in dist/
+npm run puzzles          # rebuild the bounty puzzles from the Lichess database (downloads ~250 MB to data/raw/)
 ```
 
-## What's in it
+In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy for automated testing).
 
-- **5 handmade battles** in `src/game/scenarios.ts`: a rook ladder mate, a knight fork, a village defense, a king-and-pawn race and a boss.
-- **Objectives** beyond checkmate: win material, survive N turns, promote safely, all with move limits.
-- **Threat Sight**: tints squares the enemy attacks and makes your at-risk pieces glow red.
-- **Rewind**: undo your last move and the enemy's reply. Charges depend on difficulty, and you can rewind out of a defeat.
-- **Tactic banners**: "Fork!", "Check!" and so on, detected in `src/game/tactics.ts`.
-- **Difficulty** (Squire → Grandmaster): sets enemy strength, rewinds and Threat Sight.
-- **Enemy AI**: Stockfish 19 lite (WASM, single-threaded) in a Web Worker. It asks for several candidate moves and picks one within a centipawn window, so weak enemies make human-looking mistakes. A "raider" personality hunts villages. If Stockfish fails to load, a simple fallback AI takes over.
+## What's in it (Region 1: the Bog)
+
+- **Title flow:** "Do you know how the pieces move?", Squire or Knight difficulty, and a starter companion (frog knight, owl mage or tortoise golem) who tutors you.
+- **Region map** with five lesson battles on branching paths (threat awareness, protection, safe trades, back-rank mate, promotion) and the Goblin Chief's camp, which opens after four wins.
+- **Shouting goblins:** before your move the Bog Goblins announce the move they'd play if you passed, and must play it if it's still legal. Set traps, or foil them.
+- **Town:** a tavern that hires pieces at their chess value, an academy lesson on rook and queen mates (unlimited undo), and a bounty board of real Lichess puzzles that refreshes after every battle.
+- **Boss duel:** pick your army up to 10 points (no queen) and checkmate Grubnak; winning recruits Saffron the Fox Sorceress.
+- **Loop:** gold, one-time bonus goals, loss costs by difficulty, engine-confirmed fork banners, rewind charges, Threat Sight, and a localStorage save.
 
 ## Layout
 
 ```
-src/game/   rules: battle.ts (objectives, rewind), scenarios, difficulty, threats, tactics
-src/ai/     engine.ts (UCI over a Web Worker), enemy.ts (move choice and personalities)
-src/ui/     board.ts (DOM board)
-src/main.ts screens and turn flow
-scripts/copy-engine.mjs  copies Stockfish from node_modules into public/engine
+src/game/     rules with no screen code: battle.ts (objectives, rewind), campaign (save, map unlocks),
+              economy (gold, hiring, loss costs, bounties), boss (budget), region1*.ts (content), tactics, threats
+src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), shout.ts (shouting goblins)
+src/scenes/   Phaser screens: Boot, Title, Starter, Map, Town, Puzzle, Muster, Battle
+src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
+src/flow.ts   campaign flow between screens (briefings, launching battles, results)
+scripts/      art generation, puzzle pipeline, engine copy, deploy staging, verify/ (engine playtests)
 ```
 
-`src/game` has no DOM code, so it can move to a Phaser/Pixi front end later.
+## Adding a battle
 
-## Figurine board and art
+Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in `src/game/region1.ts`. The player is White and moves first. `npm test` checks every position is legal (including that the enemy isn't already in check, which chess.js doesn't catch), and `npm run verify:battles` plays it out against the real enemy AI with shouts.
 
-The battle board is drawn with PixiJS (`src/ui/pixiBoard.ts`): a knight that hops in an arc and leaves a dotted L, a rook that stomps square by square, and captures with a freeze frame and knock-out. Each piece is a simplified **token**, a bust of its animal wearing its chess headgear (mouse in a round helmet, frog in a horse-head helm, owl in a slit mitre, tortoise in a castle tower, fox in a pointed crown, lion in a cross-topped crown), sized to stay about one square tall. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures (`src/ui/speaker.ts`); on phones the card floats at the bottom of the screen. The "Pieces" button switches to the classic DOM board, which also stays in the page (hidden) for screen readers and keyboard play.
+## Deploying
+
+```bash
+npm run deploy   # build, stage dist/ into dist-worker/chess-rpg/, wrangler deploy
+```
+
+The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. The 3D model comparison files are left out of the deploy. The largest file is the 1.8 MB engine `.wasm`.
+
+## Board, tokens and art
+
+The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures (`src/ui/portrait.ts`, lines in `src/ui/speaker.ts`); on phones the card floats at the bottom of the screen. The "Pieces" button switches to standard chess pieces.
+
 
 Art comes from OpenRouter's image models, styled after `art/reference/`:
 
@@ -73,20 +89,6 @@ node scripts/optimize-3d.mjs           # ≤30k triangles, 1K WebP textures, mes
 ```
 
 `mockups/three.html` (open `/mockups/three.html` on the dev server) is a standalone Three.js mockup, not part of the game build. Its Style button cycles through procedural toys, painted cutouts and the three AI model sets. It shows two scripted captures in 3D, with either procedural toy figurines or the painted sprites as upright cutouts: a frog knight flip, a tortoise rook stomp, a kill-cam swoop with slow motion, a flash and shockwave, and the captured piece breaking apart.
-
-## Adding a battle
-
-Add an entry to `SCENARIOS`. The player is always White and moves first. The tests check that every position is legal, including that the enemy isn't already in check (chess.js doesn't catch that).
-
-## Deploying
-
-`dist/` is plain static files, with no special headers needed. The largest file is the 1.8 MB engine `.wasm`. On Cloudflare:
-
-```bash
-npx wrangler pages deploy dist --project-name chess-rpg-gauntlet
-```
-
-`vite.config.ts` uses relative paths (`base: './'`), so the same build can be wrapped with Capacitor for iOS.
 
 ## License
 

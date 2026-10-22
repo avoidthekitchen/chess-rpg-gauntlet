@@ -28,8 +28,12 @@ export function fitGame(game: Phaser.Game) {
   const d = dpr();
   const w = Math.max(1, window.innerWidth);
   const h = Math.max(1, window.innerHeight);
-  game.scale.setZoom(1 / d);
   game.scale.resize(Math.round(w * d), Math.round(h * d));
+  // setZoom after resize: Phaser's NONE mode skips the CSS size in resize() when zoom is 1
+  // (a normal-density screen), which left the canvas stretched after a window resize.
+  game.scale.setZoom(1 / d);
+  game.canvas.style.width = `${w}px`;
+  game.canvas.style.height = `${h}px`;
   game.events.emit(LAYOUT_EVENT);
 }
 

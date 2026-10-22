@@ -40,8 +40,8 @@ async function start() {
     render: { antialias: true, mipmapFilter: 'LINEAR_MIPMAP_LINEAR' },
     // windowEvents off: releases outside the canvas (e.g. on an HTML dialog) must not count as taps.
     input: { activePointers: 2, windowEvents: false },
-    // Dev only: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
-    fps: import.meta.env.DEV && new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
+    // Testing aid: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
+    fps: new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
     scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, MusterScene, BattleScene],
   });
 

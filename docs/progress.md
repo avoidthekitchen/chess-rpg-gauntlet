@@ -83,3 +83,13 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 **Worth a look**
 - The duel's length depends a lot on the player. A strong player mates the Squire or Knight AI in 4-21 moves, and weak simulated play almost always loses. Real players are in between, so watch in playtests whether it feels like a full game (the doc's intent) or is too hard for players who lose to tactics.
 - Replaying the duel after a win pays only what's left (bonus goals not yet earned). The hero joins only once.
+
+## Step 5: Deploy and playtest
+
+**Done**
+- Live at https://unformedideas.com/chess-rpg/ (and www.). It's an assets-only Cloudflare Worker, so it stays in the free tier, on zone routes `unformedideas.com/chess-rpg*`, like the site's other prototypes; the rest of unformedideas.com is untouched. `npm run deploy` builds, stages `dist/` into `dist-worker/chess-rpg/` (so files mirror the route path, without the 4 MB of 3D model comparisons) and runs `wrangler deploy`. Wrangler was already logged in, so nothing was needed from you.
+- Checked live: `/chess-rpg` redirects to `/chess-rpg/`; the engine `.wasm` is served as `application/wasm`; Stockfish starts in a worker from the subpath and returns a best move in under 200 ms; the puzzle JSON loads; a new campaign, the map and a battle with real enemy replies, shouts and capture animations work at 375×812 and 1280×800.
+- Fixed during the live check: on normal-density screens (pixel ratio 1) a window resize left the canvas at its old CSS size, so the game drew squashed. Phaser skips the CSS update when the zoom is 1; `fitGame` now sets it.
+
+**Worth a look**
+- `?loop=timeout` now works in production too. It only matters for automated testing in a hidden browser tab.

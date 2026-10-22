@@ -12,7 +12,7 @@ Then a summary table with these rows:
 
 | | |
 | --- | --- |
-| Faction | Name, and how its outfit and colors set it apart (same species as everyone; see [Art](../art.md)) |
+| Faction | Name, its own species for each piece and its outfit (see [Art](../art.md) for how a faction is designed) |
 | Headline theme | From the [curriculum](../campaign.md#curriculum) row, plus what it revisits |
 | AI habit | The faction's readable habit ([AI habits](../systems.md#ai-habits-by-faction)) |
 | Battles | How many (4 to 6), and how many wins open the boss |
@@ -41,7 +41,7 @@ One row per battle:
 
 ## Academy
 
-One lesson per battle theme, each with 2 to 4 practice positions and unlimited undo. Name the teacher (usually a companion) and which battle each lesson prepares for.
+One lesson per battle theme, each a few practice positions (Region 1's has two) with unlimited undo. Name the teacher (usually a companion) and which battle each lesson prepares for.
 
 ## Bounty board
 

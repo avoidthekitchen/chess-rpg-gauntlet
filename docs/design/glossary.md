@@ -6,6 +6,8 @@ One place for the names the game shows, so every screen, line of dialogue and do
 
 ## Pieces
 
+Our army. Each enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md).
+
 | Chess piece | Species name (portraits, tavern, starter screen) | Short name (status text, banners, advice) |
 | --- | --- | --- |
 | Pawn | Mouse Squire | squire |
@@ -15,26 +17,26 @@ One place for the names the game shows, so every screen, line of dialogue and do
 | Queen | Fox Sorceress | sorceress |
 | King | Lion King | king |
 
-- **Tortoise Golem** is the canonical species name (decided 2026-10-22). The code still says "Tortoise Tower" in battle and the tavern (`SPECIES` in `src/ui/speaker.ts`); renaming it is an [open TODO](decisions.md#open-todos). "Tower" stays the short name.
+- **Tortoise Golem** is the canonical species name (decided 2026-10-22). The code is mixed: the starter screen and briefings say Golem (`STARTERS` in `src/game/campaign.ts`), but battle, the tavern, the muster screen and puzzles say "Tortoise Tower" (`SPECIES` in `src/ui/speaker.ts`). Renaming those is an [open TODO](decisions.md#open-todos). "Tower" stays the short name.
 - A promoted pawn is **knighted**, whatever it becomes.
 - Chess terms (check, checkmate, fork, pin, file, rank) are used as they are in real chess, in dialogue and lessons alike, so everything carries over.
 
 ## Factions
 
-| Faction | Region | In battle, its pieces are called |
+| Faction | Region | Its pieces' names |
 | --- | --- | --- |
-| Bog Goblins | 1 | Bog + species (Bog Frog Knight); the king speaks as the battle's commander |
-| Bandit Riders | 2 | Bandit + species |
-| Shadow Cult | 3 | To be set with the Region |
-| Iron Legion | 4 | To be set with the Region |
-| Bone Wardens | 5 | To be set with the Region |
-| The Lich King's army | Final | To be set with the Region |
+| Bog Goblins | 1 | Their own species names, in [Art direction](art.md); in battle, the king speaks as the battle's commander |
+| Bandit Riders | 2 | Chosen with their species when Region 2 is designed |
+| Shadow Cult | 3 | Chosen with the Region |
+| Iron Legion | 4 | Chosen with the Region |
+| Bone Wardens | 5 | Chosen with the Region (skeleton animals) |
+| The Lich King's army | Final | Chosen with the Region |
 
 ## Places
 
 | Name | What |
 | --- | --- |
-| Pawnshire | The game, and the Lion King's kingdom |
+| Pawnshire | The game; (proposed, with the [story arc](story.md#main-story-arc)) also the Lion King's kingdom |
 | The Bog | Region 1 |
 | Mudford Town | Region 1's town |
 | The Muddy Mug | Region 1's tavern |

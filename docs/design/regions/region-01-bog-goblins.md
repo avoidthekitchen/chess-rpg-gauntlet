@@ -4,11 +4,11 @@
 
 ## Design status
 
-Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
+Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |
 | --- | --- |
-| Faction | Bog Goblins: the same species as everyone, in muddy rags with lime war paint and mossy base rims |
+| Faction | Bog Goblins: their own swamp creatures (bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief) in muddy rags, wearing the same chess headgear as ours ([Art](../art.md)) |
 | Headline theme | Threat awareness, protection, safe trades, basic checkmates; revisits pawn promotion basics |
 | AI habit | **Shouting:** before your move the goblins announce the move they'd play if you passed, and must play it if it's still legal ([details](#ai-habit-shouting-goblins)) |
 | Battles | 5 on a branching map; the boss opens after any 4 wins |
@@ -33,8 +33,8 @@ flowchart BT
     Town["Mudford Town"] --> Reeds["1 Trouble in the Reeds"]
     Reeds --> Guard["2 Lanterns at Mossbridge"]
     Reeds --> Trades["3 The Swap Meet"]
-    Guard --> Squire["4 The Squire's Splash"]
-    Trades --> Backrank["5 Behind the Mud Wall"]
+    Guard --> Squire["5 The Squire's Splash"]
+    Trades --> Backrank["4 Behind the Mud Wall"]
     Squire -.-> Boss["Goblin Chief's camp<br/>opens after any 4 wins"]
     Backrank -.-> Boss
 ```
@@ -43,7 +43,7 @@ The first skirmish opens both paths, so one battle can be skipped (`src/game/reg
 
 ## Battles
 
-All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 96–100% of the time at Squire and Knight, and careless play wins 0–25% ([verification](#verification)).
+All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 96–100% of the time at Squire and Knight, and careless play wins 0–17% ([verification](#verification)).
 
 | # | Battle | Kind · theme | Goal | The idea | Moves (strong player) | Reward · bonus goals |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -63,13 +63,13 @@ This predates the decision that the academy teaches what the battles test. The R
 
 ## Bounty board
 
-Four bounties at a time from 300 real Lichess puzzles (150 `mateIn1`, 150 `hangingPiece`, rated 400–1899), spread across ratings so pay differs. The board refreshes after every battle, and each bounty gets one try ([rules](../systems.md#bounty-board-and-gold)). The puzzle files are built by `npm run puzzles` into `public/puzzles/region1/`.
+Four bounties at a time from real Lichess puzzles (150 `mateIn1` and 150 `hangingPiece`, rated 400–1899; 12 puzzles appear in both packs, a fix in progress), spread across ratings so pay differs. The board refreshes after every battle, and each bounty gets one try ([rules](../systems.md#bounty-board-and-gold)). The puzzle files are built by `npm run puzzles` into `public/puzzles/region1/`.
 
 ## Boss: Grubnak's Last Stand
 
-- **Setup:** you pick up to 10 points from the pieces you own (no queen) on the muster screen, placed on their usual home squares. Grubnak, the Goblin Chief, sits behind a full wall of eight goblin squires and one frog knight (11 points) (`src/game/region1Boss.ts`).
+- **Setup:** you pick up to 10 points from the pieces you own (no queen) on the muster screen, placed on their usual home squares. Grubnak, the Goblin Chief, sits behind a full wall of eight pawns and one knight (11 points) (`src/game/region1Boss.ts`).
 - **Goal:** checkmate, with no move limit. 50g, plus 10g each for no rewinds and for winning within 30 moves.
-- **He doesn't shout:** this is the region's final exam. The habit the shouts taught ("what does the enemy want?") has to work without them. Without shouts, his AI is a bit clumsier on Squire and Knight, so the game doesn't drag. This lands with the `r1-boss-no-shouts` branch; until it merges, `main` still has a shouting chief.
+- **He doesn't shout:** this is the region's final exam. The habit the shouts taught ("what does the enemy want?") has to work without them. Without shouts, his AI is made a little clumsier on Squire and Knight so the game doesn't drag. This is in progress with the Region 1 boss work; until it merges, the deployed chief still shouts.
 - **The lesson:** develop, keep pieces protected, trade only when it's safe, open a file for the tower, then hunt the king.
 
 ## Hero: Saffron, the Fox Sorceress
@@ -86,21 +86,22 @@ Characters introduced here: Grubnak and Saffron (recurring; see the [cast](../st
 
 ## Art
 
-The Bog Goblin token and portrait set, plus painted backgrounds for the title, the region map, the town and battles. How faction art is designed and made is in [Art direction](../art.md).
+The Bog Goblin token and portrait set (their species and in-game names are in [Art direction](../art.md)), plus painted backgrounds for the title, the region map, the town and battles.
 
 ## Verification
 
 `npm run verify:battles` plays every battle and the boss against the real enemy AI, shout rule included, with simulated players. Results as of the last run:
 
-| Battle | Strong player (Squire / Knight) | Careless player (Squire / Knight) |
-| --- | --- | --- |
-| Trouble in the Reeds | 100% / 100% | 4% / 8% |
-| Lanterns at Mossbridge | 100% / 100% | 17% / 13% |
-| The Swap Meet | 100% / 100% | 0% / 0% |
-| Behind the Mud Wall | 100% / 100% | 4% / 4% |
-| The Squire's Splash | 100% / 100% | 8% / 0% |
+| Battle | Strong player wins (Squire / Knight) | Strong player's average moves | Careless player wins (Squire / Knight) |
+| --- | --- | --- | --- |
+| Trouble in the Reeds | 100% / 100% | 4.2 / 5.0 | 4% / 8% |
+| Lanterns at Mossbridge | 100% / 100% | 7.3 / 7.2 | 17% / 13% |
+| The Swap Meet | 100% / 100% | 4.2 / 4.2 | 0% / 0% |
+| Behind the Mud Wall | 100% / 100% | 5.5 / 4.6 | 4% / 4% |
+| The Squire's Splash | 100% / 100% | 5.9 / 6.1 | 8% / 0% |
+| Boss duel | To re-run once the no-shout boss lands (with shouts, a strong player won 100% with every typical army) | — | — |
 
-A simulated "greedy" player (always grabs the biggest capture) wins Trouble in the Reeds and The Squire's Splash fairly often (33–67%). That's worth watching in playtests.
+A simulated "greedy" player (always grabs the biggest capture) wins Trouble in the Reeds and The Squire's Splash fairly often (about 33–67% across runs). That's worth watching in playtests.
 
 ## Playtest
 

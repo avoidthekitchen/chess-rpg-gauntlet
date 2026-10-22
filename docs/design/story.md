@@ -44,9 +44,9 @@ The cast below is in the game, except where marked proposed. Voices are written 
 | Sage Ollie | Owl Mage · bishop | Starter choice; teaches the academy | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
 | Old Brick | Tortoise Golem · rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
 | Saffron | Fox Sorceress · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | (Proposed) Coordination: the queen working with other pieces |
-| Grubnak, the Goblin Chief | Lion · king in Bog Goblin rags | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
-| The Lich King | Skeleton lion · king | Final villain | (Proposed) Cold and courtly, never raises his voice; talks about games he refused to lose | — |
-| Regions 2–5 bosses and heroes | Bosses are lions in their faction's outfit; heroes are any non-king piece | — | To be written with each Region; the doc's example is a frog knight captain after the Bandit Riders | — |
+| Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
+| The Lich King | Skeleton · king | Final villain | (Proposed) Cold and courtly, never raises his voice; talks about games he refused to lose | — |
+| Regions 2–5 bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region; the doc's example is a frog knight captain after the Bandit Riders | — |
 
 **Naming conventions.** Hired pieces get short, earthy names (Pip, Nib, Bramble, Granite, Brother Hoot). Heroes get one memorable name and a title ("Saffron, the Fox Sorceress"). Bosses get a name and a rank ("Grubnak, the Goblin Chief"). Every name is unique across the cast and the hire lists, so a hired piece never shares a hero's name. Species and piece names are in [Names and terms](glossary.md).
 
@@ -56,10 +56,10 @@ Region-specific characters and story beats belong in their Region documents.
 
 How every line in the game should read, drawn from what works in Region 1:
 
-- **Short.** A talking-head line is one sentence, ideally under 12 words. A battle has 2 to 4 lines before and 1 to 2 after. A boss or hero scene can run to 3 or 4 lines.
+- **Short.** A talking-head quip during battle is one sentence, ideally under 12 words. A battle's tip and its dialogue lines are 1 or 2 sentences each, with 2 to 4 lines before the battle and 1 or 2 after. A boss or hero scene can run to 3 or 4 lines.
 - **Plain chess words, one image.** Companions teach with real terms ("guard it", "count attackers and defenders") plus at most one storybook image ("a wall of pawns can't move backwards"). No notation in dialogue except square names when pointing at the board.
 - **Teach, don't lecture.** The tip at the start of a battle is one actionable idea. The longer explanation lives in the lesson text and the academy.
-- **Gentle humor, never mean.** Enemies can be greedy, pompous or silly. They may taunt the king, never the player's skill. Losing is never mocked; the review and the companion are encouraging.
+- **Gentle humor, never mean.** Enemies can be greedy, pompous or silly, and may gloat over a capture ("Should've guarded it, hee!"), but never insult the player. Losing is never mocked; the review and the companion are encouraging.
 - **Each faction sounds different.** Goblins are loud and greedy and announce things ("Oi! Next I'm grabbing your mage on c4!"). Later factions need their own register, chosen with their AI habit.
 - **No lore dumps.** Story comes in one-line hints between battles and short scenes at Region ends. If a line explains history, cut it in half.
 - **Our own words.** Lessons follow the Lichess outline but never copy its text (see [Licensing](technical.md#licensing)).

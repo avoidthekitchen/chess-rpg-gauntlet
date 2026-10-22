@@ -7,7 +7,7 @@ How Region 1 was built and checked, written as the steps and quality bars every 
 ## Order of work
 
 1. **Design first.** Copy the [Region template](design/regions/region-template.md) and fill it in: faction and AI habit, curriculum mapping, battles, academy lessons, boss, hero and story beats. Check it against the [pillars](design.md#vision-and-pillars), the [main arc](design/story.md#main-story-arc) and the [names](design/glossary.md). Get the design approved before building content. Design questions you can't settle go to [open TODOs](design/decisions.md#open-todos).
-2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code.
+2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code. A new habit also needs a simulated player that understands it (`scripts/verify/simulate.ts` has one for shouts), or the verification bars below mean nothing.
 3. **Art.** Make the faction's token and portrait set, and any backgrounds, as [Art direction](design/art.md) describes. Then check the tokens on the real board at phone size (below).
 4. **Battles.** Write each battle as a `BattleDef`, meeting the [content rules](#battle-content-rules), and verify it with the engine until it meets the [bars](#verification-bars).
 5. **Academy, bounties, boss, hero.** One academy lesson per battle theme; bounty puzzles built from the curriculum's tags (`npm run puzzles`); the boss duel verified like a battle.
@@ -18,16 +18,16 @@ Work in small steps, each one tested, checked in the browser, committed, and log
 
 ## Battle content rules
 
-These are checked by the battle content tests (`src/game/region1Battles.test.ts` today; every Region should have the same checks):
+The battle content tests (`src/game/region1Battles.test.ts`) check these. Today the tests are written for Region 1 (they expect the region "The Bog" and shouting enemies); making them run for every Region is an [open TODO](design/decisions.md#open-todos).
 
 - A legal start with White to move, the enemy not already in check, and villages empty.
 - 4 to 10 pieces per side, so the board reads at 45 px squares.
 - Across a Region's battles, White has a knight, a bishop and a rook in at least three battles each, so every starter companion usually appears as a named character.
-- A move limit of 5 to 10 (a siege: 5 to 10 enemy turns), and a `quick` bonus goal below the limit.
-- Two bonus goals per battle, each a habit worth teaching (flawless for protection battles, quick for mates).
+- A move limit of 5 to 10. A siege lasts 5 to 10 enemy turns, has villages, and uses the `raider` AI.
+- A reward of 15–25g, and exactly two different bonus goals at 5g each. A `quick` goal, if a battle has one, sits below the move limit. Pick goals that teach a habit: flawless for protection battles, quick for mates.
 - Not winnable on the first move, and a win-material goal bigger than any single enemy piece, so a battle needs a plan, not a grab.
 - One scripted winning line per battle that the test plays through.
-- Dialogue within the [voice guide](design/story.md#voice-and-dialogue): 2 to 4 lines before, 1 to 2 after, and a one-sentence tip.
+- 2 to 4 dialogue lines before the battle, 1 or 2 after, and a tip. Their length follows the [voice guide](design/story.md#voice-and-dialogue), which the tests don't check.
 
 ## Verification bars
 
@@ -35,8 +35,8 @@ These are checked by the battle content tests (`src/game/region1Battles.test.ts`
 
 - A **strong** player (Stockfish, aware of the habit) wins at least 90% at Squire and at Knight, and earns each bonus goal in at least half its wins.
 - A **careless** player (a random pick from a shallow search's top five) wins at most 40%.
-- A strong player needs **4 to 7 moves** on average (pillar 2: short, sharp battles). Fewer means the first trick ends it; more means it drags.
-- Every game ends for a reason that fits the goal (no surprise stalemates or draws).
+- A strong player needs **4 to 7 moves** on average (pillar 2: short, sharp battles). Fewer means the first trick ends it; more means it drags. The test reports this but doesn't enforce it, so read the average-moves column.
+- Every win ends for a reason that fits the goal (for example, a material battle isn't won by a draw).
 
 The boss passes when a strong player wins at least 85% with each starter's typical army at the budget. Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
 

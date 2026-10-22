@@ -201,10 +201,10 @@ export class PuzzleScene extends BaseScene {
     if (!this.speaker) return;
     const L = this.layout();
     if (L.wide && !L.short) {
-      this.speakerLayer = speakerCard(this, L.panel.x, L.panel.y, L.panel.w, this.speaker, 'bog', false).container;
+      this.speakerLayer = speakerCard(this, L.panel.x, L.panel.y, L.panel.w, this.speaker, 'bog', false, this.solver).container;
       return;
     }
-    const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, L.wide ? L.panel.w : this.W - 24, this.speaker, 'bog', true);
+    const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, L.wide ? L.panel.w : this.W - 24, this.speaker, 'bog', true, this.solver);
     container.y = this.H - height - Math.max(12, this.safe.bottom);
     container.setDepth(50);
     this.speakerLayer = container;

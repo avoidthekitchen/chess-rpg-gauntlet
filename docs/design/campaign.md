@@ -25,12 +25,12 @@ Lessons learned, pieces hired and heroes recruited are permanent. Losing a battl
 
 ## Regions and factions
 
-Each region has one faction built around a headline chess theme, and also revisits earlier themes (see [Curriculum](#curriculum)). Enemies grow from a handful of pieces to a full set, and their AI gets stronger along the way. Every faction uses the same species for each piece type; outfit and color tell factions apart.
+Each region has one faction built around a headline chess theme, and also revisits earlier themes (see [Curriculum](#curriculum)). Enemies grow from a handful of pieces to a full set, and their AI gets stronger along the way. Each faction has its own species for each piece type, fitting its theme, and shares only the chess headgear shapes with ours; ivory or ebony headgear and bases show the chess color (see [Pieces and factions](art.md#pieces-and-factions)).
 
 | Region | Faction | Look | Army style | Headline theme |
 | --- | --- | --- | --- | --- |
-| 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Muddy rags, scavenged gear | Many pawns, a goblin chief as king | Threat awareness, protection, safe trades, basic checkmates |
-| 2 | Bandit Riders | Masks and cloaks | Knight-heavy | Forks, double attacks, mating patterns |
+| 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Bog rats, salamanders, crows, snapping turtles, vipers and a toad chief, in muddy rags and scavenged gear | Many pawns, a goblin chief as king | Threat awareness, protection, safe trades, basic checkmates |
+| 2 | Bandit Riders | Masks and cloaks; species to be chosen | Knight-heavy | Forks, double attacks, mating patterns |
 | 3 | Shadow Cult | Purple hoods, crystals | Bishops and a queen | Pins, skewers, discovered attacks |
 | 4 | Iron Legion | Plate armor | Rooks and pawns | Development, king safety, open files |
 | 5 | Bone Wardens | Skeleton animals, the Lich's vanguard | Small elite armies | Promotion, king activity, endgames |

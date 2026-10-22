@@ -277,7 +277,8 @@ async function loadTextures() {
   const loader = new THREE.TextureLoader();
   await Promise.all(
     ['knight-ally', 'knight-foe', 'rook-ally', 'rook-foe'].map(async (n) => {
-      const t = await loader.loadAsync(`/sprites/${n}.webp`);
+      // The enemy side shows the Bog Goblins (the Bandit figurines were retired).
+      const t = await loader.loadAsync(`/sprites/${n.replace('-foe', '-bog')}.webp`);
       t.colorSpace = THREE.SRGBColorSpace;
       t.anisotropy = 4;
       textures[n] = t;

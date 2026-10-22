@@ -1,4 +1,4 @@
-import type { Move, PieceSymbol } from 'chess.js';
+import type { Color, Move, PieceSymbol } from 'chess.js';
 import type { TacticTag } from '../game/tactics';
 
 /**
@@ -8,8 +8,9 @@ import type { TacticTag } from '../game/tactics';
  */
 
 export type Side = 'ally' | 'foe';
-/** Enemy sprite sets: Bandit Riders (`foe`) and Bog Goblins (`bog`). */
-export type FactionArt = 'foe' | 'bog';
+/** Enemy factions, each with its own sprite set: Bog Goblins (`bog`), Region 1. Each region adds its own. */
+export const FACTIONS = ['bog'] as const;
+export type Faction = (typeof FACTIONS)[number];
 
 export const SPECIES: Record<PieceSymbol, string> = {
   p: 'Mouse Squire',
@@ -20,7 +21,22 @@ export const SPECIES: Record<PieceSymbol, string> = {
   k: 'Lion King',
 };
 
-const FACTION_PREFIX: Record<FactionArt, string> = { foe: 'Bandit', bog: 'Bog' };
+/** Each enemy faction has its own species; only the chess headgear is shared with ours. */
+export const FACTION_SPECIES: Record<Faction, Record<PieceSymbol, string>> = {
+  bog: {
+    p: 'Bog Rat',
+    n: 'Bog Salamander',
+    b: 'Bog Crow',
+    r: 'Snapping Turtle',
+    q: 'Swamp Viper',
+    k: 'Toad Chief',
+  },
+};
+
+/** One-word enemy names for status text, e.g. "Your tower takes the rat on d5". */
+export const FACTION_SHORT: Record<Faction, Record<PieceSymbol, string>> = {
+  bog: { p: 'rat', n: 'salamander', b: 'crow', r: 'turtle', q: 'viper', k: 'chief' },
+};
 
 const PIECE_NAMES: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 export const pieceName = (t: PieceSymbol) => PIECE_NAMES[t];
@@ -38,10 +54,15 @@ export const FRAMING: Partial<Record<PieceSymbol, { size: number; x: number; y: 
   p: { size: 1.25, x: 0.5, y: 0.06 },
 };
 
-/** Texture keys: the detailed figurine, and the token used when a figurine is missing. */
-export const portraitKey = (type: PieceSymbol, side: Side, faction: FactionArt) => `${PIECE_NAMES[type]}-${side === 'ally' ? 'ally' : faction}`;
-export const tokenPortraitKey = (type: PieceSymbol, side: Side, faction: FactionArt) =>
-  `token-${PIECE_NAMES[type]}-${side === 'ally' ? 'ally' : faction}`;
+/**
+ * Texture keys: the detailed figurine, and the token used when a figurine is missing,
+ * in the speaker's chess color (`allyColor` is yours: White in battles, either in puzzles).
+ */
+export const portraitKey = (type: PieceSymbol, side: Side, faction: Faction) => `${PIECE_NAMES[type]}-${side === 'ally' ? 'ally' : faction}`;
+export const tokenPortraitKey = (type: PieceSymbol, side: Side, faction: Faction, allyColor: Color = 'w') => {
+  const enemyColor: Color = allyColor === 'w' ? 'b' : 'w';
+  return `token-${PIECE_NAMES[type]}-${side === 'ally' ? `ally-${allyColor}` : `${faction}-${enemyColor}`}`;
+};
 
 type Event = 'checkmate' | 'promotion' | 'fork' | 'check' | 'capture' | 'move';
 type Lines = Record<Exclude<Event, 'move'>, string[]> & { move: Record<PieceSymbol, string[]> };
@@ -62,22 +83,7 @@ const ALLY: Lines = {
   },
 };
 
-const ENEMY: Record<FactionArt, Lines> = {
-  foe: {
-    checkmate: ['Your crown is mine!'],
-    promotion: ['A new champion for the bandits!'],
-    fork: ['Two for the price of one!'],
-    check: ['Run, little king!', 'Check! Where will you hide?'],
-    capture: ['Hah! Mine now.', 'Should have guarded that one.', 'Easy pickings.'],
-    move: {
-      p: ['Charge!', 'Shove forward!'],
-      n: ['Sneaking around…', 'Didn’t see me coming?'],
-      b: ['Watching your every move.'],
-      r: ['Here we come.', 'Nothing stops the tower.'],
-      q: ['You can’t stop me.'],
-      k: ['Hmph.', 'Guards, to me!'],
-    },
-  },
+const ENEMY: Record<Faction, Lines> = {
   bog: {
     checkmate: ['The bog swallows your crown!'],
     promotion: ['Bigger! Muddier! Better!'],
@@ -86,7 +92,7 @@ const ENEMY: Record<FactionArt, Lines> = {
     capture: ['Mine! Shiny!', 'Into the stew pot!', 'Should’ve guarded it, hee!'],
     move: {
       p: ['Squelch, squelch!', 'Charge through the muck!'],
-      n: ['Splash! Over you go!', 'Ribbit-rabbit!'],
+      n: ['Splash! Over you go!', 'Sploosh! Gills first!'],
       b: ['Peering through the reeds…'],
       r: ['Stomp! Stomp!', 'Mud shell coming through!'],
       q: ['Out of the mist I come!'],
@@ -106,7 +112,7 @@ export interface SpeakerInfo {
 }
 
 export interface SpeakerOpts {
-  faction: FactionArt;
+  faction: Faction;
   /** The named character standing on the moving piece, if any (hired pieces and heroes). */
   characterName?: string;
   /** The enemy commander's name, used when the enemy king speaks. */
@@ -124,6 +130,6 @@ export function speakerLine(move: Move, tactics: TacticTag[], o: SpeakerOpts): S
   let name: string;
   if (side === 'ally') name = o.characterName ? `${o.characterName} · ${SPECIES[type]}` : SPECIES[type];
   else if (type === 'k' && o.commander) name = o.commander;
-  else name = `${FACTION_PREFIX[o.faction]} ${SPECIES[type]}`;
+  else name = FACTION_SPECIES[o.faction][type];
   return { side, name, line, type };
 }

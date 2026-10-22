@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
+import { FACTIONS } from '../ui/speaker';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-const SIDES = ['ally', 'foe', 'bog'];
+const SPRITE_SETS = ['ally', ...FACTIONS];
+const COLORS = ['w', 'b'];
 export const BACKGROUNDS = ['title', 'map-region1', 'town', 'battle-bog'];
 
 /** Loads every sprite and painted background (progress shows in the HTML boot note), then starts the title. */
@@ -13,10 +15,9 @@ export class BootScene extends Phaser.Scene {
   preload() {
     this.load.setPath(`${import.meta.env.BASE_URL}`);
     for (const p of PIECES) {
-      for (const s of SIDES) {
-        this.load.image(`token-${p}-${s}`, `sprites/token-${p}-${s}.webp`);
-        // The bandits (region 2) have no squire or sorceress figurines yet; their tokens stand in.
-        if (!(s === 'foe' && (p === 'pawn' || p === 'queen'))) this.load.image(`${p}-${s}`, `sprites/${p}-${s}.webp`);
+      for (const f of SPRITE_SETS) {
+        for (const c of COLORS) this.load.image(`token-${p}-${f}-${c}`, `sprites/token-${p}-${f}-${c}.webp`);
+        this.load.image(`${p}-${f}`, `sprites/${p}-${f}.webp`);
       }
     }
     for (const b of BACKGROUNDS) this.load.image(`bg-${b}`, `backgrounds/${b}.webp`);

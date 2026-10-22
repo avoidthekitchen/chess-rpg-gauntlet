@@ -21,6 +21,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | Every token comes in White and Black: ivory or ebony headgear and base, applied in code from a cyan key; ebony gets a light rim |
+| 2026-10-22 | Each enemy faction has its own species and shares only the chess headgear shapes; Bog Goblins are bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief |
+| 2026-10-22 | Bandit Rider placeholder art removed; Region 2 picks its own species when designed |
 | 2026-10-21 | The game is called Pawnshire; Gauntlet stays the name of the replay mode after the campaign |
 | 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks |
 | 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |
@@ -48,5 +51,5 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-21 | Free rewind deferred: too confusing as designed |
 | 2026-10-21 | Scrying Orb ladder: shouting Bog Goblins, then the Orb (threat), then Far Sight (what-if upgrade) |
 | 2026-10-21 | Starter is a named companion who acts as the main tutor |
-| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle |
+| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle (species per faction superseded 2026-10-22) |
 | 2026-10-21 | Battles are short scenarios; the rules of chess never change on the board |

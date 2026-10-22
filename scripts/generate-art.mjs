@@ -7,14 +7,18 @@
 // art/raw/ (not committed); run scripts/process-art.mjs afterwards to cut them
 // out into public/sprites/.
 //
-// Two kinds of art:
-//   <piece>-<side>         detailed figurines, used as talking-head portraits
-//   token-<piece>-<side>   simplified board tokens that read at about 40 px
-//   bg-<name>              full-bleed painted backgrounds (no cutout); process-art.mjs
-//                          writes them to public/backgrounds/<name>.webp
+// Kinds of art:
+//   <piece>-<faction>         detailed figurines, used as talking-head portraits
+//   token-<piece>-<faction>   simplified board tokens that read at about 40 px, with the
+//                             headgear and base painted in a cyan key; process-art.mjs
+//                             recolors each into an ivory (White) and an ebony (Black) sprite
+//   bg-<name>                 full-bleed painted backgrounds (no cutout); process-art.mjs
+//                             writes them to public/backgrounds/<name>.webp
 //
-// Sides: ally (cream/teal, gold rim), foe (Bandit Riders: black masks, crimson rim),
-// bog (Bog Goblins: muddy rags, green war paint, mossy green rim).
+// Factions: ally (our animals in cream with gold trim) and bog (Bog Goblins, Region 1:
+// bog species of their own in muddy rags). Each enemy faction gets its own species; only
+// the chess headgear shapes are shared, so they teach the piece roles everywhere.
+// See docs/design/art.md#pieces-and-factions before adding a faction.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 
@@ -38,41 +42,74 @@ const FIGURINE =
 
 const TOKEN =
   'This is a BOARD TOKEN for a chess game, drawn to be read at tiny sizes (about 40 pixels on a phone). ' +
-  'Draw ONE chess-piece BUST, centered: just the animal\'s big HEAD wearing its chess headgear, sitting directly ' +
+  "Draw ONE chess-piece BUST, centered: just the creature's big HEAD wearing its chess headgear, sitting directly " +
   'on a short, wide, round base, like a real chess piece. No body, no arms, no legs, nothing sticking out. ' +
   'The token is about as wide as it is tall and fills most of the image. ' +
   'Very simple and bold: a thick dark outline around the whole silhouette, flat colors with one soft shade, ' +
   'no texture, no fine details. The chess headgear is large and obvious. ' +
-  'Keep the warm storybook palette: olive, cream, leather brown, with gold or crimson accents. ' +
   MAGENTA;
 
-const ALLY = 'Ally colors: cream and teal clothing, a gold rim on the base.';
-const FOE = 'Bandit colors: charcoal and crimson clothing, a crimson rim on the base, and a black eye mask tied across the eyes that must be clearly visible.';
+// The headgear and base are painted in a key color so process-art.mjs can recolor them to exact
+// ivory and ebony. That keeps both chess colors identical across every faction, and stops the
+// model from bleaching the animal too (asking for "ivory" directly turned the lion white).
+const KEY =
+  'COLOR KEY (very important): the chess HEADGEAR and the round BASE are both painted in pure bright CYAN (#00FFFF) ' +
+  'with only one slightly darker cyan shade for form and the thick dark outline. Nothing else in the image is cyan, ' +
+  'blue or teal: the face, fur, skin and clothing use warm or green colors only. The headgear and base have no gold, ' +
+  'no gems, no moss, no other colors on them.';
 
-const BOG =
-  'Bog Goblin colors: ragged clothing on the shoulders in muddy brown and dark swamp green, with a frayed rope tie, ' +
-  'one small bone charm and a little moss. The headgear keeps EXACTLY the same silhouette as the reference and stays ' +
-  'just as clean, flat and simple: ONE flat, LIGHT color that contrasts with the face, the clothing and a brown ' +
-  'board square (pale weathered bone-tan or light dull bronze; for a stone tower, pale grey-green weathered stone), ' +
-  'with only a dent or one crack to look scavenged. No camouflage patches, no spots, no moss on the headgear. ' +
-  'The animal\'s face stays light and clearly readable. Faction marker that must be clearly visible even when tiny: ' +
-  'two thick, bright lime-green war-paint stripes painted horizontally across the face under the eyes. ' +
-  'The base rim is mossy green (no gold rim, no crimson rim). No teal anywhere, no black eye mask.';
+// Reference images pull hard on species: without this, a fox drawn from a lion reference came out a lion.
+const STYLE_ONLY =
+  'Use the reference image ONLY for the drawing style, outline weight, size and base shape. Do NOT copy its species, ' +
+  'face or headgear: draw the creature and headgear described here.';
+
+/** The chess cue every faction shares. Keep these shapes identical across factions. */
+const HEADGEAR = {
+  pawn: 'a big round helmet, the round ball head of a chess pawn',
+  knight: 'a large helmet shaped like the horse head of a chess knight',
+  bishop: 'a tall pointed mitre hood with a diagonal slit cut into it, the shape of a chess bishop',
+  rook: 'a short, wide castle tower with square crenellations on top, a chess rook',
+  queen: 'a tall crown with many sharp points and NO cross on top, the coronet of a chess queen',
+  king: 'a tall crown topped with a cross, the crown of a chess king',
+};
+
+/** Token species and outfit per faction. A new region adds one entry here. */
+const FACTIONS = {
+  ally: {
+    look: 'Clothing on the shoulders: cream with a small warm gold trim.',
+    species: {
+      pawn: 'a mouse squire',
+      knight: 'a frog',
+      bishop: 'an owl',
+      rook: "a tortoise: the tower grows out of its shell and its scaly, beaked tortoise head pokes out at the front",
+      queen: 'a FOX (orange fur, pointed fox ears, narrow fox muzzle; not a lion, no mane)',
+      king: 'a lion with a big mane',
+    },
+  },
+  bog: {
+    look:
+      'A scruffy bog goblin animal: warty or mottled skin in swamp greens and mud browns, long pointed droopy ears, ' +
+      'a crooked toothy grin, small yellow eyes, ragged mud-brown shoulder rags with a frayed rope tie and a little moss. ' +
+      'The headgear is crude and scavenged. It must be clearly the species named, not a toad, rat or generic goblin ' +
+      'unless that is the species.',
+    species: {
+      pawn: 'a BOG RAT goblin with a long rat snout and whiskers; the helmet is a dented cooking pot with a ROUNDED dome top, so it still reads as the round ball of a chess pawn',
+      knight:
+        'a bog SALAMANDER (an amphibian: wide flat head, smooth shiny swamp-green skin with bright orange spots, a frilly ' +
+        'feathery gill crest on both sides of its head, big round eyes, a wide grin with tiny teeth; NO goblin ears, not ' +
+        'humanoid); the helmet is pushed up so the salamander face is fully visible below it',
+      bishop: 'a goblin CROW shaman with a scruffy black-green crow face and a long cracked beak',
+      rook: 'a goblin SNAPPING TURTLE: the tower grows out of its shell and its hooked-beak head pokes out at the front; the whole tower is the same flat cyan key as the base, no stone color, no moss',
+      queen: 'a goblin SWAMP VIPER witch: a coiled snake head with a sly grin and slit eyes',
+      king: 'the Goblin Chief, a big fat warty TOAD with a wide toad mouth and heavy-lidded eyes',
+    },
+  },
+};
 
 const BACKGROUND =
   'A full-bleed painted SCENE that fills the entire image edge to edge: no border, no frame, no vignette card, ' +
   'no text, no letters, no labels, no logo, no user interface, no chess board, no chess pieces. ' +
   'Soft painterly storybook illustration with gentle ink linework, slightly muted so game UI drawn on top stays readable.';
-
-/** How each animal shows its chess piece. */
-const PIECES = {
-  pawn: "a mouse squire's head in a big round steel helmet, the round head of a chess pawn",
-  knight: "a frog's head under a large steel helmet shaped like the horse head of a chess knight",
-  bishop: "an owl's head in a tall pointed mitre hood with a diagonal slit cut into it, the shape of a chess bishop",
-  rook: "a short, wide stone castle tower with square crenellations on top (a chess rook) that grows out of a tortoise's domed, plated shell; the TORTOISE's head (a reptile with a scaly, beaked face and small eyes, NOT a frog) pokes out of the front at the bottom",
-  queen: "a fox's head wearing a tall crown with many sharp points, the coronet of a chess queen",
-  king: "a lion's head with a big mane wearing a tall crown topped with a cross, the crown of a chess king",
-};
 
 /**
  * Each sprite: a prompt, a format (figurine or token), whether to show the style
@@ -93,20 +130,6 @@ const SPRITES = {
       'classic chess rook. A teal banner with a gold crest hangs on the tower. The round base is dark wood with a gold rim.',
     refs: ['knight-ally'],
   },
-  'knight-foe': {
-    prompt:
-      'A bandit version of the frog knight from the second reference image: same body and pose, same helmet ' +
-      'shaped like the horse head of a classic chess knight but in dark battered iron, a black eye mask, ' +
-      'a tattered crimson cloak, and a curved blade instead of the lance. The round base is dark wood with a crimson rim.',
-    refs: ['knight-ally'],
-  },
-  'rook-foe': {
-    prompt:
-      'A bandit version of the tortoise rook from the second reference image: same body, pose and castle-tower ' +
-      'shell with square crenellations, but the stone is dark and battered, with crimson rags instead of the ' +
-      'teal banner and a black eye mask. The round base is dark wood with a crimson rim.',
-    refs: ['rook-ally'],
-  },
   // The chosen lion and owl concepts, moved onto magenta so they can be cut out.
   'king-ally': {
     prompt:
@@ -124,23 +147,10 @@ const SPRITES = {
     style: false,
     refs: ['art/candidates/bishop-owl.png'],
   },
-  'king-foe': {
-    prompt:
-      'A bandit version of the lion king from the second reference image: same body, pose and tall crown topped ' +
-      'with a cross, but the crown is dark battered iron, he wears a black eye mask and a tattered charcoal and ' +
-      'crimson robe, and the round base has a crimson rim.',
-    refs: ['king-ally'],
-  },
-  'bishop-foe': {
-    prompt:
-      'A bandit version of the owl mage from the second reference image: same body, pose, staff and tall slit ' +
-      'mitre, but the mitre and robe are charcoal and crimson and tattered, with a black eye mask, ' +
-      'and the round base has a crimson rim.',
-    refs: ['bishop-ally'],
-  },
 };
 
 // ---- missing ally portraits ----
+// The token shows the headgear shape: use its ivory sprite, never the cyan-keyed source.
 SPRITES['queen-ally'] = {
   prompt:
     'A clever fox sorceress chess queen figurine, matching the knight and king figurines in the reference images ' +
@@ -148,7 +158,7 @@ SPRITES['queen-ally'] = {
     'the crown of a classic chess queen (it makes the queen silhouette, like the coronet on the reference token), ' +
     'a flowing cream and teal gown with gold trim, and holds a slim wand with a small glowing teal gem. ' +
     'The round base is dark wood with a gold rim.',
-  refs: ['token-queen-ally', 'knight-ally', 'king-ally'],
+  refs: ['public/sprites/token-queen-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 SPRITES['pawn-ally'] = {
   prompt:
@@ -157,86 +167,59 @@ SPRITES['pawn-ally'] = {
     'makes its head look like the round ball top of a classic chess pawn (like the reference token), a cream tunic ' +
     'with a teal tabard and a tiny gold crest, and holds a short wooden spear and a small round shield. ' +
     'The round base is dark wood with a gold rim.',
-  refs: ['token-pawn-ally', 'knight-ally', 'king-ally'],
+  refs: ['public/sprites/token-pawn-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 
-// ---- Bog Goblin portraits (Region 1), each from the matching ally figurine ----
+// ---- simplified board tokens (cyan-keyed; see KEY) ----
+// Ally tokens use the existing keyed token as the reference, so a regenerated token keeps its design.
+// Other factions use the ally pawn for style ONLY, so the new species isn't pulled toward ours.
+for (const [faction, { look, species }] of Object.entries(FACTIONS)) {
+  for (const piece of Object.keys(HEADGEAR)) {
+    const ally = faction === 'ally';
+    SPRITES[`token-${piece}-${faction}`] = {
+      prompt:
+        `A board token of ${species[piece]}, wearing ${HEADGEAR[piece]}. ${look} ` +
+        (ally ? 'Keep the same face, simplified style, size and base shape as the reference token.' : STYLE_ONLY) +
+        ` ${KEY}`,
+      format: TOKEN,
+      style: false,
+      refs: [ally ? `art/tokens/token-${piece}-ally.png` : 'art/tokens/token-pawn-ally.png'],
+    };
+  }
+}
+
+// ---- Bog Goblin portraits (Region 1): the token's creature, posed like the matching ally figurine ----
 const BOG_LOOK = {
-  king:
-    'the Goblin Chief: the same LION (big shaggy mane, lion face and muzzle) with the same tall crown topped with a cross, but the crown is crude, ' +
-    'hammered from scavenged bronze and bone with moss on it; he wears muddy, regal rags (a tattered swamp-green ' +
-    'cloak over a mud-brown robe, frayed rope belt, bone charms) and holds a gnarled driftwood scepter topped with a skull-like ' +
-    'knot of roots',
-  knight:
-    'the same frog with the same helmet shaped like the horse head of a classic chess knight, but the helmet is ' +
-    'dented, rusty and patched with moss; muddy brown and swamp-green rag tabard, frayed rope belt, bone charm, ' +
-    'and a crooked reed spear instead of the lance',
-  bishop:
-    'the same owl with the same tall pointed mitre that has a clear diagonal slit cut into its front (the chess bishop shape), but the mitre and robe are patched muddy brown and swamp-green rags ' +
-    'with moss and a bone charm, and the staff is a gnarled bog root with a dull green glowing stone',
-  rook:
-    'the same tortoise with the same castle-tower shell with square crenellations, but the stone is mud-stained and ' +
-    'overgrown with moss and reeds, with a ragged swamp-green flag on the tower instead of the teal banner, ' +
-    'a frayed rope and bone charms',
-  queen:
-    'the same fox with the same tall crown with many sharp points, the coronet of a chess queen, but the coronet is ' +
-    'crude scavenged bronze and bone with moss; a ragged mud-brown and swamp-green gown with frayed hems, ' +
-    'bone charms, and a crooked root wand with a dull green glowing stone',
   pawn:
-    'the same mouse with the same big round helmet like the head of a chess pawn, but the helmet is a dented, ' +
-    'rusty cooking pot; muddy brown and swamp-green rags, a frayed rope belt, a sharpened stick for a spear ' +
-    'and a pot-lid shield',
+    'a BOG RAT goblin (long rat snout, whiskers, pointed droopy ears) wearing a dented cooking pot with a rounded dome ' +
+    'top as its helmet, like the round head of a chess pawn; holds a sharpened stick for a spear and a pot-lid shield',
+  knight:
+    'a bog SALAMANDER (smooth swamp-green skin with bright orange spots, frilly feathery gills on both sides of its head, ' +
+    'a wide grin) in a dented helmet shaped like the horse head of a chess knight, pushed up so its face shows; holds a ' +
+    'crooked reed spear',
+  bishop:
+    'a goblin CROW shaman (scruffy black-green feathers, long cracked beak) in a tall pointed mitre with a clear diagonal ' +
+    'slit cut into its front (the chess bishop shape); holds a gnarled bog-root staff with a dull green glowing stone',
+  rook:
+    'a goblin SNAPPING TURTLE (hooked beak, mossy spiked shell) standing upright, its shell rising into a castle tower ' +
+    'with square crenellations (the chess rook shape), a ragged swamp-green flag on the tower',
+  queen:
+    'a goblin SWAMP VIPER witch (a snake rising upright from its coils, sly grin, slit eyes) wearing a tall crown with ' +
+    'many sharp spikes and no cross (the chess queen coronet); a crooked root wand with a dull green glowing stone',
+  king:
+    'Grubnak the Toad Chief (a big fat warty TOAD, wide mouth, heavy-lidded eyes) wearing a tall crown topped with a ' +
+    'cross (the chess king crown); holds a gnarled driftwood scepter topped with a knot of roots',
 };
 for (const [piece, look] of Object.entries(BOG_LOOK)) {
   SPRITES[`${piece}-bog`] = {
     prompt:
-      `A Bog Goblin version of the figurine in the second reference image: same body, pose and proportions, ${look}. ` +
-      '"Bog Goblin" is only the name of the faction: the character is still the SAME ANIMAL species as the reference ' +
-      '(not a goblin creature, no pointed goblin ears). ' +
-      'Two thick, bright lime-green war-paint stripes are painted across the face under the eyes, clearly visible ' +
-      '(the Bog Goblin faction mark). No teal anywhere, no black eye mask. The round base is dark wood with a mossy green rim.',
-    refs: [`${piece}-ally`],
-  };
-}
-
-// ---- simplified board tokens ----
-// The ally knight token is generated first and anchors the token style for the rest.
-const IDENTITY = { knight: 'knight-ally', rook: 'rook-ally', king: 'king-ally', bishop: 'bishop-ally' };
-for (const [piece, look] of Object.entries(PIECES)) {
-  const refs = [];
-  if (piece !== 'knight') refs.push('token-knight-ally');
-  if (IDENTITY[piece]) refs.push(IDENTITY[piece]);
-  SPRITES[`token-${piece}-ally`] = {
-    prompt:
-      `A board token of ${look}. ${ALLY}` +
-      (piece !== 'knight' ? ' Draw it in exactly the same simplified token style, size and base as the first reference token, but as the animal described here, not a frog.' : '') +
-      (IDENTITY[piece] ? ' Use the detailed figurine reference only for the face, colors and headgear; draw the bust, not its body.' : ''),
-    format: TOKEN,
-    style: false,
-    refs,
-  };
-}
-for (const piece of Object.keys(PIECES)) {
-  SPRITES[`token-${piece}-foe`] = {
-    prompt:
-      `A bandit version of the board token in the reference image: the same animal, pose, size, base and ` +
-      `chess-piece headgear shape, drawn in the same simplified token style. ${FOE}`,
-    format: TOKEN,
-    style: false,
-    refs: [`token-${piece}-ally`],
-  };
-}
-
-for (const piece of Object.keys(PIECES)) {
-  SPRITES[`token-${piece}-bog`] = {
-    prompt:
-      `A Bog Goblin version of the board token in the reference image: the same animal, pose, size, base and ` +
-      `chess-piece headgear shape, drawn in the same simplified token style with the same thick dark outline. ` +
-      `"Bog Goblin" is only the faction name: it is still the SAME ANIMAL as the reference token, with the same face ` +
-      `and ears${piece === 'king' ? ' (a LION with a big shaggy mane, not a goblin, no pointed ears)' : ''}. ${BOG}`,
-    format: TOKEN,
-    style: false,
-    refs: [`token-${piece}-ally`],
+      `A Bog Goblin chess figurine of ${look}. It is the same creature as the board token in the second reference ` +
+      'image (same species, face and markings), drawn as a full detailed figurine in the pose, proportions, painted ' +
+      'style and base of the figurine in the third reference image (copy only its pose and style, not its species). ' +
+      'Goblin features: long pointed droopy ears, a crooked toothy grin, small yellow eyes. Muddy brown and swamp-green ' +
+      'rags, a frayed rope belt, bone charms and a little moss. The headgear is crude scavenged dark iron and bone. ' +
+      'No cyan or teal anywhere. The round base is dark wood with a mossy green rim.',
+    refs: [`public/sprites/token-${piece}-bog-b.webp`, `public/sprites/${piece}-ally.webp`],
   };
 }
 

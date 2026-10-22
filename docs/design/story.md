@@ -4,7 +4,7 @@
 
 ## Setting
 
-**Setting:** an animal kingdom of ancient magic, told like a storybook. Each piece type is a species whose body hints at how it moves: frog knights hop over pieces, tortoise rooks carry a castle on their backs. Factions differ by outfit and color. The final villain is the Lich King, who leads skeleton versions of every species (a light wink at Lichess).
+**Setting:** an animal kingdom of ancient magic, told like a storybook. Each piece type is a species whose body hints at how it moves: frog knights hop over pieces, tortoise rooks carry a castle on their backs. Each enemy faction is made of its own creatures, such as the Bog Goblins' rats, crows and toads, and wears the same chess headgear as ours. The final villain is the Lich King, who leads skeleton versions of every species (a light wink at Lichess).
 
 ## Main story arc
 

@@ -98,7 +98,7 @@ Every faction has one readable habit that teaches its Region's theme. Habits cha
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
 | Bog Goblins | **Shout:** announce the move they'd play if you passed, and play it if still legal. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit; committed moves can be trapped | Built ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
-| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Squire, the companion names the target ("They're hunting your mage!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built. How the battle review treats it is settled with Region 2 |
+| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Squire, the companion names the target ("They're hunting your mage!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
 | Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
 | Iron Legion | **Proud:** never declines a capture you offer, even a poisoned one | Teaches traps and poisoned pieces. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"); details with Region 4 |
 | Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Approved, not built |
@@ -133,7 +133,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 | Region | The enemy's plan | New in town |
 | --- | --- | --- |
 | 1 Bog Goblins | Shouted for free | Nothing (Threat Sight comes with the difficulty) |
-| 2 Bandit Riders | Target only (wanted poster), free | Scrying Orb: shows the full planned move. Sold in town as a few charges, bought with bounty gold (price and charges to set) |
+| 2 Bandit Riders | Target only (wanted poster), free | Scrying Orb: shows the full planned move. Sold in town: 3 charges for 30g, bought with bounty gold |
 | 3 Shadow Cult | Hidden | Far Sight (Orb upgrade) |
 | 4 Iron Legion | Hidden | Oracle; Blunder Ward (one warning per battle) |
 | 5 Bone Wardens | Hidden | Rewind relics |
@@ -161,6 +161,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Bonus goals | 2 per battle, 5g each (boss: 10g), each paid once | `bonuses` on each battle |
 | Boss reward | 50g (Region 1) | `src/game/region1Boss.ts` |
 | Boss budget | 10 points, no queen (Region 1) | `R1_BOSS_BUDGET` in `src/game/region1Boss.ts` |
+| Boss reward, budget (Region 2, not built) | 50g; 16 points, queens allowed | Region 2 brief |
 | Wins that open the boss | 4 of 5 (Region 1) | `bossNeeds` in `src/game/region1.ts` |
 | Confirmed tactic gold | 5g a fork, at most 10g per battle ever | `TACTIC_GOLD`, `TACTIC_GOLD_CAP` in `src/game/economy.ts` |
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
@@ -168,6 +169,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Rewinds per battle | Squire 3, Knight 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
 | Enemy strength | Squire: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Knight: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
 | Region 1 boss strength | Softer, since he doesn't shout: Squire depth 4 within 400 centipawns, Knight depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
+| Scrying Orb (Region 2, not built) | 3 charges for 30g; one charge shows one enemy move | Region 2 brief |
 | Bounties on the board | 4, refreshed after each battle | `BOUNTY_COUNT` in `src/game/economy.ts` |
 | Bounty target rating | Squire 900, Knight 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |

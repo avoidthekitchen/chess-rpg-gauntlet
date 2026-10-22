@@ -16,7 +16,7 @@ export const SPECIES: Record<PieceSymbol, string> = {
   p: 'Mouse Squire',
   n: 'Frog Knight',
   b: 'Owl Mage',
-  r: 'Tortoise Tower',
+  r: 'Tortoise Golem',
   q: 'Fox Sorceress',
   k: 'Lion King',
 };

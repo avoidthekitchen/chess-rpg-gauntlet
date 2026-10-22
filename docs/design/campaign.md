@@ -30,7 +30,7 @@ Each region has one faction built around a headline chess theme, and also revisi
 | Region | Faction | Look | Army style | Headline theme |
 | --- | --- | --- | --- | --- |
 | 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Bog rats, salamanders, crows, snapping turtles, vipers and a toad chief, in muddy rags and scavenged gear | Many pawns, a goblin chief as king | Threat awareness, protection, safe trades, basic checkmates |
-| 2 | Bandit Riders | Masks and cloaks; species to be chosen | Knight-heavy | Forks, double attacks, mating patterns |
+| 2 | [Bandit Riders](regions/region-02-bandit-riders.md) | Raccoons, hare riders, magpies, badgers, a stoat and a wolf lord, in masks and dark cloaks | Knight-heavy | Forks, double attacks, mating patterns |
 | 3 | Shadow Cult | Purple hoods, crystals | Bishops and a queen | Pins, skewers, discovered attacks |
 | 4 | Iron Legion | Plate armor | Rooks and pawns | Development, king safety, open files |
 | 5 | Bone Wardens | Skeleton animals, the Lich's vanguard | Small elite armies | Promotion, king activity, endgames |
@@ -38,7 +38,7 @@ Each region has one faction built around a headline chess theme, and also revisi
 
 Each faction's readable AI habit is in [AI habits by faction](systems.md#ai-habits-by-faction).
 
-Detailed Region designs for Regions 2–5 and the Lich King are still open ([open TODOs](decisions.md#open-todos)). Keep the faction and curriculum summary tables here as the campaign-wide overview. As each detailed design is written in a separate file under `regions/` (copy the [Region template](regions/region-template.md); [Region 1](regions/region-01-bog-goblins.md) is the worked example), link its Region name in both tables to that document.
+Region 2 has an approved [brief](regions/region-02-bandit-riders.md). Detailed Region designs for Regions 3–5 and the Lich King are still open ([open TODOs](decisions.md#open-todos)). Keep the faction and curriculum summary tables here as the campaign-wide overview. As each detailed design is written in a separate file under `regions/` (copy the [Region template](regions/region-template.md); [Region 1](regions/region-01-bog-goblins.md) is the worked example), link its Region name in both tables to that document.
 
 ## Curriculum
 
@@ -48,7 +48,7 @@ The order follows how Lichess lays out its teaching: [Learn](https://lichess.org
 | --- | --- | --- | --- | --- | --- |
 | 0 (skippable) | "Teach me the moves" tutorial | Movement, captures, check, mate in one | — | All of Learn: chess pieces, fundamentals, intermediate, advanced | mateIn1 |
 | 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Threat awareness, protection, safe trades, basic checkmates | Pawn promotion basics | Piece Checkmates I, Checkmate Patterns I | hangingPiece, mateIn1 |
-| 2 | Bandit Riders | Forks, double attacks, mating patterns | Safe trades | Checkmate Patterns II–IV, The Fork, Double Check | fork, doubleCheck, mateIn2 |
+| 2 | [Bandit Riders](regions/region-02-bandit-riders.md) | Forks, double attacks, mating patterns | Safe trades | Checkmate Patterns II–IV, The Fork, Double Check | fork, doubleCheck, mateIn2 |
 | 3 | Shadow Cult | Pins, skewers, discovered attacks, x-rays | Forks, mating patterns | The Pin, The Skewer, Discovered Attacks, X-Ray, Overloaded Pieces, Zwischenzug | pin, skewer, discoveredAttack, xRayAttack |
 | 4 | Iron Legion | Development, king safety, open files, improving inactive pieces | Fundamental tactics, back-rank mates | Our own strategy lessons, Piece Checkmates II | backRankMate, kingsideAttack |
 | 5 | Bone Wardens | Promotion, king activity, opposition, rook endgames | Tactics in the endgame | Pawn Endgames, Rook Endgames | pawnEndgame, rookEndgame, promotion |

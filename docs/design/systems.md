@@ -80,7 +80,7 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 
 See [Regions and factions](campaign.md#regions-and-factions) for the campaign lineup and [curriculum](campaign.md#curriculum) for teaching themes.
 
-**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see [Powers and rewind](#powers-and-rewind)). The Iron Legion warlord always grabs free material, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates. Each faction's habit is listed in [AI habits by faction](#ai-habits-by-faction).
+**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see [Powers and rewind](#powers-and-rewind)). The proud Iron Legion never declines a capture you offer, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates. Each faction's habit is listed in [AI habits by faction](#ai-habits-by-faction).
 
 **Human-like mistakes.** Stockfish at low skill levels mixes perfect moves with random blunders, which feels unnatural. Early enemies should make believable mistakes, like missing a fork or leaving a piece undefended. The prototype does this by picking among several Stockfish candidate moves within a centipawn window; weaker enemies get a wider window.
 
@@ -93,16 +93,16 @@ See [campaign loss costs](campaign.md#campaign-and-gauntlet) for the consequence
 
 ## AI habits by faction
 
-Every faction has one readable habit that teaches its Region's theme. Habits change what the enemy chooses or tells you, never how pieces move. Rows marked **Proposed** are drafts for review ([open TODOs](decisions.md#open-todos)).
+Every faction has one readable habit that teaches its Region's theme. Habits change what the enemy chooses or tells you, never how pieces move. All six were approved on 2026-10-22; each one's finer details are settled when its Region is designed.
 
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
 | Bog Goblins | **Shout:** announce the move they'd play if you passed, and play it if still legal. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit; committed moves can be trapped | Built ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
-| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target, and choose among their good moves the one that attacks or wins it, without committing to a move | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Proposed. Still to decide: how the target is picked and shown, what the Squire-only advice says, and how the battle review treats it |
-| Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | In the original design; details proposed |
-| Iron Legion | **Greedy:** always grabs free material | Teaches traps and poisoned pieces | In the original design; details proposed |
-| Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Proposed |
-| The Lich King | No habit; full strength for the difficulty | The final test: no tells | Proposed |
+| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Squire, the companion names the target ("They're hunting your mage!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built. How the battle review treats it is settled with Region 2 |
+| Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
+| Iron Legion | **Proud:** never declines a capture you offer, even a poisoned one | Teaches traps and poisoned pieces. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"); details with Region 4 |
+| Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Approved, not built |
+| The Lich King | No habit; full strength for the difficulty | The final test: no tells | Approved |
 
 The village **raider** in sieges is a battle-level habit any faction can use: it goes for villages first, but never makes a raid that allows mate in one (`raiderMove` in `src/ai/enemy.ts`).
 
@@ -128,16 +128,18 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 **One feature, three uses.** Shouting goblins, the Scrying Orb and Far Sight all ask the engine the same question: what is the enemy's best move in this position? Goblins announce it automatically and commit to it, the Orb shows it on demand, and Far Sight asks it about a move you haven't made yet. Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
 
-**Ladder by Region (Proposed).** Help arrives as the habits fade, so the player always has one rung of support:
+**Ladder by Region** (approved 2026-10-22). Help arrives as the habits fade, so the player always has one rung of support:
 
 | Region | The enemy's plan | New in town |
 | --- | --- | --- |
 | 1 Bog Goblins | Shouted for free | Nothing (Threat Sight comes with the difficulty) |
-| 2 Bandit Riders | Target only (wanted poster), free | Scrying Orb: shows the full planned move, a few charges per battle, bought with bounty gold (price and charges to set) |
+| 2 Bandit Riders | Target only (wanted poster), free | Scrying Orb: shows the full planned move. Sold in town as a few charges, bought with bounty gold (price and charges to set) |
 | 3 Shadow Cult | Hidden | Far Sight (Orb upgrade) |
-| 4 Iron Legion | Hidden | Oracle, Blunder Ward |
+| 4 Iron Legion | Hidden | Oracle; Blunder Ward (one warning per battle) |
 | 5 Bone Wardens | Hidden | Rewind relics |
 | Final | Hidden | — |
+
+The Orb overlaps the wanted poster on purpose: it bridges the drop from the whole move (Region 1) to the target only (Region 2). Blunder Ward stays at one warning per battle, because an unlimited one would take away the lesson a mistake teaches.
 
 **Help that fades in Region 1.** On Squire, the companion reads each goblin shout a moment later (is the target guarded, is the trade fair, is a village or the king the target). On Knight, it doesn't.
 

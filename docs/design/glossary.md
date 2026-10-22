@@ -36,7 +36,7 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 
 | Name | What |
 | --- | --- |
-| Pawnshire | The game; (proposed, with the [story arc](story.md#main-story-arc)) also the Lion King's kingdom |
+| Pawnshire | The game, and the Lion King's kingdom ([story arc](story.md#main-story-arc)) |
 | The Bog | Region 1 |
 | Mudford Town | Region 1's town |
 | The Muddy Mug | Region 1's tavern |

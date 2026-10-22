@@ -54,6 +54,7 @@ const COLORS = {
   last: 0xffd15c,
   selected: 0xffc43d,
   threat: 0xd6301e,
+  threatDark: 0x5a0c04,
   village: 0x3f8f45,
   dust: 0xd9c49a,
   spark: 0xfff0b8,
@@ -91,6 +92,8 @@ interface PieceNode {
   glow: Phaser.GameObjects.Graphics;
   glowTween: Phaser.Tweens.Tween | null;
   glowKind: 'hang' | 'check' | null;
+  /** The "!" over a piece you could lose. A shape, so it doesn't depend on seeing red. */
+  badge: Phaser.GameObjects.Container;
   /** Squash, stretch, lift and tilt happen here, pivoting on the base. */
   pose: Phaser.GameObjects.Container;
   body: Phaser.GameObjects.Image | Phaser.GameObjects.Text;
@@ -369,10 +372,21 @@ export class PhaserBoard {
     const g = this.marks.clear();
     if (v.lastMove) for (const sq of [v.lastMove.from, v.lastMove.to]) g.fillStyle(COLORS.last, 0.38).fillRect(...this.rect(sq));
     if (v.threats) {
+      // Hatching and a dark-edged outline, so attacked squares read by pattern and
+      // brightness, not just by red (which red-green color blindness flattens).
+      const step = W * 0.2;
       for (const sq of v.threats.attacked) {
         const [x, y, w, h] = this.rect(sq);
-        g.fillStyle(COLORS.threat, 0.09).fillRect(x, y, w, h);
-        g.lineStyle(Math.max(1, W * 0.02), COLORS.threat, 0.32).strokeRect(x + 1.5, y + 1.5, w - 3, h - 3);
+        g.fillStyle(COLORS.threat, 0.1).fillRect(x, y, w, h);
+        g.lineStyle(Math.max(1, W * 0.035), COLORS.threatDark, 0.4);
+        // Lines along x + y = c, clipped to the square.
+        for (let c = step / 2; c < w + h; c += step) {
+          g.lineBetween(x + Math.min(c, w), y + c - Math.min(c, w), x + c - Math.min(c, h), y + Math.min(c, h));
+        }
+        const edge = Math.max(2, W * 0.06);
+        g.lineStyle(edge, COLORS.threatDark, 0.6).strokeRect(x + edge / 2, y + edge / 2, w - edge, h - edge);
+        const line = Math.max(1, W * 0.025);
+        g.lineStyle(line, COLORS.threat, 0.95).strokeRect(x + edge / 2, y + edge / 2, w - edge, h - edge);
       }
     }
     for (const sq of v.villages) {
@@ -464,11 +478,27 @@ export class PhaserBoard {
     const pose = s.add.container(0, 0);
     const body = this.makeBody(type, color);
     pose.add(body);
-    node.add([shadow, glow, pose]);
+    const badge = this.makeBadge();
+    node.add([shadow, glow, pose, badge]);
     const g = this.ground(square);
     node.setPosition(g.x, g.y).setDepth(g.y);
     this.pieceLayer.add(node);
-    return { type, color, square, node, shadow, glow, glowTween: null, glowKind: null, pose, body };
+    return { type, color, square, node, shadow, glow, glowTween: null, glowKind: null, badge, pose, body };
+  }
+
+  /** A cream "!" on a dark red disc, up by the piece's shoulder. */
+  private makeBadge() {
+    const W = this.W;
+    const r = Math.max(7, W * 0.15);
+    const disc = this.scene.add.graphics();
+    disc.fillStyle(COLORS.threatDark, 1).fillCircle(0, 0, r + Math.max(1, W * 0.025));
+    disc.fillStyle(COLORS.threat, 1).fillCircle(0, 0, r);
+    const mark = this.scene
+      .text(0, 0, '!', { fontSize: `${Math.round(r * 1.6)}px`, fontStyle: 'bold', color: '#fff6e0' })
+      .setOrigin(0.5, 0.5);
+    const badge = this.scene.add.container(W * 0.32, -W * 0.82, [disc, mark]);
+    badge.setVisible(false);
+    return badge;
   }
 
   private makeBody(type: PieceSymbol, color: Color) {
@@ -532,6 +562,7 @@ export class PhaserBoard {
     p.glowKind = kind;
     p.glowTween?.remove();
     p.glowTween = null;
+    p.badge.setVisible(kind === 'hang');
     if (!kind) {
       p.glow.alpha = 0;
       return;
@@ -666,6 +697,7 @@ export class PhaserBoard {
     const dir = Math.sign(b.x - a.x) || (Math.random() < 0.5 ? -1 : 1);
     v.glowTween?.remove();
     v.glow.alpha = 0;
+    v.badge.setVisible(false);
     v.node.setDepth(2e6);
 
     // White flash: a solid fill tint that keeps the token's silhouette.

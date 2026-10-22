@@ -340,10 +340,16 @@ export class BattleScene extends BaseScene {
 
     if (this.threatSight) {
       const lg = this.add.graphics();
-      lg.fillStyle(0xe2c49c, 1).fillRoundedRect(x + 2, y + 2, 16, 16, 4);
-      lg.lineStyle(2, 0xc82819, 0.55).strokeRoundedRect(x + 3, y + 3, 14, 14, 4);
-      lg.fillStyle(0xff3b1e, 0.85).fillCircle(x + 10, y + 34, 7);
-      c.add([lg, this.text(x + 26, y + 1, 'Squares the enemy attacks', { fontFamily: SANS, fontSize: '13px', color: CSS.muted })]);
+      // Matches the board: a hatched square, and a "!" badge.
+      lg.fillStyle(0xe2c49c, 1).fillRect(x + 2, y + 2, 16, 16);
+      lg.lineStyle(1.5, 0x5a0c04, 0.45);
+      for (let k = 4; k < 32; k += 5) lg.lineBetween(x + 2 + Math.min(k, 16), y + 2 + k - Math.min(k, 16), x + 2 + k - Math.min(k, 16), y + 2 + Math.min(k, 16));
+      lg.lineStyle(3, 0x5a0c04, 0.6).strokeRect(x + 3.5, y + 3.5, 13, 13);
+      lg.lineStyle(1.5, 0xd6301e, 0.95).strokeRect(x + 3.5, y + 3.5, 13, 13);
+      lg.fillStyle(0x5a0c04, 1).fillCircle(x + 10, y + 34, 8.5);
+      lg.fillStyle(0xd6301e, 1).fillCircle(x + 10, y + 34, 7.5);
+      const bang = this.text(x + 10, y + 34, '!', { fontSize: '12px', fontStyle: 'bold', color: '#fff6e0' }).setOrigin(0.5, 0.5);
+      c.add([lg, bang, this.text(x + 26, y + 1, 'Squares the enemy attacks', { fontFamily: SANS, fontSize: '13px', color: CSS.muted })]);
       c.add(this.text(x + 26, y + 25, 'Your piece can be won. Defend or move it!', { fontFamily: SANS, fontSize: '13px', color: CSS.muted }));
       y += 50;
       if (b.scenario.villages?.length) {

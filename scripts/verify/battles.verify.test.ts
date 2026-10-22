@@ -45,6 +45,8 @@ interface Row {
   wins: number;
   bonus: Record<string, number>;
   avgMoves: number;
+  /** Average number of Black moves forced by a standing shout, over wins. */
+  avgShouts: number;
   reasons: Record<string, number>;
 }
 
@@ -59,18 +61,19 @@ beforeAll(async () => {
 afterAll(() => {
   engines.forEach((e) => e.quit());
   const pct = (n: number, d: number) => (d ? `${Math.round((100 * n) / d)}%` : '-');
-  const lines = ['', 'battle        level   player     win   bonuses (of wins)          avg moves'];
+  const lines = ['', 'battle        level   player     win   bonuses (of wins)          avg moves  shouts kept'];
   for (const r of rows) {
     const bonus = Object.entries(r.bonus)
       .map(([k, v]) => `${k} ${pct(v, r.wins)}`)
       .join(', ');
     lines.push(
-      `${r.battle.padEnd(13)} ${r.level.padEnd(7)} ${r.player.padEnd(10)} ${pct(r.wins, r.games).padStart(4)}   ${bonus.padEnd(26)} ${r.avgMoves.toFixed(1)}`,
+      `${r.battle.padEnd(13)} ${r.level.padEnd(7)} ${r.player.padEnd(10)} ${pct(r.wins, r.games).padStart(4)}   ${bonus.padEnd(26)} ${r.avgMoves.toFixed(1).padStart(9)}  ${r.avgShouts.toFixed(1)}`,
     );
   }
   lines.push('', 'End reasons:');
   for (const r of rows) lines.push(`  ${r.battle} ${r.level} ${r.player}: ${JSON.stringify(r.reasons)}`);
-  console.log(lines.join('\n'));
+  // Written straight to stdout so the table shows even when every test passes.
+  process.stdout.write(lines.join('\n') + '\n');
 });
 
 function bonusHit(def: BattleDef, g: GameResult): Record<string, boolean> {
@@ -124,7 +127,7 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
           reasons[key] = (reasons[key] ?? 0) + 1;
           const okReason = g.status === 'won' ? OK_WIN[def.objective.kind].test(g.reason) : OK_LOSS.test(g.reason);
           if (!okReason || g.status === 'playing') failures.push(`${level} ${player}: unexpected end "${g.reason}" (${g.status})`);
-          if (SHOW && (player === 'competent' || SHOW === 'all') && (g.status !== 'won' || SHOW === 'all')) console.log(`${def.id} ${level} ${player} ${g.status}: ${g.moves.join(' ')} — ${g.reason}`);
+          if (SHOW && (player === 'competent' || SHOW === 'all') && (g.status !== 'won' || SHOW === 'all')) process.stdout.write(`${def.id} ${level} ${player} ${g.status}: ${g.moves.join(" ")} — ${g.reason}\n`);
         }
         rows.push({
           battle: def.id,
@@ -134,6 +137,7 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
           wins: wins.length,
           bonus,
           avgMoves: wins.length ? wins.reduce((s, g) => s + g.playerMoves, 0) / wins.length : 0,
+          avgShouts: wins.length ? wins.reduce((s, g) => s + g.shoutsKept, 0) / wins.length : 0,
           reasons,
         });
         const rate = wins.length / games.length;

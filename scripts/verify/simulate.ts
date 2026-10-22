@@ -63,8 +63,10 @@ function goalBonus(b: Battle): number {
   }
   // Chasing the flawless bonus: losing a piece, even in a fair trade, costs something.
   if (def.bonuses?.some((x) => x.kind === 'flawless')) {
-    bonus -= 150 * b.piecesLost;
-    if (b.isEnemyTurn()) bonus -= 100 * hangingPieces(b.chess, 'w').size;
+    bonus -= 250 * b.piecesLost;
+    // A piece left hanging costs something even on our own turn: with a second threat on the
+    // board (a raid, a promotion) there may be no time to save it.
+    bonus -= (b.isEnemyTurn() ? 100 : 60) * hangingPieces(b.chess, 'w').size;
   }
   return bonus;
 }

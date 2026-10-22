@@ -10,7 +10,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "puzzles": "node scripts/build-puzzles.mjs"
+    "puzzles": "node scripts/build-puzzles.mjs",
+    "verify:battles": "vitest run --config vitest.verify.config.ts"
   },
   "dependencies": {
     "@fontsource/alegreya": "^5.3.0",

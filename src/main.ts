@@ -6,7 +6,8 @@ import './engineHost';
 import './ui/overlay.css';
 import { BattleScene } from './scenes/Battle';
 import { BootScene } from './scenes/Boot';
-import { SelectScene } from './scenes/Select';
+import { MapScene } from './scenes/Map';
+import { StarterScene } from './scenes/Starter';
 import { TitleScene } from './scenes/Title';
 import { dpr, fitGame } from './ui/screen';
 import { C } from './ui/theme';
@@ -34,10 +35,11 @@ async function start() {
       zoom: 1 / d,
     },
     render: { antialias: true, mipmapFilter: 'LINEAR_MIPMAP_LINEAR' },
-    input: { activePointers: 2 },
+    // windowEvents off: releases outside the canvas (e.g. on an HTML dialog) must not count as taps.
+    input: { activePointers: 2, windowEvents: false },
     // Dev only: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: import.meta.env.DEV && new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
-    scene: [BootScene, TitleScene, SelectScene, BattleScene],
+    scene: [BootScene, TitleScene, StarterScene, MapScene, BattleScene],
   });
 
   // Size the canvas once Phaser has booted, and again whenever the window changes.

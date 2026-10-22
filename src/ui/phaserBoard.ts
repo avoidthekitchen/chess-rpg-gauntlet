@@ -21,8 +21,9 @@ export const PIECE_FILE: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight',
 export type Faction = 'foe' | 'bog';
 export type PieceStyle = 'tokens' | 'classic';
 
-export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction) =>
-  `token-${PIECE_FILE[type]}-${color === 'w' ? 'ally' : faction}`;
+/** `ally` is the color drawn as your army (White in battles; either side in puzzles). */
+export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction, ally: Color = 'w') =>
+  `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}`;
 
 /** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
 const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
@@ -100,6 +101,10 @@ export interface BoardOptions {
   style: PieceStyle;
   /** Drop the pieces onto the board when they first appear. */
   intro: boolean;
+  /** Draw Black at the bottom (for puzzles where you play Black). */
+  flipped?: boolean;
+  /** The color drawn as your army. Defaults to White. */
+  allyColor?: Color;
   onSquare: (sq: Square) => void;
 }
 
@@ -160,11 +165,19 @@ export class PhaserBoard {
     this.root.add(this.world);
 
     const zone = s.add.zone(0, 0, width, this.height).setOrigin(0).setInteractive({ useHandCursor: true });
-    zone.on('pointerup', (p: Phaser.Input.Pointer) => this.onTap(p.worldX, p.worldY));
+    // A tap needs its press on the board too, so releases elsewhere don't count.
+    let pressed = false;
+    zone.on('pointerdown', () => (pressed = true));
+    zone.on('pointerout', () => (pressed = false));
+    zone.on('pointerup', (p: Phaser.Input.Pointer) => {
+      if (pressed) this.onTap(p.worldX, p.worldY);
+      pressed = false;
+    });
     this.root.add(zone);
 
     s.events.on(Phaser.Scenes.Events.UPDATE, this.sortPieces, this);
     s.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.destroy());
+    this.root.once(Phaser.GameObjects.Events.DESTROY, () => this.destroy());
     this.drawBoard();
   }
 
@@ -209,7 +222,8 @@ export class PhaserBoard {
           jobs.push(this.stomp(rook, rf, rt));
         }
       }
-      await Promise.all(jobs);
+      // Never let a stuck animation block the game.
+      await Promise.race([Promise.all(jobs), sleep(4000)]);
     } finally {
       this.busy = false;
       this.apply();
@@ -231,8 +245,9 @@ export class PhaserBoard {
 
   // ---------- helpers ----------
 
+  /** Phaser tweens default to linear; gsap (which these timings came from) defaults to power1.out. */
   private tween(cfg: Phaser.Types.Tweens.TweenBuilderConfig) {
-    return this.scene.tweens.add(cfg);
+    return this.scene.tweens.add({ ease: 'Quad.easeOut', ...cfg });
   }
 
   /** Runs `fn` after `ms` on the tween clock, so hit stop slows it too. */
@@ -245,8 +260,9 @@ export class PhaserBoard {
   }
 
   private center(sq: Square): Point {
-    const f = FILES.indexOf(sq[0]);
-    const r = Number(sq[1]);
+    const flip = this.opts.flipped;
+    const f = flip ? 7 - FILES.indexOf(sq[0]) : FILES.indexOf(sq[0]);
+    const r = flip ? 9 - Number(sq[1]) : Number(sq[1]);
     return { x: this.m + (f + 0.5) * this.W, y: this.top + (8 - r + 0.5) * this.H };
   }
 
@@ -260,7 +276,7 @@ export class PhaserBoard {
     const f = Math.floor((x - this.m) / this.W);
     const row = Math.floor((y - this.top) / this.H);
     if (f < 0 || f > 7 || row < 0 || row > 7) return null;
-    return `${FILES[f]}${8 - row}` as Square;
+    return (this.opts.flipped ? `${FILES[7 - f]}${row + 1}` : `${FILES[f]}${8 - row}`) as Square;
   }
 
   // ---------- drawing ----------
@@ -292,8 +308,9 @@ export class PhaserBoard {
 
     const style = { fontFamily: SERIF, fontSize: `${Math.max(10, W * 0.22)}px`, color: COLORS.label };
     for (let i = 0; i < 8; i++) {
-      const file = this.scene.text(m + (i + 0.5) * W, top + 8 * H + m * 0.12, FILES[i], style).setOrigin(0.5, 0);
-      const rank = this.scene.text(m * 0.62, top + (i + 0.5) * H, String(8 - i), style).setOrigin(0.5, 0.5);
+      const flip = this.opts.flipped;
+      const file = this.scene.text(m + (i + 0.5) * W, top + 8 * H + m * 0.12, FILES[flip ? 7 - i : i], style).setOrigin(0.5, 0);
+      const rank = this.scene.text(m * 0.62, top + (i + 0.5) * H, String(flip ? i + 1 : 8 - i), style).setOrigin(0.5, 0.5);
       this.labels.add([file, rank]);
     }
   }
@@ -412,8 +429,9 @@ export class PhaserBoard {
 
   private makeBody(type: PieceSymbol, color: Color) {
     const W = this.W;
-    let key = tokenKey(type, color, this.opts.faction);
-    if (!this.scene.textures.exists(key)) key = tokenKey(type, color, 'foe'); // art not made yet: borrow the bandits'
+    const allyColor = this.opts.allyColor ?? 'w';
+    let key = tokenKey(type, color, this.opts.faction, allyColor);
+    if (!this.scene.textures.exists(key)) key = tokenKey(type, color, 'foe', allyColor); // art not made yet: borrow the bandits'
     if (this.opts.style === 'tokens' && this.scene.textures.exists(key)) {
       const [bw, bh] = TOKEN_BOX[type];
       const img = this.scene.add.image(0, 0, key).setOrigin(0.5, 0.97);
@@ -421,12 +439,12 @@ export class PhaserBoard {
       return img;
     }
     // Classic pieces: the standard chess shapes, so what you learn carries over.
-    const ally = color === 'w';
+    const white = color === 'w';
     const t = this.scene.text(0, 0, GLYPH[type], {
       fontFamily: GLYPH_FONT,
       fontSize: `${Math.round(W * 0.95)}px`,
-      color: ally ? '#fbf5e6' : '#22172b',
-      stroke: ally ? '#2a1d12' : '#e8d5aa',
+      color: white ? '#fbf5e6' : '#22172b',
+      stroke: white ? '#2a1d12' : '#e8d5aa',
       strokeThickness: Math.max(2, W * 0.06),
       padding: { x: 2, y: 4 },
     });
@@ -513,9 +531,9 @@ export class PhaserBoard {
         p.node.setPosition(b.x, b.y).setDepth(b.y);
         p.pose.rotation = 0;
         p.pose.y = 0;
+        resolve();
         this.dust(b, 8, 0.9);
         this.shake(3);
-        resolve();
         // Land: squash, then wobble back.
         this.tween({
           targets: p.pose,
@@ -547,12 +565,12 @@ export class PhaserBoard {
         this.tween({ targets: p.pose, y: -lift, duration: 85, delay: L, ease: 'Cubic.easeOut' });
         this.tween({ targets: p.pose, y: 0, duration: 85, delay: L + 85, ease: 'Cubic.easeIn' });
         this.after(L + 170, () => {
-          this.dust({ x, y }, last ? 12 : 4, last ? 1.1 : 0.6);
-          this.shake(last ? 7 : 1.5);
           if (last) {
             p.node.setDepth(b.y);
             resolve();
           }
+          this.dust({ x, y }, last ? 12 : 4, last ? 1.1 : 0.6);
+          this.shake(last ? 7 : 1.5);
         });
         this.tween({ targets: p.pose, scaleX: last ? 1.18 : 1.08, scaleY: last ? 0.8 : 0.92, duration: 50, delay: L + 170 });
         this.tween({
@@ -581,8 +599,8 @@ export class PhaserBoard {
       this.tween({ targets: p.pose, y: 0, duration: d / 2, delay: d / 2, ease: 'Cubic.easeIn' });
       this.after(d, () => {
         p.node.setDepth(b.y);
-        this.dust(b, 4, 0.6);
         resolve();
+        this.dust(b, 4, 0.6);
         this.tween({
           targets: p.pose,
           scaleX: 1.1,
@@ -604,8 +622,7 @@ export class PhaserBoard {
     v.node.setDepth(2e6);
 
     // White flash: a solid fill tint that keeps the token's silhouette.
-    if (v.body instanceof Phaser.GameObjects.Image) v.body.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
-    else v.body.setTint(0xffffff);
+    v.body.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
     this.sparks(this.ground(to), 14);
 
     // Hit stop: slow everything to a crawl for a beat.
@@ -615,8 +632,7 @@ export class PhaserBoard {
     await sleep(90 / speed);
     tw.timeScale = speed;
     if (this.destroyed || !v.node.active) return;
-    if (v.body instanceof Phaser.GameObjects.Image) v.body.clearTint().setTintMode(Phaser.TintModes.MULTIPLY);
-    else v.body.clearTint();
+    v.body.clearTint().setTintMode(Phaser.TintModes.MULTIPLY);
     this.shake(9);
 
     const W = this.W;
@@ -678,12 +694,11 @@ export class PhaserBoard {
         x: g.x + Math.cos(ang) * W * 0.4 * size,
         y: g.y + Math.sin(ang) * W * 0.12 * size - W * 0.06,
         alpha: 0,
-        scaleX: 1.8,
-        scaleY: 1.8,
         duration: rand(450, 700),
         ease: 'Cubic.easeOut',
         onComplete: () => g.destroy(),
       });
+      this.tween({ targets: g, scaleX: 1.8, scaleY: 1.8, duration: 600 });
     }
   }
 
@@ -708,20 +723,22 @@ export class PhaserBoard {
     }
   }
 
-  private shakeTween: Phaser.Tweens.Tween | null = null;
+  private shakeTween: Phaser.Tweens.TweenChain | null = null;
+  /** Six quick decaying jolts, then back to rest (as in the gsap version). */
   private shake(px: number) {
     if (this.reduced || px <= 0) return;
-    this.shakeTween?.remove();
-    this.shakeTween = this.scene.tweens.addCounter({
-      from: 1,
-      to: 0,
-      duration: 230,
-      onUpdate: (tw) => {
-        const k = (tw.getValue() ?? 0) * px;
-        this.world.setPosition(rand(-k, k), rand(-k, k));
-      },
-      onComplete: () => this.world.setPosition(0, 0),
-    });
+    // A finished chain is already destroyed (and remove() on it throws), so only stop a running one.
+    if (this.shakeTween?.isPlaying()) this.shakeTween.stop();
+    this.shakeTween = null;
+    const n = 6;
+    const steps: Phaser.Types.Tweens.TweenBuilderConfig[] = [];
+    for (let i = 0; i < n; i++) {
+      const k = (1 - i / n) * px;
+      steps.push({ targets: this.world, x: rand(-k, k), y: rand(-k, k), duration: 30, ease: 'Quad.easeOut' });
+    }
+    steps.push({ targets: this.world, x: 0, y: 0, duration: 50, ease: 'Quad.easeOut' });
+    const chain = this.scene.tweens.chain({ tweens: steps, onComplete: () => this.shakeTween === chain && (this.shakeTween = null) });
+    this.shakeTween = chain;
   }
 
   // ---------- input ----------

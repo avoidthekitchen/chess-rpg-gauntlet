@@ -103,7 +103,8 @@ export abstract class BaseScene extends Phaser.Scene {
   protected rebuild() {
     this.tweens.killAll();
     this.time.removeAllEvents();
-    this.children.removeAll(true);
+    // removeAll() only unlinks; destroy so old zones stop taking input and text canvases are freed.
+    for (const c of [...this.children.list]) c.destroy();
     this.build();
   }
 

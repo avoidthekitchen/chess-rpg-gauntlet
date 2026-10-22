@@ -44,7 +44,21 @@ Art comes from OpenRouter's image models, styled after `art/reference/`:
 ```bash
 node scripts/generate-art.mjs              # new sprites only; needs OPENROUTER_API_KEY_WITH_BUDGET
 node scripts/generate-art.mjs knight-ally  # regenerate one (about $0.14 each)
-node scripts/process-art.mjs               # cut out the magenta background → public/sprites/*.webp
+node scripts/process-art.mjs               # cut out new/changed raws → public/sprites/*.webp (--all to redo every one)
+```
+
+Sides are `ally` (cream and teal, gold rim), `foe` (Bandit Riders: black masks, crimson rim) and `bog` (Bog Goblins, Region 1: muddy rags, lime-green war paint, mossy green rim). Bog tokens are generated from the ally tokens so the chess headgear stays identical, and bog portraits from the ally figurines:
+
+```bash
+node scripts/generate-art.mjs token-pawn-bog token-knight-bog token-bishop-bog token-rook-bog token-queen-bog token-king-bog
+node scripts/generate-art.mjs pawn-bog knight-bog bishop-bog rook-bog queen-bog king-bog
+```
+
+Painted backgrounds (`bg-title`, `bg-map-region1`, `bg-town`, `bg-battle-bog`) use the same script. `process-art.mjs` doesn't cut them out; it resizes them to 1600 px and writes `public/backgrounds/<name>.webp` (under 250 KB each):
+
+```bash
+node scripts/generate-art.mjs bg-title bg-map-region1 bg-town bg-battle-bog
+node scripts/process-art.mjs
 ```
 
 In dev, `__gsap.globalTimeline.timeScale(0.1)` in the console plays animations in slow motion.

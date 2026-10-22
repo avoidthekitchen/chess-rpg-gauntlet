@@ -1,6 +1,7 @@
 import { Chess, type Move, type PieceSymbol, type Square } from 'chess.js';
 import Phaser from 'phaser';
 import { chooseEnemyMove, fallbackMove } from '../ai/enemy';
+import { planShout, shoutLine, shoutStands } from '../ai/shout';
 import { engine, engineStatus } from '../engineHost';
 import { Battle, type TurnResult } from '../game/battle';
 import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
@@ -12,7 +13,7 @@ import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
 import { speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
-import { pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
+import { SPECIES, pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
 import { button, eyebrow, panel, para } from '../ui/widgets';
 
@@ -47,6 +48,10 @@ export interface BattleLaunch {
   eyebrow: string;
   /** Named characters, by the square they start on. Everyone else is unnamed militia. */
   names?: Partial<Record<Square, string>>;
+  /** Goblins announce their next move and must play it if it's still legal. */
+  shouts?: boolean;
+  /** The companion's opening tip. */
+  tip?: { type: PieceSymbol; name: string; line: string };
   /** Fills the victory/defeat dialog. `retry` restarts and `rewind` undoes the last move. */
   finish: (b: Battle, actions: { retry: () => void; rewind: (() => void) | null }) => FinishView;
   /** Leave the battle (the ← button). */
@@ -74,13 +79,26 @@ export class BattleScene extends BaseScene {
   private names = new Map<Square, string>();
   private finished = false;
   private firstBuild = true;
+  /** The move the goblins announced for this turn (UCI), and announcements by position so a rewind hears the same one. */
+  private shout: string | null = null;
+  private shoutCache = new Map<string, string | null>();
+  private speakerTimer = 0;
 
   constructor() {
     super('battle');
   }
 
   init(data: BattleLaunch) {
+    // Phaser reuses the scene instance, so drop everything from the last battle.
+    this.board = null;
+    this.panelLayer = null;
+    this.speakerLayer = null;
+    this.shoutCache = new Map();
     this.launch = data;
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      clearTimeout(this.speakerTimer);
+      this.aiToken++;
+    });
     this.pieceStyle = store.get('pieceStyle') === 'classic' ? 'classic' : 'tokens';
     this.reset();
   }
@@ -90,6 +108,7 @@ export class BattleScene extends BaseScene {
   }
 
   private reset() {
+    clearTimeout(this.speakerTimer);
     this.aiToken++;
     engine.stop();
     this.battle = new Battle(this.launch.scenario, this.difficulty.rewinds);
@@ -102,6 +121,10 @@ export class BattleScene extends BaseScene {
     this.statusLine = this.launch.scenario.intro;
     this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
     this.firstBuild = true;
+    this.shout = null;
+    const tip = this.launch.tip;
+    if (tip) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line: tip.line, type: tip.type });
+    void this.startPlayerTurn();
   }
 
   protected canRebuild() {
@@ -181,6 +204,7 @@ export class BattleScene extends BaseScene {
       lastMove: b.lastMove,
       threats: this.threatSight ? threatMap(b.chess, b.player) : null,
       villages: b.scenario.villages ?? [],
+      shout: this.shout && b.isPlayerTurn() ? { from: this.shout.slice(0, 2) as Square, to: this.shout.slice(2, 4) as Square } : null,
     };
   }
 
@@ -330,6 +354,13 @@ export class BattleScene extends BaseScene {
     const y = this.H - height - Math.max(12, this.safe.bottom);
     container.y = y;
     container.setDepth(50);
+    // It floats over the controls, so a tap dismisses it instead of pressing a hidden button.
+    const hit = this.add.zone(0, 0, w, height).setOrigin(0).setInteractive();
+    hit.on('pointerup', () => {
+      this.speakerAt = 0;
+      container.destroy();
+    });
+    container.add(hit);
     this.speakerLayer = container;
     if (age < 300) {
       container.alpha = 0;
@@ -339,15 +370,60 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: container, alpha: 0, y: y + 6, duration: 800, delay: Math.max(0, 3200 - age) });
   }
 
-  private speak(res: TurnResult) {
+  private speak(res: TurnResult, kept = false) {
     const m = res.move;
-    this.speaker = speakerLine(m, res.tactics, {
+    const info = speakerLine(m, res.tactics, {
       faction: this.launch.faction,
       characterName: m.color === 'w' ? this.names.get(m.to) : undefined,
       commander: this.battle.scenario.enemy.name,
     });
-    this.speakerAt = performance.now();
-    this.drawSpeaker();
+    if (kept && !res.tactics.includes('checkmate')) info.line = pickOne(['Told you I would!', 'Just like I shouted!', 'Hah! A goblin keeps its word!']);
+    this.say(info);
+  }
+
+  /** Shows a talking head, now or (with `minGap`) once the previous one has been up that long. */
+  private say(info: SpeakerInfo, minGap = 0) {
+    clearTimeout(this.speakerTimer);
+    const wait = minGap - (performance.now() - this.speakerAt);
+    const show = () => {
+      this.speaker = info;
+      this.speakerAt = performance.now();
+      if (this.board) this.drawSpeaker();
+    };
+    if (wait > 0) this.speakerTimer = window.setTimeout(() => this.sys.isActive() && show(), wait);
+    else show();
+  }
+
+  /** The goblins shout what they'll do next, based on the position if you passed. */
+  private async startPlayerTurn() {
+    this.shout = null;
+    const b = this.battle;
+    if (!this.launch.shouts || !b.isPlayerTurn()) return;
+    const fen = b.fen;
+    let uci = this.shoutCache.get(fen);
+    if (uci === undefined) {
+      const token = this.aiToken;
+      this.thinking = true;
+      this.refresh();
+      uci = await planShout(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
+      if (token !== this.aiToken || this.battle !== b || b.fen !== fen) return;
+      this.shoutCache.set(fen, uci);
+      this.thinking = false;
+    }
+    this.shout = uci;
+    if (uci) {
+      const from = uci.slice(0, 2) as Square;
+      const piece = b.chess.get(from);
+      if (piece) {
+        const villages = b.scenario.villages ?? [];
+        const line = shoutLine(fen, uci, villages);
+        const name = piece.type === 'k' ? b.scenario.enemy.name : `Bog ${SPECIES[piece.type]}`;
+        this.say({ side: 'foe', name: `${name} shouts`, line, type: piece.type }, 1500);
+        const plan = `The goblins shout their plan: ${from}→${uci.slice(2, 4)}. They must do it if they still can.`;
+        this.statusLine = b.log.length ? `${this.statusLine} ${plan}` : plan;
+      }
+    }
+    this.refresh();
   }
 
   private showBanner(text: string, kind: 'ally' | 'foe') {
@@ -425,10 +501,13 @@ export class BattleScene extends BaseScene {
 
   private async animate(res: TurnResult) {
     if (!this.board) return;
+    // Start the animation first: it marks the board busy, so the refresh below
+    // doesn't redraw the pieces in their new places before they've moved.
+    const anim = this.board.animateMove(res.move);
     this.animating = true;
     this.refresh();
     try {
-      await this.board.animateMove(res.move);
+      await anim;
     } finally {
       this.animating = false;
       this.flushLayout();
@@ -442,11 +521,16 @@ export class BattleScene extends BaseScene {
     this.refresh();
     const started = performance.now();
     let uci: string;
-    try {
-      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
-    } catch (err) {
-      console.warn('Enemy AI failed, using fallback', err);
-      uci = fallbackMove(new Chess(b.fen));
+    const shout = this.shout;
+    const kept = shout !== null && shoutStands(b.fen, shout);
+    if (kept) uci = shout;
+    else {
+      try {
+        uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
+      } catch (err) {
+        console.warn('Enemy AI failed, using fallback', err);
+        uci = fallbackMove(new Chess(b.fen));
+      }
     }
     // A short pause so the enemy's move doesn't feel instant.
     const wait = 450 - (performance.now() - started);
@@ -455,16 +539,20 @@ export class BattleScene extends BaseScene {
 
     const res = b.enemyMove(uci);
     this.thinking = false;
+    this.shout = null;
     this.statusLine = this.describe(res, 'enemy');
+    if (shout && !kept) this.statusLine = `Foiled! The goblins couldn’t do what they shouted. ${this.statusLine}`;
     this.trackNames(res.move);
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b) return;
-    this.speak(res);
+    this.speak(res, kept);
     const tag = res.tactics.find((t) => ENEMY_BANNER[t]);
     if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
     else if (res.move.captured) this.showBanner('Piece lost', 'foe');
+    else if (shout && !kept) this.showBanner('Foiled!', 'ally');
     this.refresh();
     this.checkFinished();
+    void this.startPlayerTurn();
   }
 
   private onSquare(sq: Square) {
@@ -510,15 +598,15 @@ export class BattleScene extends BaseScene {
     if (b.status === 'playing' || this.finished) return;
     this.finished = true;
     // Let the last banner land before the dialog covers the board.
-    this.time.delayedCall(900, () => {
-      if (this.battle !== b) return;
+    window.setTimeout(() => {
+      if (this.battle !== b || !this.sys.isActive() || !this.finished) return;
       const canRewind = b.status === 'lost' && b.canRewind();
       const view = this.launch.finish(b, {
         retry: () => this.restart(),
         rewind: canRewind ? () => this.rewind() : null,
       });
-      showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons });
-    });
+      showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons, wide: true });
+    }, 900);
   }
 
   // ---------- controls ----------
@@ -537,9 +625,11 @@ export class BattleScene extends BaseScene {
     this.statusLine = 'Time folds back. Try a different move.';
     this.showBanner('Rewind', 'ally');
     this.refresh();
+    void this.startPlayerTurn();
   }
 
   private restart() {
+    if (this.board?.busy) return;
     closeModal();
     this.reset();
     this.rebuild();
@@ -570,3 +660,4 @@ export class BattleScene extends BaseScene {
 }
 
 const fmt = (n: number) => (n > 0 ? `+${n}` : String(n));
+const pickOne = (xs: string[]) => xs[Math.floor(Math.random() * xs.length)];

@@ -47,10 +47,18 @@ export function button(scene: BaseScene, x: number, y: number, label: string, o:
   if (o.disabled) c.setAlpha(0.45);
   else {
     const zone = scene.add.zone(0, 0, o.w, h).setOrigin(0).setInteractive({ useHandCursor: true });
+    // A click needs both press and release on the button.
+    let pressed = false;
     zone.on('pointerover', () => draw(true));
-    zone.on('pointerout', () => draw(false));
+    zone.on('pointerout', () => {
+      pressed = false;
+      draw(false);
+    });
+    zone.on('pointerdown', () => (pressed = true));
     zone.on('pointerup', (_p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
       e?.stopPropagation?.();
+      if (!pressed) return;
+      pressed = false;
       o.onClick();
     });
     c.add(zone);

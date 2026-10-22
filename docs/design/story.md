@@ -36,7 +36,7 @@ Approved 2026-10-22. The theme comes straight from pillar 4, "mistakes are cheap
 
 Roles (decided): the **starter companion** is a named character you pick Pokémon-style, your main tutor, who speaks in dialogue, comments on your moves, levels up and stays all game. Each starter comes with 2 mouse squires, because King + Bishop or King + Knight alone can't checkmate a lone king. **Your starter coaches every lesson**, whichever piece it's about; other pieces only add flavor (a quip when they land a tactic). **Each Region rewards a named hero** with a portrait and dialogue. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
 
-Everyone below is in the game except the Lich King. Your starter is your coach for every lesson, whichever piece it's about; heroes join the fight and the story but don't take over teaching. Voices are written for dialogue and talking-head lines.
+Everyone below is in the game except the Lich King and the Region 2 characters. Your starter is your coach for every lesson, whichever piece it's about; heroes join the fight and the story but don't take over teaching. Voices are written for dialogue and talking-head lines.
 
 | Character | Species · piece | Role | Voice | Teaches |
 | --- | --- | --- | --- | --- |
@@ -46,8 +46,10 @@ Everyone below is in the game except the Lich King. Your starter is your coach f
 | Old Brick | Tortoise Golem · rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
 | Saffron | Fox Sorceress · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | — |
 | Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
+| Ashfang, the Bandit Lord | Wolf · king | [Region 2](regions/region-02-bandit-riders.md) boss (planned) | Smooth, mocking, counts everything in coin; a thief, not a brute | — |
+| Tadwell, the Frog Captain | Frog Knight · knight | [Region 2](regions/region-02-bandit-riders.md) hero (planned) | Formal, dutiful, proud of the old army; a little stiff | — |
 | The Lich King | Skeleton · king | Final villain | Cold and courtly, never raises his voice; talks about games he refused to lose | — |
-| Regions 2–5 bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region; the doc's example is a frog knight captain after the Bandit Riders | — |
+| Regions 3–5 bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region | — |
 
 **Naming conventions.** Hired pieces get short, earthy names (Pip, Nib, Bramble, Granite, Brother Hoot). Heroes get one memorable name and a title ("Saffron, the Fox Sorceress"). Bosses get a name and a rank ("Grubnak, the Goblin Chief"). Every name is unique across the cast and the hire lists, so a hired piece never shares a hero's name. Species and piece names are in [Names and terms](glossary.md).
 

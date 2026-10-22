@@ -46,6 +46,17 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Swamp viper witch | Swamp Viper |
 | King | Toad (Grubnak) | Toad Chief |
 
+**Bandit Riders (Region 2, not generated yet).** Masked highway thieves in dark cloaks and roadside gear. The raccoon's mask is its own; the others wear cloth masks.
+
+| Piece | Species | Name in the game |
+| --- | --- | --- |
+| Pawn | Raccoon | Raccoon Cutpurse |
+| Knight | Hare | Hare Rider |
+| Bishop | Magpie | Magpie Fence |
+| Rook | Badger | Badger Bruiser |
+| Queen | Stoat | Stoat Duchess |
+| King | Wolf (Ashfang) | Bandit Lord |
+
 Later factions sketched in the [campaign](campaign.md#regions-and-factions), such as the Bone Wardens' skeleton animals, follow the same rules: their own creatures, the shared headgear, and ivory and ebony from the pipeline.
 
 ### Token pipeline

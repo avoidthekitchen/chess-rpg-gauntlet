@@ -9,16 +9,17 @@ The one place to track unfinished design work. When one is resolved, move the an
 **Design**
 
 - [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
-- [ ] **Recurring characters:** name the Region 2–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
+- [ ] **Recurring characters:** Region 2's are named (Ashfang, Tadwell). Name the Region 3–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
 - [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
-- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
+- [ ] **Region 2 detailed design:** the [brief](regions/region-02-bandit-riders.md) is approved; the battles, academy and dialogue are designed by the builder and approved by the owner.
+- [ ] **Regions 3–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
 - [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
 - [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
 - [ ] **Region 1 academy:** one short lesson per battle theme (threat awareness, protection, safe trades, back-rank mate, promotion), linked from each battle's briefing, with the in-battle lesson panel cut to a one-line reminder. Today it has only rook and queen mates ([Region 1](regions/region-01-bog-goblins.md#academy)).
 - [ ] **Shout rule:** decide after playtests whether goblins may abandon a shout that simply hangs a piece. The must-play rule makes traps easy, which shortens battles.
-- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Decide their scope before Region 2.
+- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
 - [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
-- [ ] **Region 2 numbers:** battle count and wins that open the boss, battle rewards, academy pay and bounty ratings. Only the 16-point boss budget exists so far ([tuning values](systems.md#tuning-values)).
+- [x] **Region 2 numbers:** set in the [brief](regions/region-02-bandit-riders.md): 5 battles, 4 wins open the boss, Region 1's rewards and pay, and the Orb at 3 charges for 30g.
 
 **Code**
 
@@ -40,6 +41,11 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | Region 2 brief: Bandit Riders are raccoons, hare riders, magpies, badgers, a stoat and Ashfang the wolf; places are the Kingsroad, Waymeet and the Broken Wheel |
+| 2026-10-22 | Region 2 hero is Tadwell, a frog knight captain of the old army; the boss posts no wanted posters |
+| 2026-10-22 | Region 2 keeps Region 1's shape: 5 battles, 4 wins open the boss, same rewards; Scrying Orb is 3 charges for 30g |
+| 2026-10-22 | XP, levels and titles are deferred past Region 2 |
+| 2026-10-22 | Wanted poster: target is the first piece the enemy's best line wins or attacks, never the king; no commitment, so no review special case |
 | 2026-10-22 | Story arc: the Lich King is a former Lion King of Pawnshire who refused checkmate; chess rules are the one law magic can't break |
 | 2026-10-22 | The Lich King's origin comes one hint per Region, confirmed in Region 3; his interludes are one or two lines per Region |
 | 2026-10-22 | Defeated leaders may return lightly: Grubnak as comic relief, the Iron Legion's general as an ally |

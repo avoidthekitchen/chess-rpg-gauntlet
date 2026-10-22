@@ -10,7 +10,7 @@
 
 Approved 2026-10-22. The theme comes straight from pillar 4, "mistakes are cheap, lessons are clear": the Lich King is a king who could never accept losing a game. The player wins by learning from every loss.
 
-- **The premise.** You are the young Lion King of Pawnshire. Long ago, a Lion King of Pawnshire refused to accept checkmate in the one game that mattered. He tipped over the board, swore he would never lose again, and his refusal outlived him: he became the Lich King. Now he wants the crown back. He doesn't attack you himself; he stirs up, hires or corrupts his neighbours one by one, and in the end even the kingdom's own army. The kingdom's old army is scattered, so you set out with one companion and two squires.
+- **The premise.** You are the young Lion King of Pawnshire. Long ago, the former Lion King of Pawnshire refused to accept checkmate in the one game that mattered. He tipped over the board, swore he would never lose again, and his refusal outlived him: he became the Lich King. Now he wants the crown back. He doesn't attack you himself; he stirs up, hires or corrupts his neighbours one by one, and in the end even the kingdom's own army. The kingdom's old army is scattered, so you set out with one companion and two squires.
 - **The rule of the world.** Even the Lich King plays by the rules of chess on the board. That's the one law magic can't break, and it's why every battle is real chess. What he twists is people: greed, fear, pride, discipline, death. Each faction's habit shows the flaw he exploits.
 - **Act structure.** Each Region is a chapter in four beats:
   1. **Arrival:** the faction's trouble.
@@ -36,7 +36,7 @@ Approved 2026-10-22. The theme comes straight from pillar 4, "mistakes are cheap
 
 Roles (decided): the **starter companion** is a named character you pick Pokémon-style, your main tutor, who speaks in dialogue, comments on your moves, levels up and stays all game. Each starter comes with 2 mouse squires, because King + Bishop or King + Knight alone can't checkmate a lone king. **Each piece type has a tutor voice** that teaches its tactics. **Each Region rewards a named hero** with a portrait and dialogue. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
 
-Everyone below is in the game except the Lich King; Saffron's teaching role is designed but not built yet. Voices are written for dialogue and talking-head lines.
+Everyone below is in the game except the Lich King. Your starter is your coach for every lesson, whichever piece it's about; heroes join the fight and the story but don't take over teaching. Voices are written for dialogue and talking-head lines.
 
 | Character | Species · piece | Role | Voice | Teaches |
 | --- | --- | --- | --- | --- |
@@ -44,7 +44,7 @@ Everyone below is in the game except the Lich King; Saffron's teaching role is d
 | Sir Hob | Frog Knight · knight | Starter choice | Eager, brave, a little show-off; quick jokes; "Hop to it!" | Forks and double attacks |
 | Sage Ollie | Owl Mage · bishop | Starter choice; teaches the academy | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
 | Old Brick | Tortoise Golem · rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
-| Saffron | Fox Sorceress · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | Coordination: the queen working with other pieces (not built yet) |
+| Saffron | Fox Sorceress · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | — |
 | Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
 | The Lich King | Skeleton · king | Final villain | Cold and courtly, never raises his voice; talks about games he refused to lose | — |
 | Regions 2–5 bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region; the doc's example is a frog knight captain after the Bandit Riders | — |

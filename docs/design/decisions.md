@@ -9,7 +9,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 **Design**
 
 - [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
-- [ ] **Recurring characters:** name the Region 2–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). Saffron's teaching role and the Lich King's voice are approved.
+- [ ] **Recurring characters:** name the Region 2–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
 - [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
 - [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
 - [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
@@ -44,7 +44,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | The Lich King's origin comes one hint per Region, confirmed in Region 3; his interludes are one or two lines per Region |
 | 2026-10-22 | Defeated leaders may return lightly: Grubnak as comic relief, the Iron Legion's general as an ally |
 | 2026-10-22 | Pawnshire is also the name of the Lion King's kingdom |
-| 2026-10-22 | Saffron teaches coordination; the Lich King is cold and courtly |
+| 2026-10-22 | The starter companion is the coach for every lesson; heroes like Saffron don't teach. The Lich King is cold and courtly |
 | 2026-10-22 | Faction habits: Bandit wanted poster (target from their best line, poster icon, named by the Squire advice), Shadow Cult binding, Iron Legion proud (renamed from greedy), Bone Wardens relentless march, Lich King none |
 | 2026-10-22 | Help ladder: Scrying Orb charges in Region 2, Far Sight in 3, Oracle and Blunder Ward (once per battle) in 4, rewind relics in 5 |
 | 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name |

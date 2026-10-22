@@ -4,7 +4,7 @@
 
 ## Design status
 
-**Brief approved 2026-10-22; detailed design not started.** This page is the brief: the calls the owner has made, and the limits for the parts still to design. Sections marked **To design** are filled in by whoever builds the Region, then approved by the owner before any content is built ([playbook](../../playbook.md#order-of-work)). Work is tracked in the Region 2 spec issue on GitHub and its child issues.
+**Brief approved 2026-10-22; detailed design not started.** This page is the brief: the calls the owner has made, and the limits for the parts still to design. Sections marked **To design** are filled in by whoever builds the Region, then approved by the owner before any content is built ([playbook](../../playbook.md#order-of-work)). Work is tracked in the [Region 2 spec issue](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/8) and its sub-issues.
 
 | | |
 | --- | --- |

@@ -86,6 +86,8 @@ async function main() {
   console.log(`Scanned ${rows} puzzles`);
 
   const index = {};
+  // A puzzle tagged with two themes goes in only the first pack that picks it, so bounty IDs stay unique.
+  const used = new Set();
   for (const [region, r] of Object.entries(REGIONS)) {
     mkdirSync(`${OUT_DIR}/${region}`, { recursive: true });
     index[region] = {};
@@ -105,7 +107,7 @@ async function main() {
         const q = queues[i % queues.length];
         while (q.length) {
           const p = q.shift();
-          if (valid(p, theme)) { picked.push(p); break; }
+          if (!used.has(p.id) && valid(p, theme)) { picked.push(p); used.add(p.id); break; }
         }
       }
       picked.sort((a, b) => a.rating - b.rating || (a.id < b.id ? -1 : 1));

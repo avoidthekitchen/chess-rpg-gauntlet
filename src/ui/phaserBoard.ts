@@ -237,6 +237,45 @@ export class PhaserBoard {
     this.tween({ targets: this.world, alpha: 1, duration: 450, ease: 'Cubic.easeOut' });
   }
 
+  /** Victory: your pieces hop for joy under a shower of gold confetti. */
+  celebrate() {
+    if (this.destroyed || this.reduced) return;
+    const ally = this.opts.allyColor ?? 'w';
+    let i = 0;
+    for (const p of this.pieces.values()) {
+      if (p.color !== ally) continue;
+      const delay = 120 + i++ * 70;
+      this.tween({ targets: p.pose, y: -this.W * 0.35, duration: 220, delay, yoyo: true, repeat: 1, ease: 'Quad.easeOut' });
+    }
+    const colors = [0xffd66b, 0xe0ab45, 0xfff0b8, 0x9fd03a, 0xe25a43];
+    const cx = this.m + 4 * this.W;
+    for (let k = 0; k < 46; k++) {
+      const g = this.scene.add.graphics().fillStyle(colors[k % colors.length], 1).fillRect(-this.W * 0.05, -this.W * 0.09, this.W * 0.1, this.W * 0.18);
+      g.setPosition(cx + rand(-0.5, 0.5) * this.W, this.top + 3 * this.H);
+      g.rotation = rand(0, Math.PI);
+      this.fx.add(g);
+      // A little ballistic arc: thrown up and out, then falling and fading.
+      const ang = rand(-Math.PI * 0.92, -Math.PI * 0.08);
+      const v = rand(3.2, 5.6) * this.W;
+      const x0 = g.x;
+      const y0 = g.y;
+      const spin = rand(-8, 8);
+      const r0 = g.rotation;
+      this.scene.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: rand(1200, 1800),
+        onUpdate: (tw) => {
+          const t = tw.getValue() ?? 0;
+          g.setPosition(x0 + Math.cos(ang) * v * t, y0 + Math.sin(ang) * v * t + 5 * this.W * t * t);
+          g.rotation = r0 + spin * t;
+          g.alpha = 1 - Math.max(0, (t - 0.6) / 0.4);
+        },
+        onComplete: () => g.destroy(),
+      });
+    }
+  }
+
   /** Screen-space center of a square, e.g. for floating labels. */
   squareCenter(sq: Square): Point {
     const c = this.center(sq);

@@ -69,6 +69,8 @@ export abstract class BaseScene extends Phaser.Scene {
     this.game.events.on(LAYOUT_EVENT, onLayout);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.game.events.off(LAYOUT_EVENT, onLayout));
     this.build();
+    // A short fade between screens (not on rebuilds).
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) this.cameras.main.fadeIn(220, 21, 18, 26);
   }
 
   /** Draws the whole screen from state. */

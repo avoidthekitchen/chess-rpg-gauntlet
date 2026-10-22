@@ -108,6 +108,15 @@ export class MapScene extends BaseScene {
     g.fillStyle(0xe9dcc0, 1).fillRect(p.x - 10, p.y - 1, 20, 13);
     g.fillStyle(0x3b2a1c, 1).fillRect(p.x - 3, p.y + 4, 6, 8);
     this.label(p, 'Town', 'Tavern · Academy · Bounties', r, true);
+    // New bounties go up after every battle: flag them until you visit.
+    const s = save();
+    if (s.battlesFought > 0 && s.bountiesRefreshedAt !== s.battlesFought) {
+      const bx = p.x + r * 0.8;
+      const by = p.y - r * 0.8;
+      const badge = this.add.graphics().fillStyle(C.red, 1).fillCircle(bx, by, 10);
+      const mark = this.text(bx, by, '!', { fontFamily: SANS, fontSize: '14px', fontStyle: 'bold', color: '#fff' }).setOrigin(0.5);
+      this.tweens.add({ targets: [badge, mark], alpha: 0.55, duration: 700, yoyo: true, repeat: -1 });
+    }
     this.add.zone(p.x, p.y, r * 2.6, r * 2.6).setInteractive({ useHandCursor: true }).on('pointerup', () => this.openTown());
   }
 
@@ -137,6 +146,13 @@ export class MapScene extends BaseScene {
       color: state === 'locked' ? '#8a7f90' : state === 'cleared' ? CSS.green : CSS.gold,
     }).setOrigin(0.5);
     this.label(p, def.title, def.theme, r, state !== 'locked');
+    if (state === 'cleared') {
+      // Bonus goals earned, like a perfect island in Into the Breach.
+      const s = save();
+      const got = def.bonuses.filter((x) => s.bonusesEarned.includes(`${def.id}:${x.kind}`)).length;
+      const stars = '★'.repeat(got) + '☆'.repeat(def.bonuses.length - got);
+      this.text(p.x, p.y - r - 4, stars, { fontFamily: SANS, fontSize: '13px', color: CSS.gold, stroke: '#120d10', strokeThickness: 3 }).setOrigin(0.5, 1);
+    }
     const zone = this.add.zone(p.x, p.y, r * 3, r * 3).setInteractive({ useHandCursor: state !== 'locked' });
     zone.on('pointerup', () => {
       if (state === 'locked') this.toast('Win a neighbouring battle to open this path.');

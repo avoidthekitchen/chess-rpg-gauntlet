@@ -5,8 +5,9 @@ import { planShout, shoutLine, shoutStands } from '../ai/shout';
 import { engine, engineStatus } from '../engineHost';
 import { Battle, type TurnResult } from '../game/battle';
 import { DIFFICULTIES, type AiProfile, type DifficultyId } from '../game/difficulty';
-import { materialBalance } from '../game/material';
+import { PIECE_VALUE, materialBalance } from '../game/material';
 import { forkPays } from '../game/tacticCheck';
+import { biggestMistake, type MoveReview } from '../game/review';
 import { TACTIC_GOLD } from '../game/economy';
 import { objectiveText, type Scenario } from '../game/scenarios';
 import type { TacticTag } from '../game/tactics';
@@ -62,7 +63,11 @@ export interface BattleLaunch {
   /** Banners pay gold for confirmed tactics (campaign battles only). */
   tacticGold?: boolean;
   /** Fills the victory/defeat dialog. `retry` restarts and `rewind` undoes the last move. */
-  finish: (b: Battle, actions: { retry: () => void; rewind: (() => void) | null }, extra: { tacticGold: number }) => FinishView;
+  finish: (
+    b: Battle,
+    actions: { retry: () => void; rewind: (() => void) | null },
+    extra: { tacticGold: number; mistake: (MoveReview & { cost: number }) | null },
+  ) => FinishView;
   /** Leave the battle (the ← button). */
   exit: () => void;
   /** Where the ← button goes, e.g. "Town". Defaults to "Map". */
@@ -94,6 +99,7 @@ export class BattleScene extends BaseScene {
   private shout: string | null = null;
   private shoutCache = new Map<string, string | null>();
   private speakerTimer = 0;
+  private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
   /** Gold earned this battle from engine-confirmed tactics. */
   tacticGold = 0;
 
@@ -126,6 +132,8 @@ export class BattleScene extends BaseScene {
 
   private reset() {
     clearTimeout(this.speakerTimer);
+    this.speakerTimer = 0;
+    this.speakQueue = [];
     this.aiToken++;
     engine.stop();
     this.battle = new Battle(this.launch.scenario, this.launch.practice ? 999 : this.difficulty.rewinds);
@@ -399,17 +407,68 @@ export class BattleScene extends BaseScene {
     this.say(info);
   }
 
-  /** Shows a talking head, now or (with `minGap`) once the previous one has been up that long. */
+  /**
+   * Shows a talking head. Lines with a `minGap` wait their turn until the previous line
+   * has been up that long (shout, then advice); an immediate line (a move) drops stale ones.
+   */
   private say(info: SpeakerInfo, minGap = 0) {
-    clearTimeout(this.speakerTimer);
-    const wait = minGap - (performance.now() - this.speakerAt);
+    if (minGap === 0) {
+      clearTimeout(this.speakerTimer);
+      this.speakerTimer = 0;
+      this.speakQueue = [];
+    }
+    this.speakQueue.push({ info, gap: minGap });
+    this.pumpSpeaker();
+  }
+
+  private pumpSpeaker() {
+    if (this.speakerTimer) return;
+    const next = this.speakQueue[0];
+    if (!next) return;
     const show = () => {
-      this.speaker = info;
+      this.speakerTimer = 0;
+      this.speakQueue.shift();
+      this.speaker = next.info;
       this.speakerAt = performance.now();
       if (this.board) this.drawSpeaker();
+      this.pumpSpeaker();
     };
-    if (wait > 0) this.speakerTimer = window.setTimeout(() => this.sys.isActive() && show(), wait);
+    const wait = next.gap - (performance.now() - this.speakerAt);
+    if (wait > 0) this.speakerTimer = window.setTimeout(() => (this.sys.isActive() ? show() : undefined), wait);
     else show();
+  }
+
+  /**
+   * Help that fades: on Squire, the companion reads the shout for you a moment later
+   * (is the target guarded? is the trade fair?). On harder difficulties you work it out.
+   */
+  private adviseOnShout(fen: string, uci: string) {
+    const tip = this.launch.tip;
+    if (!tip || this.launch.difficulty !== 'squire' || this.launch.practice) return;
+    const b = this.battle;
+    const to = uci.slice(2, 4) as Square;
+    const mover = b.chess.get(uci.slice(0, 2) as Square);
+    const target = b.chess.get(to);
+    let line: string | null = null;
+    if (target && target.color === b.player && mover) {
+      const guarded = b.chess.attackers(to, b.player).length > 0;
+      const name = PIECE_SHORT[target.type];
+      if (target.type === 'k') line = null;
+      else if (!guarded) line = `They want our ${name} on ${to}, and nobody guards it! Move it, or protect it.`;
+      else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${PIECE_SHORT[mover.type]} is worth less. That trade loses. Move it!`;
+      else line = `Let them try! Our ${name} on ${to} is guarded, so we take right back. Unless you see something better…`;
+    } else if ((b.scenario.villages ?? []).includes(to)) {
+      line = `They’re heading for the village on ${to}! Make sure we can capture whoever lands there.`;
+    } else {
+      const after = new Chess(fen.replace(' w ', ' b ').replace(/ [a-h][36] /, ' - '));
+      try {
+        after.move({ from: uci.slice(0, 2), to, promotion: uci[4] as PieceSymbol | undefined });
+        if (after.inCheck()) line = 'They’re coming for our king. Be ready to block or step aside!';
+      } catch {
+        /* no advice */
+      }
+    }
+    if (line) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line, type: tip.type }, 2600);
   }
 
   /** The goblins shout what they'll do next, based on the position if you passed. */
@@ -437,6 +496,7 @@ export class BattleScene extends BaseScene {
         const line = shoutLine(fen, uci, villages);
         const name = piece.type === 'k' ? b.scenario.enemy.name : `Bog ${SPECIES[piece.type]}`;
         this.say({ side: 'foe', name: `${name} shouts`, line, type: piece.type }, 1500);
+        this.adviseOnShout(fen, uci);
         const plan = `The goblins shout their plan: ${from}→${uci.slice(2, 4)}. They must do it if they still can.`;
         this.statusLine = b.log.length ? `${this.statusLine} ${plan}` : plan;
       }
@@ -640,16 +700,61 @@ export class BattleScene extends BaseScene {
     const b = this.battle;
     if (b.status === 'playing' || this.finished) return;
     this.finished = true;
-    // Let the last banner land before the dialog covers the board.
-    window.setTimeout(() => {
-      if (this.battle !== b || !this.sys.isActive() || !this.finished) return;
+    if (b.status === 'won') this.board?.celebrate();
+    const token = this.aiToken;
+    const review = this.review(b, token);
+    // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
+    const minWait = new Promise((r) => setTimeout(r, b.status === 'won' ? 1800 : 900));
+    const capped = Promise.race([review, new Promise<null>((r) => setTimeout(() => r(null), 6000))]);
+    void Promise.all([minWait, capped]).then(([, mistake]) => {
+      if (this.battle !== b || !this.sys.isActive() || !this.finished || token !== this.aiToken) return;
       const canRewind = b.status === 'lost' && b.canRewind();
       const view = this.launch.finish(b, {
         retry: () => this.restart(),
         rewind: canRewind ? () => this.rewind() : null,
-      }, { tacticGold: this.tacticGold });
+      }, { tacticGold: this.tacticGold, mistake: mistake ?? null });
       showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons, wide: true });
-    }, 900);
+    });
+  }
+
+  /**
+   * Replays your moves through Stockfish to find the costliest one. When the goblins'
+   * shout still stood after your move, the move is judged after their forced reply,
+   * so a deliberate trap isn't mistaken for a blunder.
+   */
+  private async review(b: Battle, token: number): Promise<(MoveReview & { cost: number }) | null> {
+    if (engineStatus === 'fallback') return null;
+    const chess = new Chess(b.scenario.fen);
+    const plies = b.log.map((san) => {
+      const fen = chess.fen();
+      const m = chess.move(san);
+      return { fen, san, white: m.color === 'w' };
+    });
+    const mine = plies.filter((p) => p.white).slice(-12); // keep long boss games quick
+    const out: MoveReview[] = [];
+    const DEPTH = 9;
+    const firstNumber = plies.filter((p) => p.white).length - mine.length;
+    for (const [i, p] of mine.entries()) {
+      if (token !== this.aiToken) return null;
+      const [best] = await engine.analyse(p.fen, DEPTH, 1);
+      if (!best) return null;
+      const before = new Chess(p.fen);
+      const bestSan = before.move({ from: best.uci.slice(0, 2), to: best.uci.slice(2, 4), promotion: best.uci[4] as PieceSymbol | undefined }).san;
+      const after = new Chess(p.fen);
+      after.move(p.san);
+      let playedScore: number;
+      const shout = this.shoutCache.get(p.fen);
+      if (after.isCheckmate()) playedScore = 100_000;
+      else if (shout && shoutStands(after.fen(), shout)) {
+        after.move({ from: shout.slice(0, 2), to: shout.slice(2, 4), promotion: shout[4] as PieceSymbol | undefined });
+        if (after.isCheckmate()) playedScore = -100_000;
+        else if (after.isGameOver()) playedScore = 0;
+        else playedScore = (await engine.analyse(after.fen(), DEPTH, 1))[0]?.score ?? 0;
+      } else if (after.isGameOver()) playedScore = 0;
+      else playedScore = -((await engine.analyse(after.fen(), DEPTH, 1))[0]?.score ?? 0);
+      out.push({ number: firstNumber + i + 1, played: p.san, best: bestSan, bestScore: best.score, playedScore });
+    }
+    return biggestMistake(out);
   }
 
   // ---------- controls ----------

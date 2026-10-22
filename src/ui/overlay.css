@@ -310,3 +310,18 @@ body {
   color: var(--muted);
   font-size: 14px;
 }
+.ov-text .review {
+  text-align: left;
+  background: var(--surface-2);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0;
+  font-size: 16px;
+}
+.ov-text .review p {
+  margin: 0;
+}
+.ov-text .review .who {
+  margin-bottom: 2px;
+}

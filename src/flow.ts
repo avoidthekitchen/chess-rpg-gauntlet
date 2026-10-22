@@ -106,6 +106,7 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef, opts: LaunchOp
     eyebrow: `${def.region} · ${DIFFICULTIES[s.difficulty].label}`,
     names: opts.names ?? assignCharacters(def.fen, s.roster),
     shouts: def.shouts,
+    ai: def.ai?.[s.difficulty],
     tip: { type: s.starter, name: STARTERS[s.starter].name, line: def.tip },
     exit: () => goTo(scene.game, 'map'),
     tacticGold: true,

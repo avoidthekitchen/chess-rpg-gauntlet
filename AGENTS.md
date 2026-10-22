@@ -1,0 +1,47 @@
+# Pawnshire: notes for agents and contributors
+
+Pawnshire is a storybook chess tactics RPG (Phaser 4 + TypeScript + Vite, chess.js, Stockfish in a Web Worker), live at https://unformedideas.com/chess-rpg/. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
+
+## Rules that never bend
+
+- **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Faction habits change what the enemy chooses or tells you, never how pieces move.
+- **`src/game` has no screen code.** Rules, campaign, economy and content live there with unit tests; scenes talk to them through small interfaces.
+- **Every new rule gets a test, and every battle gets verified** (`npm run verify:battles`) to the bars in the [playbook](docs/playbook.md#verification-bars).
+- **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), numbers from [Tuning values](docs/design/systems.md#tuning-values).
+- **Design calls the docs don't settle** go in [decisions](docs/design/decisions.md): a decision-log row, or an open TODO when it needs the owner.
+
+## Commands
+
+```bash
+npm run dev              # http://localhost:5173 (?loop=timeout keeps it running in a background tab)
+npm test                 # unit tests
+npx tsc --noEmit         # type-check
+npm run verify:battles   # engine playtests of every battle and the boss (a few minutes)
+npm run puzzles          # rebuild bounty puzzles from the Lichess database (download goes to data/raw/)
+npm run deploy           # build, stage and deploy to Cloudflare
+```
+
+Never commit `data/raw/`, `art/raw/`, `dist/` or `dist-worker/`. The raw puzzle download and raw art stay local.
+
+## Where things are
+
+The [README layout](README.md#layout) lists the folders. The ones you'll touch most:
+
+- `src/game/region1*.ts`: Region 1 content. New Regions follow the [Region template](docs/design/regions/region-template.md).
+- `src/scenes/`: one Phaser scene per screen.
+- `src/flow.ts`: navigation between them.
+- `src/ui/phaserBoard.ts`: the board and its animations.
+
+## Phaser 4 pitfalls we hit
+
+- `children.removeAll()` only unlinks objects. Destroy each one, or old zones stay clickable and leak (`BaseScene.rebuild` does this).
+- Geometry masks don't work under WebGL in v4. Scroll content under an opaque header instead.
+- Removing a finished `TweenChain` throws. Only stop chains that are still playing.
+- In scale mode NONE, `scale.resize()` skips the CSS size when zoom is 1. `fitGame` sets it explicitly.
+- Use `goTo()` (`src/ui/screen.ts`) to change screens from callbacks. `this.scene.start()` only stops the scene it's called on.
+- Start a move animation before redrawing the board, or pieces jump to their new squares.
+- Async work (engine searches, animations) must check the scene's session after each `await`, so a battle you left stops.
+
+## Writing style for docs and in-game text
+
+Short, specific and plain: lead with the point, use numbers and names, keep sentences under 25 words, and use no jargon the reader would have to look up. In-game lines follow the [voice guide](docs/design/story.md#voice-and-dialogue).

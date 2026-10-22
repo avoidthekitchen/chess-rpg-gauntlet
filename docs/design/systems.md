@@ -29,9 +29,9 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 
 - **At launch (clear board rules):** checkmate, fork, double check, discovered attack, pin, skewer, back-rank mate, promotion.
 - **Puzzles only (need judgment):** deflection, attraction, overloaded piece, zwischenzug, clearance, interference. These are hard to name automatically in live play, so they appear in puzzles, where the Lichess database already tags them.
-- The prototype already detects checkmate, fork, check, promotion and capture, without the engine check yet.
+- **Built so far (Region 1):** checkmate, fork, check, promotion and capture are detected (`src/game/tactics.ts`). Fork banners, yours and the enemy's, show only when Stockfish confirms the fork wins material (`src/game/tacticCheck.ts`), and a confirmed fork pays gold. Checkmate needs no engine check. The other launch patterns are still to build.
 
-**Scenario format** (one JSON file per battle): starting position (FEN) or, for bosses, the points budget and enemy setup; goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
+**Scenario format** (a `BattleDef` in each Region's battles file, `src/game/content.ts`): starting position (FEN) or, for bosses, the points budget and enemy setup; goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
 
 ## Your army
 
@@ -80,7 +80,7 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 
 See [Regions and factions](campaign.md#regions-and-factions) for the campaign lineup and [curriculum](campaign.md#curriculum) for teaching themes.
 
-**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see [Powers and rewind](#powers-and-rewind)). The Iron Legion warlord always grabs free material, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates.
+**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see [Powers and rewind](#powers-and-rewind)). The Iron Legion warlord always grabs free material, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates. Each faction's habit is listed in [AI habits by faction](#ai-habits-by-faction).
 
 **Human-like mistakes.** Stockfish at low skill levels mixes perfect moves with random blunders, which feels unnatural. Early enemies should make believable mistakes, like missing a fork or leaving a piece undefended. The prototype does this by picking among several Stockfish candidate moves within a centipawn window; weaker enemies get a wider window.
 
@@ -90,6 +90,21 @@ See [campaign loss costs](campaign.md#campaign-and-gauntlet) for the consequence
 
 - **Global setting:** Squire / Knight / Champion / Grandmaster. Sets the AI strength offset and how much help you get (Threat Sight, blunder warnings, rewind charges).
 - **Adaptive rating:** a hidden rating (Glicko-style) from puzzles and battles keeps the AI near the player's level, with the global setting as an offset.
+
+## AI habits by faction
+
+Every faction has one readable habit that teaches its Region's theme. Habits change what the enemy chooses or tells you, never how pieces move. Rows marked **Proposed** are drafts for review ([open TODOs](decisions.md#open-todos)).
+
+| Faction | Habit | Why it teaches the theme | Status |
+| --- | --- | --- | --- |
+| Bog Goblins | **Shout:** announce the move they'd play if you passed, and play it if still legal. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit; committed moves can be trapped | Built ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target, and choose among their good moves the one that attacks or wins it, without committing to a move | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Proposed |
+| Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | In the doc; to be detailed |
+| Iron Legion | **Greedy:** always grabs free material | Teaches traps and poisoned pieces | In the doc; to be detailed |
+| Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Proposed |
+| The Lich King | No habit; full strength for the difficulty | The final test: no tells | Proposed |
+
+The village **raider** in sieges is a battle-level habit any faction can use: it goes for villages first, but never makes a raid that allows mate in one (`raiderMove` in `src/ai/enemy.ts`).
 
 ## Powers and rewind
 
@@ -113,6 +128,46 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 **One feature, three uses.** Shouting goblins, the Scrying Orb and Far Sight all ask the engine the same question: what is the enemy's best move in this position? Goblins announce it automatically and commit to it, the Orb shows it on demand, and Far Sight asks it about a move you haven't made yet. Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
 
+**Ladder by Region (Proposed).** Help arrives as the habits fade, so the player always has one rung of support:
+
+| Region | The enemy's plan | New in town |
+| --- | --- | --- |
+| 1 Bog Goblins | Shouted for free | Nothing (Threat Sight comes with the difficulty) |
+| 2 Bandit Riders | Target only (wanted poster) | Scrying Orb: a few charges per battle, bought with bounty gold |
+| 3 Shadow Cult | Hidden | Far Sight (Orb upgrade) |
+| 4 Iron Legion | Hidden | Oracle, Blunder Ward |
+| 5 Bone Wardens | Hidden | Rewind relics |
+| Final | Hidden | — |
+
+**Help that fades in Region 1.** On Squire, the companion reads each goblin shout a moment later (is the target guarded, is the trade fair, is a village or the king the target). On Knight, it doesn't.
+
+**Battle review.** After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move. When a goblin's shout still stood after your move, your move is judged after their forced reply, so a deliberate trap isn't called a blunder (`src/game/review.ts`).
+
 **Deferred: free rewind.** A free rewind for spotting your own mistake is on hold because every version so far was confusing. Revisit after playtests, if at all.
 
 **Banned power types:** anything that changes how pieces move, gives extra moves, swaps pieces, or adds terrain. Fun, but they teach the wrong chess.
+
+## Tuning values
+
+The numbers the game uses today, and where each is set, so later Regions stay consistent. Most are first guesses to tune in playtests ([open questions](decisions.md#open-questions)).
+
+| Value | Now | Set in |
+| --- | --- | --- |
+| Starting gold | 20g | `STARTING_GOLD` in `src/game/campaign.ts` |
+| Hiring prices | Piece value × 10g (10, 30, 30, 50, 90) | `PRICE` in `src/game/economy.ts` |
+| Battle reward | 15–25g, paid on the first win only | `reward` on each battle |
+| Bonus goals | 2 per battle, 5g each (boss: 10g), each paid once | `bonuses` on each battle |
+| Boss reward | 50g (Region 1) | `src/game/region1Boss.ts` |
+| Boss budget | 10 points, no queen (Region 1) | `R1_BOSS_BUDGET` in `src/game/region1Boss.ts` |
+| Wins that open the boss | 4 of 5 (Region 1) | `bossNeeds` in `src/game/region1.ts` |
+| Confirmed tactic gold | 5g a fork, at most 10g per battle ever | `TACTIC_GOLD`, `TACTIC_GOLD_CAP` in `src/game/economy.ts` |
+| Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
+| Loss cost | Squire 0, Knight 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
+| Rewinds per battle | Squire 3, Knight 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
+| Enemy strength | Squire depth 5, within 300 cp of best; Knight depth 8, 120 cp; Champion depth 11, 40 cp; Grandmaster depth 15, best only | `ai` in `src/game/difficulty.ts`; a battle can override it per difficulty (`ai` on the battle, from the `r1-boss-no-shouts` branch) |
+| Bounties on the board | 4, refreshed after each battle | `BOUNTY_COUNT` in `src/game/economy.ts` |
+| Bounty target rating | Squire 900, Knight 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
+| Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |
+| Academy first clear | 10g per exercise | `src/game/academy.ts` |
+| Review threshold | A move must cost about a pawn (90 cp) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |
+| Engine search timeout | 12 s, then the fallback AI takes over | `Engine` in `src/ai/engine.ts` |

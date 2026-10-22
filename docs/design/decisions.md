@@ -6,10 +6,24 @@
 
 The one place to track unfinished design work. When one is resolved, move the answer to the document it belongs in and tick it off here.
 
-- [ ] **Main story arc:** player motivation and the story beats connecting the Regions to the Lich King. Answer goes in [Story](story.md#main-story-arc).
-- [ ] **Recurring characters:** names, personalities, development and dialogue conventions beyond the existing roles. Answer goes in [Story](story.md#recurring-characters).
-- [ ] **Region 1 detailed design:** battle sequence and branching, local story and dialogue, and boss and hero character details. Answer goes in [Region 1](regions/region-01-bog-goblins.md#design-status).
-- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/`, linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
+**Design**
+
+- [ ] **Main story arc:** review the proposed arc in [Story](story.md#main-story-arc). Open questions: whether the Lich King is a former Lion King or an outsider, whether defeated leaders return as allies, and how much the Lich King's interludes tell.
+- [ ] **Recurring characters:** review the proposed voices in [Story](story.md#recurring-characters) (Saffron's teaching role, the Lich King), and name the Region 2–5 bosses and heroes as each Region is designed.
+- [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
+- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
+- [ ] **Faction AI habits:** approve the proposed Bandit Riders "wanted poster" and Bone Wardens "relentless march", and detail the Shadow Cult and Iron Legion habits, in [AI habits by faction](systems.md#ai-habits-by-faction). Region 2 can't be designed without its habit.
+- [ ] **Help ladder by Region:** approve which powers arrive in which Region ([proposed ladder](systems.md#powers-and-rewind)), starting with the Scrying Orb in Region 2.
+- [ ] **Region 1 academy:** one short lesson per battle theme (threat awareness, protection, safe trades, back-rank mate, promotion), linked from each battle's briefing, with the in-battle lesson panel cut to a one-line reminder. Today it has only rook and queen mates ([Region 1](regions/region-01-bog-goblins.md#academy)).
+- [ ] **Shout rule:** decide after playtests whether goblins may abandon a shout that simply hangs a piece. The must-play rule makes traps easy, which shortens battles.
+- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Decide their scope before Region 2.
+- [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
+
+**Code**
+
+- [ ] **Region registry:** the map, the faction art set, the boss, the puzzle folder and the save all assume Region 1. Add a registry of Regions (map, battles, faction, boss, hero, puzzle files) and a current-region field in the save before building Region 2, so Region 2 isn't a copy of half the game.
+- [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)).
+- [ ] **Tortoise name:** rename "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
 ## Open questions
 
@@ -21,6 +35,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name |
+| 2026-10-22 | Region 1's boss, Grubnak, doesn't shout: the final exam for the habit the shouts taught |
+| 2026-10-22 | Every Region follows the Region template, with Region 1 as the worked example, and meets the playbook's verification bars |
 | 2026-10-21 | The game is called Pawnshire; Gauntlet stays the name of the replay mode after the campaign |
 | 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks |
 | 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |

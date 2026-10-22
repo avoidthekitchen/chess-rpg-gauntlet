@@ -1,6 +1,5 @@
 import { Chess } from 'chess.js';
 import { describe, expect, it } from 'vitest';
-import type { Battle } from '../game/battle';
 import { nullMoveFen, planShout, shoutLine, shoutStands } from './shout';
 
 describe('nullMoveFen', () => {
@@ -39,12 +38,12 @@ describe('planShout', () => {
   it('announces the capture the enemy would make if you passed', async () => {
     // White's rook on d4 hangs to the knight on c6.
     const fen = '4k3/8/2n5/8/3R4/8/8/4K3 w - - 0 1';
-    const battle = { fen, scenario: { enemy: { personality: 'standard' }, villages: [] } } as unknown as Battle;
+    const battle = { fen, scenario: { enemy: { name: 'Test', personality: 'standard' as const }, villages: [] } }
     expect(await planShout(battle, null, { depth: 1, multiPv: 1, maxLoss: 0 }, () => 0)).toBe('c6d4');
   });
 
   it('stays quiet while your king is in check', async () => {
-    const battle = { fen: '4k3/8/8/8/8/8/4r3/4K3 w - - 0 1', scenario: { enemy: { personality: 'standard' } } } as unknown as Battle;
+    const battle = { fen: '4k3/8/8/8/8/8/4r3/4K3 w - - 0 1', scenario: { enemy: { name: 'Test', personality: 'standard' as const } } }
     expect(await planShout(battle, null, { depth: 1, multiPv: 1, maxLoss: 0 })).toBeNull();
   });
 });

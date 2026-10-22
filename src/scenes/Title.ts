@@ -13,12 +13,6 @@ export const LOSS_TEXT: Record<DifficultyId, string> = {
   grandmaster: 'Losing costs a quarter of your gold, and the battle is gone.',
 };
 
-/** Difficulty blurbs for players who already know the moves (the prototype's said "New to chess"). */
-const BLURB: Partial<Record<DifficultyId, string>> = {
-  squire: 'Relaxed. Clumsier goblins, Threat Sight on, 3 rewinds per battle.',
-  knight: 'A fair fight. Sharper goblins, 2 rewinds per battle.',
-};
-
 export class TitleScene extends BaseScene {
   constructor() {
     super('title');
@@ -29,7 +23,7 @@ export class TitleScene extends BaseScene {
     const cx = this.W / 2;
     const cy = this.H * 0.38;
     const size = Math.min(84, this.W / 6);
-    this.text(cx, cy - size * 0.55, 'Gauntlet', {
+    this.text(cx, cy - size * 0.55, 'Pawnshire', {
       fontFamily: SERIF,
       fontSize: `${size}px`,
       fontStyle: 'bold',
@@ -78,7 +72,7 @@ export class TitleScene extends BaseScene {
     showModal({
       eyebrow: 'Before we begin',
       title: 'Do you know how the pieces move?',
-      html: '<p>Gauntlet is for players who know the moves and want to get sharper at tactics.</p>',
+      html: '<p>Pawnshire is for players who know the moves and want to get sharper at tactics.</p>',
       buttons: [
         { label: 'Yes, I know the moves', kind: 'primary', onClick: () => this.askDifficulty(true) },
         { label: 'No, teach me', onClick: () => this.noTutorialYet() },
@@ -108,7 +102,7 @@ export class TitleScene extends BaseScene {
       html: `<div class="choice-grid">${ids
         .map((id) => {
           const d = DIFFICULTIES[id];
-          return `<button class="choice" data-d="${id}"><strong>${esc(d.label)}</strong><span>${esc(BLURB[id] ?? d.blurb)} ${esc(LOSS_TEXT[id])}</span></button>`;
+          return `<button class="choice" data-d="${id}"><strong>${esc(d.label)}</strong><span>${esc(d.blurb)} ${esc(LOSS_TEXT[id])}</span></button>`;
         })
         .join('')}</div>`,
       buttons: [{ label: 'Back', kind: 'ghost', onClick: () => this.askMoves() }],

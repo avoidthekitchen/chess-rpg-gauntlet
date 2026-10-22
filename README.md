@@ -1,6 +1,6 @@
-# Gauntlet
+# Pawnshire
 
-A storybook chess tactics RPG in the spirit of Into the Breach. Rule of the design: **the rules of chess never change on the board.** The RPG lives around it. See `docs/design.md` for the design and `docs/progress.md` for the Region 1 build log.
+A storybook chess tactics RPG in the spirit of Into the Breach. Rule of the design: **the rules of chess never change on the board.** The RPG lives around it. The name Gauntlet is kept for the replay mode that unlocks after the campaign. See `docs/design.md` for the design and `docs/progress.md` for the Region 1 build log.
 
 Play it: https://unformedideas.com/chess-rpg/
 

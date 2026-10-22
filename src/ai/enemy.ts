@@ -1,5 +1,5 @@
 import { Chess, type Move, type Square } from 'chess.js';
-import type { Battle } from '../game/battle';
+import type { Scenario } from '../game/scenarios';
 import type { AiProfile } from '../game/difficulty';
 import { PIECE_VALUE } from '../game/material';
 import { hangingPieces } from '../game/threats';
@@ -70,6 +70,8 @@ export function raiderMove(chess: Chess, villages: Square[], rng: Rng = Math.ran
     let score: number;
     if (after.isCheckmate()) {
       score = 2000;
+    } else if (allowsMateInOne(after)) {
+      score = -5000; // a raid isn't worth losing the king
     } else if (villages.includes(m.to) && !guardedBy(after, m.to, defender)) {
       score = 1000; // an unguarded village: burn it
     } else if (captureGain(fen, m) > 0) {
@@ -90,6 +92,16 @@ export function raiderMove(chess: Chess, villages: Square[], rng: Rng = Math.ran
   return uciOf(best[Math.floor(rng() * best.length)]);
 }
 
+/** Whether the side to move in `after` has a checkmate in one. */
+function allowsMateInOne(after: Chess): boolean {
+  const fen = after.fen();
+  return after.moves({ verbose: true }).some((r) => {
+    const probe = new Chess(fen);
+    probe.move(r);
+    return probe.isCheckmate();
+  });
+}
+
 /** Used when Stockfish can't load: take the best capture, otherwise any move. */
 export function fallbackMove(chess: Chess, rng: Rng = Math.random): string {
   const fen = chess.fen();
@@ -105,8 +117,14 @@ export function fallbackMove(chess: Chess, rng: Rng = Math.random): string {
   return uciOf(moves[Math.floor(rng() * moves.length)]);
 }
 
+/** What the enemy needs to pick a move: the position, and the battle's personality and villages. */
+export interface EnemyView {
+  fen: string;
+  scenario: Pick<Scenario, 'enemy' | 'villages'>;
+}
+
 export async function chooseEnemyMove(
-  battle: Battle,
+  battle: EnemyView,
   engine: Engine | null,
   profile: AiProfile,
   rng: Rng = Math.random,

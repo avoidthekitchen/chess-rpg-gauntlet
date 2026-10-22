@@ -1,8 +1,7 @@
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
-import type { Battle } from '../game/battle';
 import type { AiProfile } from '../game/difficulty';
 import type { Engine } from './engine';
-import { chooseEnemyMove, type Rng } from './enemy';
+import { chooseEnemyMove, type EnemyView, type Rng } from './enemy';
 
 /**
  * Shouting goblins: before your move, the enemy announces the move it would play if
@@ -31,13 +30,12 @@ export function nullMoveFen(fen: string): string | null {
 }
 
 /** The move the enemy announces for the position where it's your turn, or null if it can't shout. */
-export async function planShout(battle: Battle, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
+export async function planShout(battle: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
   const fen = nullMoveFen(battle.fen);
   if (!fen) return null;
-  // chooseEnemyMove only reads the position and the scenario, so ask it about the skipped-turn position.
-  const view = { fen, scenario: battle.scenario } as unknown as Battle;
   try {
-    return await chooseEnemyMove(view, engine, profile, rng);
+    // Ask the enemy what it would play in the skipped-turn position.
+    return await chooseEnemyMove({ fen, scenario: battle.scenario }, engine, profile, rng);
   } catch {
     return null;
   }

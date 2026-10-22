@@ -124,3 +124,15 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 - `/chess-rpg?x` (no trailing slash, with a query string) isn't matched by the exact route and goes to the main site. Normal links use `/chess-rpg/`.
 - `winMaterial` is still judged before a recapture in `src/game/battle.ts`, which I kept unchanged as you asked. The battle positions work around it, and a test checks that each goal is bigger than any single grab.
 - Simulated greedy players win the Reeds and Squire's Splash battles fairly often (38-63%), and a strong player can mate the boss quickly. Both are worth watching in playtests.
+
+## Follow-ups: prototype fixes and the name Pawnshire
+
+The brief's "reuse src/game and src/ai as they are" meant "build on the prototype," not "never change it." These were the places I'd worked around the prototype instead of improving it:
+
+- **Material goals** (`src/game/battle.ts`): a win-material goal is now judged after the enemy's reply, so a grab that's simply recaptured doesn't win. A goal reached on your last move waits for the reply too. Tests cover the recapture case and the last-move case.
+- **Raider AI** (`src/ai/enemy.ts`): the village raider no longer makes a raid that allows a mate in one.
+- **Enemy API** (`src/ai/enemy.ts`, `src/ai/shout.ts`): `chooseEnemyMove` takes the position and scenario (`EnemyView`), so the shout code no longer builds a fake battle object.
+- **Engine timeout** (`src/ai/engine.ts`): it now lives in the `Engine` class (searches that hang or a worker that crashes mark the engine failed, and the game falls back to the simple AI), replacing the wrapper in `src/engineHost.ts`. A fake-worker test covers it.
+- **Difficulty blurbs** (`src/game/difficulty.ts`): written for players who know the moves, replacing the override in the title screen.
+
+The game is now called **Pawnshire** (title screen, page title, README, package name, and the design doc). "Gauntlet" stays the name of the post-campaign replay mode. The URL stays `/chess-rpg/`.

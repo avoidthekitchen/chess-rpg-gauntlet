@@ -19,11 +19,11 @@ In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy fo
 
 ## What's in it (Region 1: the Bog)
 
-- **Title flow:** "Do you know how the pieces move?", Squire or Knight difficulty, and a starter companion (frog knight, owl mage or tortoise golem) who tutors you.
+- **Title flow:** "Do you know how the pieces move?", Gentle or Brave difficulty, and a starter companion (frog knight, owl bishop or tortoise rook) who tutors you.
 - **Region map** with five lesson battles on branching paths (threat awareness, protection, safe trades, back-rank mate, promotion) and the Goblin Chief's camp, which opens after four wins.
 - **Shouting goblins:** before your move the Bog Goblins announce the move they'd play if you passed, and must play it if it's still legal. Set traps, or foil them.
 - **Town:** a tavern that hires pieces at their chess value, an academy lesson on rook and queen mates (unlimited undo), and a bounty board of real Lichess puzzles that refreshes after every battle.
-- **Boss duel:** pick your army up to 10 points (no queen) and checkmate Grubnak; winning recruits Saffron the Fox Sorceress.
+- **Boss duel:** pick your army up to 10 points (no queen) and checkmate Grubnak; winning recruits Saffron the Fox Queen.
 - **Loop:** gold, one-time bonus goals, loss costs by difficulty, engine-confirmed fork banners, rewind charges, Threat Sight, and a localStorage save.
 
 ## Layout

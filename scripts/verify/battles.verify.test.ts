@@ -8,7 +8,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
 
 /**
  * Engine-backed checks for the Region 1 lesson battles. For each battle, plays many full
- * games with the real shouting rule against the Squire and Knight goblins:
+ * games with the real shouting rule against the Gentle and Brave goblins:
  * - a competent (Stockfish, shout-aware) player must win at least 90% and usually earn the bonuses;
  * - a careless player (a random pick among a depth-1 top five) must lose most games;
  * - every game must end for a reason that fits the objective.
@@ -33,7 +33,7 @@ const OK_WIN: Record<string, RegExp> = {
   winMaterial: /^(You won|Checkmate!)/,
   survive: /^(Reinforcements arrive|The enemy has no moves left|The battle ends in a draw, and the villages|Checkmate!)/,
   checkmate: /^Checkmate!/,
-  promote: /^(Your squire reaches|Checkmate!)/,
+  promote: /^(Your pawn reaches|Checkmate!)/,
 };
 const OK_LOSS = /^(Out of moves|Checkmate\. Your king|A raider was left|Stalemate|The battle ends in a draw)/;
 

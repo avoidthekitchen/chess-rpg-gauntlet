@@ -7,6 +7,7 @@ import { bonusMet, bonusText, type BattleDef, type Line } from './game/content';
 import { DIFFICULTIES } from './game/difficulty';
 import type { Exercise } from './game/academy';
 import { lossCost, recordLoss, recordWin, type Payout } from './game/economy';
+import { VALUE_LEGEND } from './game/material';
 import { objectiveText } from './game/scenarios';
 import { persist, save } from './save';
 import type { BattleLaunch } from './scenes/Battle';
@@ -44,7 +45,7 @@ function voice(line: Line, def: BattleDef | null): Voice {
     case 'chief':
       return { name: 'Grubnak, the Toad Chief', type: 'k', side: 'bog' };
     case 'hero':
-      return { name: 'Saffron · Fox Sorceress', type: 'q', side: 'ally' };
+      return { name: 'Saffron · Fox Queen', type: 'q', side: 'ally' };
     case 'narrator':
       return { name: '', type: null, side: 'ally' };
   }
@@ -78,6 +79,7 @@ export function briefBattle(scene: Phaser.Scene, def: BattleDef) {
       <p>${esc(def.intro)}</p>
       ${dialogueHtml(def.before, def)}
       <p class="goal"><strong>Goal:</strong> ${esc(objectiveText(def.objective))}</p>
+      ${def.objective.kind === 'winMaterial' ? `<p class="muted">Piece values: ${esc(VALUE_LEGEND)}</p>` : ''}
       ${bonusesHtml(def)}
       <p class="muted">Reward: <span class="gold">${def.reward}g</span> for a win.</p>`,
     buttons: [
@@ -139,7 +141,7 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef, opts: LaunchOp
         const accept = () => recordAcceptedLoss();
         html += cost > 0
           ? `<p class="loss">Accepting this defeat costs ${cost}g (a tenth of your gold on ${esc(DIFFICULTIES[s.difficulty].label)}).${actions.rewind ? ' A rewind costs nothing.' : ''}</p>`
-          : '<p class="muted">On Squire a defeat costs nothing. Every captured piece comes back.</p>';
+          : '<p class="muted">On Gentle a defeat costs nothing. Every captured piece comes back.</p>';
         if (actions.rewind) buttons.push({ label: `⟲ Rewind (${b.rewindsLeft} left)`, kind: 'primary', onClick: actions.rewind });
         buttons.push({
           label: 'Retry',

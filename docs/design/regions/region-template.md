@@ -24,7 +24,7 @@ Then a summary table with these rows:
 
 ## AI habit
 
-What the faction does every turn, why it teaches this Region's theme, and where it sits on the ladder in [Powers and rewind](../systems.md#powers-and-rewind). Say what the companion's Squire-only advice adds. Habits are behavior layered over the engine; they never change how pieces move.
+What the faction does every turn, why it teaches this Region's theme, and where it sits on the ladder in [Powers and rewind](../systems.md#powers-and-rewind). Say what the companion's Gentle-only advice adds. Habits are behavior layered over the engine; they never change how pieces move.
 
 ## Map
 

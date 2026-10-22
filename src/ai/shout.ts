@@ -49,7 +49,7 @@ export function shoutStands(fen: string, uci: string): boolean {
     .some((m) => m.from === uci.slice(0, 2) && m.to === uci.slice(2, 4) && (m.promotion ?? '') === (uci[4] ?? ''));
 }
 
-const NAME: Record<PieceSymbol, string> = { p: 'squire', n: 'knight', b: 'mage', r: 'tower', q: 'sorceress', k: 'king' };
+const NAME: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
 /** What the goblin yells, in its own words, for the announced move (from the skipped-turn position). */
 export function shoutLine(fen: string, uci: string, villages: Square[] = []): string {

@@ -23,7 +23,7 @@
 Decided by the owner (don't change without a decision-log row):
 
 - The species, names and places in the table above.
-- The habit and how it fades: target only, Squire advice names it, the boss has none.
+- The habit and how it fades: target only, Gentle advice names it, the boss has none.
 - The numbers: 5 battles, 4 wins open the boss, 15–25g per battle, a 50g boss, a 16-point boss budget.
 - The Scrying Orb arrives here: 3 charges for 30g in Waymeet.
 - The hero is a frog knight captain of the old army.
@@ -39,7 +39,7 @@ Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details s
 - **Their choice.** Among their good moves (the difficulty's centipawn window), they prefer one that attacks or wins the target. They never commit to a move, so there's no "Foiled!" and no forced reply.
 - **No target.** If their best line wins or attacks nothing, no poster shows that turn.
 - **Kings.** Your king is never the target; a check is shown by the board as usual.
-- **Squire advice.** Your companion names the target a moment later ("They're hunting your mage!"). On Knight, only the icon shows.
+- **Gentle advice.** Your companion names the target a moment later ("They're hunting your bishop!"). On Brave, only the icon shows.
 - **Rewind.** A rewind shows the same poster again, as Region 1 does with shouts.
 - **Battle review.** No special case. The enemy isn't committed, so your move is judged the normal way. The builder confirms this holds in practice.
 - **Simulation.** `npm run verify:battles` needs a strong player that sees the poster, as `scripts/verify/simulate.ts` sees shouts.
@@ -103,14 +103,16 @@ All lines follow the [voice guide](../story.md#voice-and-dialogue).
 
 The Bandit Rider token and portrait set, made as [Art direction](../art.md#adding-a-faction) describes. Masks and dark cloaks, roadside gear, the shared headgear shapes. About $2 to $4 including retries.
 
-| Piece | Species | Name in the game | Short name |
-| --- | --- | --- | --- |
-| Pawn | Raccoon (the mask is its own) | Raccoon Cutpurse | raccoon |
-| Knight | Hare | Hare Rider | hare |
-| Bishop | Magpie | Magpie Fence | magpie |
-| Rook | Badger | Badger Bruiser | badger |
-| Queen | Stoat | Stoat Duchess | stoat |
-| King | Wolf (Ashfang) | Bandit Lord | lord |
+| Piece | Species | Name in the game |
+| --- | --- | --- |
+| Pawn | Raccoon (the mask is its own) | Raccoon Pawn |
+| Knight | Hare | Hare Knight |
+| Bishop | Magpie | Magpie Bishop |
+| Rook | Badger | Badger Rook |
+| Queen | Stoat | Stoat Queen |
+| King | Wolf (Ashfang) | Wolf King |
+
+Status text and shouts use the plain chess name ("their knight"), like every faction.
 
 Also needed: a portrait for Tadwell (a frog knight in the old army's colors, distinct from Sir Hob), and backgrounds for the Kingsroad map, Waymeet and roadside battles.
 

@@ -65,7 +65,7 @@ describe('battle pay', () => {
 });
 
 describe('losing a battle', () => {
-  it('costs nothing on Squire and a tenth of your gold on Knight', () => {
+  it('costs nothing on Gentle and a tenth of your gold on Brave', () => {
     expect(lossCost('squire', 95)).toBe(0);
     expect(lossCost('knight', 95)).toBe(9);
     expect(lossCost('knight', 5)).toBe(0);

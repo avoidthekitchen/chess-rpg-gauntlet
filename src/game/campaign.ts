@@ -51,8 +51,8 @@ export interface SaveState {
 
 export const STARTERS: Record<StarterType, { name: string; species: string; blurb: string }> = {
   n: { name: 'Sir Hob', species: 'Frog Knight', blurb: 'Hops over anything in the way. Loves a good fork.' },
-  b: { name: 'Sage Ollie', species: 'Owl Mage', blurb: 'Sees down the long diagonals. Pins, skewers, patience.' },
-  r: { name: 'Old Brick', species: 'Tortoise Golem', blurb: 'Slow, sturdy, unstoppable on an open file.' },
+  b: { name: 'Sage Ollie', species: 'Owl Bishop', blurb: 'Sees down the long diagonals. Pins, skewers, patience.' },
+  r: { name: 'Old Brick', species: 'Tortoise Rook', blurb: 'Slow, sturdy, unstoppable on an open file.' },
 };
 
 /** Names for hired pieces, by type, used in order. */
@@ -98,7 +98,7 @@ export function newSave(difficulty: DifficultyId, starter: StarterType, knowsMov
     tacticGold: {},
   };
   addCharacter(s, starter, 'starter', STARTERS[starter].name);
-  // Every starter comes with two mouse squires: K+N or K+B alone can't force mate.
+  // Every starter comes with two mouse pawns: K+N or K+B alone can't force mate.
   addCharacter(s, 'p', 'hired');
   addCharacter(s, 'p', 'hired');
   return s;

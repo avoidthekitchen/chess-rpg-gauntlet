@@ -10,7 +10,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 | --- | --- |
 | Enemies show their attacks in advance | **Threat Sight:** highlights squares the enemy attacks and your undefended pieces. Fades with difficulty. |
 | Battles last about 5 turns | Move limits: "checkmate within 6 moves", "survive 8 turns" |
-| Goals beyond killing (protect buildings) | Protect villages, escort a squire to promotion, capture the standard-bearer |
+| Goals beyond killing (protect buildings) | Protect villages, escort a pawn to promotion, capture the standard-bearer |
 | One shot hits two enemies | Forks, skewers and discovered attacks are detected and celebrated |
 | Bonus objectives | "Win without losing a piece", "Use a pin", "Under 10 moves" → extra gold |
 | One Reset Turn per battle | Rewind charges (see [Powers and rewind](#powers-and-rewind)) |
@@ -20,7 +20,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 1. **Skirmish:** small armies. Checkmate, or win material within a set number of moves.
 2. **Ambush:** a real puzzle position ("the enemy walked into your trap, find the strike"), then play it out to a win against the AI. Turning an advantage into a win is a skill puzzles alone don't teach.
 3. **Siege:** survive a set number of turns while protecting village squares. Teaches defence and prophylaxis.
-4. **Promotion run:** escort a squire to the far rank, where it's knighted in a promotion ceremony. Teaches pawn endgames.
+4. **Promotion run:** escort a pawn to the far rank, where it's promoted in a small ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
 
 **Your pieces in battle.** Every piece type can be used from the start, because players either finished the tutorial or said they know the moves. Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario: pieces you've hired appear as your named characters, and the rest as unnamed militia. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values. The budget grows by region, from about 10 points in region 1 to the full 39 of a complete chess set, which only the Lich King battle allows. A boss can also cap specific piece types when its lesson needs it, for example no queen in region 1. Every captured piece comes back after the battle, win or lose.
@@ -35,7 +35,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 
 ## Your army
 
-You start as a king with one companion and two squires, and build toward a full chess set by learning and earning.
+You start as a king with one companion and two pawns, and build toward a full chess set by learning and earning.
 
 **Hiring rules**
 
@@ -46,11 +46,11 @@ You start as a king with one companion and two squires, and build toward a full 
 
 | Piece | Species | Why it fits | Value | Price |
 | --- | --- | --- | --- | --- |
-| Pawn | Mouse squire | Small, and there are many | 1 | 10g |
+| Pawn | Mouse pawn | Small, and there are many | 1 | 10g |
 | Knight | Frog | Jumps over other pieces | 3 | 30g |
-| Bishop | Owl mage | Robed and scholarly | 3 | 30g |
+| Bishop | Owl bishop | Robed and scholarly | 3 | 30g |
 | Rook | Tortoise | Castle on its back, moves in straight lines | 5 | 50g |
-| Queen | Fox sorceress | Fast, goes anywhere | 9 | 90g |
+| Queen | Fox queen | Fast, goes anywhere | 9 | 90g |
 | King | Lion | Regal; this is you | — | — |
 
 **No wounds.** Captured pieces return after every battle, so a sacrifice never has a lasting cost. Losing material still hurts inside the battle, which is the real chess lesson.
@@ -88,7 +88,7 @@ See [campaign loss costs](campaign.md#campaign-and-gauntlet) for the consequence
 
 **Difficulty in two layers**
 
-- **Global setting:** Squire / Knight / Champion / Grandmaster. Sets the AI strength offset and how much help you get (Threat Sight, blunder warnings, rewind charges).
+- **Global setting:** Gentle / Brave / Champion / Grandmaster. Sets the AI strength offset and how much help you get (Threat Sight, blunder warnings, rewind charges).
 - **Adaptive rating:** a hidden rating (Glicko-style) from puzzles and battles keeps the AI near the player's level, with the global setting as an offset.
 
 ## AI habits by faction
@@ -98,7 +98,7 @@ Every faction has one readable habit that teaches its Region's theme. Habits cha
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
 | Bog Goblins | **Shout:** announce the move they'd play if you passed, and play it if still legal. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit; committed moves can be trapped | Built ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
-| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Squire, the companion names the target ("They're hunting your mage!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
+| Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Gentle, the companion names the target ("They're hunting your bishop!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
 | Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
 | Iron Legion | **Proud:** never declines a capture you offer, even a poisoned one | Teaches traps and poisoned pieces. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"); details with Region 4 |
 | Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Approved, not built |
@@ -141,7 +141,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 The Orb overlaps the wanted poster on purpose: it bridges the drop from the whole move (Region 1) to the target only (Region 2). Blunder Ward stays at one warning per battle, because an unlimited one would take away the lesson a mistake teaches.
 
-**Help that fades in Region 1.** On Squire, the companion reads each goblin shout a moment later (is the target guarded, is the trade fair, is a village or the king the target). On Knight, it doesn't.
+**Help that fades in Region 1.** On Gentle, the companion reads each goblin shout a moment later (is the target guarded, is the trade fair, is a village or the king the target). On Brave, it doesn't.
 
 **Battle review.** After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move. When a goblin's shout still stood after your move, your move is judged after their forced reply, so a deliberate trap isn't called a blunder (`review()` in `src/scenes/Battle.ts`; scoring in `src/game/review.ts`). Each new habit needs the same care here.
 
@@ -165,13 +165,13 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Wins that open the boss | 4 of 5 (Region 1) | `bossNeeds` in `src/game/region1.ts` |
 | Confirmed tactic gold | 5g a fork, at most 10g per battle ever | `TACTIC_GOLD`, `TACTIC_GOLD_CAP` in `src/game/economy.ts` |
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
-| Loss cost | Squire 0, Knight 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
-| Rewinds per battle | Squire 3, Knight 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
-| Enemy strength | Squire: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Knight: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
-| Region 1 boss strength | Softer, since he doesn't shout: Squire depth 4 within 400 centipawns, Knight depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
+| Loss cost | Gentle 0, Brave 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
+| Rewinds per battle | Gentle 3, Brave 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
+| Enemy strength | Gentle: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Brave: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
+| Region 1 boss strength | Softer, since he doesn't shout: Gentle depth 4 within 400 centipawns, Brave depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
 | Scrying Orb (Region 2, not built) | 3 charges for 30g; one charge shows one enemy move | Region 2 brief |
 | Bounties on the board | 4, refreshed after each battle | `BOUNTY_COUNT` in `src/game/economy.ts` |
-| Bounty target rating | Squire 900, Knight 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
+| Bounty target rating | Gentle 900, Brave 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |
 | Academy first clear | 10g per exercise | `src/game/academy.ts` |
 | Review threshold | A move must cost about a pawn (90 centipawns) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |

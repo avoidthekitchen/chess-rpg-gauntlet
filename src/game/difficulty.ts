@@ -24,7 +24,7 @@ export type DifficultyId = 'squire' | 'knight' | 'champion' | 'grandmaster';
 export const DIFFICULTIES: Record<DifficultyId, Difficulty> = {
   squire: {
     id: 'squire',
-    label: 'Squire',
+    label: 'Gentle',
     blurb: 'Relaxed. Clumsier enemies, Threat Sight on, 3 rewinds per battle.',
     ai: { depth: 5, multiPv: 6, maxLoss: 300 },
     rewinds: 3,
@@ -32,7 +32,7 @@ export const DIFFICULTIES: Record<DifficultyId, Difficulty> = {
   },
   knight: {
     id: 'knight',
-    label: 'Knight',
+    label: 'Brave',
     blurb: 'A fair fight. Sharper enemies, 2 rewinds per battle.',
     ai: { depth: 8, multiPv: 5, maxLoss: 120 },
     rewinds: 2,

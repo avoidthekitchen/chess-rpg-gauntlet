@@ -33,7 +33,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 ## Open questions
 
-- [ ] Knight difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
+- [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
 - [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
 - [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
 
@@ -41,6 +41,10 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | Piece names are animal plus chess piece ("Owl Bishop", "Bog Rat Pawn"), and short names are the plain chess names for both sides, so players learn the real names |
+| 2026-10-22 | A pawn reaching the far rank is "promoted", not "knighted" |
+| 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |
+| 2026-10-22 | Material goals show the piece values under the meter, and every capture or promotion floats its point change (+3 gold, −3 red) over the square; the meter stays net |
 | 2026-10-22 | Region 2 brief: Bandit Riders are raccoons, hare riders, magpies, badgers, a stoat and Ashfang the wolf; places are the Kingsroad, Waymeet and the Broken Wheel |
 | 2026-10-22 | Region 2 hero is Tadwell, a frog knight captain of the old army; the boss posts no wanted posters |
 | 2026-10-22 | Region 2 keeps Region 1's shape: 5 battles, 4 wins open the boss, same rewards; Scrying Orb is 3 charges for 30g |
@@ -51,9 +55,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Defeated leaders may return lightly: Grubnak as comic relief, the Iron Legion's general as an ally |
 | 2026-10-22 | Pawnshire is also the name of the Lion King's kingdom |
 | 2026-10-22 | The starter companion is the coach for every lesson; heroes like Saffron don't teach. The Lich King is cold and courtly |
-| 2026-10-22 | Faction habits: Bandit wanted poster (target from their best line, poster icon, named by the Squire advice), Shadow Cult binding, Iron Legion proud (renamed from greedy), Bone Wardens relentless march, Lich King none |
+| 2026-10-22 | Faction habits: Bandit wanted poster (target from their best line, poster icon, named by the Gentle advice), Shadow Cult binding, Iron Legion proud (renamed from greedy), Bone Wardens relentless march, Lich King none |
 | 2026-10-22 | Help ladder: Scrying Orb charges in Region 2, Far Sight in 3, Oracle and Blunder Ward (once per battle) in 4, rewind relics in 5 |
-| 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name |
+| 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name (replaced the same day: see the piece-name row above) |
 | 2026-10-22 | Region 1's boss, Grubnak, doesn't shout: the final exam for the habit the shouts taught |
 | 2026-10-22 | Every Region follows the Region template, with Region 1 as the worked example, and meets the playbook's verification bars |
 | 2026-10-22 | Every token comes in White and Black: ivory or ebony headgear and base, applied in code from a cyan key; ebony gets a light rim |

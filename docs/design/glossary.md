@@ -10,15 +10,34 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 
 | Chess piece | Species name (portraits, tavern, starter screen) | Short name (status text, banners, advice) |
 | --- | --- | --- |
-| Pawn | Mouse Squire | squire |
+| Pawn | Mouse Pawn | pawn |
 | Knight | Frog Knight | knight |
-| Bishop | Owl Mage | mage |
-| Rook | Tortoise Golem | tower |
-| Queen | Fox Sorceress | sorceress |
+| Bishop | Owl Bishop | bishop |
+| Rook | Tortoise Rook | rook |
+| Queen | Fox Queen | queen |
 | King | Lion King | king |
 
-- **Tortoise Golem** is the canonical species name (decided 2026-10-22). The code uses it everywhere (`STARTERS` in `src/game/campaign.ts`, `SPECIES` in `src/ui/speaker.ts`). "Tower" stays the short name.
-- A promoted pawn is **knighted**, whatever it becomes.
+- **Every species name is the animal plus the chess piece** (decided 2026-10-22), for our army and every enemy faction ("Bog Rat Pawn"). The game teaches chess, so the piece's real name is always in view. Flavor lives in the art and in character names.
+- **Short names are the plain chess names**, for both sides: "Your rook takes their pawn on d5." No faction gets its own short names.
+- **Characters** show as name, then species: "Sage Ollie · Owl Bishop". Heroes and bosses may keep a title ("Saffron, the Fox Queen", "Grubnak, the Toad Chief").
+- A pawn that reaches the far rank is **promoted**, as in real chess, whatever it becomes. Don't call it "knighted", which suggests it must become a knight.
+- The code keeps these in `SPECIES` and `FACTION_SPECIES` (`src/ui/speaker.ts`), `STARTERS` (`src/game/campaign.ts`) and `pieceName` for short names.
+
+## Difficulty levels
+
+| Shown as | Code id | What it means |
+| --- | --- | --- |
+| Gentle | `squire` | Relaxed: clumsier enemies, Threat Sight on, 3 rewinds, and your companion reads shouts for you |
+| Brave | `knight` | A fair fight: sharper enemies, 2 rewinds |
+| Champion | `champion` | Not built yet |
+| Grandmaster | `grandmaster` | Not built yet |
+
+- Difficulty names never use a chess piece's name, so "Knight" always means the piece. The code ids stay as they are, so old saves still load.
+
+## Material
+
+- **Material** is the points of the pieces on the board: pawn 1, knight 3, bishop 3, rook 5, queen 9 (`PIECE_VALUE` in `src/game/material.ts`).
+- **Material won** is net: what you captured minus what you lost, since the battle began. A sacrifice that wins more than it costs still counts.
 - Chess terms (check, checkmate, fork, pin, file, rank) are used as they are in real chess, in dialogue and lessons alike, so everything carries over.
 
 ## Factions

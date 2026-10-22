@@ -27,7 +27,7 @@ export function checkArmy(picks: HireType[], budget: Budget): ArmyCheck {
   return { ok: true, points };
 }
 
-const NAMES: Record<HireType, string> = { p: 'squires', n: 'knights', b: 'mages', r: 'towers', q: 'sorceress' };
+const NAMES: Record<HireType, string> = { p: 'pawns', n: 'knights', b: 'bishops', r: 'rooks', q: 'queen' };
 
 /** Whether adding one more piece of type `t` would still fit. */
 export function canAdd(picks: HireType[], t: HireType, budget: Budget): boolean {
@@ -36,7 +36,7 @@ export function canAdd(picks: HireType[], t: HireType, budget: Budget): boolean 
 
 /**
  * A sensible default pick: your companion first, then the most valuable pieces that
- * still fit, then squires to fill the budget.
+ * still fit, then pawns to fill the budget.
  */
 export function suggestArmy(roster: Character[], budget: Budget): string[] {
   const order: Character['role'][] = ['starter', 'hero', 'hired'];

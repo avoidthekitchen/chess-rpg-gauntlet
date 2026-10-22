@@ -172,7 +172,7 @@ export class Battle {
         : this.end('lost', 'Stalemate! The enemy has no legal moves but isn’t in check, so they escape.');
     }
     if (o.kind === 'promote' && move.promotion && this.promotionIsSafe(move.to)) {
-      return this.end('won', 'Your squire reaches the far wall and is knighted!');
+      return this.end('won', 'Your pawn reaches the far wall and is promoted!');
     }
     // Material only counts once the enemy has had a chance to take back: a grab that's
     // simply recaptured hasn't won anything. So wait for the reply (even on the last move).

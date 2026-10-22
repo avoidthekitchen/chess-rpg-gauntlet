@@ -18,7 +18,7 @@ describe('boss budget', () => {
 
   it('applies the boss’s piece caps (no queen in region 1)', () => {
     const c = checkArmy(['q'], r1);
-    expect(c).toEqual({ ok: false, points: 9, reason: 'No sorceress allowed in this duel.' });
+    expect(c).toEqual({ ok: false, points: 9, reason: 'No queen allowed in this duel.' });
     expect(canAdd([], 'q', r1)).toBe(false);
     expect(canAdd(['r', 'n'], 'p', r1)).toBe(true);
     expect(canAdd(['r', 'n', 'p', 'p'], 'p', r1)).toBe(false);
@@ -29,7 +29,7 @@ describe('boss budget', () => {
   });
 
   it('suggests the companion first, then the strongest pieces that fit', () => {
-    const s = newSave('squire', 'b', true); // owl + 2 squires = 5 points
+    const s = newSave('squire', 'b', true); // owl + 2 pawns = 5 points
     addCharacter(s, 'q', 'hired'); // can't come
     addCharacter(s, 'r', 'hired');
     addCharacter(s, 'p', 'hired');

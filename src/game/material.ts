@@ -36,3 +36,14 @@ export function materialOf(chess: Chess, color: Color): number {
 export function materialBalance(chess: Chess, color: Color): number {
   return materialOf(chess, color) - materialOf(chess, other(color));
 }
+
+/** The piece values in one line, for goals that count material. */
+export const VALUE_LEGEND = (['p', 'n', 'b', 'r', 'q'] as const)
+  .map((t) => `${{ p: 'Pawn', n: 'Knight', b: 'Bishop', r: 'Rook', q: 'Queen' }[t]} ${PIECE_VALUE[t]}`)
+  .join(' · ');
+
+/** A change in material as a signed label, such as "+3" or "−5" (a true minus sign); empty for no change. */
+export function swingLabel(delta: number): string {
+  if (delta === 0) return '';
+  return delta > 0 ? `+${delta}` : `−${-delta}`;
+}

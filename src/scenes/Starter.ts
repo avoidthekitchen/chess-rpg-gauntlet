@@ -35,7 +35,7 @@ export class StarterScene extends BaseScene {
     const cx = this.W / 2;
     eyebrow(this, cx, top, 'Choose your companion').setOrigin(0.5, 0);
     this.text(cx, top + 16, 'Who rides out with you?', { fontFamily: SERIF, fontSize: this.wide ? '30px' : '24px', fontStyle: 'bold' }).setOrigin(0.5, 0);
-    this.text(cx, top + (this.wide ? 56 : 48), 'Your companion is your tutor, and comes with two mouse squires.', {
+    this.text(cx, top + (this.wide ? 56 : 48), 'Your companion is your tutor, and comes with two mouse pawns.', {
       fontFamily: SERIF,
       fontSize: '15px',
       color: CSS.muted,

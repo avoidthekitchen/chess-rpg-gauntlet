@@ -121,7 +121,7 @@ export class TownScene extends BaseScene {
   private drawTavern(c: Phaser.GameObjects.Container, x: number, y: number, w: number) {
     const s = save();
     const pad = 14;
-    const intro = para(this, x + pad, y + 34, 'Every piece costs its chess value in gold: a squire is worth 1, so 10g; a tower is worth 5, so 50g. A full chess set is the most you can field.', w - pad * 2, 14, CSS.muted);
+    const intro = para(this, x + pad, y + 34, 'Every piece costs its chess value in gold: a pawn is worth 1, so 10g; a rook is worth 5, so 50g. A full chess set is the most you can field.', w - pad * 2, 14, CSS.muted);
     c.add([panel(this, x, y, w, intro.height + 46), this.text(x + pad, y + 10, 'The Muddy Mug', { fontFamily: SERIF, fontSize: '19px', fontStyle: 'bold' }), intro]);
     y += intro.height + 56;
 
@@ -166,7 +166,7 @@ export class TownScene extends BaseScene {
     const types = s.roster.map((r) => r.type);
     const lines = [`You · ${SPECIES.k}`, ...s.roster.map((r) => `${r.name} · ${SPECIES[r.type]}${r.role === 'starter' ? ' (companion)' : r.role === 'hero' ? ' (hero)' : ''}`)];
     const list = para(this, x + pad, y + 34, lines.join('\n'), w - pad * 2, 15, CSS.ink);
-    const foot = para(this, x + pad, y + 40 + list.height, `Army: ${armyPoints(types)} points. The Goblin Chief’s duel allows up to ${R1_BOSS_BUDGET.points} points and no sorceress (queen), so extra pieces are choices, not power.`, w - pad * 2, 13, CSS.muted);
+    const foot = para(this, x + pad, y + 40 + list.height, `Army: ${armyPoints(types)} points. The Goblin Chief’s duel allows up to ${R1_BOSS_BUDGET.points} points and no queen, so extra pieces are choices, not power.`, w - pad * 2, 13, CSS.muted);
     const h = 52 + list.height + foot.height;
     c.add([panel(this, x, y, w, h), eyebrow(this, x + pad, y + 12, 'Your army'), list, foot]);
     return y + h + 10;

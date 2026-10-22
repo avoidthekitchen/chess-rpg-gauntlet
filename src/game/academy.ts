@@ -25,7 +25,7 @@ export const EXERCISES: Exercise[] = [
     title: 'The Queen’s Net',
     region: 'Academy',
     enemy: { name: 'Training Dummy King', personality: 'standard' },
-    intro: 'Your sorceress and your king against a lone king. Shrink his box until he has nowhere to go.',
+    intro: 'Your queen and your king against a lone king. Shrink his box until he has nowhere to go.',
     lesson:
       'Use the queen to cut the king off, a knight’s move away from him, then follow him as he steps back. When he’s on the edge, bring your own king up to guard the mating square. Watch out for stalemate: always leave him a move until the last one.',
     steps: [
@@ -40,10 +40,10 @@ export const EXERCISES: Exercise[] = [
   },
   {
     id: 'academy-rook',
-    title: 'The Tower’s Box',
+    title: 'The Rook’s Box',
     region: 'Academy',
     enemy: { name: 'Training Dummy King', personality: 'standard' },
-    intro: 'Just your tower and your king this time. Slower, but the same idea.',
+    intro: 'Just your rook and your king this time. Slower, but the same idea.',
     lesson:
       'The rook draws a wall the king can’t cross. Bring your king up to face his king, with one square between them (the opposition), then check along the edge. If he stays out of opposition, make a waiting move with the rook.',
     steps: [

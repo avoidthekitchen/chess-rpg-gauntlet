@@ -38,18 +38,20 @@ Each place has one job: the academy teaches a region's ideas in a safe space (un
 
 | Document | Contents |
 | --- | --- |
-| [Game systems](design/systems.md) | Battles, army, gold, enemies, difficulty, powers and rewind |
+| [Game systems](design/systems.md) | Battles, army, gold, enemies, AI habits by faction, powers and rewind, tuning values |
 | [Campaign and curriculum](design/campaign.md) | Campaign structure, factions, teaching progression and Gauntlet |
-| [Story and recurring characters](design/story.md) | Setting, starter companions and tutors |
+| [Story and recurring characters](design/story.md) | Setting, main arc, recurring cast and voice guide |
+| [Names and terms](design/glossary.md) | Piece, faction, place and game-term names used everywhere |
 | [Art direction](design/art.md) | Board tokens, portraits, asset pipeline and deferred 3D exploration |
 | [Technical design and licensing](design/technical.md) | Tech stack, deployment and licenses |
 | [Decisions and open questions](design/decisions.md) | Open TODOs, tuning questions and decision log |
 
 ## Regions
 
-- [Region 1: Bog Goblins](design/regions/region-01-bog-goblins.md) — original prototype scope and build order.
+- [Region 1: Bog Goblins](design/regions/region-01-bog-goblins.md) — built and deployed; the worked example for every Region.
+- [Region template](design/regions/region-template.md) — copy it to start a new Region.
 - [Regions 2–5 and the Lich King](design/campaign.md#regions-and-factions) — existing faction and curriculum summaries; detailed Region documents are still [open TODOs](design/decisions.md#open-todos).
 
 Shared rules live in the topic documents above; Region documents hold local content and link to those rules. The [story document](design/story.md) holds the overall arc and recurring cast; Region documents hold their local stories and characters. Each detailed document links back here.
 
-[Region 1 build progress](progress.md) records implementation history separately from the design.
+[Region 1 build progress](progress.md) records implementation history separately from the design. The [playbook](playbook.md) describes how to build and check a Region.

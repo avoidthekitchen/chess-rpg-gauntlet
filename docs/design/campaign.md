@@ -36,7 +36,9 @@ Each region has one faction built around a headline chess theme, and also revisi
 | 5 | Bone Wardens | Skeleton animals, the Lich's vanguard | Small elite armies | Promotion, king activity, endgames |
 | Final | The Lich King | Skeleton versions of every species | Full army | Complete games |
 
-Detailed Region designs for Regions 2–5 and the Lich King are still open ([open TODOs](decisions.md#open-todos)). Keep the faction and curriculum summary tables here as the campaign-wide overview. As each detailed design is written in a separate file under `regions/`, link its Region name in both tables to that document.
+Each faction's readable AI habit is in [AI habits by faction](systems.md#ai-habits-by-faction).
+
+Detailed Region designs for Regions 2–5 and the Lich King are still open ([open TODOs](decisions.md#open-todos)). Keep the faction and curriculum summary tables here as the campaign-wide overview. As each detailed design is written in a separate file under `regions/` (copy the [Region template](regions/region-template.md); [Region 1](regions/region-01-bog-goblins.md) is the worked example), link its Region name in both tables to that document.
 
 ## Curriculum
 

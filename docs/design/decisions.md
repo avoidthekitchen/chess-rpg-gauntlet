@@ -6,10 +6,29 @@
 
 The one place to track unfinished design work. When one is resolved, move the answer to the document it belongs in and tick it off here.
 
-- [ ] **Main story arc:** player motivation and the story beats connecting the Regions to the Lich King. Answer goes in [Story](story.md#main-story-arc).
-- [ ] **Recurring characters:** names, personalities, development and dialogue conventions beyond the existing roles. Answer goes in [Story](story.md#recurring-characters).
-- [ ] **Region 1 detailed design:** battle sequence and branching, local story and dialogue, and boss and hero character details. Answer goes in [Region 1](regions/region-01-bog-goblins.md#design-status).
-- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/`, linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
+**Design**
+
+- [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
+- [ ] **Recurring characters:** name the Region 2–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
+- [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
+- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
+- [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
+- [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
+- [ ] **Region 1 academy:** one short lesson per battle theme (threat awareness, protection, safe trades, back-rank mate, promotion), linked from each battle's briefing, with the in-battle lesson panel cut to a one-line reminder. Today it has only rook and queen mates ([Region 1](regions/region-01-bog-goblins.md#academy)).
+- [ ] **Shout rule:** decide after playtests whether goblins may abandon a shout that simply hangs a piece. The must-play rule makes traps easy, which shortens battles.
+- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Decide their scope before Region 2.
+- [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
+- [ ] **Region 2 numbers:** battle count and wins that open the boss, battle rewards, academy pay and bounty ratings. Only the 16-point boss budget exists so far ([tuning values](systems.md#tuning-values)).
+
+**Code**
+
+- [ ] **Region registry:** much of the game assumes Region 1. Before building Region 2, add a registry of Regions and a current-region field in the save, so Region 2 isn't a copy of half the game. What assumes Region 1 today:
+    - the map, the boss and the hero (`src/game/region1*.ts`, `src/scenes/Map.ts`, `src/scenes/Muster.ts`, `src/flow.ts`);
+    - the puzzle files (`src/puzzles.ts`, and the config in `scripts/build-puzzles.mjs`);
+    - goblin wording in battle ("Told you I would!", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
+- [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
+- [ ] **Region 1 boss results:** the no-shout boss's AI values are in the [tuning values](systems.md#tuning-values); on the next `npm run verify:battles`, record the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification). The boss check is the slow part of that run (384 full games).
+- [ ] **Tortoise name:** rename "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
 ## Open questions
 
@@ -21,6 +40,16 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | Story arc: the Lich King is a former Lion King of Pawnshire who refused checkmate; chess rules are the one law magic can't break |
+| 2026-10-22 | The Lich King's origin comes one hint per Region, confirmed in Region 3; his interludes are one or two lines per Region |
+| 2026-10-22 | Defeated leaders may return lightly: Grubnak as comic relief, the Iron Legion's general as an ally |
+| 2026-10-22 | Pawnshire is also the name of the Lion King's kingdom |
+| 2026-10-22 | The starter companion is the coach for every lesson; heroes like Saffron don't teach. The Lich King is cold and courtly |
+| 2026-10-22 | Faction habits: Bandit wanted poster (target from their best line, poster icon, named by the Squire advice), Shadow Cult binding, Iron Legion proud (renamed from greedy), Bone Wardens relentless march, Lich King none |
+| 2026-10-22 | Help ladder: Scrying Orb charges in Region 2, Far Sight in 3, Oracle and Blunder Ward (once per battle) in 4, rewind relics in 5 |
+| 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name |
+| 2026-10-22 | Region 1's boss, Grubnak, doesn't shout: the final exam for the habit the shouts taught |
+| 2026-10-22 | Every Region follows the Region template, with Region 1 as the worked example, and meets the playbook's verification bars |
 | 2026-10-22 | Every token comes in White and Black: ivory or ebony headgear and base, applied in code from a cyan key; ebony gets a light rim |
 | 2026-10-22 | Each enemy faction has its own species and shares only the chess headgear shapes; Bog Goblins are bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief |
 | 2026-10-22 | Bandit Rider placeholder art removed; Region 2 picks its own species when designed |

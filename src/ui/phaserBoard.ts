@@ -787,7 +787,9 @@ export class PhaserBoard {
     const sq = this.squareAt(wx - this.root.x, wy - this.root.y);
     // A move target wins, even if a token in front overlaps it.
     if (sq && this.view.targets.has(sq)) return this.opts.onSquare(sq);
-    // Otherwise a tap on a token's body picks that token, front-most first.
+    // Then the piece standing on the tapped square, even if a taller token in front overlaps it.
+    if (sq && this.pieces.has(sq)) return this.opts.onSquare(sq);
+    // On an empty square, a tap on a token's body (its head reaching up) picks that token, front-most first.
     const front = [...this.pieces.values()].sort((a, b) => b.node.depth - a.node.depth);
     for (const p of front) if (p.body.getBounds().contains(wx, wy)) return this.opts.onSquare(p.square);
     if (sq) this.opts.onSquare(sq);

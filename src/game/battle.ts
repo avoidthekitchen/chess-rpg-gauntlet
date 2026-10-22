@@ -18,7 +18,8 @@ export interface TurnResult {
 
 /** Everything a rewind needs to restore. */
 interface Snapshot {
-  fen: string;
+  /** Half-moves played so far. Rewinding undoes back to here, which keeps chess.js's repetition count right. */
+  plies: number;
   playerMoves: number;
   enemyMoves: number;
   piecesLost: number;
@@ -125,7 +126,8 @@ export class Battle {
   rewind(): boolean {
     if (!this.canRewind()) return false;
     const s = this.history.pop()!;
-    this.chess.load(s.fen);
+    // Undo rather than reload a FEN: a reload would forget earlier positions, so a threefold repetition could be missed.
+    while (this.chess.history().length > s.plies) this.chess.undo();
     this.playerMoves = s.playerMoves;
     this.enemyMoves = s.enemyMoves;
     this.piecesLost = s.piecesLost;
@@ -139,7 +141,7 @@ export class Battle {
 
   private snapshot(): Snapshot {
     return {
-      fen: this.chess.fen(),
+      plies: this.chess.history().length,
       playerMoves: this.playerMoves,
       enemyMoves: this.enemyMoves,
       piecesLost: this.piecesLost,

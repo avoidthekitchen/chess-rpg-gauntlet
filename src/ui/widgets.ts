@@ -55,10 +55,12 @@ export function button(scene: BaseScene, x: number, y: number, label: string, o:
       draw(false);
     });
     zone.on('pointerdown', () => (pressed = true));
-    zone.on('pointerup', (_p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
+    zone.on('pointerup', (p: Phaser.Input.Pointer, _x: number, _y: number, e: Phaser.Types.Input.EventData) => {
       e?.stopPropagation?.();
       if (!pressed) return;
       pressed = false;
+      // A drag (e.g. scrolling the tavern) isn't a click.
+      if (Math.hypot(p.upX - p.downX, p.upY - p.downY) > 10 * (window.devicePixelRatio || 1)) return;
       o.onClick();
     });
     c.add(zone);

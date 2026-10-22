@@ -61,7 +61,7 @@ const NAMES: Record<Exclude<PieceSymbol, 'k'>, string[]> = {
   n: ['Sir Hob', 'Dame Lily', 'Sir Croak'],
   b: ['Sage Ollie', 'Brother Hoot', 'Sister Plume'],
   r: ['Old Brick', 'Granite', 'Mossback'],
-  q: ['Saffron', 'Ember'],
+  q: ['Ember', 'Juniper'], // Saffron is the region 1 hero, so hires never take her name
 };
 
 export const STARTING_GOLD = 20;

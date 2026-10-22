@@ -104,6 +104,18 @@ describe('bounty board', () => {
     expect(refreshBounties(s, pool, () => 0.7)).toBe(true);
   });
 
+  it('stays empty after you settle every bounty, until the next battle', () => {
+    const s = newSave('squire', 'n', true);
+    refreshBounties(s, pool, () => 0.4);
+    for (const id of [...s.bounties]) settleBounty(s, pool.find((x) => x.id === id)!, true);
+    expect(s.bounties).toEqual([]);
+    expect(refreshBounties(s, pool, () => 0.4)).toBe(false);
+    expect(s.bounties).toEqual([]);
+    recordLoss(s, 'b1');
+    expect(refreshBounties(s, pool, () => 0.4)).toBe(true);
+    expect(s.bounties.length).toBe(BOUNTY_COUNT);
+  });
+
   it('pays for a solved bounty and never offers a finished one again', () => {
     const s = newSave('squire', 'n', true);
     refreshBounties(s, pool, () => 0.5);

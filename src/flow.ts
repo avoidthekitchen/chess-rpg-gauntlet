@@ -7,12 +7,12 @@ import { bonusMet, bonusText, type BattleDef, type Line } from './game/content';
 import { DIFFICULTIES } from './game/difficulty';
 import type { Exercise } from './game/academy';
 import { lossCost, recordLoss, recordWin, type Payout } from './game/economy';
-import { costWords, type MoveReview } from './game/review';
 import { objectiveText } from './game/scenarios';
 import { persist, save } from './save';
 import type { BattleLaunch } from './scenes/Battle';
 import { esc, showModal, type ModalButton } from './ui/overlay';
 import { goTo } from './ui/screen';
+import { REVIEW_SLOT } from './ui/reviewText';
 import { FRAMING, SPECIES, pieceName } from './ui/speaker';
 
 /**
@@ -114,26 +114,28 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef, opts: LaunchOp
       const stats = { won, piecesLost: b.piecesLost, playerMoves: b.playerMoves, rewindsUsed: startRewinds - b.rewindsLeft };
       const buttons: ModalButton[] = [];
       let html = `<p>${esc(b.reason)}</p>`;
+      // One charge per defeat, however it's accepted (retry, retreat, or restart/leave from the top bar).
+      let charged = false;
+      const recordAcceptedLoss = () => {
+        if (charged) return;
+        charged = true;
+        recordLoss(s, def.id);
+        persist();
+      };
       if (won) {
         const pay = recordWin(s, def, stats, extra.tacticGold);
         persist();
         html += payoutHtml(def, stats, pay, s.gold);
-        html += reviewHtml(extra.mistake, true, b.reason);
+        html += REVIEW_SLOT;
         html += dialogueHtml(def.after, def);
         if (opts.onWin) html += opts.onWin();
         buttons.push({ label: opts.winButton ?? 'Back to the map', kind: 'primary', onClick: () => goTo(scene.game, 'map') });
         buttons.push({ label: 'Replay', onClick: actions.retry });
       } else {
-        html += reviewHtml(extra.mistake, false, b.reason);
+        html += REVIEW_SLOT;
         // Accepting the defeat (retry or retreat) costs gold on harder difficulties; a rewind doesn't.
         const cost = lossCost(s.difficulty, s.gold);
-        let charged = false;
-        const accept = () => {
-          if (charged) return;
-          charged = true;
-          recordLoss(s, def.id);
-          persist();
-        };
+        const accept = () => recordAcceptedLoss();
         html += cost > 0
           ? `<p class="loss">Accepting this defeat costs ${cost}g (a tenth of your gold on ${esc(DIFFICULTIES[s.difficulty].label)}).${actions.rewind ? ' A rewind costs nothing.' : ''}</p>`
           : '<p class="muted">On Squire a defeat costs nothing. Every captured piece comes back.</p>';
@@ -155,28 +157,20 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef, opts: LaunchOp
           },
         });
       }
-      return { eyebrow: won ? 'Victory' : 'Defeat', title: won ? 'The day is yours!' : 'The line breaks…', html, buttons };
+      return {
+        eyebrow: won ? 'Victory' : 'Defeat',
+        title: won ? 'The day is yours!' : 'The line breaks…',
+        html,
+        buttons,
+        // Leaving or restarting from the top bar accepts a defeat too (so its cost can't be skipped).
+        onAbandon: won ? undefined : () => recordAcceptedLoss(),
+      };
     },
   };
   goTo(scene.game, 'battle', launch);
 }
 
 export const speciesName = (t: PieceSymbol) => SPECIES[t];
-
-/** The battle review: the costliest move and what was better (pillar 4: lessons are clear). */
-export function reviewHtml(mistake: (MoveReview & { cost: number }) | null, won: boolean, reason: string): string {
-  let body: string;
-  if (mistake) {
-    body = `${won ? 'You won, but your' : 'Your'} biggest slip was move ${mistake.number}, <strong>${esc(mistake.played)}</strong>. It gave away ${esc(costWords(mistake.cost))}. <strong>${esc(mistake.best)}</strong> was stronger.`;
-  } else if (won) {
-    body = 'No real mistakes. Clean work!';
-  } else if (/^Out of moves/.test(reason)) {
-    body = 'No single blunder: you just ran out of moves. Look for a quicker route to the goal.';
-  } else {
-    body = 'No single move gave it away. Try a different plan next time.';
-  }
-  return `<div class="review"><p class="who">Battle review</p><p>${body}</p></div>`;
-}
 
 /** What a win paid, line by line, including bonus goals already earned on an earlier win. */
 function payoutHtml(def: BattleDef, stats: { won: boolean; piecesLost: number; playerMoves: number; rewindsUsed: number }, pay: Payout, gold: number) {
@@ -233,9 +227,9 @@ export function launchExercise(scene: Phaser.Scene, ex: Exercise) {
     ai: { depth: 8, multiPv: 1, maxLoss: 0 },
     tip: { type: 'b', name: 'Sage Ollie', line: ex.steps[0] },
     exit: () => goTo(scene.game, 'town', { tab: 'academy' }),
-    finish: (b, actions, extra) => {
+    finish: (b, actions) => {
       const won = b.status === 'won';
-      let note = won ? '' : reviewHtml(extra.mistake, false, b.reason);
+      let note = won ? '' : REVIEW_SLOT;
       if (won && !s.lessonsDone.includes(ex.id)) {
         s.lessonsDone.push(ex.id);
         s.gold += ex.reward;

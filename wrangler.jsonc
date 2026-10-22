@@ -5,11 +5,13 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": false,
   "preview_urls": false,
-  // Zone routes, like the site's other prototypes. They only match /chess-rpg*, so the
-  // site's own unformedideas.com/* Worker keeps everything else.
+  // Zone routes, like the site's other prototypes. The site's own unformedideas.com/* Worker keeps everything else.
+  // Exact path plus everything under it, so e.g. /chess-rpg-devlog still reaches the main site.
   "routes": [
-    { "pattern": "unformedideas.com/chess-rpg*", "zone_name": "unformedideas.com" },
-    { "pattern": "www.unformedideas.com/chess-rpg*", "zone_name": "unformedideas.com" }
+    { "pattern": "unformedideas.com/chess-rpg", "zone_name": "unformedideas.com" },
+    { "pattern": "unformedideas.com/chess-rpg/*", "zone_name": "unformedideas.com" },
+    { "pattern": "www.unformedideas.com/chess-rpg", "zone_name": "unformedideas.com" },
+    { "pattern": "www.unformedideas.com/chess-rpg/*", "zone_name": "unformedideas.com" }
   ],
   // `npm run deploy` stages the build at dist-worker/chess-rpg/ so files mirror the route path.
   // /chess-rpg redirects to /chess-rpg/ (auto-trailing-slash), which the relative asset paths need.

@@ -105,7 +105,8 @@ export const BOUNTY_COUNT = 4;
  * ground, and it mixes puzzles in between battles. Returns true if it changed.
  */
 export function refreshBounties(s: SaveState, pool: Puzzle[], rng: () => number = Math.random): boolean {
-  if (s.bountiesRefreshedAt === s.battlesFought && s.bounties.length > 0) return false;
+  // Once per battle fought, even if every bounty is already settled: the board can't be farmed.
+  if (s.bountiesRefreshedAt === s.battlesFought) return false;
   const exclude = new Set([...s.bountiesDone]);
   const picks = pickBounties(pool, { playerRating: playerRatingFor(s.difficulty), count: BOUNTY_COUNT, exclude, rng });
   s.bounties = picks.map((p) => p.id);

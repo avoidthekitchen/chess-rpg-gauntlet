@@ -46,12 +46,16 @@ export class PuzzleScene extends BaseScene {
   private pieceStyle: PieceStyle = 'tokens';
   private firstBuild = true;
   private busy = false;
+  /** Bumped on start and shutdown, so async work from a bounty you left stops. */
+  private session = 0;
 
   constructor() {
     super('puzzle');
   }
 
   init(data: PuzzleLaunch) {
+    this.session++;
+    this.events.once('shutdown', () => this.session++);
     this.board = null;
     this.panelLayer = null;
     this.speakerLayer = null;
@@ -65,6 +69,7 @@ export class PuzzleScene extends BaseScene {
     this.lastMove = null;
     this.hint = null;
     this.firstBuild = true;
+    this.busy = false;
     this.pieceStyle = store.get('pieceStyle') === 'classic' ? 'classic' : 'tokens';
     const c = data.companion;
     this.speaker = { side: 'ally', name: `${c.name} · ${SPECIES[c.type]}`, line: HINT[puzzleTheme(data.puzzle)], type: c.type };
@@ -82,12 +87,12 @@ export class PuzzleScene extends BaseScene {
       const sq = Math.min(80, (H - topH - 16) / BOARD_TALL, (W - panelW - 56) / BOARD_SPAN);
       const bw = sq * BOARD_SPAN;
       const bx = Math.max(16, (W - bw - 24 - panelW) / 2);
-      return { wide: true, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
+      return { wide: true, short: H < 600, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
     }
-    const sq = Math.min(W / BOARD_SPAN, (H - topH - 230 - safe.bottom) / BOARD_TALL, 64);
+    const sq = Math.min(W / BOARD_SPAN, (H - topH - 250 - safe.bottom) / BOARD_TALL, 64);
     const bw = sq * BOARD_SPAN;
     const pw = Math.min(W - 24, 560);
-    return { wide: false, board: { x: (W - bw) / 2, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + sq * BOARD_TALL + 4, w: pw } };
+    return { wide: false, short: false, board: { x: (W - bw) / 2, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + sq * BOARD_TALL + 4, w: pw } };
   }
 
   protected build() {
@@ -120,9 +125,11 @@ export class PuzzleScene extends BaseScene {
   }
 
   private async playSetup() {
+    const sess = this.session;
     await sleep(900);
-    if (!this.sys.isActive()) return;
+    if (sess !== this.session) return;
     await this.play(this.launch.puzzle.moves[0]);
+    if (sess !== this.session || this.state !== 'setup') return; // left, or gave up during the setup move
     this.state = 'solving';
     this.refresh();
   }
@@ -158,7 +165,7 @@ export class PuzzleScene extends BaseScene {
     const p = this.launch.puzzle;
     const theme = THEME_TEXT[puzzleTheme(p)];
     const { x, w } = L.panel;
-    let y = L.panel.y + (L.wide ? 132 : 0);
+    let y = L.panel.y + (L.wide && !L.short ? 132 : 0);
     const pad = 14;
     const side = this.solver === 'w' ? 'White' : 'Black';
     const status =
@@ -182,7 +189,7 @@ export class PuzzleScene extends BaseScene {
       c.add(button(this, x, y, 'Back to town', { w: Math.min(200, w), h: 40, kind: 'primary', onClick: () => this.leave() }));
     }
     y += 52;
-    if (L.wide) {
+    if (L.wide && !L.short) {
       const note = para(this, x, y, 'Bounties are real puzzles from the Lichess puzzle database (CC0). One wrong move and the bounty is gone until the board refreshes after your next battle.', w, 13, CSS.muted);
       c.add(note);
     }
@@ -193,11 +200,11 @@ export class PuzzleScene extends BaseScene {
     this.speakerLayer = null;
     if (!this.speaker) return;
     const L = this.layout();
-    if (L.wide) {
+    if (L.wide && !L.short) {
       this.speakerLayer = speakerCard(this, L.panel.x, L.panel.y, L.panel.w, this.speaker, 'bog', false).container;
       return;
     }
-    const { container, height } = speakerCard(this, 12, 0, this.W - 24, this.speaker, 'bog', true);
+    const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, L.wide ? L.panel.w : this.W - 24, this.speaker, 'bog', true);
     container.y = this.H - height - Math.max(12, this.safe.bottom);
     container.setDepth(50);
     this.speakerLayer = container;
@@ -227,11 +234,13 @@ export class PuzzleScene extends BaseScene {
   }
 
   private async attempt(uci: string) {
+    const sess = this.session;
     const p = this.launch.puzzle;
     const verdict = checkPuzzleMove(p, this.step, uci);
     this.state = 'replying';
     const expected = p.moves[1 + 2 * this.step];
     await this.play(uci);
+    if (sess !== this.session) return;
     if (verdict === 'wrong') {
       // Take the wrong move back so the answer is shown on the position it belongs to.
       this.chess.undo();
@@ -248,7 +257,9 @@ export class PuzzleScene extends BaseScene {
     }
     this.step++;
     await sleep(350);
+    if (sess !== this.session) return;
     await this.play(p.moves[2 * this.step]);
+    if (sess !== this.session) return;
     this.state = 'solving';
     this.say('Good! Keep going: there’s more to win.');
     this.refresh();
@@ -297,7 +308,7 @@ export class PuzzleScene extends BaseScene {
   }
 
   private leave() {
-    if (this.state === 'solving' || this.state === 'setup') {
+    if (this.state === 'solving' || this.state === 'setup' || this.state === 'replying') {
       showModal({
         title: 'Abandon the bounty?',
         html: `<p>${esc('Leaving now counts as giving up, and this bounty comes off the board.')}</p>`,

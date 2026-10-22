@@ -8,6 +8,7 @@ import { DIFFICULTIES, type AiProfile, type DifficultyId } from '../game/difficu
 import { PIECE_VALUE, materialBalance } from '../game/material';
 import { forkPays } from '../game/tacticCheck';
 import { biggestMistake, type MoveReview } from '../game/review';
+import { REVIEW_SLOT, reviewHtml, type ReviewResult } from '../ui/reviewText';
 import { TACTIC_GOLD } from '../game/economy';
 import { objectiveText, type Scenario } from '../game/scenarios';
 import type { TacticTag } from '../game/tactics';
@@ -40,8 +41,11 @@ const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
 export interface FinishView {
   eyebrow?: string;
   title: string;
+  /** May contain REVIEW_SLOT, where the post-battle review is filled in once it's ready. */
   html: string;
   buttons: ModalButton[];
+  /** Runs if the player leaves or restarts instead of using the dialog (e.g. to charge a defeat). */
+  onAbandon?: () => void;
 }
 
 export interface BattleLaunch {
@@ -66,7 +70,7 @@ export interface BattleLaunch {
   finish: (
     b: Battle,
     actions: { retry: () => void; rewind: (() => void) | null },
-    extra: { tacticGold: number; mistake: (MoveReview & { cost: number }) | null },
+    extra: { tacticGold: number },
   ) => FinishView;
   /** Leave the battle (the ← button). */
   exit: () => void;
@@ -102,12 +106,17 @@ export class BattleScene extends BaseScene {
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
   /** Gold earned this battle from engine-confirmed tactics. */
   tacticGold = 0;
+  /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
+  private session = 0;
+  /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
+  private pendingView: FinishView | null = null;
 
   constructor() {
     super('battle');
   }
 
   init(data: BattleLaunch) {
+    this.session++;
     // Phaser reuses the scene instance, so drop everything from the last battle.
     this.board = null;
     this.panelLayer = null;
@@ -117,6 +126,7 @@ export class BattleScene extends BaseScene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       clearTimeout(this.speakerTimer);
       this.aiToken++;
+      this.session++;
     });
     this.pieceStyle = store.get('pieceStyle') === 'classic' ? 'classic' : 'tokens';
     this.reset();
@@ -148,6 +158,7 @@ export class BattleScene extends BaseScene {
     this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
     this.firstBuild = true;
     this.shout = null;
+    this.pendingView = null;
     const tip = this.launch.tip;
     if (tip) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line: tip.line, type: tip.type });
     void this.startPlayerTurn();
@@ -168,14 +179,17 @@ export class BattleScene extends BaseScene {
       const bw = sq * BOARD_SPAN;
       const total = bw + 24 + panelW;
       const bx = Math.max(16, (W - total) / 2);
-      return { wide: true, topH, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
+      // A short landscape screen (a phone on its side) has no room for the talking head
+      // above the panel or for the lesson and log, so those float or move behind buttons.
+      const short = H < 600;
+      return { wide: true, short, topH, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
     }
-    const sq = Math.min(W / BOARD_SPAN, (H - topH - 230 - safe.bottom) / BOARD_TALL, 64);
+    const sq = Math.min(W / BOARD_SPAN, (H - topH - 250 - safe.bottom) / BOARD_TALL, 64);
     const bw = sq * BOARD_SPAN;
     const bx = (W - bw) / 2;
     const bh = sq * BOARD_TALL;
     const pw = Math.min(W - 24, 560);
-    return { wide: false, topH, board: { x: bx, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + bh + 4, w: pw } };
+    return { wide: false, short: false, topH, board: { x: bx, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + bh + 4, w: pw } };
   }
 
   protected build() {
@@ -250,7 +264,7 @@ export class BattleScene extends BaseScene {
     const o = b.scenario.objective;
     const { x, w } = L.panel;
     let y = L.panel.y;
-    if (L.wide) y += 132; // room for the talking head
+    if (L.wide && !L.short) y += 132; // room for the talking head
 
     // Objective and meters.
     const meters: [string, string][] = [];
@@ -290,7 +304,7 @@ export class BattleScene extends BaseScene {
       { label: L.wide ? `◉ Threat Sight: ${this.threatSight ? 'On' : 'Off'}` : '◉ Threats', pressed: this.threatSight, onClick: () => this.toggleThreats() },
       { label: L.wide ? `♞ Pieces: ${this.pieceStyle === 'tokens' ? 'Tokens' : 'Classic'}` : '♞ Pieces', onClick: () => this.togglePieces() },
     ];
-    if (!L.wide) ctrl.push({ label: '✎ Lesson', onClick: () => this.showLesson() });
+    if (!L.wide || L.short) ctrl.push({ label: '✎ Lesson', onClick: () => this.showLesson() });
     const cols = L.wide ? 2 : ctrl.length;
     const bw = (w - 8 * (cols - 1)) / cols;
     ctrl.forEach((k, i) => {
@@ -309,11 +323,11 @@ export class BattleScene extends BaseScene {
       wordWrap: { width: w - 4, useAdvancedWrap: true },
     });
     status.setText(`${turnText}${this.statusLine}`);
-    if (!L.wide) status.setMaxLines(3);
+    if (!L.wide || L.short) status.setMaxLines(3);
     c.add(status);
     y += Math.max(status.height, 40) + 10;
 
-    if (!L.wide) {
+    if (!L.wide || L.short) {
       if (engineStatus === 'fallback') c.add(this.text(x + 2, y, 'Stockfish didn’t load: enemies use a simple fallback AI.', { fontFamily: SANS, fontSize: '12px', color: CSS.muted }));
       return;
     }
@@ -362,7 +376,7 @@ export class BattleScene extends BaseScene {
     this.speakerLayer = null;
     if (!this.speaker) return;
     const L = this.layout();
-    if (L.wide) {
+    if (L.wide && !L.short) {
       const { container } = speakerCard(this, L.panel.x, L.panel.y, L.panel.w, this.speaker, this.launch.faction, false);
       this.speakerLayer = container;
       if (performance.now() - this.speakerAt < 300) {
@@ -372,11 +386,11 @@ export class BattleScene extends BaseScene {
       }
       return;
     }
-    // Phone: float over the bottom of the screen for a few seconds.
+    // Phone (or a short landscape screen): float over the bottom of the screen (or panel) for a few seconds.
     const age = performance.now() - this.speakerAt;
     if (age > 4000) return;
-    const w = this.W - 24;
-    const { container, height } = speakerCard(this, 12, 0, w, this.speaker, this.launch.faction, true);
+    const w = L.wide ? L.panel.w : this.W - 24;
+    const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, w, this.speaker, this.launch.faction, true);
     const y = this.H - height - Math.max(12, this.safe.bottom);
     container.y = y;
     container.setDepth(50);
@@ -451,10 +465,15 @@ export class BattleScene extends BaseScene {
     const target = b.chess.get(to);
     let line: string | null = null;
     if (target && target.color === b.player && mover) {
-      const guarded = b.chess.attackers(to, b.player).length > 0;
+      const defenders = b.chess.attackers(to, b.player);
+      const attackers = b.chess.attackers(to, b.enemy).length;
+      // The king only counts as a guard when it's the lone attacker it would take back.
+      const real = defenders.filter((sq) => b.chess.get(sq)?.type !== 'k').length + (attackers === 1 && defenders.some((sq) => b.chess.get(sq)?.type === 'k') ? 1 : 0);
+      const guarded = real > 0;
       const name = PIECE_SHORT[target.type];
       if (target.type === 'k') line = null;
       else if (!guarded) line = `They want our ${name} on ${to}, and nobody guards it! Move it, or protect it.`;
+      else if (attackers > real) line = `Our ${name} on ${to} is guarded, but they have more attackers than we have guards. Move it, or add a guard!`;
       else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${PIECE_SHORT[mover.type]} is worth less. That trade loses. Move it!`;
       else line = `Let them try! Our ${name} on ${to} is guarded, so we take right back. Unless you see something better…`;
     } else if ((b.scenario.villages ?? []).includes(to)) {
@@ -480,10 +499,11 @@ export class BattleScene extends BaseScene {
     let uci = this.shoutCache.get(fen);
     if (uci === undefined) {
       const token = this.aiToken;
+      const sess = this.session;
       this.thinking = true;
       this.refresh();
       uci = await planShout(b, engineStatus === 'fallback' ? null : engine, this.ai);
-      if (token !== this.aiToken || this.battle !== b || b.fen !== fen) return;
+      if (token !== this.aiToken || this.battle !== b || this.session !== sess || b.fen !== fen) return;
       this.shoutCache.set(fen, uci);
       this.thinking = false;
     }
@@ -614,6 +634,7 @@ export class BattleScene extends BaseScene {
 
   private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
     const b = this.battle;
+    const sess = this.session;
     const balanceBefore = materialBalance(b.chess, b.player);
     const res = b.playerMove({ from, to, promotion });
     const forkCheck = res.tactics.includes('fork') ? this.confirmFork(b.fen, balanceBefore) : Promise.resolve(false);
@@ -621,11 +642,11 @@ export class BattleScene extends BaseScene {
     this.statusLine = this.describe(res, 'you');
     this.trackNames(res.move);
     await this.animate(res);
-    if (this.battle !== b) return; // restarted meanwhile
+    if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
     const closeUp = this.closeUp(res.move);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
-    if (this.battle !== b) return;
+    if (this.battle !== b || this.session !== sess) return;
     const tactics = forkReal ? res.tactics : res.tactics.filter((t) => t !== 'fork');
     this.speak({ ...res, tactics });
     const tag = tactics.find((t) => PLAYER_BANNER[t]);
@@ -666,6 +687,7 @@ export class BattleScene extends BaseScene {
 
   private async enemyTurn() {
     const b = this.battle;
+    const sess = this.session;
     const token = ++this.aiToken;
     this.thinking = true;
     this.refresh();
@@ -685,7 +707,7 @@ export class BattleScene extends BaseScene {
     // A short pause so the enemy's move doesn't feel instant.
     const wait = 450 - (performance.now() - started);
     if (wait > 0) await sleep(wait);
-    if (token !== this.aiToken || this.battle !== b || !b.isEnemyTurn()) return; // rewound or left meanwhile
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess || !b.isEnemyTurn()) return; // rewound or left meanwhile
 
     const enemyBefore = materialBalance(b.chess, b.enemy);
     const res = b.enemyMove(uci);
@@ -696,10 +718,10 @@ export class BattleScene extends BaseScene {
     if (shout && !kept) this.statusLine = `Foiled! The goblins couldn’t do what they shouted. ${this.statusLine}`;
     this.trackNames(res.move);
     await this.animate(res);
-    if (token !== this.aiToken || this.battle !== b) return;
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const enemyCloseUp = this.closeUp(res.move);
     const forkReal = await enemyFork;
-    if (token !== this.aiToken || this.battle !== b) return;
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
     this.speak(shown, kept);
     const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
@@ -753,20 +775,23 @@ export class BattleScene extends BaseScene {
     const b = this.battle;
     if (b.status === 'playing' || this.finished) return;
     this.finished = true;
-    if (b.status === 'won') this.board?.celebrate();
+    const won = b.status === 'won';
+    if (won) this.board?.celebrate();
+    const sess = this.session;
     const token = this.aiToken;
+    // Record the result now (pay a win, prepare a defeat's dialog), so leaving before the
+    // dialog appears can't lose a win or skip a defeat's cost.
+    const canRewind = b.status === 'lost' && b.canRewind();
+    const view = this.launch.finish(b, { retry: () => this.restart(), rewind: canRewind ? () => this.rewind() : null }, { tacticGold: this.tacticGold });
+    this.pendingView = view;
     const review = this.review(b, token);
     // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
-    const minWait = new Promise((r) => setTimeout(r, b.status === 'won' ? 1800 : 900));
-    const capped = Promise.race([review, new Promise<null>((r) => setTimeout(() => r(null), 6000))]);
-    void Promise.all([minWait, capped]).then(([, mistake]) => {
-      if (this.battle !== b || !this.sys.isActive() || !this.finished || token !== this.aiToken) return;
-      const canRewind = b.status === 'lost' && b.canRewind();
-      const view = this.launch.finish(b, {
-        retry: () => this.restart(),
-        rewind: canRewind ? () => this.rewind() : null,
-      }, { tacticGold: this.tacticGold, mistake: mistake ?? null });
-      showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons, wide: true });
+    const minWait = new Promise((r) => setTimeout(r, won ? 1800 : 900));
+    const capped = Promise.race([review, new Promise<ReviewResult>((r) => setTimeout(() => r({ ok: false }), 6000))]);
+    void Promise.all([minWait, capped]).then(([, result]) => {
+      if (this.battle !== b || this.session !== sess || !this.sys.isActive() || !this.finished || token !== this.aiToken) return;
+      const html = view.html.replace(REVIEW_SLOT, reviewHtml(result, won, b.reason));
+      showModal({ eyebrow: view.eyebrow, title: view.title, html, tone: won ? 'won' : 'lost', buttons: view.buttons, wide: true });
     });
   }
 
@@ -775,22 +800,24 @@ export class BattleScene extends BaseScene {
    * shout still stood after your move, the move is judged after their forced reply,
    * so a deliberate trap isn't mistaken for a blunder.
    */
-  private async review(b: Battle, token: number): Promise<(MoveReview & { cost: number }) | null> {
-    if (engineStatus === 'fallback') return null;
+  private async review(b: Battle, token: number): Promise<ReviewResult> {
+    if (engineStatus === 'fallback') return { ok: false };
     const chess = new Chess(b.scenario.fen);
     const plies = b.log.map((san) => {
       const fen = chess.fen();
       const m = chess.move(san);
       return { fen, san, white: m.color === 'w' };
     });
-    const mine = plies.filter((p) => p.white).slice(-12); // keep long boss games quick
+    // The move that ended a won battle isn't a slip, whatever the engine thinks of the position after.
+    const all = plies.filter((p) => p.white);
+    const mine = (b.status === 'won' ? all.slice(0, -1) : all).slice(-12); // keep long boss games quick
     const out: MoveReview[] = [];
     const DEPTH = 9;
-    const firstNumber = plies.filter((p) => p.white).length - mine.length;
+    const firstNumber = all.indexOf(mine[0]);
     for (const [i, p] of mine.entries()) {
-      if (token !== this.aiToken) return null;
+      if (token !== this.aiToken) return { ok: false };
       const [best] = await engine.analyse(p.fen, DEPTH, 1);
-      if (!best) return null;
+      if (!best) return { ok: false };
       const before = new Chess(p.fen);
       const bestSan = before.move({ from: best.uci.slice(0, 2), to: best.uci.slice(2, 4), promotion: best.uci[4] as PieceSymbol | undefined }).san;
       const after = new Chess(p.fen);
@@ -807,7 +834,7 @@ export class BattleScene extends BaseScene {
       else playedScore = -((await engine.analyse(after.fen(), DEPTH, 1))[0]?.score ?? 0);
       out.push({ number: firstNumber + i + 1, played: p.san, best: bestSan, bestScore: best.score, playedScore });
     }
-    return biggestMistake(out);
+    return { ok: true, mistake: biggestMistake(out) };
   }
 
   // ---------- controls ----------
@@ -821,6 +848,7 @@ export class BattleScene extends BaseScene {
     this.thinking = false;
     this.selected = null;
     this.finished = false;
+    this.pendingView = null; // a rewind undoes the defeat, so nothing is charged
     b.rewind();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';
@@ -831,6 +859,7 @@ export class BattleScene extends BaseScene {
 
   private restart() {
     if (this.board?.busy) return;
+    this.pendingView?.onAbandon?.();
     closeModal();
     this.reset();
     this.rebuild();
@@ -853,6 +882,8 @@ export class BattleScene extends BaseScene {
   }
 
   private leave() {
+    this.pendingView?.onAbandon?.();
+    this.pendingView = null;
     this.aiToken++;
     engine.stop();
     closeModal();

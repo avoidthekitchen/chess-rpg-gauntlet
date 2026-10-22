@@ -40,6 +40,7 @@ export class TownScene extends BaseScene {
     this.tab = data?.tab ?? this.tab;
     this.note = data?.note ?? '';
     this.scroll = 0;
+    this.poolError = false; // try the download again on each visit
   }
 
   protected build() {

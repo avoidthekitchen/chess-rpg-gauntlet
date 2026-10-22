@@ -93,3 +93,34 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 
 **Worth a look**
 - `?loop=timeout` now works in production too. It only matters for automated testing in a hidden browser tab.
+
+## Polish pass (after step 5)
+
+**Done**
+- **Deeper battles.** Trouble in the Reeds, The Swap Meet and Behind the Mud Wall were rebuilt so a strong player needs 4-5 moves (was 2-3), with a second wave of threats after the first shout trap. Win-material goals are now bigger than any single grab, which works around `winMaterial` being judged before a recapture. Every battle is re-verified with the engine (strong player 96-100%, careless 0-25%).
+- **Battle review** (pillar 4). After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move ("Your biggest slip was move 2, a3. It gave away a winning position. Re1 was stronger."). If the goblins' shout still stood after your move, your move is judged after their forced reply, so a deliberate trap isn't called a blunder.
+- **Help that fades.** On Squire, your companion reads each shout for you a moment later: whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Knight leaves it to you.
+- **XCOM-style capture close-up.** Capturing a real piece (not a squire) sweeps a cinematic band across the board with the capturer's portrait.
+- **Victory confetti** with your pieces hopping, short screen fades, bonus stars on cleared map nodes (like a perfect island in Into the Breach), and a "!" on Town when new bounties are up.
+
+**My playtest**: Trouble in the Reeds on Knight as the owl. I missed the second threat and lost my knight, recaptured with a pawn, used a quiet shout to take their knight for free, then set a trap so their forced rook move walked into my bishop. I won in 5 moves, and the review agreed nothing was a real mistake. That's the Into the Breach feel the design asks for.
+
+## Code review (Opus 5.5 High) and fixes
+
+**Fixed**
+- **High: the bounty board could be farmed.** It refilled as soon as every bounty was settled, so a new save could earn about 4,400g with no battles. It now refreshes only after a battle (test added).
+- **High: "Face Grubnak!" could fall off short iPhones.** The muster list now scrolls between a fixed header and a pinned action bar, and switches to two columns when one won't fit.
+- **A battle's result waited for the dialog** (up to about 8 s). Leaving or restarting in that window lost a win or skipped a defeat's gold cost. Results are now recorded the moment the battle ends; leaving or restarting after a defeat accepts it (rewinding still costs nothing), and the review fills into the dialog when ready.
+- **Abandoned battles and bounties kept running** after you left mid-animation: the enemy still moved, stale cards appeared in the next battle, and a bounty could be settled on the wrong puzzle. Every await now checks a session id that's bumped on start and shutdown.
+- **Landscape phones** (e.g. 844×390): the battle controls were off-screen. Short landscape screens now float the talking head and put the lesson behind a button; the starter screen uses rows.
+- **The review** no longer calls a missing review "clean" (it says it couldn't finish), never flags the winning move, and gives village advice after a siege loss.
+- **Engine:** every search has a 12 s timeout. A stuck or crashed worker switches the game to the fallback AI instead of "The enemy is plotting…" forever.
+- **Smaller fixes:** "Give up" during the puzzle's setup move stuck; a hired queen could take the hero's name (two Saffrons); dragging the tavern list could hire a piece; a failed puzzle download never retried; the shout advice now counts attackers against guards and doesn't treat the king as a full guard; the phone battle panel got 20 px more room; routes no longer catch paths like `/chess-rpg-devlog`.
+
+**Not addressed (and why)**
+- The review doesn't pinpoint the move that left a village under-guarded after a siege loss; it gives general siege advice instead. Doing it properly needs village-aware analysis, not just engine scores.
+- The Squire shout advice still ignores pinned guards (rare in these positions).
+- Stockfish lite may not stop mid-search on Rewind/Leave, so a deep search can delay the next one briefly. The new timeout bounds it.
+- `/chess-rpg?x` (no trailing slash, with a query string) isn't matched by the exact route and goes to the main site. Normal links use `/chess-rpg/`.
+- `winMaterial` is still judged before a recapture in `src/game/battle.ts`, which I kept unchanged as you asked. The battle positions work around it, and a test checks that each goal is bigger than any single grab.
+- Simulated greedy players win the Reeds and Squire's Splash battles fairly often (38-63%), and a strong player can mate the boss quickly. Both are worth watching in playtests.

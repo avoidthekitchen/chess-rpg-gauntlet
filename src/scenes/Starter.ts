@@ -45,7 +45,7 @@ export class StarterScene extends BaseScene {
 
     const types: StarterType[] = ['n', 'b', 'r'];
     const y0 = top + (this.wide ? 96 : 96);
-    if (this.W >= 700) {
+    if (this.W >= 700 && this.H >= 600) {
       const w = Math.min(260, (this.W - 64) / 3);
       const h = Math.min(440, this.H - y0 - 24);
       const x0 = cx - (w * 3 + 32) / 2;

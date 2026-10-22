@@ -23,8 +23,8 @@ export function portrait(
   g.fillStyle(side === 'ally' ? 0x3a2c22 : 0x2a2418, 1).fillRoundedRect(x, y, w, h, 10);
   parent?.add(g);
   const has = (k: string) => scene.textures.exists(k);
-  // Missing art falls back to the bandit set, then to the board token.
-  const key = [portraitKey(type, side, faction), portraitKey(type, side, 'foe')].find(has) ?? '';
+  // Missing art falls back to the board token.
+  const key = portraitKey(type, side, faction);
   const frame = FRAMING[type];
   if (frame && scene.textures.exists(key)) {
     const img = scene.add.image(0, 0, key).setOrigin(0, 0);
@@ -37,8 +37,8 @@ export function portrait(
     img.setCrop(-ox / s + 2 / s, -oy / s + 2 / s, (w - 4) / s, (h - 4) / s);
     parent?.add(img);
   } else {
-    const tkey = [tokenPortraitKey(type, side, faction), tokenPortraitKey(type, side, 'foe')].find(has);
-    if (tkey) {
+    const tkey = tokenPortraitKey(type, side, faction);
+    if (has(tkey)) {
       const img = scene.add.image(x + w / 2, y + h * 0.62, tkey).setOrigin(0.5, 0.5);
       img.setScale(Math.min(w / img.width, h / img.height) * 0.92);
       parent?.add(img);

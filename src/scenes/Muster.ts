@@ -50,7 +50,7 @@ export class MusterScene extends BaseScene {
       this,
       x + pad,
       y + 34,
-      `Grubnak brings ${enemyPawns} squires and a frog knight (${enemyPts} points). You may bring up to ${R1_BOSS_BUDGET.points} points, and no sorceress. Your king always comes.`,
+      `Grubnak brings ${enemyPawns} bog rats and a salamander knight (${enemyPts} points). You may bring up to ${R1_BOSS_BUDGET.points} points, and no sorceress. Your king always comes.`,
       w - pad * 2,
       14,
       CSS.muted,
@@ -120,7 +120,7 @@ export class MusterScene extends BaseScene {
       const cx = x + (i % cols) * (cw + 8);
       const cy = listTop + Math.floor(i / cols) * (ch + 8);
       list.add(panel(this, cx, cy, cw, ch, { fill: on ? 0x3a3020 : C.surface, stroke: on ? C.gold : C.line, alpha: can ? 0.95 : 0.5 }));
-      const key = `token-${pieceName(c.type)}-ally`;
+      const key = `token-${pieceName(c.type)}-ally-w`;
       if (this.textures.exists(key)) {
         const img = this.add.image(cx + 28, cy + ch - 6, key).setOrigin(0.5, 1);
         img.setScale(Math.min(40 / img.width, 46 / img.height)).setAlpha(can ? 1 : 0.4);

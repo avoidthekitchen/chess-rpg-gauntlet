@@ -17,13 +17,16 @@ const FILES = 'abcdefgh';
 
 export const PIECE_FILE: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
-/** Which sprite set the enemy uses: Bandit Riders (`foe`) or Bog Goblins (`bog`). */
-export type Faction = 'foe' | 'bog';
+/** Which sprite set the enemy uses: Bog Goblins (`bog`), Region 1. Each region adds its own. */
+export type Faction = 'bog';
 export type PieceStyle = 'tokens' | 'classic';
 
-/** `ally` is the color drawn as your army (White in battles; either side in puzzles). */
+/**
+ * `ally` is the color drawn as your army (White in battles; either side in puzzles).
+ * The faction picks the creature; the chess color picks ivory or ebony headgear and base.
+ */
 export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction, ally: Color = 'w') =>
-  `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}`;
+  `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}-${color}`;
 
 /** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
 const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
@@ -469,8 +472,7 @@ export class PhaserBoard {
   private makeBody(type: PieceSymbol, color: Color) {
     const W = this.W;
     const allyColor = this.opts.allyColor ?? 'w';
-    let key = tokenKey(type, color, this.opts.faction, allyColor);
-    if (!this.scene.textures.exists(key)) key = tokenKey(type, color, 'foe', allyColor); // art not made yet: borrow the bandits'
+    const key = tokenKey(type, color, this.opts.faction, allyColor);
     if (this.opts.style === 'tokens' && this.scene.textures.exists(key)) {
       const [bw, bh] = TOKEN_BOX[type];
       const img = this.scene.add.image(0, 0, key).setOrigin(0.5, 0.97);

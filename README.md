@@ -62,14 +62,18 @@ Art is AI-generated with Google's Gemini 3 Pro Image (`google/gemini-3-pro-image
 node scripts/generate-art.mjs              # new sprites only; needs OPENROUTER_API_KEY_WITH_BUDGET
 node scripts/generate-art.mjs knight-ally  # regenerate one (about $0.14 each)
 node scripts/process-art.mjs               # cut out new/changed raws → public/sprites/*.webp (--all to redo every one)
+node scripts/process-art.mjs --recolor     # redo token ivory/ebony from art/tokens/ (no raws, no API cost)
 ```
 
-Sides are `ally` (cream and teal, gold rim), `foe` (Bandit Riders: black masks, crimson rim) and `bog` (Bog Goblins, Region 1: muddy rags, lime-green war paint, mossy green rim). Bog tokens are generated from the ally tokens so the chess headgear stays identical, and bog portraits from the ally figurines:
+Factions are `ally` (our animals in cream with gold trim) and `bog` (Bog Goblins, Region 1: bog rats, salamanders, crows, snapping turtles, vipers and a toad chief). Every faction has a White and a Black version of each token: the chess headgear and base are generated in a cyan key, cut out to `art/tokens/` (committed), then recolored to ivory (`token-<piece>-<faction>-w.webp`) and ebony with a light rim (`-b.webp`). Bog portraits are generated from the Bog tokens, posed like the ally figurines:
 
 ```bash
 node scripts/generate-art.mjs token-pawn-bog token-knight-bog token-bishop-bog token-rook-bog token-queen-bog token-king-bog
+node scripts/process-art.mjs
 node scripts/generate-art.mjs pawn-bog knight-bog bishop-bog rook-bog queen-bog king-bog
 ```
+
+Adding a faction for a new region follows the checklist in [Art direction](docs/design/art.md#adding-a-faction).
 
 Painted backgrounds (`bg-title`, `bg-map-region1`, `bg-town`, `bg-battle-bog`) use the same script. `process-art.mjs` doesn't cut them out; it resizes them to 1600 px and writes `public/backgrounds/<name>.webp` (under 250 KB each):
 

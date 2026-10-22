@@ -2,7 +2,7 @@ import type { Budget } from './boss';
 import type { BattleDef, Line } from './content';
 
 /**
- * The Region 1 boss duel: Grubnak, the Goblin Chief, behind a wall of goblin squires.
+ * The Region 1 boss duel: Grubnak, the Toad Chief, behind a wall of goblin squires.
  * You pick your army up to 10 points, with no queen: the lesson is winning with small
  * pieces, using everything from the region (threats, protection, safe trades, mates).
  */
@@ -29,7 +29,7 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   region: 'The Bog',
   kind: 'boss',
   theme: 'Everything so far',
-  enemy: { name: 'Grubnak, the Goblin Chief', personality: 'standard' },
+  enemy: { name: 'Grubnak, the Toad Chief', personality: 'standard' },
   intro: 'The Goblin Chief waits behind a wall of eight squires and one sneaky frog. Bring your best 10 points of army.',
   lesson:
     'A full game: develop your pieces, keep them protected, and listen to the goblins’ shouts. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',

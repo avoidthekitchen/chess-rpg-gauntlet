@@ -42,7 +42,7 @@ function voice(line: Line, def: BattleDef | null): Voice {
     case 'enemy':
       return { name: def?.enemy.name ?? 'Bog Goblin', type: 'p', side: 'bog' };
     case 'chief':
-      return { name: 'Grubnak, the Goblin Chief', type: 'k', side: 'bog' };
+      return { name: 'Grubnak, the Toad Chief', type: 'k', side: 'bog' };
     case 'hero':
       return { name: 'Saffron · Fox Sorceress', type: 'q', side: 'ally' };
     case 'narrator':

@@ -34,7 +34,7 @@ Approved 2026-10-22. The theme comes straight from pillar 4, "mistakes are cheap
 
 ## Recurring characters
 
-Roles (decided): the **starter companion** is a named character you pick Pokémon-style, your main tutor, who speaks in dialogue, comments on your moves, levels up and stays all game. Each starter comes with 2 mouse squires, because King + Bishop or King + Knight alone can't checkmate a lone king. **Each piece type has a tutor voice** that teaches its tactics. **Each Region rewards a named hero** with a portrait and dialogue. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
+Roles (decided): the **starter companion** is a named character you pick Pokémon-style, your main tutor, who speaks in dialogue, comments on your moves, levels up and stays all game. Each starter comes with 2 mouse squires, because King + Bishop or King + Knight alone can't checkmate a lone king. **Your starter coaches every lesson**, whichever piece it's about; other pieces only add flavor (a quip when they land a tactic). **Each Region rewards a named hero** with a portrait and dialogue. Pieces earn XP and titles with small meta perks (like +1 hint), never new moves.
 
 Everyone below is in the game except the Lich King. Your starter is your coach for every lesson, whichever piece it's about; heroes join the fight and the story but don't take over teaching. Voices are written for dialogue and talking-head lines.
 

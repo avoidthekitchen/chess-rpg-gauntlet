@@ -119,3 +119,13 @@ export abstract class BaseScene extends Phaser.Scene {
     });
   }
 }
+
+/**
+ * Goes to a screen from anywhere (e.g. a dialog callback), stopping every other running
+ * scene. `this.scene.start()` only stops the scene it's called on, which isn't always
+ * the one on screen.
+ */
+export function goTo(game: Phaser.Game, key: string, data?: object) {
+  for (const s of game.scene.getScenes(true)) if (s.scene.key !== key) s.scene.stop();
+  game.scene.start(key, data);
+}

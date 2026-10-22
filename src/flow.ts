@@ -3,10 +3,13 @@ import type Phaser from 'phaser';
 import { STARTERS, assignCharacters } from './game/campaign';
 import { bonusMet, bonusText, type BattleDef, type Line } from './game/content';
 import { DIFFICULTIES } from './game/difficulty';
+import type { Exercise } from './game/academy';
+import { lossCost, recordLoss, recordWin, type Payout } from './game/economy';
 import { objectiveText } from './game/scenarios';
 import { persist, save } from './save';
 import type { BattleLaunch } from './scenes/Battle';
 import { esc, showModal, type ModalButton } from './ui/overlay';
+import { goTo } from './ui/screen';
 import { FRAMING, SPECIES, pieceName } from './ui/speaker';
 
 /**
@@ -93,43 +96,114 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef) {
     names: assignCharacters(def.fen, s.roster),
     shouts: def.shouts,
     tip: { type: s.starter, name: STARTERS[s.starter].name, line: def.tip },
-    exit: () => scene.scene.start('map'),
-    finish: (b, actions) => {
+    exit: () => goTo(scene.game, 'map'),
+    tacticGold: true,
+    finish: (b, actions, extra) => {
       const won = b.status === 'won';
       const stats = { won, piecesLost: b.piecesLost, playerMoves: b.playerMoves, rewindsUsed: startRewinds - b.rewindsLeft };
       const buttons: ModalButton[] = [];
       let html = `<p>${esc(b.reason)}</p>`;
       if (won) {
-        const first = !s.cleared.includes(def.id);
-        if (first) s.cleared.push(def.id);
-        s.battlesFought++;
+        const pay = recordWin(s, def, stats, extra.tacticGold);
         persist();
-        html += def.bonuses
-          .map((x) => {
-            const got = bonusMet(x, stats);
-            return `<p class="bonus ${got ? 'got' : ''}">${got ? '★' : '☆'} ${esc(bonusText(x))}</p>`;
-          })
-          .join('');
+        html += payoutHtml(def, stats, pay, s.gold);
         html += dialogueHtml(def.after, def);
-        buttons.push({ label: 'Back to the map', kind: 'primary', onClick: () => scene.scene.start('map') });
+        buttons.push({ label: 'Back to the map', kind: 'primary', onClick: () => goTo(scene.game, 'map') });
         buttons.push({ label: 'Replay', onClick: actions.retry });
       } else {
+        // Accepting the defeat (retry or retreat) costs gold on harder difficulties; a rewind doesn't.
+        const cost = lossCost(s.difficulty, s.gold);
+        let charged = false;
+        const accept = () => {
+          if (charged) return;
+          charged = true;
+          recordLoss(s, def.id);
+          persist();
+        };
+        html += cost > 0
+          ? `<p class="loss">Accepting this defeat costs ${cost}g (a tenth of your gold on ${esc(DIFFICULTIES[s.difficulty].label)}).${actions.rewind ? ' A rewind costs nothing.' : ''}</p>`
+          : '<p class="muted">On Squire a defeat costs nothing. Every captured piece comes back.</p>';
         if (actions.rewind) buttons.push({ label: `⟲ Rewind (${b.rewindsLeft} left)`, kind: 'primary', onClick: actions.rewind });
-        buttons.push({ label: 'Retry', kind: actions.rewind ? 'normal' : 'primary', onClick: actions.retry });
+        buttons.push({
+          label: 'Retry',
+          kind: actions.rewind ? 'normal' : 'primary',
+          onClick: () => {
+            accept();
+            actions.retry();
+          },
+        });
         buttons.push({
           label: 'Retreat to the map',
           kind: 'ghost',
           onClick: () => {
-            s.battlesFought++;
-            persist();
-            scene.scene.start('map');
+            accept();
+            goTo(scene.game, 'map');
           },
         });
       }
       return { eyebrow: won ? 'Victory' : 'Defeat', title: won ? 'The day is yours!' : 'The line breaks…', html, buttons };
     },
   };
-  scene.scene.start('battle', launch);
+  goTo(scene.game, 'battle', launch);
 }
 
 export const speciesName = (t: PieceSymbol) => SPECIES[t];
+
+/** What a win paid, line by line, including bonus goals already earned on an earlier win. */
+function payoutHtml(def: BattleDef, stats: { won: boolean; piecesLost: number; playerMoves: number; rewindsUsed: number }, pay: Payout, gold: number) {
+  const rows: string[] = [];
+  rows.push(pay.reward ? `<p class="bonus got">Victory reward <span class="gold">+${pay.reward}g</span></p>` : '<p class="bonus">Victory reward already collected</p>');
+  for (const x of def.bonuses) {
+    const got = bonusMet(x, stats);
+    const paid = pay.bonuses.some((p) => p.kind === x.kind);
+    rows.push(
+      `<p class="bonus ${got ? 'got' : ''}">${got ? '★' : '☆'} ${esc(bonusText(x))} ${paid ? `<span class="gold">+${x.gold}g</span>` : got ? '(already earned)' : ''}</p>`,
+    );
+  }
+  if (pay.tactics) rows.push(`<p class="bonus got">Tactic bonus <span class="gold">+${pay.tactics}g</span></p>`);
+  rows.push(`<p>You now have <span class="gold">${gold}g</span>.</p>`);
+  return rows.join('');
+}
+
+/** Academy practice: rook and queen mates against a lone king that defends perfectly. */
+export function launchExercise(scene: Phaser.Scene, ex: Exercise) {
+  const s = save();
+  const launch: BattleLaunch = {
+    scenario: ex,
+    faction: 'bog',
+    difficulty: s.difficulty,
+    eyebrow: 'Academy · practice',
+    exitLabel: 'Town',
+    practice: true,
+    ai: { depth: 8, multiPv: 1, maxLoss: 0 },
+    tip: { type: 'b', name: 'Sage Ollie', line: ex.steps[0] },
+    exit: () => goTo(scene.game, 'town', { tab: 'academy' }),
+    finish: (b, actions) => {
+      const won = b.status === 'won';
+      let note = '';
+      if (won && !s.lessonsDone.includes(ex.id)) {
+        s.lessonsDone.push(ex.id);
+        s.gold += ex.reward;
+        persist();
+        note = `<p class="bonus got">First clear <span class="gold">+${ex.reward}g</span></p>`;
+      }
+      const buttons: ModalButton[] = won
+        ? [
+            { label: 'Back to the academy', kind: 'primary', onClick: () => goTo(scene.game, 'town', { tab: 'academy' }) },
+            { label: 'Again', onClick: actions.retry },
+          ]
+        : [
+            ...(actions.rewind ? [{ label: '⟲ Undo', kind: 'primary' as const, onClick: actions.rewind }] : []),
+            { label: 'Start over', onClick: actions.retry },
+            { label: 'Back to the academy', kind: 'ghost', onClick: () => goTo(scene.game, 'town', { tab: 'academy' }) },
+          ];
+      return {
+        eyebrow: won ? 'Lesson learned' : 'Not yet',
+        title: won ? 'Checkmate!' : 'Try again',
+        html: `<p>${esc(b.reason)}</p>${note}${won ? '<p class="muted">The method works from any position. Next time a battle leaves you with a rook or a queen, you know the way home.</p>' : ''}`,
+        buttons,
+      };
+    },
+  };
+  goTo(scene.game, 'battle', launch);
+}

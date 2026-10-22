@@ -43,3 +43,26 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 - The must-play rule makes goblins easy to trap: once you see the shout you can often punish it at once, so The Swap Meet and Behind the Mud Wall are usually won in 2 moves and Trouble in the Reeds in about 3 (the pillar says 5-10). That's the shout rule working as written. Softening it (e.g. goblins may abandon a shout that hangs a piece) would make battles longer, but it's a design change, so I left it.
 - `winMaterial` is judged right after your capture, before any recapture (in `src/game/battle.ts`, which I kept unchanged). The battles are set up so no single bad grab wins, but judging the gain after the enemy's reply would be safer.
 - The siege raider ignores its own king's safety, and raider shouts don't depend on difficulty.
+
+## Step 3: Town, gold and saving
+
+**Done**
+- Town (`src/scenes/Town.ts`) with three tabs:
+  - **Tavern:** hire any piece at its chess value (squire 10g, knight/mage 30g, tower 50g, sorceress 90g), capped at a real chess set. New hires get names. Shows your army, its points, and the boss budget.
+  - **Academy:** the "Rook and queen checkmates" lesson, two practice battles (queen mate, rook mate) against a lone king that defends at full Stockfish strength, with unlimited undo and 10g for the first clear of each.
+  - **Bounty board:** 4 real Lichess puzzles (300 in the pool: 150 mate-in-one, 150 hanging-piece, ratings 400–1899), spread across ratings so pay differs (about 2–30g, more for harder ones). One try each, and the board refreshes after every battle, won or lost. Puzzles where you play Black flip the board.
+- Puzzle pipeline (`npm run puzzles`, `scripts/build-puzzles.mjs`): downloads the Lichess CSV to `data/raw/` (gitignored), streams and filters it with Node's built-in zstd, validates every puzzle with chess.js and writes two small JSON files (~56 KB total) to `public/puzzles/region1/`.
+- Gold (`src/game/economy.ts`): a battle's reward, each bonus goal and confirmed-tactic gold are each paid once, so replays can earn what's left but can't be ground. Losing a battle costs nothing on Squire and a tenth of your gold on Knight, charged when you accept the defeat (retry or retreat); a rewind costs nothing.
+- Engine-checked banners: a fork banner only shows when Stockfish agrees the fork wins material (eval after the move at least 0.8 pawns better than the material count before it, `src/game/tacticCheck.ts`). Confirmed forks pay 5g (capped at 10g per battle). Enemy fork banners are checked the same way. Checkmate needs no engine check.
+- Saving: everything goes to localStorage after every change; older saves are upgraded with new fields.
+- Tests added for prices, caps, hiring, one-time pay, loss costs, bounty refresh and settlement, the bounty rating spread, and the fork check.
+
+**Simplified or decided without the doc**
+- Starting gold is 20g. A win pays 15–25g plus 5g per bonus goal (first time only); exact numbers are an open question in the doc.
+- Without the adaptive rating (out of scope), bounties are picked around a fixed rating per difficulty: 900 Squire, 1200 Knight.
+- A failed bounty pays nothing and leaves the board until the next refresh.
+- The fork margin is 0.8 pawns, not more: on the prototype's knight fork Stockfish only rates the gain at about a pawn, because the knight gets trapped after winning the rook.
+
+**Worth a look**
+- Fixed in this step: going back to the map from a battle left the battle scene running underneath (`goTo()` in `src/ui/screen.ts` now switches screens cleanly).
+- The hanging-piece bounty text says "Something is left unguarded. Win it." Some of those puzzles are also mates, which still fits but may surprise.

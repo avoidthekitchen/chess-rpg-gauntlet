@@ -77,6 +77,7 @@ export class MapScene extends BaseScene {
     g.fillStyle(C.bg, 0.86).fillRect(0, 0, this.W, y + 54);
     g.lineStyle(1, C.line, 1).lineBetween(0, y + 54, this.W, y + 54);
     button(this, 12, y + 10, '☰', { w: 40, h: 34, kind: 'ghost', fontSize: 18, onClick: () => this.menu() });
+    button(this, this.W - 150, y + 10, 'Town', { w: 70, h: 34, onClick: () => this.openTown() });
     eyebrow(this, 62, y + 9, 'Region 1 · Bog Goblins');
     this.text(62, y + 22, REGION1_NAME, { fontFamily: SERIF, fontSize: '21px', fontStyle: 'bold' });
     this.text(this.W - 16, y + 27, `${s.gold}g`, { fontFamily: SANS, fontSize: '17px', fontStyle: 'bold', color: CSS.gold }).setOrigin(1, 0.5);
@@ -110,7 +111,7 @@ export class MapScene extends BaseScene {
   }
 
   protected openTown() {
-    showModal({ title: 'Town', html: '<p>The town gates open soon.</p>', buttons: [{ label: 'OK', onClick: () => {} }], onDismiss: () => {} });
+    this.scene.start('town');
   }
 
   private drawBattle(id: string, num: number, p: Pt, state: NodeState) {

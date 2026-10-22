@@ -4,7 +4,10 @@ import { chooseEnemyMove, fallbackMove } from '../ai/enemy';
 import { planShout, shoutLine, shoutStands } from '../ai/shout';
 import { engine, engineStatus } from '../engineHost';
 import { Battle, type TurnResult } from '../game/battle';
-import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
+import { DIFFICULTIES, type AiProfile, type DifficultyId } from '../game/difficulty';
+import { materialBalance } from '../game/material';
+import { forkPays } from '../game/tacticCheck';
+import { TACTIC_GOLD } from '../game/economy';
 import { objectiveText, type Scenario } from '../game/scenarios';
 import type { TacticTag } from '../game/tactics';
 import { threatMap } from '../game/threats';
@@ -52,10 +55,18 @@ export interface BattleLaunch {
   shouts?: boolean;
   /** The companion's opening tip. */
   tip?: { type: PieceSymbol; name: string; line: string };
+  /** Academy practice: unlimited undo, nothing at stake. */
+  practice?: boolean;
+  /** Overrides the difficulty's enemy strength (e.g. a lone king that defends perfectly). */
+  ai?: AiProfile;
+  /** Banners pay gold for confirmed tactics (campaign battles only). */
+  tacticGold?: boolean;
   /** Fills the victory/defeat dialog. `retry` restarts and `rewind` undoes the last move. */
-  finish: (b: Battle, actions: { retry: () => void; rewind: (() => void) | null }) => FinishView;
+  finish: (b: Battle, actions: { retry: () => void; rewind: (() => void) | null }, extra: { tacticGold: number }) => FinishView;
   /** Leave the battle (the ← button). */
   exit: () => void;
+  /** Where the ← button goes, e.g. "Town". Defaults to "Map". */
+  exitLabel?: string;
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -83,6 +94,8 @@ export class BattleScene extends BaseScene {
   private shout: string | null = null;
   private shoutCache = new Map<string, string | null>();
   private speakerTimer = 0;
+  /** Gold earned this battle from engine-confirmed tactics. */
+  tacticGold = 0;
 
   constructor() {
     super('battle');
@@ -107,11 +120,16 @@ export class BattleScene extends BaseScene {
     return DIFFICULTIES[this.launch.difficulty];
   }
 
+  private get ai(): AiProfile {
+    return this.launch.ai ?? this.difficulty.ai;
+  }
+
   private reset() {
     clearTimeout(this.speakerTimer);
     this.aiToken++;
     engine.stop();
-    this.battle = new Battle(this.launch.scenario, this.difficulty.rewinds);
+    this.battle = new Battle(this.launch.scenario, this.launch.practice ? 999 : this.difficulty.rewinds);
+    this.tacticGold = 0;
     this.threatSight = this.difficulty.threatSight;
     this.selected = null;
     this.thinking = false;
@@ -184,7 +202,7 @@ export class BattleScene extends BaseScene {
     const g = this.add.graphics();
     g.fillStyle(C.bg, 0.82).fillRect(0, 0, this.W, topH - 4);
     g.lineStyle(1, C.line, 1).lineBetween(0, topH - 4, this.W, topH - 4);
-    button(this, 12, s + 7, '← Map', { w: 76, h: 34, kind: 'ghost', onClick: () => this.leave() });
+    button(this, 12, s + 7, `← ${this.launch.exitLabel ?? 'Map'}`, { w: 80, h: 34, kind: 'ghost', onClick: () => this.leave() });
     const titleX = 100;
     eyebrow(this, titleX, s + 6, this.launch.eyebrow);
     const t = this.text(titleX, s + 19, this.launch.scenario.title, { fontFamily: SERIF, fontSize: '20px', fontStyle: 'bold' });
@@ -260,7 +278,7 @@ export class BattleScene extends BaseScene {
 
     // Controls.
     const ctrl: { label: string; kind?: 'primary' | 'normal' | 'ghost'; pressed?: boolean; disabled?: boolean; onClick: () => void }[] = [
-      { label: `⟲ Rewind  ${b.rewindsLeft}`, kind: 'primary', disabled: !b.canRewind() || this.animating, onClick: () => this.rewind() },
+      { label: this.launch.practice ? '⟲ Undo' : `⟲ Rewind  ${b.rewindsLeft}`, kind: 'primary', disabled: !b.canRewind() || this.animating, onClick: () => this.rewind() },
       { label: L.wide ? `◉ Threat Sight: ${this.threatSight ? 'On' : 'Off'}` : '◉ Threats', pressed: this.threatSight, onClick: () => this.toggleThreats() },
       { label: L.wide ? `♞ Pieces: ${this.pieceStyle === 'tokens' ? 'Tokens' : 'Classic'}` : '♞ Pieces', onClick: () => this.togglePieces() },
     ];
@@ -405,7 +423,7 @@ export class BattleScene extends BaseScene {
       const token = this.aiToken;
       this.thinking = true;
       this.refresh();
-      uci = await planShout(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
+      uci = await planShout(b, engineStatus === 'fallback' ? null : engine, this.ai);
       if (token !== this.aiToken || this.battle !== b || b.fen !== fen) return;
       this.shoutCache.set(fen, uci);
       this.thinking = false;
@@ -485,15 +503,24 @@ export class BattleScene extends BaseScene {
 
   private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
     const b = this.battle;
+    const balanceBefore = materialBalance(b.chess, b.player);
     const res = b.playerMove({ from, to, promotion });
+    const forkCheck = res.tactics.includes('fork') ? this.confirmFork(b.fen, balanceBefore) : Promise.resolve(false);
     this.selected = null;
     this.statusLine = this.describe(res, 'you');
     this.trackNames(res.move);
     await this.animate(res);
     if (this.battle !== b) return; // restarted meanwhile
-    this.speak(res);
-    const tag = res.tactics.find((t) => PLAYER_BANNER[t]);
-    if (tag) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
+    // A fork banner only shows when the engine agrees it wins something.
+    const forkReal = await forkCheck;
+    if (this.battle !== b) return;
+    const tactics = forkReal ? res.tactics : res.tactics.filter((t) => t !== 'fork');
+    this.speak({ ...res, tactics });
+    const tag = tactics.find((t) => PLAYER_BANNER[t]);
+    if (tag === 'fork' && this.launch.tacticGold) {
+      this.tacticGold += TACTIC_GOLD;
+      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally');
+    } else if (tag) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
     this.refresh();
     this.checkFinished();
     if (b.isEnemyTurn()) void this.enemyTurn();
@@ -514,6 +541,17 @@ export class BattleScene extends BaseScene {
     }
   }
 
+  /** Asks Stockfish whether the fork really wins material (see src/game/tacticCheck.ts). */
+  private async confirmFork(fen: string, balanceBefore: number): Promise<boolean> {
+    if (engineStatus === 'fallback') return false;
+    try {
+      const [best] = await engine.analyse(fen, 10, 1);
+      return best ? forkPays(balanceBefore, best.score) : false;
+    } catch {
+      return false;
+    }
+  }
+
   private async enemyTurn() {
     const b = this.battle;
     const token = ++this.aiToken;
@@ -526,7 +564,7 @@ export class BattleScene extends BaseScene {
     if (kept) uci = shout;
     else {
       try {
-        uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.difficulty.ai);
+        uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai);
       } catch (err) {
         console.warn('Enemy AI failed, using fallback', err);
         uci = fallbackMove(new Chess(b.fen));
@@ -537,7 +575,9 @@ export class BattleScene extends BaseScene {
     if (wait > 0) await sleep(wait);
     if (token !== this.aiToken || this.battle !== b || !b.isEnemyTurn()) return; // rewound or left meanwhile
 
+    const enemyBefore = materialBalance(b.chess, b.enemy);
     const res = b.enemyMove(uci);
+    const enemyFork = res.tactics.includes('fork') ? this.confirmFork(b.fen, enemyBefore) : Promise.resolve(false);
     this.thinking = false;
     this.shout = null;
     this.statusLine = this.describe(res, 'enemy');
@@ -545,8 +585,11 @@ export class BattleScene extends BaseScene {
     this.trackNames(res.move);
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b) return;
-    this.speak(res, kept);
-    const tag = res.tactics.find((t) => ENEMY_BANNER[t]);
+    const forkReal = await enemyFork;
+    if (token !== this.aiToken || this.battle !== b) return;
+    const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
+    this.speak(shown, kept);
+    const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
     if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
     else if (res.move.captured) this.showBanner('Piece lost', 'foe');
     else if (shout && !kept) this.showBanner('Foiled!', 'ally');
@@ -604,7 +647,7 @@ export class BattleScene extends BaseScene {
       const view = this.launch.finish(b, {
         retry: () => this.restart(),
         rewind: canRewind ? () => this.rewind() : null,
-      });
+      }, { tacticGold: this.tacticGold });
       showModal({ eyebrow: view.eyebrow, title: view.title, html: view.html, tone: b.status === 'won' ? 'won' : 'lost', buttons: view.buttons, wide: true });
     }, 900);
   }

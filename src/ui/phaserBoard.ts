@@ -2,6 +2,7 @@ import type { Chess, Color, Move, PieceSymbol, Square } from 'chess.js';
 import Phaser from 'phaser';
 import type { ThreatMap } from '../game/threats';
 import type { BaseScene } from './screen';
+import type { Faction } from './speaker';
 import { GLYPH_FONT, SERIF } from './theme';
 
 /**
@@ -17,13 +18,17 @@ const FILES = 'abcdefgh';
 
 export const PIECE_FILE: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
-/** Which sprite set the enemy uses: Bandit Riders (`foe`) or Bog Goblins (`bog`). */
-export type Faction = 'foe' | 'bog';
 export type PieceStyle = 'tokens' | 'classic';
 
-/** `ally` is the color drawn as your army (White in battles; either side in puzzles). */
+/**
+ * `ally` is the color drawn as your army (White in battles; either side in puzzles).
+ * The faction picks the creature; the chess color picks ivory or ebony headgear and base.
+ */
 export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction, ally: Color = 'w') =>
-  `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}`;
+  `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}-${color}`;
+
+/** Transparent padding around every token sprite, in texture px (RIM_PX + 1 in scripts/process-art.mjs). */
+const TOKEN_PAD = 8;
 
 /** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
 const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
@@ -469,12 +474,15 @@ export class PhaserBoard {
   private makeBody(type: PieceSymbol, color: Color) {
     const W = this.W;
     const allyColor = this.opts.allyColor ?? 'w';
-    let key = tokenKey(type, color, this.opts.faction, allyColor);
-    if (!this.scene.textures.exists(key)) key = tokenKey(type, color, 'foe', allyColor); // art not made yet: borrow the bandits'
+    const key = tokenKey(type, color, this.opts.faction, allyColor);
     if (this.opts.style === 'tokens' && this.scene.textures.exists(key)) {
       const [bw, bh] = TOKEN_BOX[type];
-      const img = this.scene.add.image(0, 0, key).setOrigin(0.5, 0.97);
-      img.setScale(Math.min((bw * W) / img.width, (bh * W) / img.height));
+      // Fit the token itself, not the padding process-art.mjs leaves for the ebony rim.
+      const img = this.scene.add.image(0, 0, key);
+      const iw = img.width - 2 * TOKEN_PAD;
+      const ih = img.height - 2 * TOKEN_PAD;
+      img.setOrigin(0.5, (TOKEN_PAD + 0.97 * ih) / img.height);
+      img.setScale(Math.min((bw * W) / iw, (bh * W) / ih));
       return img;
     }
     // Classic pieces: the standard chess shapes, so what you learn carries over.
@@ -787,7 +795,9 @@ export class PhaserBoard {
     const sq = this.squareAt(wx - this.root.x, wy - this.root.y);
     // A move target wins, even if a token in front overlaps it.
     if (sq && this.view.targets.has(sq)) return this.opts.onSquare(sq);
-    // Otherwise a tap on a token's body picks that token, front-most first.
+    // Then the piece standing on the tapped square, even if a taller token in front overlaps it.
+    if (sq && this.pieces.has(sq)) return this.opts.onSquare(sq);
+    // On an empty square, a tap on a token's body (its head reaching up) picks that token, front-most first.
     const front = [...this.pieces.values()].sort((a, b) => b.node.depth - a.node.depth);
     for (const p of front) if (p.body.getBounds().contains(wx, wy)) return this.opts.onSquare(p.square);
     if (sq) this.opts.onSquare(sq);

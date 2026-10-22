@@ -2,14 +2,14 @@ import type { Budget } from './boss';
 import type { BattleDef, Line } from './content';
 
 /**
- * The Region 1 boss duel: Grubnak, the Goblin Chief, behind a wall of goblin squires.
+ * The Region 1 boss duel: Grubnak, the Toad Chief, behind a wall of bog rats.
  * You pick your army up to 10 points, with no queen: the lesson is winning with small
  * pieces, using everything from the region (threats, protection, safe trades, mates).
  */
 
 export const R1_BOSS_BUDGET: Budget = { points: 10, caps: { q: 0 } };
 
-/** Black's fixed setup: a full pawn wall, one frog knight and the chief. 11 points against your 10. */
+/** Black's fixed setup: a full pawn wall, one salamander knight and the chief. 11 points against your 10. */
 export const R1_BOSS_ARMY: Record<string, string> = {
   e8: 'k',
   b8: 'n',
@@ -29,20 +29,28 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   region: 'The Bog',
   kind: 'boss',
   theme: 'Everything so far',
-  enemy: { name: 'Grubnak, the Goblin Chief', personality: 'standard' },
-  intro: 'The Goblin Chief waits behind a wall of eight squires and one sneaky frog. Bring your best 10 points of army.',
+  enemy: { name: 'Grubnak, the Toad Chief', personality: 'standard' },
+  intro: 'The Goblin Chief waits behind a wall of eight bog rats and one sneaky salamander. He doesn’t shout his plans. Bring your best 10 points of army.',
   lesson:
-    'A full game: develop your pieces, keep them protected, and listen to the goblins’ shouts. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
-  tip: 'Every piece matters today. Keep them guarded, and listen when they shout!',
+    'A full game: develop your pieces and keep them protected. Grubnak doesn’t shout his plans, so after every goblin move, ask yourself what it attacks. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
+  tip: 'Every piece matters today. Grubnak won’t tell us his plans, so watch every move he makes!',
   objective: { kind: 'checkmate' },
   reward: 50,
   bonuses: [
     { kind: 'noRewind', gold: 10 },
     { kind: 'quick', moves: 30, gold: 10 },
   ],
-  shouts: true,
+  // The region's final exam: the chief keeps his plans to himself, so the habit the shouts
+  // taught (what does the enemy want?) has to work without them.
+  shouts: false,
+  // Without shouts the chief played a 40-50 move game at the usual strength, too long for the
+  // end of Region 1. He's a little clumsier on Squire and Knight (see scripts/verify/boss.verify.test.ts).
+  ai: {
+    squire: { depth: 4, multiPv: 6, maxLoss: 400 },
+    knight: { depth: 6, multiPv: 6, maxLoss: 200 },
+  },
   before: [
-    { who: 'chief', text: 'So the little king came all the way to Grubnak’s camp. Squires! WALL!' },
+    { who: 'chief', text: 'So the little king came all the way to Grubnak’s camp. Rats! WALL!' },
     { who: 'companion', text: 'A wall of pawns can’t move backwards. Find the loose one and pry it open.' },
   ],
   after: [

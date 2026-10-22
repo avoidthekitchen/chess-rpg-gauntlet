@@ -69,7 +69,7 @@ Four bounties at a time from real Lichess puzzles (150 `mateIn1` and 150 `hangin
 
 - **Setup:** you pick up to 10 points from the pieces you own (no queen) on the muster screen, placed on their usual home squares. Grubnak, the Goblin Chief, sits behind a full wall of eight pawns and one knight (11 points) (`src/game/region1Boss.ts`).
 - **Goal:** checkmate, with no move limit. 50g, plus 10g each for no rewinds and for winning within 30 moves.
-- **He doesn't shout:** this is the region's final exam. The habit the shouts taught ("what does the enemy want?") has to work without them. Without shouts, his AI is made a little clumsier on Squire and Knight so the game doesn't drag. This is in progress with the Region 1 boss work; until it merges, the deployed chief still shouts.
+- **He doesn't shout:** this is the region's final exam. The habit the shouts taught ("what does the enemy want?") has to work without them. Without shouts he played 40–50 move games, so he's a little clumsier on Squire and Knight ([tuning values](../systems.md#tuning-values)).
 - **The lesson:** develop, keep pieces protected, trade only when it's safe, open a file for the tower, then hunt the king.
 
 ## Hero: Saffron, the Fox Sorceress
@@ -99,7 +99,7 @@ The Bog Goblin token and portrait set (their species and in-game names are in [A
 | The Swap Meet | 100% / 100% | 4.2 / 4.2 | 0% / 0% |
 | Behind the Mud Wall | 100% / 100% | 5.5 / 4.6 | 4% / 4% |
 | The Squire's Splash | 100% / 100% | 5.9 / 6.1 | 8% / 0% |
-| Boss duel | To re-run once the no-shout boss lands (with shouts, a strong player won 100% with every typical army) | — | — |
+| Boss duel | Passed the boss bar when the no-shout boss merged (about 92% wins); the full table is to be recorded on the next run | — | — |
 
 A simulated "greedy" player (always grabs the biggest capture) wins Trouble in the Reeds and The Squire's Splash fairly often (about 33–67% across runs). That's worth watching in playtests.
 

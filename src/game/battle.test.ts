@@ -127,6 +127,24 @@ describe('Battle', () => {
     expect(b.rewind()).toBe(false);
   });
 
+  it('remembers repeated positions across a rewind', () => {
+    const b = new Battle(custom('4k3/8/8/8/8/8/R7/4K3 w - - 0 1', { kind: 'checkmate' }), 1);
+    const cycle = () => {
+      b.playerMove({ from: 'a2', to: 'b2' });
+      b.enemyMove('e8d8');
+      b.playerMove({ from: 'b2', to: 'a2' });
+      b.enemyMove('d8e8');
+    };
+    cycle(); // the start position, second time
+    b.playerMove({ from: 'a2', to: 'b2' });
+    b.enemyMove('e8d8');
+    b.rewind(); // back to the start position, still seen twice
+    expect(b.status).toBe('playing');
+    cycle(); // third time: a draw, which loses a checkmate battle
+    expect(b.status).toBe('lost');
+    expect(b.reason).toMatch(/draw/);
+  });
+
   it('can rewind out of a defeat', () => {
     const b = new Battle(custom('3k4/3P4/2K5/8/8/8/8/8 w - - 0 1', { kind: 'promote', maxMoves: 5 }), 1);
     b.playerMove({ from: 'c6', to: 'd6' });

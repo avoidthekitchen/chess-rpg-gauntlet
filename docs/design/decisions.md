@@ -27,7 +27,7 @@ The one place to track unfinished design work. When one is resolved, move the an
     - the puzzle files (`src/puzzles.ts`, and the config in `scripts/build-puzzles.mjs`);
     - goblin wording in battle ("Told you I would!", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
 - [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
-- [ ] **After the Region 1 boss work merges:** add the boss's per-difficulty AI values to the [tuning values](systems.md#tuning-values), re-run the boss verification, and update the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification).
+- [ ] **Region 1 boss results:** the no-shout boss's AI values are in the [tuning values](systems.md#tuning-values); on the next `npm run verify:battles`, record the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification). The boss check is the slow part of that run (384 full games).
 - [ ] **Tortoise name:** rename "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
 ## Open questions
@@ -50,6 +50,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name |
 | 2026-10-22 | Region 1's boss, Grubnak, doesn't shout: the final exam for the habit the shouts taught |
 | 2026-10-22 | Every Region follows the Region template, with Region 1 as the worked example, and meets the playbook's verification bars |
+| 2026-10-22 | Every token comes in White and Black: ivory or ebony headgear and base, applied in code from a cyan key; ebony gets a light rim |
+| 2026-10-22 | Each enemy faction has its own species and shares only the chess headgear shapes; Bog Goblins are bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief |
+| 2026-10-22 | Bandit Rider placeholder art removed; Region 2 picks its own species when designed |
 | 2026-10-21 | The game is called Pawnshire; Gauntlet stays the name of the replay mode after the campaign |
 | 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks |
 | 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |
@@ -77,5 +80,5 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-21 | Free rewind deferred: too confusing as designed |
 | 2026-10-21 | Scrying Orb ladder: shouting Bog Goblins, then the Orb (threat), then Far Sight (what-if upgrade) |
 | 2026-10-21 | Starter is a named companion who acts as the main tutor |
-| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle |
+| 2026-10-21 | Animal world: one species per piece type, factions told apart by outfit; classic pieces toggle (species per faction superseded 2026-10-22) |
 | 2026-10-21 | Battles are short scenarios; the rules of chess never change on the board |

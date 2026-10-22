@@ -166,7 +166,8 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
 | Loss cost | Squire 0, Knight 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
 | Rewinds per battle | Squire 3, Knight 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
-| Enemy strength | Squire: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Knight: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts`. The Region 1 boss work adds a per-battle override (`ai` on a battle) for a softer boss; add its values here when it merges |
+| Enemy strength | Squire: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Knight: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
+| Region 1 boss strength | Softer, since he doesn't shout: Squire depth 4 within 400 centipawns, Knight depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
 | Bounties on the board | 4, refreshed after each battle | `BOUNTY_COUNT` in `src/game/economy.ts` |
 | Bounty target rating | Squire 900, Knight 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |

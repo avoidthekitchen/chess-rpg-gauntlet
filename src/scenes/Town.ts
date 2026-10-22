@@ -129,7 +129,7 @@ export class TownScene extends BaseScene {
     for (const t of HIRE_ORDER) {
       const check = hireCheck(s, t);
       c.add(panel(this, x, y, w, rowH - 8));
-      const key = `token-${pieceName(t)}-ally`;
+      const key = `token-${pieceName(t)}-ally-w`;
       if (this.textures.exists(key)) {
         const img = this.add.image(x + 32, y + rowH - 14, key).setOrigin(0.5, 1);
         img.setScale(Math.min(44 / img.width, 48 / img.height));

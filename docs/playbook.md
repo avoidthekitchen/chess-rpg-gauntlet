@@ -38,7 +38,7 @@ The battle content tests (`src/game/region1Battles.test.ts`) check these. Today 
 - A strong player needs **4 to 7 moves** on average (pillar 2: short, sharp battles). Fewer means the first trick ends it; more means it drags. The test reports this but doesn't enforce it, so read the average-moves column.
 - Every win ends for a reason that fits the goal (for example, a material battle isn't won by a draw).
 
-The boss passes when a strong player wins at least 85% with each starter's typical army at the budget. Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
+The boss passes when, with each starter's typical army at the budget, a strong player loses (checkmate or draw) at most 15% of games and wins at least 60%. A boss is a full game, so it gets a looser bar than a battle; games that hit the simulator's 80-move cap count as unfinished, not lost (`scripts/verify/boss.verify.test.ts`). Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
 
 When a new rule changes how battles end (as material goals once did), re-run verification for every Region, not just the new one.
 

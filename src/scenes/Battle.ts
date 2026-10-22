@@ -18,7 +18,7 @@ import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
 import { portrait, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
-import { SPECIES, pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
+import { FACTION_SHORT, FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
 import { button, eyebrow, panel, para } from '../ui/widgets';
 
@@ -50,7 +50,7 @@ export interface FinishView {
 
 export interface BattleLaunch {
   scenario: Scenario;
-  faction: FactionArt;
+  faction: Faction;
   difficulty: DifficultyId;
   /** Shown above the title, e.g. "The Bog · Squire". */
   eyebrow: string;
@@ -155,7 +155,7 @@ export class BattleScene extends BaseScene {
     this.speaker = null;
     this.finished = false;
     this.statusLine = this.launch.scenario.intro;
-    this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
+    this.restoreNames();
     this.firstBuild = true;
     this.shout = null;
     this.pendingView = null;
@@ -474,7 +474,7 @@ export class BattleScene extends BaseScene {
       if (target.type === 'k') line = null;
       else if (!guarded) line = `They want our ${name} on ${to}, and nobody guards it! Move it, or protect it.`;
       else if (attackers > real) line = `Our ${name} on ${to} is guarded, but they have more attackers than we have guards. Move it, or add a guard!`;
-      else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${PIECE_SHORT[mover.type]} is worth less. That trade loses. Move it!`;
+      else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${this.enemyShort[mover.type]} is worth less. That trade loses. Move it!`;
       else line = `Let them try! Our ${name} on ${to} is guarded, so we take right back. Unless you see something better…`;
     } else if ((b.scenario.villages ?? []).includes(to)) {
       line = `They’re heading for the village on ${to}! Make sure we can capture whoever lands there.`;
@@ -514,7 +514,7 @@ export class BattleScene extends BaseScene {
       if (piece) {
         const villages = b.scenario.villages ?? [];
         const line = shoutLine(fen, uci, villages);
-        const name = piece.type === 'k' ? b.scenario.enemy.name : `Bog ${SPECIES[piece.type]}`;
+        const name = piece.type === 'k' ? b.scenario.enemy.name : FACTION_SPECIES[this.launch.faction][piece.type];
         this.say({ side: 'foe', name: `${name} shouts`, line, type: piece.type }, 1500);
         this.adviseOnShout(fen, uci);
         const plan = `The goblins shout their plan: ${from}→${uci.slice(2, 4)}. They must do it if they still can.`;
@@ -546,8 +546,8 @@ export class BattleScene extends BaseScene {
     portrait(this, x + 18, y + 10, pw, bh - 20, m.promotion ?? m.piece, ally ? 'ally' : 'foe', this.launch.faction, pc);
     c.add(pc);
     const name = this.names.get(m.to);
-    const who = ally ? (name ?? `Your ${PIECE_SHORT[m.piece]}`) : `Goblin ${PIECE_SHORT[m.piece]}`;
-    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes the ${PIECE_SHORT[m.captured]}!`, {
+    const who = ally ? (name ?? `Your ${PIECE_SHORT[m.piece]}`) : FACTION_SPECIES[this.launch.faction][m.piece];
+    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes the ${(ally ? this.enemyShort : PIECE_SHORT)[m.captured]}!`, {
       fontFamily: SERIF,
       fontSize: `${Math.round(Math.min(30, bh * 0.2))}px`,
       fontStyle: 'bold',
@@ -606,8 +606,20 @@ export class BattleScene extends BaseScene {
 
   private describe(res: TurnResult, who: 'you' | 'enemy'): string {
     const m = res.move;
-    const verb = m.captured ? `takes the ${PIECE_SHORT[m.captured]} on ${m.to}` : `moves to ${m.to}`;
-    return `${who === 'you' ? 'Your' : 'Enemy'} ${PIECE_SHORT[m.piece]} ${verb}.`;
+    const [mine, theirs] = who === 'you' ? [PIECE_SHORT, this.enemyShort] : [this.enemyShort, PIECE_SHORT];
+    const verb = m.captured ? `takes the ${theirs[m.captured]} on ${m.to}` : `moves to ${m.to}`;
+    return `${who === 'you' ? 'Your' : 'Enemy'} ${mine[m.piece]} ${verb}.`;
+  }
+
+  /** One-word names for the enemy faction's pieces. */
+  private get enemyShort() {
+    return FACTION_SHORT[this.launch.faction];
+  }
+
+  /** Names from the start of the battle, moved along by every move still on the board (so a rewind puts them back). */
+  private restoreNames() {
+    this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
+    for (const m of this.battle.chess.history({ verbose: true })) this.trackNames(m);
   }
 
   /** Keeps named characters attached to their pieces as they move. */
@@ -753,7 +765,7 @@ export class BattleScene extends BaseScene {
     showModal({
       title: 'Knight your squire',
       html: `<p>Choose what your squire becomes.</p><div class="promo">${opts
-        .map((p) => `<button data-p="${p}"><img src="${base}sprites/token-${pieceName(p)}-ally.webp" alt=""><small>${esc(PIECE_SHORT[p])}</small></button>`)
+        .map((p) => `<button data-p="${p}"><img src="${base}sprites/token-${pieceName(p)}-ally-w.webp" alt=""><small>${esc(PIECE_SHORT[p])}</small></button>`)
         .join('')}</div>`,
       buttons: [{ label: 'Cancel', kind: 'ghost', onClick: () => this.clearSelection() }],
       onDismiss: () => this.clearSelection(),
@@ -774,16 +786,11 @@ export class BattleScene extends BaseScene {
   private checkFinished() {
     const b = this.battle;
     if (b.status === 'playing' || this.finished) return;
-    this.finished = true;
+    const view = this.recordResult();
     const won = b.status === 'won';
     if (won) this.board?.celebrate();
     const sess = this.session;
     const token = this.aiToken;
-    // Record the result now (pay a win, prepare a defeat's dialog), so leaving before the
-    // dialog appears can't lose a win or skip a defeat's cost.
-    const canRewind = b.status === 'lost' && b.canRewind();
-    const view = this.launch.finish(b, { retry: () => this.restart(), rewind: canRewind ? () => this.rewind() : null }, { tacticGold: this.tacticGold });
-    this.pendingView = view;
     const review = this.review(b, token);
     // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
     const minWait = new Promise((r) => setTimeout(r, won ? 1800 : 900));
@@ -793,6 +800,24 @@ export class BattleScene extends BaseScene {
       const html = view.html.replace(REVIEW_SLOT, reviewHtml(result, won, b.reason));
       showModal({ eyebrow: view.eyebrow, title: view.title, html, tone: won ? 'won' : 'lost', buttons: view.buttons, wide: true });
     });
+  }
+
+  /**
+   * Records a finished battle's result (pays a win, prepares a defeat's cost) the moment it's
+   * known, so leaving before the dialog appears can't lose a win or skip a defeat's cost.
+   */
+  private recordResult(): FinishView {
+    const b = this.battle;
+    this.finished = true;
+    const canRewind = b.status === 'lost' && b.canRewind();
+    const view = this.launch.finish(b, { retry: () => this.restart(), rewind: canRewind ? () => this.rewind() : null }, { tacticGold: this.tacticGold });
+    this.pendingView = view;
+    return view;
+  }
+
+  /** The battle ended but its final move is still animating, so the result isn't recorded yet. */
+  private settleUnrecorded() {
+    if (this.battle.status !== 'playing' && !this.finished) this.recordResult();
   }
 
   /**
@@ -850,6 +875,7 @@ export class BattleScene extends BaseScene {
     this.finished = false;
     this.pendingView = null; // a rewind undoes the defeat, so nothing is charged
     b.rewind();
+    this.restoreNames();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';
     this.showBanner('Rewind', 'ally');
@@ -859,6 +885,7 @@ export class BattleScene extends BaseScene {
 
   private restart() {
     if (this.board?.busy) return;
+    this.settleUnrecorded();
     this.pendingView?.onAbandon?.();
     closeModal();
     this.reset();
@@ -882,6 +909,7 @@ export class BattleScene extends BaseScene {
   }
 
   private leave() {
+    this.settleUnrecorded();
     this.pendingView?.onAbandon?.();
     this.pendingView = null;
     this.aiToken++;

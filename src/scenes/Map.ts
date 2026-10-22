@@ -168,8 +168,8 @@ export class MapScene extends BaseScene {
     g.fillStyle(0x000000, 0.4).fillCircle(p.x, p.y + 5, r + 3);
     g.fillStyle(open ? 0x3a2418 : 0x221c24, 1).fillCircle(p.x, p.y, r);
     g.lineStyle(4, s.bossBeaten ? C.green : open ? C.red : 0x5a5060, 1).strokeCircle(p.x, p.y, r);
-    if (this.textures.exists('token-king-bog')) {
-      const img = this.add.image(p.x, p.y + r * 0.55, 'token-king-bog').setOrigin(0.5, 1);
+    if (this.textures.exists('token-king-bog-b')) {
+      const img = this.add.image(p.x, p.y + r * 0.55, 'token-king-bog-b').setOrigin(0.5, 1);
       img.setScale((r * 1.7) / img.height);
       if (!open) img.setAlpha(0.45);
     }

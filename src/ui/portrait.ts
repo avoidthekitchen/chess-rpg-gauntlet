@@ -1,7 +1,7 @@
-import type { PieceSymbol } from 'chess.js';
+import type { Color, PieceSymbol } from 'chess.js';
 import type Phaser from 'phaser';
 import type { BaseScene } from './screen';
-import { FRAMING, portraitKey, tokenPortraitKey, type FactionArt, type Side, type SpeakerInfo } from './speaker';
+import { FRAMING, portraitKey, tokenPortraitKey, type Faction, type Side, type SpeakerInfo } from './speaker';
 import { C, CSS, SANS, SERIF } from './theme';
 
 /**
@@ -16,15 +16,16 @@ export function portrait(
   h: number,
   type: PieceSymbol,
   side: Side,
-  faction: FactionArt,
+  faction: Faction,
   parent?: Phaser.GameObjects.Container,
+  allyColor: Color = 'w',
 ) {
   const g = scene.add.graphics();
   g.fillStyle(side === 'ally' ? 0x3a2c22 : 0x2a2418, 1).fillRoundedRect(x, y, w, h, 10);
   parent?.add(g);
   const has = (k: string) => scene.textures.exists(k);
-  // Missing art falls back to the bandit set, then to the board token.
-  const key = [portraitKey(type, side, faction), portraitKey(type, side, 'foe')].find(has) ?? '';
+  // Missing art falls back to the board token.
+  const key = portraitKey(type, side, faction);
   const frame = FRAMING[type];
   if (frame && scene.textures.exists(key)) {
     const img = scene.add.image(0, 0, key).setOrigin(0, 0);
@@ -37,8 +38,8 @@ export function portrait(
     img.setCrop(-ox / s + 2 / s, -oy / s + 2 / s, (w - 4) / s, (h - 4) / s);
     parent?.add(img);
   } else {
-    const tkey = [tokenPortraitKey(type, side, faction), tokenPortraitKey(type, side, 'foe')].find(has);
-    if (tkey) {
+    const tkey = tokenPortraitKey(type, side, faction, allyColor);
+    if (has(tkey)) {
       const img = scene.add.image(x + w / 2, y + h * 0.62, tkey).setOrigin(0.5, 0.5);
       img.setScale(Math.min(w / img.width, h / img.height) * 0.92);
       parent?.add(img);
@@ -53,7 +54,16 @@ export function portrait(
  * The talking-head card: portrait, name and line. Returns the container and its height.
  * `compact` is the phone version that floats over the bottom of the screen.
  */
-export function speakerCard(scene: BaseScene, x: number, y: number, w: number, info: SpeakerInfo, faction: FactionArt, compact: boolean) {
+export function speakerCard(
+  scene: BaseScene,
+  x: number,
+  y: number,
+  w: number,
+  info: SpeakerInfo,
+  faction: Faction,
+  compact: boolean,
+  allyColor: Color = 'w',
+) {
   const c = scene.add.container(x, y);
   const pw = compact ? 62 : 76;
   const ph = compact ? 86 : 104;
@@ -85,7 +95,7 @@ export function speakerCard(scene: BaseScene, x: number, y: number, w: number, i
   bg.lineStyle(1, C.line, 1).strokeRoundedRect(0.5, 0.5, w - 1, h - 1, 10);
   bg.fillStyle(info.side === 'ally' ? C.gold : C.red, 1).fillRoundedRect(0, 0, 4, h, { tl: 10, bl: 10, tr: 0, br: 0 });
   c.add(bg);
-  portrait(scene, pad, (h - ph) / 2, pw, ph, info.type, info.side, faction, c);
+  portrait(scene, pad, (h - ph) / 2, pw, ph, info.type, info.side, faction, c, allyColor);
   c.add([who, line]);
   return { container: c, height: h };
 }

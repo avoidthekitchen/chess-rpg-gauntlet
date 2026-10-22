@@ -25,7 +25,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [ ] **Region registry:** much of the game assumes Region 1. Before building Region 2, add a registry of Regions and a current-region field in the save, so Region 2 isn't a copy of half the game. What assumes Region 1 today:
     - the map, the boss and the hero (`src/game/region1*.ts`, `src/scenes/Map.ts`, `src/scenes/Muster.ts`, `src/flow.ts`);
     - the puzzle files (`src/puzzles.ts`, and the config in `scripts/build-puzzles.mjs`);
-    - goblin wording in battle ("Told you I would!", "The goblins shout their plan", "Foiled!" and the "Bog" prefix in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`).
+    - goblin wording in battle ("Told you I would!", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
 - [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
 - [ ] **After the Region 1 boss work merges:** add the boss's per-difficulty AI values to the [tuning values](systems.md#tuning-values), re-run the boss verification, and update the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification).
 - [ ] **Tortoise name:** rename "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).

@@ -49,7 +49,7 @@ describe('Goblin Chief duel', () => {
       for (const level of LEVELS) {
         const cells: string[] = [];
         for (const player of PLAYERS) {
-          const jobs = Array.from({ length: GAMES }, () => (eng: NodeEngine) => playGame(def, DIFFICULTIES[level].ai, player, eng));
+          const jobs = Array.from({ length: GAMES }, () => (eng: NodeEngine) => playGame(def, def.ai?.[level] ?? DIFFICULTIES[level].ai, player, eng));
           const res: GameResult[] = await runPool(engines, jobs);
           const wins = res.filter((r) => r.status === 'won');
           const rate = wins.length / res.length;

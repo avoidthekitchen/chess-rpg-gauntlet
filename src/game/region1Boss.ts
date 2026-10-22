@@ -43,6 +43,12 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   // The region's final exam: the chief keeps his plans to himself, so the habit the shouts
   // taught (what does the enemy want?) has to work without them.
   shouts: false,
+  // Without shouts the chief played a 40-50 move game at the usual strength, too long for the
+  // end of Region 1. He's a little clumsier on Squire and Knight (see scripts/verify/boss.verify.test.ts).
+  ai: {
+    squire: { depth: 4, multiPv: 6, maxLoss: 400 },
+    knight: { depth: 6, multiPv: 6, maxLoss: 200 },
+  },
   before: [
     { who: 'chief', text: 'So the little king came all the way to Grubnak’s camp. Squires! WALL!' },
     { who: 'companion', text: 'A wall of pawns can’t move backwards. Find the loose one and pry it open.' },

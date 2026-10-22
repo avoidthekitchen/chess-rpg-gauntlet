@@ -1,3 +1,4 @@
+import type { AiProfile, DifficultyId } from './difficulty';
 import type { Scenario } from './scenarios';
 
 /**
@@ -38,6 +39,8 @@ export interface BattleDef extends Scenario {
   tip: string;
   /** Bog Goblins shout the move they plan next and must play it if it's still legal. */
   shouts: boolean;
+  /** Enemy strength for this battle by difficulty, replacing the difficulty's usual profile (e.g. a softer boss). */
+  ai?: Partial<Record<DifficultyId, AiProfile>>;
 }
 
 export interface BattleStats {

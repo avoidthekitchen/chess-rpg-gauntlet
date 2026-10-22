@@ -9,7 +9,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [ ] **Main story arc:** player motivation and the story beats connecting the Regions to the Lich King. Answer goes in [Story](story.md#main-story-arc).
 - [ ] **Recurring characters:** names, personalities, development and dialogue conventions beyond the existing roles. Answer goes in [Story](story.md#recurring-characters).
 - [ ] **Region 1 detailed design:** battle sequence and branching, local story and dialogue, and boss and hero character details. Answer goes in [Region 1](regions/region-01-bog-goblins.md#design-status).
-- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/`, moved out of [Campaign](campaign.md#regions-and-factions) as written.
+- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/`, linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
 
 ## Open questions
 

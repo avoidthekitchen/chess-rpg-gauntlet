@@ -2,6 +2,7 @@ import type { Chess, Color, Move, PieceSymbol, Square } from 'chess.js';
 import Phaser from 'phaser';
 import type { ThreatMap } from '../game/threats';
 import type { BaseScene } from './screen';
+import type { Faction } from './speaker';
 import { GLYPH_FONT, SERIF } from './theme';
 
 /**
@@ -17,8 +18,6 @@ const FILES = 'abcdefgh';
 
 export const PIECE_FILE: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
-/** Which sprite set the enemy uses: Bog Goblins (`bog`), Region 1. Each region adds its own. */
-export type Faction = 'bog';
 export type PieceStyle = 'tokens' | 'classic';
 
 /**
@@ -27,6 +26,9 @@ export type PieceStyle = 'tokens' | 'classic';
  */
 export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction, ally: Color = 'w') =>
   `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}-${color}`;
+
+/** Transparent padding around every token sprite, in texture px (RIM_PX + 1 in scripts/process-art.mjs). */
+const TOKEN_PAD = 8;
 
 /** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
 const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
@@ -475,8 +477,12 @@ export class PhaserBoard {
     const key = tokenKey(type, color, this.opts.faction, allyColor);
     if (this.opts.style === 'tokens' && this.scene.textures.exists(key)) {
       const [bw, bh] = TOKEN_BOX[type];
-      const img = this.scene.add.image(0, 0, key).setOrigin(0.5, 0.97);
-      img.setScale(Math.min((bw * W) / img.width, (bh * W) / img.height));
+      // Fit the token itself, not the padding process-art.mjs leaves for the ebony rim.
+      const img = this.scene.add.image(0, 0, key);
+      const iw = img.width - 2 * TOKEN_PAD;
+      const ih = img.height - 2 * TOKEN_PAD;
+      img.setOrigin(0.5, (TOKEN_PAD + 0.97 * ih) / img.height);
+      img.setScale(Math.min((bw * W) / iw, (bh * W) / ih));
       return img;
     }
     // Classic pieces: the standard chess shapes, so what you learn carries over.

@@ -18,7 +18,7 @@ import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
 import { portrait, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
-import { FACTION_SHORT, FACTION_SPECIES, SPECIES, pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
+import { FACTION_SHORT, FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
 import { button, eyebrow, panel, para } from '../ui/widgets';
 
@@ -50,7 +50,7 @@ export interface FinishView {
 
 export interface BattleLaunch {
   scenario: Scenario;
-  faction: FactionArt;
+  faction: Faction;
   difficulty: DifficultyId;
   /** Shown above the title, e.g. "The Bog · Squire". */
   eyebrow: string;

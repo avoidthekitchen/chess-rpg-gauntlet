@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
+import { FACTIONS } from '../ui/speaker';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-const FACTIONS = ['ally', 'bog'];
+const SPRITE_SETS = ['ally', ...FACTIONS];
 const COLORS = ['w', 'b'];
 export const BACKGROUNDS = ['title', 'map-region1', 'town', 'battle-bog'];
 
@@ -14,7 +15,7 @@ export class BootScene extends Phaser.Scene {
   preload() {
     this.load.setPath(`${import.meta.env.BASE_URL}`);
     for (const p of PIECES) {
-      for (const f of FACTIONS) {
+      for (const f of SPRITE_SETS) {
         for (const c of COLORS) this.load.image(`token-${p}-${f}-${c}`, `sprites/token-${p}-${f}-${c}.webp`);
         this.load.image(`${p}-${f}`, `sprites/${p}-${f}.webp`);
       }

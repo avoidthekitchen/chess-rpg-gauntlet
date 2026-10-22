@@ -150,6 +150,7 @@ const SPRITES = {
 };
 
 // ---- missing ally portraits ----
+// The token shows the headgear shape: use its ivory sprite, never the cyan-keyed source.
 SPRITES['queen-ally'] = {
   prompt:
     'A clever fox sorceress chess queen figurine, matching the knight and king figurines in the reference images ' +
@@ -157,7 +158,7 @@ SPRITES['queen-ally'] = {
     'the crown of a classic chess queen (it makes the queen silhouette, like the coronet on the reference token), ' +
     'a flowing cream and teal gown with gold trim, and holds a slim wand with a small glowing teal gem. ' +
     'The round base is dark wood with a gold rim.',
-  refs: ['token-queen-ally', 'knight-ally', 'king-ally'],
+  refs: ['public/sprites/token-queen-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 SPRITES['pawn-ally'] = {
   prompt:
@@ -166,7 +167,7 @@ SPRITES['pawn-ally'] = {
     'makes its head look like the round ball top of a classic chess pawn (like the reference token), a cream tunic ' +
     'with a teal tabard and a tiny gold crest, and holds a short wooden spear and a small round shield. ' +
     'The round base is dark wood with a gold rim.',
-  refs: ['token-pawn-ally', 'knight-ally', 'king-ally'],
+  refs: ['public/sprites/token-pawn-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 
 // ---- simplified board tokens (cyan-keyed; see KEY) ----

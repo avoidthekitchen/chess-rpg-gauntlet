@@ -47,7 +47,7 @@ const RAMP = {
 };
 const OUTLINE = [28, 22, 20]; // what the key fades into at its inked edge
 const RIM = { w: null, b: [236, 228, 210] }; // light rim around ebony tokens
-const RIM_PX = 7; // at the 256 px token size
+const RIM_PX = 7; // at the 256 px token size; tokens are padded by RIM_PX + 1 (TOKEN_PAD in src/ui/phaserBoard.ts)
 const MIN_KEY = 0.04; // warn when less of the token than this is keyed (the model ignored the key)
 
 /** How strongly a pixel leans magenta: both red and blue above green. */
@@ -124,6 +124,17 @@ export async function cutOut(path, { band = EDGE_BAND, spill = SPILL } = {}) {
 const lerp = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
 
 /**
+ * How much a pixel belongs to the cyan key: 0 = not keyed, up to 1 inside the key
+ * (between, at the inked edge). Teal in the creature would also match, so every
+ * recolor writes a check sheet (see recolorToken) to catch that by eye.
+ */
+const keyStrength = (r, g, b) => {
+  const cyan = Math.min(g, b) - r; // how strongly the pixel leans cyan
+  if (cyan < 40 || Math.abs(g - b) > 70) return 0;
+  return Math.max(0.001, Math.min(1, (cyan - 40) / 120));
+};
+
+/**
  * Repaints a keyed token's cyan headgear and base in one chess color and returns
  * the RGBA pixels, plus the share of opaque pixels that were keyed.
  */
@@ -135,10 +146,9 @@ export function recolorKey(data, w, h, color) {
     const o = i * 4;
     if (out[o + 3] > 128) opaque++;
     const [r, g, b] = [out[o], out[o + 1], out[o + 2]];
-    const cyan = Math.min(g, b) - r; // how strongly the pixel leans cyan
-    if (cyan < 40 || Math.abs(g - b) > 70) continue;
+    const k = keyStrength(r, g, b);
+    if (!k) continue;
     keyed++;
-    const k = Math.min(1, (cyan - 40) / 120); // 0 at the inked edge, 1 inside the key
     const t = Math.min(1, Math.max(0, (Math.max(g, b) - 110) / 145)); // key shade -> ramp position
     [out[o], out[o + 1], out[o + 2]] = lerp(OUTLINE, lerp(...RAMP[color], t), k);
   }
@@ -179,16 +189,51 @@ async function recolorToken(name) {
     .extend({ top: pad, bottom: pad, left: pad, right: pad, background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .raw()
     .toBuffer({ resolveWithObject: true });
+  const raw = { raw: { width: info.width, height: info.height, channels: 4 } };
+  const panels = [];
   for (const color of ['w', 'b']) {
     const { data: px, keyedShare } = recolorKey(data, info.width, info.height, color);
     if (color === 'w' && keyedShare < MIN_KEY)
       console.warn(`  ! ${name}: only ${(keyedShare * 100).toFixed(1)}% keyed; was the headgear/base painted cyan?`);
     const out = join(OUT_DIR, `${name}-${color}.webp`);
-    await sharp(px, { raw: { width: info.width, height: info.height, channels: 4 } })
-      .webp({ quality: 90, alphaQuality: 100, effort: 6 })
-      .toFile(out);
+    await sharp(px, raw).webp({ quality: 90, alphaQuality: 100, effort: 6 }).toFile(out);
     console.log(`${name}-${color}: ${info.width}x${info.height} → ${out}`);
+    panels.push(await sharp(px, raw).png().toBuffer());
   }
+  await writeCheckSheet(name, data, info.width, info.height, panels);
+}
+
+/**
+ * Writes art/raw/check/<name>.png: the token with every recolored pixel in solid magenta
+ * (anything magenta outside the headgear and base was teal in the creature and got
+ * repainted), then the ivory and ebony results on a light and a dark square.
+ */
+async function writeCheckSheet(name, data, w, h, [ivory, ebony]) {
+  const mask = Buffer.from(data);
+  for (let i = 0; i < w * h; i++) {
+    const o = i * 4;
+    const [r, g, b] = [mask[o], mask[o + 1], mask[o + 2]];
+    const grey = Math.round(0.3 * r + 0.59 * g + 0.11 * b);
+    [mask[o], mask[o + 1], mask[o + 2]] = keyStrength(r, g, b) ? [255, 0, 255] : [grey, grey, grey];
+  }
+  const square = (input, left, background) => [
+    { input: { create: { width: w, height: h, channels: 4, background } }, left, top: 0 },
+    { input, left, top: 0 },
+  ];
+  const light = { r: 0xe8, g: 0xd5, b: 0xaa, alpha: 1 }; // the board's squares (src/ui/phaserBoard.ts)
+  const dark = { r: 0xa2, g: 0x7a, b: 0x52, alpha: 1 };
+  const dir = join(RAW_DIR, 'check');
+  mkdirSync(dir, { recursive: true });
+  await sharp({ create: { width: w * 5, height: h, channels: 4, background: dark } })
+    .composite([
+      { input: await sharp(mask, { raw: { width: w, height: h, channels: 4 } }).png().toBuffer(), left: 0, top: 0 },
+      ...square(ivory, w, light),
+      ...square(ivory, w * 2, dark),
+      ...square(ebony, w * 3, light),
+      ...square(ebony, w * 4, dark),
+    ])
+    .png()
+    .toFile(join(dir, `${name}.png`));
 }
 
 const isToken = (name) => name.startsWith('token-');
@@ -259,6 +304,18 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const files = readdirSync(RAW_DIR)
     .filter((f) => f.endsWith('.png'))
     .filter((f) => (asked.length ? asked.includes(basename(f, '.png')) : all || stale(f)));
-  if (!files.length) console.log('Nothing to process (outputs are up to date; use --all to force).');
   for (const f of files) await processOne(f);
+  // Keyed cutouts whose ivory/ebony sprites are missing or older (e.g. a cutout pulled from git).
+  // Retuned RAMP/RIM colors don't change any file date: use --recolor for those.
+  const sprite = (n, c) => join(OUT_DIR, `${n}-${c}.webp`);
+  const recolor = readdirSync(TOKEN_DIR)
+    .filter((f) => f.endsWith('.png'))
+    .map((f) => basename(f, '.png'))
+    .filter((n) => !asked.length || asked.includes(n))
+    .filter((n) => {
+      const cut = statSync(join(TOKEN_DIR, `${n}.png`)).mtimeMs;
+      return ['w', 'b'].some((c) => !existsSync(sprite(n, c)) || statSync(sprite(n, c)).mtimeMs < cut);
+    });
+  for (const n of recolor) await recolorToken(n);
+  if (!files.length && !recolor.length) console.log('Nothing to process (outputs are up to date; use --all to force).');
 }

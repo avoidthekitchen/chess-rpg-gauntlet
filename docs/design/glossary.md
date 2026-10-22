@@ -17,7 +17,7 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 | Queen | Fox Sorceress | sorceress |
 | King | Lion King | king |
 
-- **Tortoise Golem** is the canonical species name (decided 2026-10-22). The code is mixed: the starter screen and briefings say Golem (`STARTERS` in `src/game/campaign.ts`), but battle, the tavern, the muster screen and puzzles say "Tortoise Tower" (`SPECIES` in `src/ui/speaker.ts`). Renaming those is an [open TODO](decisions.md#open-todos). "Tower" stays the short name.
+- **Tortoise Golem** is the canonical species name (decided 2026-10-22). The code uses it everywhere (`STARTERS` in `src/game/campaign.ts`, `SPECIES` in `src/ui/speaker.ts`). "Tower" stays the short name.
 - A promoted pawn is **knighted**, whatever it becomes.
 - Chess terms (check, checkmate, fork, pin, file, rank) are used as they are in real chess, in dialogue and lessons alike, so everything carries over.
 

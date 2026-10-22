@@ -28,7 +28,7 @@ The one place to track unfinished design work. When one is resolved, move the an
     - goblin wording in battle ("Told you I would!", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
 - [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
 - [ ] **Region 1 boss results:** the no-shout boss's AI values are in the [tuning values](systems.md#tuning-values); on the next `npm run verify:battles`, record the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification). The boss check is the slow part of that run (384 full games).
-- [ ] **Tortoise name:** rename "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
+- [x] **Tortoise name:** renamed "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
 ## Open questions
 

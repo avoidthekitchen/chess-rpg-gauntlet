@@ -210,7 +210,8 @@ export async function playGame(
   let shoutsKept = 0;
   for (let guard = 0; guard < 80 && b.status === 'playing'; guard++) {
     let shout: string | null;
-    if (shoutCache.has(b.fen)) shout = shoutCache.get(b.fen)!;
+    if (!def.shouts) shout = null; // e.g. the Goblin Chief, who keeps his plans to himself
+    else if (shoutCache.has(b.fen)) shout = shoutCache.get(b.fen)!;
     else {
       shout = await planShout(b, eng.asEngine(), profile);
       shoutCache.set(b.fen, shout);

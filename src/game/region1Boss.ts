@@ -30,17 +30,19 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   kind: 'boss',
   theme: 'Everything so far',
   enemy: { name: 'Grubnak, the Goblin Chief', personality: 'standard' },
-  intro: 'The Goblin Chief waits behind a wall of eight squires and one sneaky frog. Bring your best 10 points of army.',
+  intro: 'The Goblin Chief waits behind a wall of eight squires and one sneaky frog. He doesn’t shout his plans. Bring your best 10 points of army.',
   lesson:
-    'A full game: develop your pieces, keep them protected, and listen to the goblins’ shouts. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
-  tip: 'Every piece matters today. Keep them guarded, and listen when they shout!',
+    'A full game: develop your pieces and keep them protected. Grubnak doesn’t shout his plans, so after every goblin move, ask yourself what it attacks. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
+  tip: 'Every piece matters today. Grubnak won’t tell us his plans, so watch every move he makes!',
   objective: { kind: 'checkmate' },
   reward: 50,
   bonuses: [
     { kind: 'noRewind', gold: 10 },
     { kind: 'quick', moves: 30, gold: 10 },
   ],
-  shouts: true,
+  // The region's final exam: the chief keeps his plans to himself, so the habit the shouts
+  // taught (what does the enemy want?) has to work without them.
+  shouts: false,
   before: [
     { who: 'chief', text: 'So the little king came all the way to Grubnak’s camp. Squires! WALL!' },
     { who: 'companion', text: 'A wall of pawns can’t move backwards. Find the loose one and pry it open.' },

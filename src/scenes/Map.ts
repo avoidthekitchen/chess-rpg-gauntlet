@@ -2,6 +2,7 @@ import type Phaser from 'phaser';
 import { battlesWon, bossOpen, nodeState, type NodeState } from '../game/campaign';
 import type { Line } from '../game/content';
 import { REGION1_BOSS, REGION1_MAP, REGION1_NAME, REGION1_TOWN, battleById } from '../game/region1';
+import { R1_BOSS } from '../game/region1Boss';
 import { briefBattle, dialogueHtml } from '../flow';
 import { persist, save } from '../save';
 import { showModal } from '../ui/overlay';
@@ -48,7 +49,7 @@ export class MapScene extends BaseScene {
 
     const won = battlesWon(REGION1_MAP, s);
     const note = s.bossBeaten
-      ? 'The Bog is safe. Saffron has joined your party.'
+      ? 'The Bog is safe and Saffron has joined you. Region 2, the Bandit Riders, comes in a later build.'
       : bossOpen(REGION1_MAP, s)
         ? 'The Goblin Chief’s camp is open. Visit town to prepare your army.'
         : `Battles won: ${won} of ${nodes.length}. The Goblin Chief’s camp opens after ${REGION1_MAP.bossNeeds} wins.`;
@@ -168,7 +169,19 @@ export class MapScene extends BaseScene {
   }
 
   protected openBoss() {
-    this.toast('The Goblin Chief awaits (step 4).');
+    const s = save();
+    const def = { ...R1_BOSS, fen: '' };
+    showModal({
+      eyebrow: `Boss duel · ${def.theme}`,
+      title: def.title,
+      wide: true,
+      html: `<p>${def.intro}</p>${dialogueHtml(def.before, null)}<p class="goal"><strong>Goal:</strong> Checkmate Grubnak. A full game, so take your time.</p><p class="muted">Reward: <span class="gold">${def.reward}g</span>${s.heroJoined ? '' : ', and someone locked in the chief’s pantry'}.</p>`,
+      buttons: [
+        { label: 'Choose my army', kind: 'primary', onClick: () => this.scene.start('muster') },
+        { label: 'Not yet', kind: 'ghost', onClick: () => {} },
+      ],
+      onDismiss: () => {},
+    });
   }
 
   private label(p: Pt, title: string, sub: string, r: number, lit: boolean) {

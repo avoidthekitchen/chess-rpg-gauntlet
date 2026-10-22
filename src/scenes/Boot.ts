@@ -15,7 +15,8 @@ export class BootScene extends Phaser.Scene {
     for (const p of PIECES) {
       for (const s of SIDES) {
         this.load.image(`token-${p}-${s}`, `sprites/token-${p}-${s}.webp`);
-        this.load.image(`${p}-${s}`, `sprites/${p}-${s}.webp`);
+        // The bandits (region 2) have no squire or sorceress figurines yet; their tokens stand in.
+        if (!(s === 'foe' && (p === 'pawn' || p === 'queen'))) this.load.image(`${p}-${s}`, `sprites/${p}-${s}.webp`);
       }
     }
     for (const b of BACKGROUNDS) this.load.image(`bg-${b}`, `backgrounds/${b}.webp`);

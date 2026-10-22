@@ -66,3 +66,20 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 **Worth a look**
 - Fixed in this step: going back to the map from a battle left the battle scene running underneath (`goTo()` in `src/ui/screen.ts` now switches screens cleanly).
 - The hanging-piece bounty text says "Something is left unguarded. Win it." Some of those puzzles are also mates, which still fits but may surprise.
+
+## Step 4: Boss and hero reward
+
+**Done**
+- The Goblin Chief's camp opens on the map after four wins. Its briefing leads to a muster screen (`src/scenes/Muster.ts`) where you pick your army from the pieces you own, up to Grubnak's 10-point budget with no queen (`src/game/boss.ts`: standard values, per-type caps, a "best fit" suggestion that puts your companion first). Big armies switch to two compact columns so 15 pieces still fit a phone.
+- The duel (`src/game/region1Boss.ts`): your picks on their usual home squares against Grubnak behind a full wall of eight goblin squires and one frog knight (11 points). Objective: checkmate, no move limit. 50g reward, plus bonus goals for no rewinds and winning within 30 moves. The goblins still shout.
+- Hero recruit: winning the duel frees Saffron the Fox Sorceress, who joins your army as a named hero with her own portrait and lines. After the boss, the map says the Bog is safe and region 2 comes in a later build.
+- Engine check (`scripts/verify/boss.verify.test.ts`): a strong Stockfish player wins 100% with each starter's typical 10-point army at Squire and Knight, and with no hires at all (5 points). Careless and greedy simulated players win 0-17%.
+
+**Simplified or decided without the doc**
+- Grubnak's army (eight squires and a frog knight) and the 50g reward are my picks.
+- The hero is a fox sorceress. She can't fight Grubnak (no queens), so she matters from region 2 on.
+- The goblins shout in the boss duel too. I tried turning it off: a strong player still won in 4-11 moves, so the shouts aren't what makes the duel short.
+
+**Worth a look**
+- The duel's length depends a lot on the player. A strong player mates the Squire or Knight AI in 4-21 moves, and weak simulated play almost always loses. Real players are in between, so watch in playtests whether it feels like a full game (the doc's intent) or is too hard for players who lose to tactics.
+- Replaying the duel after a win pays only what's left (bonus goals not yet earned). The hero joins only once.

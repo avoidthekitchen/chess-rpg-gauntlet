@@ -1,6 +1,8 @@
 import type { PieceSymbol } from 'chess.js';
 import type Phaser from 'phaser';
-import { STARTERS, assignCharacters } from './game/campaign';
+import { STARTERS, addCharacter, assignCharacters } from './game/campaign';
+import { bossFen } from './game/boss';
+import { R1_BOSS, R1_BOSS_ARMY, R1_HERO } from './game/region1Boss';
 import { bonusMet, bonusText, type BattleDef, type Line } from './game/content';
 import { DIFFICULTIES } from './game/difficulty';
 import type { Exercise } from './game/academy';
@@ -85,7 +87,15 @@ export function briefBattle(scene: Phaser.Scene, def: BattleDef) {
   });
 }
 
-export function launchBattle(scene: Phaser.Scene, def: BattleDef) {
+export interface LaunchOpts {
+  /** Named characters by square (defaults to your roster placed into the lineup). */
+  names?: Record<string, string>;
+  /** Extra HTML after a win, after the payout (e.g. a hero joining). Runs once per win. */
+  onWin?: () => string;
+  winButton?: string;
+}
+
+export function launchBattle(scene: Phaser.Scene, def: BattleDef, opts: LaunchOpts = {}) {
   const s = save();
   const startRewinds = DIFFICULTIES[s.difficulty].rewinds;
   const launch: BattleLaunch = {
@@ -93,7 +103,7 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef) {
     faction: 'bog',
     difficulty: s.difficulty,
     eyebrow: `${def.region} · ${DIFFICULTIES[s.difficulty].label}`,
-    names: assignCharacters(def.fen, s.roster),
+    names: opts.names ?? assignCharacters(def.fen, s.roster),
     shouts: def.shouts,
     tip: { type: s.starter, name: STARTERS[s.starter].name, line: def.tip },
     exit: () => goTo(scene.game, 'map'),
@@ -108,7 +118,8 @@ export function launchBattle(scene: Phaser.Scene, def: BattleDef) {
         persist();
         html += payoutHtml(def, stats, pay, s.gold);
         html += dialogueHtml(def.after, def);
-        buttons.push({ label: 'Back to the map', kind: 'primary', onClick: () => goTo(scene.game, 'map') });
+        if (opts.onWin) html += opts.onWin();
+        buttons.push({ label: opts.winButton ?? 'Back to the map', kind: 'primary', onClick: () => goTo(scene.game, 'map') });
         buttons.push({ label: 'Replay', onClick: actions.retry });
       } else {
         // Accepting the defeat (retry or retreat) costs gold on harder difficulties; a rewind doesn't.
@@ -163,6 +174,32 @@ function payoutHtml(def: BattleDef, stats: { won: boolean; piecesLost: number; p
   if (pay.tactics) rows.push(`<p class="bonus got">Tactic bonus <span class="gold">+${pay.tactics}g</span></p>`);
   rows.push(`<p>You now have <span class="gold">${gold}g</span>.</p>`);
   return rows.join('');
+}
+
+/** The Goblin Chief's duel with the army you picked (character ids from your roster). */
+export function launchBoss(scene: Phaser.Scene, chosenIds: string[]) {
+  const s = save();
+  const chosen = s.roster.filter((c) => chosenIds.includes(c.id));
+  const fen = bossFen(
+    chosen.map((c) => c.type),
+    R1_BOSS_ARMY,
+  );
+  const def: BattleDef = { ...R1_BOSS, fen };
+  launchBattle(scene, def, {
+    names: assignCharacters(fen, chosen),
+    winButton: s.heroJoined ? 'Back to the map' : 'Welcome, Saffron!',
+    onWin: () => {
+      s.bossBeaten = true;
+      let html = '';
+      if (!s.heroJoined) {
+        s.heroJoined = true;
+        addCharacter(s, R1_HERO.type, 'hero', R1_HERO.name);
+        html = `<h3 class="hero-h">A new companion!</h3>${dialogueHtml(R1_HERO.lines, def)}`;
+      }
+      persist();
+      return html;
+    },
+  });
 }
 
 /** Academy practice: rook and queen mates against a lone king that defends perfectly. */

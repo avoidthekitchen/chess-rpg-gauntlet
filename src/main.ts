@@ -7,6 +7,7 @@ import './ui/overlay.css';
 import { BattleScene } from './scenes/Battle';
 import { BootScene } from './scenes/Boot';
 import { MapScene } from './scenes/Map';
+import { MusterScene } from './scenes/Muster';
 import { PuzzleScene } from './scenes/Puzzle';
 import { StarterScene } from './scenes/Starter';
 import { TownScene } from './scenes/Town';
@@ -41,7 +42,7 @@ async function start() {
     input: { activePointers: 2, windowEvents: false },
     // Dev only: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: import.meta.env.DEV && new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
-    scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, BattleScene],
+    scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, MusterScene, BattleScene],
   });
 
   // Size the canvas once Phaser has booted, and again whenever the window changes.

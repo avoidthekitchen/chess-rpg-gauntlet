@@ -2,6 +2,15 @@
 
 [Design overview](../design.md) · [Game systems](systems.md) · [Campaign and curriculum](campaign.md)
 
+## Open TODOs
+
+The one place to track unfinished design work. When one is resolved, move the answer to the document it belongs in and tick it off here.
+
+- [ ] **Main story arc:** player motivation and the story beats connecting the Regions to the Lich King. Answer goes in [Story](story.md#main-story-arc).
+- [ ] **Recurring characters:** names, personalities, development and dialogue conventions beyond the existing roles. Answer goes in [Story](story.md#recurring-characters).
+- [ ] **Region 1 detailed design:** battle sequence and branching, local story and dialogue, and boss and hero character details. Answer goes in [Region 1](regions/region-01-bog-goblins.md#design-status).
+- [ ] **Regions 2–5 and the Lich King:** detailed designs, each as its own file under `regions/`, moved out of [Campaign](campaign.md#regions-and-factions) as written.
+
 ## Open questions
 
 - [ ] Knight difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.

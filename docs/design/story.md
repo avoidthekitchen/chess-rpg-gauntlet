@@ -8,7 +8,7 @@
 
 ## Main story arc
 
-**TODO:** Develop the main story arc, player motivation and story beats connecting the Regions to the Lich King. The existing design establishes the premise and final villain, but does not yet specify this arc.
+The existing design establishes the premise and final villain, but not the arc yet. See [open TODOs](decisions.md#open-todos).
 
 ## Recurring characters
 
@@ -18,4 +18,4 @@
 
 **Named hero recruits.** Each region rewards you with a named hero who joins your party with a portrait and dialogue, for example a frog knight captain after beating the Bandit Riders. Heroes give each region a "new companion" moment without locking any piece types.
 
-**TODO:** Define recurring character names, personalities, development and dialogue conventions beyond the roles described above. Region-specific characters and story beats belong in their Region documents.
+Character names, personalities and dialogue conventions are still open. See [open TODOs](decisions.md#open-todos). Region-specific characters and story beats belong in their Region documents.

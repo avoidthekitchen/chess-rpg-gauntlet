@@ -6,7 +6,7 @@
 
 The material below is the original Region 1 prototype scope. See the [build progress](../../progress.md) for implementation history, the [campaign overview](../campaign.md#regions-and-factions) for faction details and the [curriculum](../campaign.md#curriculum) for learning goals and bounty tags.
 
-**TODO:** Expand this prototype scope into a detailed Region design covering battle sequence and branching, local story and dialogue, and boss and hero character details.
+A detailed Region design is still open. See [open TODOs](../decisions.md#open-todos).
 
 ## Prototype scope
 

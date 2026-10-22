@@ -42,15 +42,15 @@ Each place has one job: the academy teaches a region's ideas in a safe space (un
 | --- | --- |
 | [Game systems](design/systems.md) | Battles, army, gold, enemies, difficulty, powers and rewind |
 | [Campaign and curriculum](design/campaign.md) | Campaign structure, factions, teaching progression and Gauntlet |
-| [Story and recurring characters](design/story.md) | Setting, starter companions, tutors and story TODOs |
+| [Story and recurring characters](design/story.md) | Setting, starter companions and tutors |
 | [Art direction](design/art.md) | Board tokens, portraits, asset pipeline and deferred 3D exploration |
 | [Technical design and licensing](design/technical.md) | Tech stack, deployment and licenses |
-| [Decisions and open questions](design/decisions.md) | Shared unresolved questions and decision log |
+| [Decisions and open questions](design/decisions.md) | Open TODOs, tuning questions and decision log |
 
 ## Regions
 
 - [Region 1: Bog Goblins](design/regions/region-01-bog-goblins.md) — original prototype scope and build order.
-- [Regions 2–5 and the Lich King](design/campaign.md#regions-and-factions) — existing faction and curriculum summaries; detailed Region documents are TODO.
+- [Regions 2–5 and the Lich King](design/campaign.md#regions-and-factions) — existing faction and curriculum summaries; detailed Region documents are still [open TODOs](design/decisions.md#open-todos).
 
 Shared rules live in the topic documents above; Region documents hold local content and link to those rules. The [story document](design/story.md) holds the overall arc and recurring cast; Region documents hold their local stories and characters. Each detailed document links back here.
 

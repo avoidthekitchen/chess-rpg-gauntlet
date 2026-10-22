@@ -55,7 +55,8 @@ The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unf
 The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures (`src/ui/portrait.ts`, lines in `src/ui/speaker.ts`); on phones the card floats at the bottom of the screen. The "Pieces" button switches to standard chess pieces.
 
 
-Art comes from OpenRouter's image models, styled after `art/reference/`:
+Art is AI-generated with Google's Gemini 3 Pro Image (`google/gemini-3-pro-image`) through OpenRouter, styled after `art/reference/`. Check Google's and OpenRouter's current terms for commercial use before shipping; images carry an invisible SynthID watermark.
+
 
 ```bash
 node scripts/generate-art.mjs              # new sprites only; needs OPENROUTER_API_KEY_WITH_BUDGET

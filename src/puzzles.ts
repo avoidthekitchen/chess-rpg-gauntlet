@@ -14,9 +14,15 @@ export function loadPuzzles(): Promise<Puzzle[]> {
         return r.json() as Promise<Puzzle[]>;
       }),
     ),
-  ).then((lists) => lists.flatMap((list, i) => list.map((p) => ({ ...p, theme: THEMES[i] }))));
+  ).then((lists) => uniqueById(lists.flatMap((list, i) => list.map((p) => ({ ...p, theme: THEMES[i] })))));
   pool.catch(() => (pool = null)); // let a failed load retry next time
   return pool;
+}
+
+/** Some puzzles carry two themes and sit in two packs; keep the first copy so a bounty can't show up twice. */
+export function uniqueById(puzzles: Puzzle[]): Puzzle[] {
+  const seen = new Set<string>();
+  return puzzles.filter((p) => !seen.has(p.id) && (seen.add(p.id), true));
 }
 
 export const THEME_TEXT: Record<string, { name: string; task: string }> = {

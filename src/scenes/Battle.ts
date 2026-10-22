@@ -155,7 +155,7 @@ export class BattleScene extends BaseScene {
     this.speaker = null;
     this.finished = false;
     this.statusLine = this.launch.scenario.intro;
-    this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
+    this.restoreNames();
     this.firstBuild = true;
     this.shout = null;
     this.pendingView = null;
@@ -610,6 +610,12 @@ export class BattleScene extends BaseScene {
     return `${who === 'you' ? 'Your' : 'Enemy'} ${PIECE_SHORT[m.piece]} ${verb}.`;
   }
 
+  /** Names from the start of the battle, moved along by every move still on the board (so a rewind puts them back). */
+  private restoreNames() {
+    this.names = new Map(Object.entries(this.launch.names ?? {}) as [Square, string][]);
+    for (const m of this.battle.chess.history({ verbose: true })) this.trackNames(m);
+  }
+
   /** Keeps named characters attached to their pieces as they move. */
   private trackNames(m: Move) {
     if (m.captured) {
@@ -774,16 +780,11 @@ export class BattleScene extends BaseScene {
   private checkFinished() {
     const b = this.battle;
     if (b.status === 'playing' || this.finished) return;
-    this.finished = true;
+    const view = this.recordResult();
     const won = b.status === 'won';
     if (won) this.board?.celebrate();
     const sess = this.session;
     const token = this.aiToken;
-    // Record the result now (pay a win, prepare a defeat's dialog), so leaving before the
-    // dialog appears can't lose a win or skip a defeat's cost.
-    const canRewind = b.status === 'lost' && b.canRewind();
-    const view = this.launch.finish(b, { retry: () => this.restart(), rewind: canRewind ? () => this.rewind() : null }, { tacticGold: this.tacticGold });
-    this.pendingView = view;
     const review = this.review(b, token);
     // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
     const minWait = new Promise((r) => setTimeout(r, won ? 1800 : 900));
@@ -793,6 +794,24 @@ export class BattleScene extends BaseScene {
       const html = view.html.replace(REVIEW_SLOT, reviewHtml(result, won, b.reason));
       showModal({ eyebrow: view.eyebrow, title: view.title, html, tone: won ? 'won' : 'lost', buttons: view.buttons, wide: true });
     });
+  }
+
+  /**
+   * Records a finished battle's result (pays a win, prepares a defeat's cost) the moment it's
+   * known, so leaving before the dialog appears can't lose a win or skip a defeat's cost.
+   */
+  private recordResult(): FinishView {
+    const b = this.battle;
+    this.finished = true;
+    const canRewind = b.status === 'lost' && b.canRewind();
+    const view = this.launch.finish(b, { retry: () => this.restart(), rewind: canRewind ? () => this.rewind() : null }, { tacticGold: this.tacticGold });
+    this.pendingView = view;
+    return view;
+  }
+
+  /** The battle ended but its final move is still animating, so the result isn't recorded yet. */
+  private settleUnrecorded() {
+    if (this.battle.status !== 'playing' && !this.finished) this.recordResult();
   }
 
   /**
@@ -850,6 +869,7 @@ export class BattleScene extends BaseScene {
     this.finished = false;
     this.pendingView = null; // a rewind undoes the defeat, so nothing is charged
     b.rewind();
+    this.restoreNames();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';
     this.showBanner('Rewind', 'ally');
@@ -859,6 +879,7 @@ export class BattleScene extends BaseScene {
 
   private restart() {
     if (this.board?.busy) return;
+    this.settleUnrecorded();
     this.pendingView?.onAbandon?.();
     closeModal();
     this.reset();
@@ -882,6 +903,7 @@ export class BattleScene extends BaseScene {
   }
 
   private leave() {
+    this.settleUnrecorded();
     this.pendingView?.onAbandon?.();
     this.pendingView = null;
     this.aiToken++;

@@ -34,9 +34,25 @@ export class Engine {
   private onLine: ((line: string) => void) | null = null;
   private queue: Promise<unknown> = Promise.resolve();
   readonly ready: Promise<boolean>;
+  /** True once the worker crashed or stopped answering; every search then returns no candidates. */
+  failed = false;
+  /** Called once when the engine fails, so the game can switch to its fallback AI. */
+  onFailure: (() => void) | null = null;
 
-  constructor(url: string) {
+  /** @param searchTimeoutMs a search that takes longer than this means the worker is stuck. */
+  constructor(
+    url: string,
+    private readonly searchTimeoutMs = 12_000,
+  ) {
     this.ready = this.boot(url);
+  }
+
+  private fail(why: string) {
+    if (this.failed) return;
+    this.failed = true;
+    this.onLine = null;
+    console.warn(`Stockfish failed (${why}); using the fallback AI`);
+    this.onFailure?.();
   }
 
   private async boot(url: string): Promise<boolean> {
@@ -50,7 +66,7 @@ export class Engine {
       const text = typeof e.data === 'string' ? e.data : String(e.data);
       for (const line of text.split('\n')) this.onLine?.(line.trim());
     };
-    this.worker.onerror = (e) => console.warn('Stockfish worker error', e.message);
+    this.worker.onerror = (e) => this.fail(`worker error: ${e.message}`);
     const ok = await this.waitFor('uci', 'uciok', 15_000);
     if (!ok) return false;
     return this.waitFor('isready', 'readyok', 5_000);
@@ -76,13 +92,18 @@ export class Engine {
   /** Returns the top `multiPv` moves for `fen`, best first. */
   analyse(fen: string, depth: number, multiPv: number): Promise<Candidate[]> {
     const run = async (): Promise<Candidate[]> => {
-      if (!(await this.ready) || !this.worker) return [];
+      if (!(await this.ready) || !this.worker || this.failed) return [];
       return new Promise((resolve) => {
         const byRank = new Map<number, Candidate>();
+        const timer = setTimeout(() => {
+          this.fail('search timed out');
+          resolve([]);
+        }, this.searchTimeoutMs);
         this.onLine = (line) => {
           const info = parseInfo(line);
           if (info) byRank.set(info.rank, info.candidate);
           if (line.startsWith('bestmove')) {
+            clearTimeout(timer);
             this.onLine = null;
             const best = line.split(' ')[1];
             const list = [...byRank.entries()].sort((a, b) => a[0] - b[0]).map(([, c]) => c);

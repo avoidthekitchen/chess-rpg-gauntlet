@@ -172,9 +172,9 @@ export class Battle {
     if (o.kind === 'promote' && move.promotion && this.promotionIsSafe(move.to)) {
       return this.end('won', 'Your squire reaches the far wall and is knighted!');
     }
-    if (o.kind === 'winMaterial' && this.materialGained() >= o.gain) {
-      return this.end('won', `You won ${this.materialGained()} points of material. The enemy flees!`);
-    }
+    // Material only counts once the enemy has had a chance to take back: a grab that's
+    // simply recaptured hasn't won anything. So wait for the reply (even on the last move).
+    if (o.kind === 'winMaterial' && this.materialGained() >= o.gain) return;
     if (this.raidedVillages().length > 0) {
       return this.end('lost', 'A raider was left standing on a village, and it burned.');
     }
@@ -196,6 +196,13 @@ export class Battle {
     const survive = o.kind === 'survive';
 
     if (c.isCheckmate()) return this.end('lost', 'Checkmate. Your king has fallen.');
+    if (o.kind === 'winMaterial') {
+      if (this.materialGained() >= o.gain) {
+        return this.end('won', `You won ${this.materialGained()} points of material and kept them. The enemy flees!`);
+      }
+      const left = this.movesLeft();
+      if (left !== undefined && left <= 0) return this.end('lost', 'They took it back, and you’re out of moves. The enemy regroups and escapes.');
+    }
     if (c.isDraw()) {
       return survive
         ? this.end('won', 'The battle ends in a draw, and the villages are safe.')

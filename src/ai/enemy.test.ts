@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
-import { describe, expect, it } from 'vitest';
-import { parseInfo } from './engine';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { Engine, parseInfo } from './engine';
 import { fallbackMove, pickCandidate, raiderMove } from './enemy';
 
 describe('pickCandidate', () => {
@@ -51,9 +51,47 @@ describe('raiderMove', () => {
   });
 });
 
+describe('raider king safety', () => {
+  it('skips a village raid that lets the defender mate at once', () => {
+    // The knight could burn the unguarded d4 village, but it's the only piece that can block
+    // Ra8 (Black's king is boxed in by its own pawns), so raiding would allow Ra8#.
+    const chess = new Chess('6k1/5ppp/2n5/8/8/8/8/R5K1 b - - 0 1');
+    expect(raiderMove(chess, ['d4'], () => 0)).not.toBe('c6d4');
+    // Without the mate threat (no rook), the same raid is taken.
+    expect(raiderMove(new Chess('6k1/5ppp/2n5/8/8/8/8/6K1 b - - 0 1'), ['d4'], () => 0)).toBe('c6d4');
+  });
+});
+
 describe('fallbackMove', () => {
   it('finds mate in one', () => {
     const chess = new Chess('6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1');
     expect(fallbackMove(chess, () => 0)).toBe('a1a8');
+  });
+});
+
+describe('Engine', () => {
+  /** A worker that boots fine but never finishes a search, like a hung Stockfish. */
+  class HungWorker {
+    onmessage: ((e: { data: string }) => void) | null = null;
+    onerror: ((e: { message: string }) => void) | null = null;
+    postMessage(cmd: string) {
+      const reply = cmd === 'uci' ? 'uciok' : cmd === 'isready' ? 'readyok' : null;
+      if (reply) setTimeout(() => this.onmessage?.({ data: reply }), 0);
+    }
+    terminate() {}
+  }
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('gives up on a stuck search and reports the failure once', async () => {
+    vi.stubGlobal('Worker', HungWorker);
+    const e = new Engine('stockfish.js', 50);
+    const onFailure = vi.fn();
+    e.onFailure = onFailure;
+    expect(await e.ready).toBe(true);
+    expect(await e.analyse('4k3/8/8/8/8/8/8/4K3 w - - 0 1', 8, 1)).toEqual([]);
+    expect(e.failed).toBe(true);
+    // Later searches return at once instead of queueing behind the stuck one.
+    expect(await e.analyse('4k3/8/8/8/8/8/8/4K3 w - - 0 1', 8, 1)).toEqual([]);
+    expect(onFailure).toHaveBeenCalledTimes(1);
   });
 });

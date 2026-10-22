@@ -1,4 +1,4 @@
-# Chess RPG Gauntlet — Game Design Doc
+# Pawnshire — Game Design Doc
 
 October 21, 2026 · Exported from the [Claude Doc](https://claude.ai/artifact/VefDVarJQaXZKM4xbvPBAU)
 
@@ -34,7 +34,7 @@ flowchart LR
     Town -->|next battle| Map
 ```
 
-The academy teaches each region's themes, and puzzle bounties top up gold. Clearing a region's battles opens its boss duel, which leads to the next region.
+Each place has one job: the academy teaches a region's ideas in a safe space (unlimited undo, nothing at stake), battles test them under pressure (goals, move limits, scarce rewinds, gold at stake), and bounties repeat them with real puzzles until they stick, topping up gold. Clearing a region's battles opens its boss duel, which leads to the next region.
 
 ## Battles
 
@@ -334,6 +334,8 @@ Build one complete region, the Bog Goblins, from start to boss, in Phaser. It's 
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-21 | The game is called Pawnshire; Gauntlet stays the name of the replay mode after the campaign |
+| 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks |
 | 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |
 | 2026-10-21 | If 3D is revisited, use Rodin for AI-generated models (slight edge over Hunyuan3D; TRELLIS 2 not for hero pieces) |
 | 2026-10-21 | Talking-head portraits are tall portrait cards so headgear and shoulders fit |

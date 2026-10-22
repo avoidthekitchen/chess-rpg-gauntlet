@@ -1,5 +1,5 @@
 {
-  "name": "chess-rpg-gauntlet",
+  "name": "pawnshire",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -9,12 +9,17 @@
     "prebuild": "node scripts/copy-engine.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "puzzles": "node scripts/build-puzzles.mjs",
+    "verify:battles": "vitest run --config vitest.verify.config.ts",
+    "stage": "node scripts/stage-deploy.mjs",
+    "deploy": "npm run build && node scripts/stage-deploy.mjs && wrangler deploy"
   },
   "dependencies": {
+    "@fontsource/alegreya": "^5.3.0",
     "chess.js": "^1.4.0",
     "gsap": "^3.15.0",
-    "pixi.js": "^8.22.0",
+    "phaser": "^4.2.1",
     "stockfish": "^19.0.1",
     "three": "^0.186.1"
   },
@@ -27,6 +32,7 @@
     "sharp": "^0.35.5",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "^4.97.0"
   }
 }

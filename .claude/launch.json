@@ -39,6 +39,18 @@
         "--strictPort"
       ],
       "port": 4173
+    },
+    {
+      "name": "staged",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8788",
+        "-d",
+        "dist-worker"
+      ],
+      "port": 8788
     }
   ]
 }

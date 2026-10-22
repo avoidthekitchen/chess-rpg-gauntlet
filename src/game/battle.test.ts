@@ -52,7 +52,36 @@ describe('Battle', () => {
     b.enemyMove('e8d7');
     b.playerMove({ from: 'c7', to: 'a8' });
     expect(b.materialGained()).toBe(5);
+    // Material counts once the enemy has had its reply and couldn't take it back.
+    expect(b.status).toBe('playing');
+    b.enemyMove('d7c6');
     expect(b.status).toBe('won');
+    expect(b.reason).toMatch(/kept/);
+  });
+
+  it('does not count material that is simply taken back', () => {
+    // White's rook grabs a knight guarded by a pawn: +3 on the spot, then the pawn takes the rook.
+    const b = new Battle(custom('4k3/8/3p4/4n3/8/8/8/4RK2 w - - 0 1', { kind: 'winMaterial', gain: 3, maxMoves: 4 }), 0);
+    b.playerMove({ from: 'e1', to: 'e5' });
+    expect(b.materialGained()).toBe(3);
+    expect(b.status).toBe('playing');
+    b.enemyMove('d6e5');
+    expect(b.materialGained()).toBe(-2);
+    expect(b.status).toBe('playing');
+  });
+
+  it('judges a material win on the last move after the reply', () => {
+    const goal = { kind: 'winMaterial' as const, gain: 3, maxMoves: 1 };
+    const kept = new Battle(custom('4k3/8/8/4n3/8/8/8/4RK2 w - - 0 1', goal), 0);
+    kept.playerMove({ from: 'e1', to: 'e5' });
+    expect(kept.status).toBe('playing'); // not "out of moves" yet: the enemy replies first
+    kept.enemyMove('e8d7');
+    expect(kept.status).toBe('won');
+    const lost = new Battle(custom('4k3/8/3p4/4n3/8/8/8/4RK2 w - - 0 1', goal), 0);
+    lost.playerMove({ from: 'e1', to: 'e5' });
+    lost.enemyMove('d6e5');
+    expect(lost.status).toBe('lost');
+    expect(lost.reason).toMatch(/out of moves/);
   });
 
   it('loses when the move limit runs out', () => {

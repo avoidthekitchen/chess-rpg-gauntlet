@@ -25,7 +25,7 @@ export const DIFFICULTIES: Record<DifficultyId, Difficulty> = {
   squire: {
     id: 'squire',
     label: 'Squire',
-    blurb: 'New to chess. Weak enemies, Threat Sight on, 3 rewinds.',
+    blurb: 'Relaxed. Clumsier enemies, Threat Sight on, 3 rewinds per battle.',
     ai: { depth: 5, multiPv: 6, maxLoss: 300 },
     rewinds: 3,
     threatSight: true,
@@ -33,7 +33,7 @@ export const DIFFICULTIES: Record<DifficultyId, Difficulty> = {
   knight: {
     id: 'knight',
     label: 'Knight',
-    blurb: 'You know the moves. Enemies make fewer mistakes, 2 rewinds.',
+    blurb: 'A fair fight. Sharper enemies, 2 rewinds per battle.',
     ai: { depth: 8, multiPv: 5, maxLoss: 120 },
     rewinds: 2,
     threatSight: true,

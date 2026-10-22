@@ -63,7 +63,7 @@ This predates the decision that the academy teaches what the battles test. The R
 
 ## Bounty board
 
-Four bounties at a time from real Lichess puzzles (150 `mateIn1` and 150 `hangingPiece`, rated 400–1899; 12 puzzles appear in both packs, a fix in progress), spread across ratings so pay differs. The board refreshes after every battle, and each bounty gets one try ([rules](../systems.md#bounty-board-and-gold)). The puzzle files are built by `npm run puzzles` into `public/puzzles/region1/`.
+Four bounties at a time come from real Lichess puzzles, spread across ratings so pay differs. The packs contain 150 `mateIn1` and 150 `hangingPiece` entries, rated 400–1899. Puzzle deduplication is complete: the loader removes 12 shared IDs, leaving 288 unique puzzles. The build script also prevents duplicates across future packs. The board refreshes after every battle, and each bounty gets one try ([rules](../systems.md#bounty-board-and-gold)). The puzzle files are built by `npm run puzzles` into `public/puzzles/region1/`.
 
 ## Boss: Grubnak's Last Stand
 

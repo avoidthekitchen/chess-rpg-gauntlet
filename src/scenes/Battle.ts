@@ -15,7 +15,7 @@ import { threatMap } from '../game/threats';
 import { store } from '../store';
 import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
-import { speakerCard } from '../ui/portrait';
+import { portrait, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
 import { SPECIES, pieceName, speakerLine, type FactionArt, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
@@ -504,7 +504,58 @@ export class BattleScene extends BaseScene {
     this.refresh();
   }
 
-  private showBanner(text: string, kind: 'ally' | 'foe') {
+  /**
+   * XCOM-style moment: when a real piece (not a squire) is captured, a cinematic band
+   * sweeps across the board with the capturer's portrait. Doesn't block play.
+   */
+  private closeUp(m: Move): boolean {
+    if (!this.board || !m.captured || m.captured === 'p' || matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    const L = this.layout();
+    const bw = L.board.w;
+    const bh = Math.min(150, this.board.height * 0.36);
+    const x = L.board.x;
+    const y = L.board.y + this.board.height * 0.5 - bh / 2;
+    const ally = m.color === 'w';
+    const c = this.add.container(0, 0).setDepth(55);
+    const band = this.add.graphics();
+    band.fillStyle(0x0c090f, 0.82).fillRect(x, y, bw, bh);
+    band.fillStyle(ally ? C.gold : C.red, 1).fillRect(x, y, bw, 3).fillRect(x, y + bh - 3, bw, 3);
+    c.add(band);
+    const pw = bh * 0.72;
+    const pc = this.add.container(0, 0);
+    portrait(this, x + 18, y + 10, pw, bh - 20, m.promotion ?? m.piece, ally ? 'ally' : 'foe', this.launch.faction, pc);
+    c.add(pc);
+    const name = this.names.get(m.to);
+    const who = ally ? (name ?? `Your ${PIECE_SHORT[m.piece]}`) : `Goblin ${PIECE_SHORT[m.piece]}`;
+    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes the ${PIECE_SHORT[m.captured]}!`, {
+      fontFamily: SERIF,
+      fontSize: `${Math.round(Math.min(30, bh * 0.2))}px`,
+      fontStyle: 'bold',
+      color: ally ? '#ffd66b' : '#ff8a73',
+      stroke: '#1a0f08',
+      strokeThickness: 5,
+      lineSpacing: 2,
+    });
+    t.setOrigin(0, 0.5);
+    c.add(t);
+    // Sweep in from the mover's side, hold a beat, then fade.
+    const dir = ally ? -1 : 1;
+    pc.x = dir * bw * 0.4;
+    t.x += dir * -bw * 0.25;
+    c.alpha = 0;
+    this.tweens.add({ targets: c, alpha: 1, duration: 120 });
+    this.tweens.add({ targets: pc, x: 0, duration: 320, ease: 'Back.easeOut' });
+    this.tweens.add({ targets: t, x: x + pw + 34, duration: 360, ease: 'Cubic.easeOut' });
+    this.tweens.add({ targets: c, alpha: 0, duration: 260, delay: 1000, onComplete: () => c.destroy() });
+    return true;
+  }
+
+  private showBanner(text: string, kind: 'ally' | 'foe', delay = 0) {
+    if (delay > 0) {
+      const b = this.battle;
+      window.setTimeout(() => this.sys.isActive() && this.battle === b && this.showBanner(text, kind), delay);
+      return;
+    }
     if (!this.board) return;
     const L = this.layout();
     const cx = L.board.x + L.board.w / 2;
@@ -571,6 +622,7 @@ export class BattleScene extends BaseScene {
     this.trackNames(res.move);
     await this.animate(res);
     if (this.battle !== b) return; // restarted meanwhile
+    const closeUp = this.closeUp(res.move);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
     if (this.battle !== b) return;
@@ -579,8 +631,8 @@ export class BattleScene extends BaseScene {
     const tag = tactics.find((t) => PLAYER_BANNER[t]);
     if (tag === 'fork' && this.launch.tacticGold) {
       this.tacticGold += TACTIC_GOLD;
-      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally');
-    } else if (tag) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
+      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally', closeUp ? 1150 : 0);
+    } else if (tag && !(tag === 'capture' && closeUp)) this.showBanner(PLAYER_BANNER[tag]!, 'ally', closeUp ? 1150 : 0);
     this.refresh();
     this.checkFinished();
     if (b.isEnemyTurn()) void this.enemyTurn();
@@ -645,13 +697,14 @@ export class BattleScene extends BaseScene {
     this.trackNames(res.move);
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b) return;
+    const enemyCloseUp = this.closeUp(res.move);
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
     this.speak(shown, kept);
     const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
-    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
-    else if (res.move.captured) this.showBanner('Piece lost', 'foe');
+    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe', enemyCloseUp ? 1150 : 0);
+    else if (res.move.captured && !enemyCloseUp) this.showBanner('Piece lost', 'foe');
     else if (shout && !kept) this.showBanner('Foiled!', 'ally');
     this.refresh();
     this.checkFinished();

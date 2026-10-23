@@ -89,6 +89,8 @@ export class BattleScene extends BaseScene {
   private thinking = false;
   private animating = false;
   private aiToken = 0;
+  /** Goes up on every rewind, so point labels still waiting for a close-up to clear are dropped. */
+  private popupEpoch = 0;
   private threatSight = true;
   private pieceStyle: PieceStyle = 'tokens';
   private statusLine = '';
@@ -681,9 +683,9 @@ export class BattleScene extends BaseScene {
     if (delay > 0) {
       // Wait for the capture close-up to clear, so the label doesn't cover its text.
       const b = this.battle;
-      const plies = b.chess.history().length;
-      // Skip it if the battle restarted or the move was rewound meanwhile.
-      this.time.delayedCall(delay, () => this.battle === b && b.chess.history().length >= plies && this.floatPoints(sq, delta));
+      const epoch = this.popupEpoch;
+      // Skip it if the battle restarted or any rewind happened meanwhile, even one followed by a new move.
+      this.time.delayedCall(delay, () => this.battle === b && this.popupEpoch === epoch && this.floatPoints(sq, delta));
       return;
     }
     const p = this.board.squareCenter(sq);
@@ -997,6 +999,7 @@ export class BattleScene extends BaseScene {
     if (!b.canRewind() || this.animating) return;
     closeModal();
     this.aiToken++;
+    this.popupEpoch++;
     engine.stop();
     this.thinking = false;
     this.selected = null;

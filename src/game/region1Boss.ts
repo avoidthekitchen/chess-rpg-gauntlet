@@ -30,9 +30,9 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   kind: 'boss',
   theme: 'Everything so far',
   enemy: { name: 'Grubnak, the Toad Chief', personality: 'standard' },
-  intro: 'The Goblin Chief waits behind a wall of eight bog rats and one sneaky salamander. He doesn’t shout his plans. Bring your best 10 points of army.',
+  intro: 'The Goblin Chief waits behind a wall of eight bog rat pawns and one sneaky salamander knight. He doesn’t shout his plans. Bring your best 10 points of army.',
   lesson:
-    'A full game: develop your pieces and keep them protected. Grubnak doesn’t shout his plans, so after every goblin move, ask yourself what it attacks. Trade only when it’s safe, open a file for your tower, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
+    'A full game: develop your pieces and keep them protected. Grubnak doesn’t shout his plans, so after every goblin move, ask yourself what it attacks. Trade only when it’s safe, open a file for your rook, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
   tip: 'Every piece matters today. Grubnak won’t tell us his plans, so watch every move he makes!',
   objective: { kind: 'checkmate' },
   reward: 50,
@@ -44,7 +44,7 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   // taught (what does the enemy want?) has to work without them.
   shouts: false,
   // Without shouts the chief played a 40-50 move game at the usual strength, too long for the
-  // end of Region 1. He's a little clumsier on Squire and Knight (see scripts/verify/boss.verify.test.ts).
+  // end of Region 1. He's a little clumsier on Gentle and Brave (see scripts/verify/boss.verify.test.ts).
   ai: {
     squire: { depth: 4, multiPv: 6, maxLoss: 400 },
     knight: { depth: 6, multiPv: 6, maxLoss: 200 },
@@ -63,10 +63,10 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
 export const R1_HERO = {
   type: 'q' as const,
   name: 'Saffron',
-  title: 'Saffron, the Fox Sorceress',
+  title: 'Saffron, the Fox Queen',
   lines: [
     { who: 'hero', text: 'Finally! Three weeks in a pantry with nothing but turnips. I’m Saffron, and I go wherever I please.' },
-    { who: 'hero', text: 'Grubnak’s boss, the Lich King, sends his bandits next. You’ll want a sorceress for that. I’m coming with you.' },
-    { who: 'narrator', text: 'Saffron the Fox Sorceress joins your army. She can’t fight Grubnak (he banned sorceresses), but bosses ahead will allow her.' },
+    { who: 'hero', text: 'Grubnak’s boss, the Lich King, sends his bandits next. You’ll want a queen for that. I’m coming with you.' },
+    { who: 'narrator', text: 'Saffron the Fox Queen joins your army. She can’t fight Grubnak (he banned queens), but bosses ahead will allow her.' },
   ] as Line[],
 };

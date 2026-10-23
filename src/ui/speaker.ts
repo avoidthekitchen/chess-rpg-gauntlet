@@ -13,29 +13,24 @@ export const FACTIONS = ['bog'] as const;
 export type Faction = (typeof FACTIONS)[number];
 
 export const SPECIES: Record<PieceSymbol, string> = {
-  p: 'Mouse Squire',
+  p: 'Mouse Pawn',
   n: 'Frog Knight',
-  b: 'Owl Mage',
-  r: 'Tortoise Golem',
-  q: 'Fox Sorceress',
+  b: 'Owl Bishop',
+  r: 'Tortoise Rook',
+  q: 'Fox Queen',
   k: 'Lion King',
 };
 
 /** Each enemy faction has its own species; only the chess headgear is shared with ours. */
 export const FACTION_SPECIES: Record<Faction, Record<PieceSymbol, string>> = {
   bog: {
-    p: 'Bog Rat',
-    n: 'Bog Salamander',
-    b: 'Bog Crow',
-    r: 'Snapping Turtle',
-    q: 'Swamp Viper',
-    k: 'Toad Chief',
+    p: 'Bog Rat Pawn',
+    n: 'Bog Salamander Knight',
+    b: 'Bog Crow Bishop',
+    r: 'Snapping Turtle Rook',
+    q: 'Swamp Viper Queen',
+    k: 'Toad King',
   },
-};
-
-/** One-word enemy names for status text, e.g. "Your tower takes the rat on d5". */
-export const FACTION_SHORT: Record<Faction, Record<PieceSymbol, string>> = {
-  bog: { p: 'rat', n: 'salamander', b: 'crow', r: 'turtle', q: 'viper', k: 'chief' },
 };
 
 const PIECE_NAMES: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
@@ -69,7 +64,7 @@ type Lines = Record<Exclude<Event, 'move'>, string[]> & { move: Record<PieceSymb
 
 const ALLY: Lines = {
   checkmate: ['It’s over. The day is ours!'],
-  promotion: ['Knighted at last!', 'Rise, champion!'],
+  promotion: ['Promoted at last!', 'Rise, champion!'],
   fork: ['Two targets, one move!', 'Pick one. I’ll take the other.'],
   check: ['Your king is in my sights.', 'Check! Nowhere to hide.'],
   capture: ['Out of my way!', 'One less goblin.', 'Got you!'],
@@ -77,7 +72,7 @@ const ALLY: Lines = {
     p: ['One step closer!', 'For the crown!'],
     n: ['Hop to it!', 'Over the wall I go!'],
     b: ['The long diagonal is mine.', 'I see far from here.'],
-    r: ['Slow and steady holds the line.', 'Make way for the tower.'],
+    r: ['Slow and steady holds the line.', 'Make way for the rook.'],
     q: ['Anywhere I please.', 'Watch closely.'],
     k: ['Stay close, friends.', 'Steady now.'],
   },

@@ -11,7 +11,7 @@ How Region 1 was built and checked, written as the steps and quality bars every 
 3. **Art.** Make the faction's token and portrait set, and any backgrounds, as [Art direction](design/art.md) describes. Then check the tokens on the real board at phone size (below).
 4. **Battles.** Write each battle as a `BattleDef`, meeting the [content rules](#battle-content-rules), and verify it with the engine until it meets the [bars](#verification-bars).
 5. **Academy, bounties, boss, hero.** One academy lesson per battle theme; bounty puzzles built from the curriculum's tags (`npm run puzzles`); the boss duel verified like a battle.
-6. **Play it.** Play every battle yourself at Squire and Knight, at desktop and phone sizes, and fix what feels flat or confusing.
+6. **Play it.** Play every battle yourself on Gentle and Brave, at desktop and phone sizes, and fix what feels flat or confusing.
 7. **Review, deploy, record.** A fresh-eyes review, a deploy and a live check, then the records (below).
 
 Work in small steps, each one tested, checked in the browser, committed, and logged in [build progress](progress.md).
@@ -33,7 +33,7 @@ The battle content tests (`src/game/region1Battles.test.ts`) check these. Today 
 
 `npm run verify:battles` plays every battle and the boss many times with the real enemy AI, the faction habit included, using simulated players (`scripts/verify/`). It takes a few minutes. A battle passes when:
 
-- A **strong** player (Stockfish, aware of the habit) wins at least 90% at Squire and at Knight, and earns each bonus goal in at least half its wins.
+- A **strong** player (Stockfish, aware of the habit) wins at least 90% on Gentle and on Brave, and earns each bonus goal in at least half its wins.
 - A **careless** player (a random pick from a shallow search's top five) wins at most 40%.
 - A strong player needs **4 to 7 moves** on average (pillar 2: short, sharp battles). Fewer means the first trick ends it; more means it drags. The test reports this but doesn't enforce it, so read the average-moves column.
 - Every win ends for a reason that fits the goal (for example, a material battle isn't won by a draw).

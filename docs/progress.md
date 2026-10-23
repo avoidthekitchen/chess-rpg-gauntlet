@@ -25,13 +25,13 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 ## Step 2: Region 1 battles and shouting goblins
 
 **Done**
-- Title flow: "Do you know how the pieces move?" (No explains the tutorial isn't built yet and points to Lichess Learn), then Squire or Knight difficulty with its loss cost, then the starter choice: Sir Hob (frog knight), Sage Ollie (owl mage) or Old Brick (tortoise golem), each with two mouse squires. Saved to localStorage (`src/save.ts`, `src/game/campaign.ts`).
+- Title flow: "Do you know how the pieces move?" (No explains the tutorial isn't built yet and points to Lichess Learn), then Gentle or Brave difficulty with its loss cost, then the starter choice: Sir Hob (frog knight), Sage Ollie (owl bishop) or Old Brick (tortoise rook), each with two mouse pawns. Saved to localStorage (`src/save.ts`, `src/game/campaign.ts`).
 - Region map (`src/scenes/Map.ts`): five battles on a branching path from town. The first skirmish opens two paths, and the Goblin Chief's camp opens after any four wins. Each battle has a briefing with dialogue, goal, bonus goals and reward.
-- Five lesson battles (`src/game/region1Battles.ts`): Trouble in the Reeds (threat awareness), Lanterns at Mossbridge (protection, a village siege), The Swap Meet (safe trades), Behind the Mud Wall (back-rank mate) and The Squire's Splash (promotion). Your hired pieces stand in the set lineup as named characters (`assignCharacters`); the rest are militia.
+- Five lesson battles (`src/game/region1Battles.ts`): Trouble in the Reeds (threat awareness), Lanterns at Mossbridge (protection, a village siege), The Swap Meet (safe trades), Behind the Mud Wall (back-rank mate) and The Pawn's Plunge (promotion). Your hired pieces stand in the set lineup as named characters (`assignCharacters`); the rest are militia.
 - Shouting goblins (`src/ai/shout.ts`): before your move the goblins announce the move they'd play if you passed (a null-move search), drawn as a green arrow with the shouting piece's portrait. If it's still legal after your move they must play it ("Told you I would!"); if you made it illegal you get a "Foiled!" banner. Shouts are cached per position, so a rewind hears the same one.
 - Companion tip at the start of each battle, and the victory dialog shows bonus goals and after-battle dialogue.
-- Bog Goblin art (an art subagent, about $3.80 of the OpenRouter budget): six board tokens and six portraits in the same style as the existing ones (lime war paint, mossy rims), fox queen and mouse squire ally portraits, and four painted backgrounds (title, map, town, battle).
-- Engine verification (`npm run verify:battles`, about 80 s): plays 24 games per battle per difficulty with the exact shout rule. A competent Stockfish player wins 96-100% at Squire and Knight; a careless one wins 0-17%.
+- Bog Goblin art (an art subagent, about $3.80 of the OpenRouter budget): six board tokens and six portraits in the same style as the existing ones (lime war paint, mossy rims), fox queen and mouse pawn ally portraits, and four painted backgrounds (title, map, town, battle).
+- Engine verification (`npm run verify:battles`, about 80 s): plays 24 games per battle per difficulty with the exact shout rule. A competent Stockfish player wins 96-100% on Gentle and Brave; a careless one wins 0-17%.
 - A critic subagent reviewed the Phaser port. Fixed what it found: move animations were being skipped (the board was redrawn before the animation started), screen rebuilds didn't destroy old objects (old buttons stayed clickable), taps on HTML dialogs reached the canvas, state leaked between battles, and the screen shake crashed when re-triggered.
 
 **Simplified or decided without the doc**
@@ -48,18 +48,18 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 
 **Done**
 - Town (`src/scenes/Town.ts`) with three tabs:
-  - **Tavern:** hire any piece at its chess value (squire 10g, knight/mage 30g, tower 50g, sorceress 90g), capped at a real chess set. New hires get names. Shows your army, its points, and the boss budget.
+  - **Tavern:** hire any piece at its chess value (pawn 10g, knight or bishop 30g, rook 50g, queen 90g), capped at a real chess set. New hires get names. Shows your army, its points, and the boss budget.
   - **Academy:** the "Rook and queen checkmates" lesson, two practice battles (queen mate, rook mate) against a lone king that defends at full Stockfish strength, with unlimited undo and 10g for the first clear of each.
   - **Bounty board:** 4 real Lichess puzzles (300 in the pool: 150 mate-in-one, 150 hanging-piece, ratings 400–1899), spread across ratings so pay differs (about 2–30g, more for harder ones). One try each, and the board refreshes after every battle, won or lost. Puzzles where you play Black flip the board.
 - Puzzle pipeline (`npm run puzzles`, `scripts/build-puzzles.mjs`): downloads the Lichess CSV to `data/raw/` (gitignored), streams and filters it with Node's built-in zstd, validates every puzzle with chess.js and writes two small JSON files (~56 KB total) to `public/puzzles/region1/`.
-- Gold (`src/game/economy.ts`): a battle's reward, each bonus goal and confirmed-tactic gold are each paid once, so replays can earn what's left but can't be ground. Losing a battle costs nothing on Squire and a tenth of your gold on Knight, charged when you accept the defeat (retry or retreat); a rewind costs nothing.
+- Gold (`src/game/economy.ts`): a battle's reward, each bonus goal and confirmed-tactic gold are each paid once, so replays can earn what's left but can't be ground. Losing a battle costs nothing on Gentle and a tenth of your gold on Brave, charged when you accept the defeat (retry or retreat); a rewind costs nothing.
 - Engine-checked banners: a fork banner only shows when Stockfish agrees the fork wins material (eval after the move at least 0.8 pawns better than the material count before it, `src/game/tacticCheck.ts`). Confirmed forks pay 5g (capped at 10g per battle). Enemy fork banners are checked the same way. Checkmate needs no engine check.
 - Saving: everything goes to localStorage after every change; older saves are upgraded with new fields.
 - Tests added for prices, caps, hiring, one-time pay, loss costs, bounty refresh and settlement, the bounty rating spread, and the fork check.
 
 **Simplified or decided without the doc**
 - Starting gold is 20g. A win pays 15–25g plus 5g per bonus goal (first time only); exact numbers are an open question in the doc.
-- Without the adaptive rating (out of scope), bounties are picked around a fixed rating per difficulty: 900 Squire, 1200 Knight.
+- Without the adaptive rating (out of scope), bounties are picked around a fixed rating per difficulty: 900 Gentle, 1200 Brave.
 - A failed bounty pays nothing and leaves the board until the next refresh.
 - The fork margin is 0.8 pawns, not more: on the prototype's knight fork Stockfish only rates the gain at about a pawn, because the knight gets trapped after winning the rook.
 
@@ -71,17 +71,17 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 
 **Done**
 - The Goblin Chief's camp opens on the map after four wins. Its briefing leads to a muster screen (`src/scenes/Muster.ts`) where you pick your army from the pieces you own, up to Grubnak's 10-point budget with no queen (`src/game/boss.ts`: standard values, per-type caps, a "best fit" suggestion that puts your companion first). Big armies switch to two compact columns so 15 pieces still fit a phone.
-- The duel (`src/game/region1Boss.ts`): your picks on their usual home squares against Grubnak behind a full wall of eight goblin squires and one frog knight (11 points). Objective: checkmate, no move limit. 50g reward, plus bonus goals for no rewinds and winning within 30 moves. The goblins still shout.
-- Hero recruit: winning the duel frees Saffron the Fox Sorceress, who joins your army as a named hero with her own portrait and lines. After the boss, the map says the Bog is safe and region 2 comes in a later build.
-- Engine check (`scripts/verify/boss.verify.test.ts`): a strong Stockfish player wins 100% with each starter's typical 10-point army at Squire and Knight, and with no hires at all (5 points). Careless and greedy simulated players win 0-17%.
+- The duel (`src/game/region1Boss.ts`): your picks on their usual home squares against Grubnak behind a full wall of eight bog rat pawns and one salamander knight (11 points). Objective: checkmate, no move limit. 50g reward, plus bonus goals for no rewinds and winning within 30 moves. The goblins still shout.
+- Hero recruit: winning the duel frees Saffron the Fox Queen, who joins your army as a named hero with her own portrait and lines. After the boss, the map says the Bog is safe and region 2 comes in a later build.
+- Engine check (`scripts/verify/boss.verify.test.ts`): a strong Stockfish player wins 100% with each starter's typical 10-point army on Gentle and Brave, and with no hires at all (5 points). Careless and greedy simulated players win 0-17%.
 
 **Simplified or decided without the doc**
-- Grubnak's army (eight squires and a frog knight) and the 50g reward are my picks.
-- The hero is a fox sorceress. She can't fight Grubnak (no queens), so she matters from region 2 on.
+- Grubnak's army (eight pawns and a salamander knight) and the 50g reward are my picks.
+- The hero is a fox queen. She can't fight Grubnak (no queens), so she matters from region 2 on.
 - The goblins shout in the boss duel too. I tried turning it off: a strong player still won in 4-11 moves, so the shouts aren't what makes the duel short.
 
 **Worth a look**
-- The duel's length depends a lot on the player. A strong player mates the Squire or Knight AI in 4-21 moves, and weak simulated play almost always loses. Real players are in between, so watch in playtests whether it feels like a full game (the doc's intent) or is too hard for players who lose to tactics.
+- The duel's length depends a lot on the player. A strong player mates the Gentle or Brave AI in 4-21 moves, and weak simulated play almost always loses. Real players are in between, so watch in playtests whether it feels like a full game (the doc's intent) or is too hard for players who lose to tactics.
 - Replaying the duel after a win pays only what's left (bonus goals not yet earned). The hero joins only once.
 
 ## Step 5: Deploy and playtest
@@ -99,11 +99,12 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 **Done**
 - **Deeper battles.** Trouble in the Reeds, The Swap Meet and Behind the Mud Wall were rebuilt so a strong player needs 4-5 moves (was 2-3), with a second wave of threats after the first shout trap. Win-material goals are now bigger than any single grab, which works around `winMaterial` being judged before a recapture. Every battle is re-verified with the engine (strong player 96-100%, careless 0-25%).
 - **Battle review** (pillar 4). After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move ("Your biggest slip was move 2, a3. It gave away a winning position. Re1 was stronger."). If the goblins' shout still stood after your move, your move is judged after their forced reply, so a deliberate trap isn't called a blunder.
-- **Help that fades.** On Squire, your companion reads each shout for you a moment later: whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Knight leaves it to you.
-- **XCOM-style capture close-up.** Capturing a real piece (not a squire) sweeps a cinematic band across the board with the capturer's portrait.
+- **Help that fades.** On Gentle, your companion reads each shout for you a moment later: whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Brave leaves it to you.
+- **XCOM-style capture close-up.** Capturing a real piece (not a pawn) sweeps a cinematic band across the board with the capturer's portrait.
+- **Material help.** Battles with a material goal show the piece values under the meter and in the brief. Every capture or promotion floats its point change over the square: gold "+3" for you, red "−3" against you. The meter is net, so a sacrifice shows as a loss, then a gain.
 - **Victory confetti** with your pieces hopping, short screen fades, bonus stars on cleared map nodes (like a perfect island in Into the Breach), and a "!" on Town when new bounties are up.
 
-**My playtest**: Trouble in the Reeds on Knight as the owl. I missed the second threat and lost my knight, recaptured with a pawn, used a quiet shout to take their knight for free, then set a trap so their forced rook move walked into my bishop. I won in 5 moves, and the review agreed nothing was a real mistake. That's the Into the Breach feel the design asks for.
+**My playtest**: Trouble in the Reeds on Brave as the owl. I missed the second threat and lost my knight, recaptured with a pawn, used a quiet shout to take their knight for free, then set a trap so their forced rook move walked into my bishop. I won in 5 moves, and the review agreed nothing was a real mistake. That's the Into the Breach feel the design asks for.
 
 ## Code review (Opus 5.5 High) and fixes
 
@@ -119,11 +120,11 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 
 **Not addressed (and why)**
 - The review doesn't pinpoint the move that left a village under-guarded after a siege loss; it gives general siege advice instead. Doing it properly needs village-aware analysis, not just engine scores.
-- The Squire shout advice still ignores pinned guards (rare in these positions).
+- The Gentle shout advice still ignores pinned guards (rare in these positions).
 - Stockfish lite may not stop mid-search on Rewind/Leave, so a deep search can delay the next one briefly. The new timeout bounds it.
 - `/chess-rpg?x` (no trailing slash, with a query string) isn't matched by the exact route and goes to the main site. Normal links use `/chess-rpg/`.
 - `winMaterial` is still judged before a recapture in `src/game/battle.ts`, which I kept unchanged as you asked. The battle positions work around it, and a test checks that each goal is bigger than any single grab.
-- Simulated greedy players win the Reeds and Squire's Splash battles fairly often (38-63%), and a strong player can mate the boss quickly. Both are worth watching in playtests.
+- Simulated greedy players win the Reeds and Pawn's Plunge battles fairly often (38-63%), and a strong player can mate the boss quickly. Both are worth watching in playtests.
 
 ## Follow-ups: prototype fixes and the name Pawnshire
 

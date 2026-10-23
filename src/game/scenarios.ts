@@ -35,7 +35,7 @@ export const SCENARIOS: Scenario[] = [
     region: 'The Borderlands',
     enemy: { name: 'Goblin Chieftain', personality: 'standard' },
     intro:
-      'A goblin chieftain has fled to the northern wall with no guards left. Your two siege towers can trap him against it.',
+      'A goblin chieftain has fled to the northern wall with no guards left. Your two rooks can trap him against it.',
     lesson:
       'Rooks work as a team. One rook cuts the king off from a rank, and the other gives check on the next rank. Keep both rooks out of the king’s reach.',
     fen: '4k3/8/8/8/8/8/8/R3K2R w - - 0 1',
@@ -68,11 +68,11 @@ export const SCENARIOS: Scenario[] = [
   },
   {
     id: 'squires-run',
-    title: 'The Squire’s Run',
+    title: 'The Pawn’s Run',
     region: 'The Borderlands',
     enemy: { name: 'Goblin Gatekeeper', personality: 'standard' },
     intro:
-      'Your squire must reach the far wall to be knighted. The goblin gatekeeper will try to block the way, so your king has to lead.',
+      'Your pawn must reach the far wall to be promoted. The goblin gatekeeper will try to block the way, so your king has to lead.',
     lesson:
       'In king-and-pawn endings, the king walks in front of the pawn and shoulders the enemy king aside. Don’t push too early. And beware stalemate: if the enemy has no legal move but isn’t in check, the battle is lost.',
     fen: '3k4/8/3K4/3P4/8/8/8/8 w - - 0 1',

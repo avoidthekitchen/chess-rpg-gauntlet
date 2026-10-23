@@ -28,34 +28,34 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 
 | Piece | Species | Headgear |
 | --- | --- | --- |
-| Pawn | Mouse squire | Round helmet |
+| Pawn | Mouse | Round helmet |
 | Knight | Frog | Horse-head helm |
-| Bishop | Owl mage | Tall mitre with a slit |
+| Bishop | Owl | Tall mitre with a slit |
 | Rook | Tortoise | Castle tower grown from its shell |
-| Queen | Fox sorceress | Spiked coronet, no cross |
+| Queen | Fox | Spiked coronet, no cross |
 | King | Lion | Crown with a cross |
 
 **Bog Goblins (Region 1).** Scruffy, warty bog creatures with long droopy goblin ears, yellow eyes and crooked grins, in muddy rags with rope ties and moss. Their headgear is crude and scavenged (a cooking-pot helmet) but keeps the shared shape.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
-| Pawn | Bog rat | Bog Rat |
-| Knight | Salamander with frilly gills | Bog Salamander |
-| Bishop | Crow shaman | Bog Crow |
-| Rook | Snapping turtle | Snapping Turtle |
-| Queen | Swamp viper witch | Swamp Viper |
-| King | Toad (Grubnak) | Toad Chief |
+| Pawn | Bog rat | Bog Rat Pawn |
+| Knight | Salamander with frilly gills | Bog Salamander Knight |
+| Bishop | Crow shaman | Bog Crow Bishop |
+| Rook | Snapping turtle | Snapping Turtle Rook |
+| Queen | Swamp viper witch | Swamp Viper Queen |
+| King | Toad (Grubnak) | Toad King |
 
 **Bandit Riders (Region 2, not generated yet).** Masked highway thieves in dark cloaks and roadside gear. The raccoon's mask is its own; the others wear cloth masks.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
-| Pawn | Raccoon | Raccoon Cutpurse |
-| Knight | Hare | Hare Rider |
-| Bishop | Magpie | Magpie Fence |
-| Rook | Badger | Badger Bruiser |
-| Queen | Stoat | Stoat Duchess |
-| King | Wolf (Ashfang) | Bandit Lord |
+| Pawn | Raccoon | Raccoon Pawn |
+| Knight | Hare | Hare Knight |
+| Bishop | Magpie | Magpie Bishop |
+| Rook | Badger | Badger Rook |
+| Queen | Stoat | Stoat Queen |
+| King | Wolf (Ashfang) | Wolf King |
 
 Later factions sketched in the [campaign](campaign.md#regions-and-factions), such as the Bone Wardens' skeleton animals, follow the same rules: their own creatures, the shared headgear, and ivory and ebony from the pipeline.
 
@@ -82,7 +82,7 @@ Portraits (detailed figurines) don't carry chess color: the card's gold or red f
 2. **Describe them.** Add the faction to `FACTIONS` in `scripts/generate-art.mjs` (species and outfit), plus a look block for its portraits like `BOG_LOOK`.
 3. **Generate and check the tokens.** Run `node scripts/generate-art.mjs token-pawn-<faction> …`, then `node scripts/process-art.mjs`. Look at each token's check sheet in `art/raw/check/`, then at every token in both colors at 45 px and in grayscale. Regenerate any that lost the species, the headgear shape or the key.
 4. **Generate the portraits** once the tokens are final. Check them in the game's portrait card; framing is per piece type, in `FRAMING` in `src/ui/speaker.ts`.
-5. **Wire it into the game.** In `src/ui/speaker.ts`, add the faction to `FACTIONS` (the `Faction` type and the sprites `Boot.ts` loads follow from it), then fill in its `FACTION_SPECIES`, `FACTION_SHORT` and enemy lines; the compiler points at any it's missing. Check scenario text (intros, dialogue) for the species names too.
+5. **Wire it into the game.** In `src/ui/speaker.ts`, add the faction to `FACTIONS` (the `Faction` type and the sprites `Boot.ts` loads follow from it), then fill in its `FACTION_SPECIES` (each name is the species plus the chess piece, such as "Bog Rat Pawn") and enemy lines; the compiler points at any it's missing. Check scenario text (intros, dialogue) for the species names too.
 6. **Document it.** Add a species table here and update the faction's row in the [campaign table](campaign.md#regions-and-factions).
 
 ## 3D exploration (deferred)

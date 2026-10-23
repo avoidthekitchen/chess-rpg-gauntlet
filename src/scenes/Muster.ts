@@ -50,7 +50,7 @@ export class MusterScene extends BaseScene {
       this,
       x + pad,
       y + 34,
-      `Grubnak brings ${enemyPawns} bog rats and a salamander knight (${enemyPts} points). You may bring up to ${R1_BOSS_BUDGET.points} points, and no sorceress. Your king always comes.`,
+      `Grubnak brings ${enemyPawns} bog rat pawns and a salamander knight (${enemyPts} points). You may bring up to ${R1_BOSS_BUDGET.points} points, and no queen. Your king always comes.`,
       w - pad * 2,
       14,
       CSS.muted,

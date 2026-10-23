@@ -50,7 +50,7 @@ describe('planShout', () => {
 
 describe('shoutLine', () => {
   it('names the piece it plans to grab', () => {
-    expect(shoutLine('4k3/8/2n5/8/3R4/8/8/4K3 w - - 0 1', 'c6d4')).toMatch(/tower on d4/);
+    expect(shoutLine('4k3/8/2n5/8/3R4/8/8/4K3 w - - 0 1', 'c6d4')).toMatch(/rook on d4/);
   });
   it('calls out a village raid', () => {
     expect(shoutLine('4k3/8/2n5/8/8/8/8/4K3 w - - 0 1', 'c6d4', ['d4'])).toMatch(/village on d4/);

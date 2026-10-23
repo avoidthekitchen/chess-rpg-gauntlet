@@ -46,8 +46,8 @@ export function biggestMistake(moves: MoveReview[], threshold = MISTAKE_CP): (Mo
 export function costWords(cp: number): string {
   if (cp >= 1500) return 'a winning position';
   const pts = Math.round(cp / 100);
-  if (pts <= 1) return 'about a squire';
-  if (pts <= 3) return `about ${pts} points (a knight or mage)`;
-  if (pts <= 6) return `about ${pts} points (a tower or more)`;
+  if (pts <= 1) return 'about a pawn';
+  if (pts <= 3) return `about ${pts} points (a knight or bishop)`;
+  if (pts <= 6) return `about ${pts} points (a rook or more)`;
   return `about ${pts} points`;
 }

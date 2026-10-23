@@ -16,8 +16,8 @@ Lessons learned, pieces hired and heroes recruited are permanent. Losing a battl
 
 | Difficulty | Losing a battle costs |
 | --- | --- |
-| Squire | Nothing: retry right away, pieces recover |
-| Knight | A tenth of your gold (first guess) |
+| Gentle | Nothing: retry right away, pieces recover |
+| Brave | A tenth of your gold (first guess) |
 | Champion | A quarter of your gold |
 | Grandmaster | A quarter of your gold, and the battle is gone from the map with its reward |
 

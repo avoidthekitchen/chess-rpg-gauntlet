@@ -5,7 +5,7 @@ import { planShout, shoutLine, shoutStands } from '../ai/shout';
 import { engine, engineStatus } from '../engineHost';
 import { Battle, type TurnResult } from '../game/battle';
 import { DIFFICULTIES, type AiProfile, type DifficultyId } from '../game/difficulty';
-import { PIECE_VALUE, materialBalance } from '../game/material';
+import { PIECE_VALUE, VALUE_LEGEND, materialBalance, swingLabel } from '../game/material';
 import { forkPays } from '../game/tacticCheck';
 import { biggestMistake, type MoveReview } from '../game/review';
 import { REVIEW_SLOT, reviewHtml, type ReviewResult } from '../ui/reviewText';
@@ -18,18 +18,15 @@ import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
 import { portrait, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
-import { FACTION_SHORT, FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
+import { FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
 import { button, eyebrow, panel, para } from '../ui/widgets';
-
-/** One-word names for status text, e.g. "Your tower takes the squire on d5". */
-const PIECE_SHORT: Record<PieceSymbol, string> = { k: 'king', q: 'sorceress', r: 'tower', b: 'mage', n: 'knight', p: 'squire' };
 
 const PLAYER_BANNER: Partial<Record<TacticTag, string>> = {
   checkmate: 'Checkmate!',
   fork: 'Fork!',
   check: 'Check!',
-  promotion: 'Knighted!',
+  promotion: 'Promoted!',
   capture: 'Capture!',
 };
 const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
@@ -52,7 +49,7 @@ export interface BattleLaunch {
   scenario: Scenario;
   faction: Faction;
   difficulty: DifficultyId;
-  /** Shown above the title, e.g. "The Bog · Squire". */
+  /** Shown above the title, e.g. "The Bog · Gentle". */
   eyebrow: string;
   /** Named characters, by the square they start on. Everyone else is unnamed militia. */
   names?: Partial<Record<Square, string>>;
@@ -184,7 +181,9 @@ export class BattleScene extends BaseScene {
       const short = H < 600;
       return { wide: true, short, topH, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
     }
-    const sq = Math.min(W / BOARD_SPAN, (H - topH - 250 - safe.bottom) / BOARD_TALL, 64);
+    // Room for the panel under the board; a material goal adds the piece-value line.
+    const panelH = 250 + (this.launch?.scenario.objective.kind === 'winMaterial' ? 22 : 0);
+    const sq = Math.min(W / BOARD_SPAN, (H - topH - panelH - safe.bottom) / BOARD_TALL, 64);
     const bw = sq * BOARD_SPAN;
     const bx = (W - bw) / 2;
     const bh = sq * BOARD_TALL;
@@ -293,7 +292,18 @@ export class BattleScene extends BaseScene {
       meterObjs.push(this.text(mx + 9, my + 5, label, { fontFamily: SANS, fontSize: '11px', color: CSS.muted }));
       meterObjs.push(this.text(mx + 9, my + 19, value, { fontFamily: SANS, fontSize: '17px', fontStyle: 'bold' }));
     });
-    my += 44 + 12;
+    my += 44;
+    if (o.kind === 'winMaterial') {
+      const legend = this.text(x + pad, my + 7, VALUE_LEGEND, {
+        fontFamily: SANS,
+        fontSize: '11px',
+        color: CSS.muted,
+        wordWrap: { width: w - pad * 2, useAdvancedWrap: true },
+      });
+      meterObjs.push(legend);
+      my += 7 + legend.height;
+    }
+    my += 12;
     const card = panel(this, x, y, w, my - y);
     c.add([card, ob, title, ...meterObjs]);
     y = my + 10;
@@ -459,7 +469,7 @@ export class BattleScene extends BaseScene {
   }
 
   /**
-   * Help that fades: on Squire, the companion reads the shout for you a moment later
+   * Help that fades: on Gentle, the companion reads the shout for you a moment later
    * (is the target guarded? is the trade fair?). On harder difficulties you work it out.
    */
   private adviseOnShout(fen: string, uci: string) {
@@ -476,11 +486,11 @@ export class BattleScene extends BaseScene {
       // The king only counts as a guard when it's the lone attacker it would take back.
       const real = defenders.filter((sq) => b.chess.get(sq)?.type !== 'k').length + (attackers === 1 && defenders.some((sq) => b.chess.get(sq)?.type === 'k') ? 1 : 0);
       const guarded = real > 0;
-      const name = PIECE_SHORT[target.type];
+      const name = pieceName(target.type);
       if (target.type === 'k') line = null;
       else if (!guarded) line = `They want our ${name} on ${to}, and nobody guards it! Move it, or protect it.`;
       else if (attackers > real) line = `Our ${name} on ${to} is guarded, but they have more attackers than we have guards. Move it, or add a guard!`;
-      else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${this.enemyShort[mover.type]} is worth less. That trade loses. Move it!`;
+      else if (PIECE_VALUE[mover.type] < PIECE_VALUE[target.type]) line = `Our ${name} on ${to} is guarded, but their ${pieceName(mover.type)} is worth less. That trade loses. Move it!`;
       else line = `Let them try! Our ${name} on ${to} is guarded, so we take right back. Unless you see something better…`;
     } else if ((b.scenario.villages ?? []).includes(to)) {
       line = `They’re heading for the village on ${to}! Make sure we can capture whoever lands there.`;
@@ -531,7 +541,7 @@ export class BattleScene extends BaseScene {
   }
 
   /**
-   * XCOM-style moment: when a real piece (not a squire) is captured, a cinematic band
+   * XCOM-style moment: when a real piece (not a pawn) is captured, a cinematic band
    * sweeps across the board with the capturer's portrait. Doesn't block play.
    */
   private closeUp(m: Move): boolean {
@@ -552,8 +562,8 @@ export class BattleScene extends BaseScene {
     portrait(this, x + 18, y + 10, pw, bh - 20, m.promotion ?? m.piece, ally ? 'ally' : 'foe', this.launch.faction, pc);
     c.add(pc);
     const name = this.names.get(m.to);
-    const who = ally ? (name ?? `Your ${PIECE_SHORT[m.piece]}`) : FACTION_SPECIES[this.launch.faction][m.piece];
-    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes the ${(ally ? this.enemyShort : PIECE_SHORT)[m.captured]}!`, {
+    const who = ally ? (name ?? `Your ${pieceName(m.piece)}`) : `Their ${pieceName(m.piece)}`;
+    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes ${ally ? 'their' : 'your'} ${pieceName(m.captured)}!`, {
       fontFamily: SERIF,
       fontSize: `${Math.round(Math.min(30, bh * 0.2))}px`,
       fontStyle: 'bold',
@@ -574,6 +584,32 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: t, x: x + pw + 34, duration: 360, ease: 'Cubic.easeOut' });
     this.tweens.add({ targets: c, alpha: 0, duration: 260, delay: 1000, onComplete: () => c.destroy() });
     return true;
+  }
+
+  /** Floats a capture's or promotion's point change over its square: gold when you gain, red when you lose. */
+  private floatPoints(sq: Square, delta: number, delay = 0) {
+    const label = swingLabel(delta);
+    if (!this.board || !label) return;
+    if (delay > 0) {
+      // Wait for the capture close-up to clear, so the label doesn't cover its text.
+      const b = this.battle;
+      const plies = b.chess.history().length;
+      // Skip it if the battle restarted or the move was rewound meanwhile.
+      this.time.delayedCall(delay, () => this.battle === b && b.chess.history().length >= plies && this.floatPoints(sq, delta));
+      return;
+    }
+    const p = this.board.squareCenter(sq);
+    const t = this.text(p.x, p.y, label, {
+      fontFamily: SANS,
+      fontSize: `${this.layout().wide ? 26 : 22}px`,
+      fontStyle: 'bold',
+      color: delta > 0 ? '#ffd66b' : '#ff8a73',
+      stroke: '#1a0f08',
+      strokeThickness: 5,
+    });
+    t.setOrigin(0.5).setDepth(61);
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.tweens.add({ targets: t, y: still ? p.y : p.y - 44, alpha: 0, duration: 900, delay: 500, ease: 'Cubic.easeIn', onComplete: () => t.destroy() });
   }
 
   private showBanner(text: string, kind: 'ally' | 'foe', delay = 0) {
@@ -612,14 +648,8 @@ export class BattleScene extends BaseScene {
 
   private describe(res: TurnResult, who: 'you' | 'enemy'): string {
     const m = res.move;
-    const [mine, theirs] = who === 'you' ? [PIECE_SHORT, this.enemyShort] : [this.enemyShort, PIECE_SHORT];
-    const verb = m.captured ? `takes the ${theirs[m.captured]} on ${m.to}` : `moves to ${m.to}`;
-    return `${who === 'you' ? 'Your' : 'Enemy'} ${mine[m.piece]} ${verb}.`;
-  }
-
-  /** One-word names for the enemy faction's pieces. */
-  private get enemyShort() {
-    return FACTION_SHORT[this.launch.faction];
+    const verb = m.captured ? `takes ${who === 'you' ? 'their' : 'your'} ${pieceName(m.captured)} on ${m.to}` : `moves to ${m.to}`;
+    return `${who === 'you' ? 'Your' : 'Enemy'} ${pieceName(m.piece)} ${verb}.`;
   }
 
   /** Names from the start of the battle, moved along by every move still on the board (so a rewind puts them back). */
@@ -653,6 +683,7 @@ export class BattleScene extends BaseScene {
   private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
     const b = this.battle;
     const sess = this.session;
+    const gainedBefore = b.materialGained();
     const balanceBefore = materialBalance(b.chess, b.player);
     const res = b.playerMove({ from, to, promotion });
     const forkCheck = res.tactics.includes('fork') ? this.confirmFork(b.fen, balanceBefore) : Promise.resolve(false);
@@ -662,6 +693,7 @@ export class BattleScene extends BaseScene {
     await this.animate(res);
     if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
     const closeUp = this.closeUp(res.move);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, closeUp ? 1150 : 0);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
     if (this.battle !== b || this.session !== sess) return;
@@ -727,6 +759,7 @@ export class BattleScene extends BaseScene {
     if (wait > 0) await sleep(wait);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess || !b.isEnemyTurn()) return; // rewound or left meanwhile
 
+    const gainedBefore = b.materialGained();
     const enemyBefore = materialBalance(b.chess, b.enemy);
     const res = b.enemyMove(uci);
     const enemyFork = res.tactics.includes('fork') ? this.confirmFork(b.fen, enemyBefore) : Promise.resolve(false);
@@ -738,6 +771,7 @@ export class BattleScene extends BaseScene {
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const enemyCloseUp = this.closeUp(res.move);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, enemyCloseUp ? 1150 : 0);
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
@@ -769,9 +803,9 @@ export class BattleScene extends BaseScene {
     const opts: PieceSymbol[] = ['q', 'r', 'b', 'n'];
     const base = import.meta.env.BASE_URL;
     showModal({
-      title: 'Knight your squire',
-      html: `<p>Choose what your squire becomes.</p><div class="promo">${opts
-        .map((p) => `<button data-p="${p}"><img src="${base}sprites/token-${pieceName(p)}-ally-w.webp" alt=""><small>${esc(PIECE_SHORT[p])}</small></button>`)
+      title: 'Promote your pawn',
+      html: `<p>Choose what your pawn becomes.</p><div class="promo">${opts
+        .map((p) => `<button data-p="${p}"><img src="${base}sprites/token-${pieceName(p)}-ally-w.webp" alt=""><small>${esc(pieceName(p))}</small></button>`)
         .join('')}</div>`,
       buttons: [{ label: 'Cancel', kind: 'ghost', onClick: () => this.clearSelection() }],
       onDismiss: () => this.clearSelection(),

@@ -15,7 +15,7 @@ import type { BattleDef } from './content';
  * or a race to win. Strong play takes about 4 to 7 moves.
  *
  * Every position here is checked by `npm run verify:battles` (scripts/verify): strong,
- * shout-aware play wins at least 90% against Squire and Knight goblins, careless play
+ * shout-aware play wins at least 90% against Gentle and Brave goblins, careless play
  * loses most games, and no battle can be won on the first move. Material goals are bigger
  * than any single capture, so one greedy grab (judged before the recapture) never wins.
  */
@@ -165,11 +165,11 @@ export const REGION1_BATTLES: BattleDef[] = [
     id: 'r1-squire',
     kind: 'promotion',
     theme: 'Pawn promotion',
-    title: 'The Squire’s Splash',
+    title: 'The Pawn’s Plunge',
     region: 'The Bog',
     enemy: { name: 'Puddle Runners', personality: 'standard' },
     intro:
-      'Your squire has to cross the bog to be knighted, but a goblin runner is squatting right in the path, and his friends are splashing toward your side.',
+      'Your pawn has to cross the bog to be promoted, but a goblin runner is squatting right in the path, and his friends are splashing toward your side.',
     lesson:
       'A pawn promotes safely when the squares ahead of it are clear and the promotion square is guarded or out of the enemy’s reach. If a piece blocks the path, chase it, trade it off or step around it. Every square your pieces cover is one the blocker can’t use.',
     fen: '6k1/1p6/2n5/2P4p/6p1/2NB4/5PK1/8 w - - 0 1',
@@ -182,12 +182,12 @@ export const REGION1_BATTLES: BattleDef[] = [
     tip: 'Clear the path first, then push. Make sure each step is safe.',
     before: [
       { who: 'narrator', text: 'Across the bog, a goblin flag marks the far bank.' },
-      { who: 'enemy', text: 'This puddle’s mine! No squires allowed!' },
-      { who: 'companion', text: 'Our squire just needs a clear, safe path. Let’s make him one.' },
+      { who: 'enemy', text: 'This puddle’s mine! No pawns allowed!' },
+      { who: 'companion', text: 'Our pawn just needs a clear, safe path. Let’s make him one.' },
     ],
     after: [
-      { who: 'narrator', text: 'Dripping but proud, your squire is knighted on the far bank.' },
-      { who: 'companion', text: 'Every squire dreams of this. Guard the path and the dream comes true.' },
+      { who: 'narrator', text: 'Dripping but proud, your pawn is promoted on the far bank.' },
+      { who: 'companion', text: 'Every pawn dreams of this. Guard the path and the dream comes true.' },
     ],
     shouts: true,
   },

@@ -1,4 +1,5 @@
 import type Phaser from 'phaser';
+import { DIFFICULTIES } from '../game/difficulty';
 import { battlesWon, bossOpen, nodeState, type NodeState } from '../game/campaign';
 import type { Line } from '../game/content';
 import { REGION1_BOSS, REGION1_MAP, REGION1_NAME, REGION1_TOWN, battleById } from '../game/region1';
@@ -88,7 +89,7 @@ export class MapScene extends BaseScene {
     const s = save();
     showModal({
       title: 'Campaign',
-      html: `<p class="muted">Difficulty: ${s.difficulty === 'knight' ? 'Knight' : 'Squire'} · Gold: ${s.gold}g · Army: ${s.roster.length + 1} pieces</p>`,
+      html: `<p class="muted">Difficulty: ${DIFFICULTIES[s.difficulty].label} · Gold: ${s.gold}g · Army: ${s.roster.length + 1} pieces</p>`,
       buttons: [
         { label: 'Resume', kind: 'primary', onClick: () => {} },
         { label: 'Title screen', onClick: () => this.scene.start('title') },

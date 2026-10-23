@@ -175,4 +175,5 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |
 | Academy first clear | 10g per exercise | `src/game/academy.ts` |
 | Review threshold | A move must cost about a pawn (90 centipawns) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |
+| Talking-head time on phones | 1.2 s + 60 ms per character, between 3.2 s and 9 s, then a 0.8 s fade | `holdMs` in `src/ui/dialogue.ts` |
 | Engine search timeout | 12 s, then the fallback AI takes over | `Engine` in `src/ai/engine.ts` |

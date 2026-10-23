@@ -16,7 +16,8 @@ import { threatMap } from '../game/threats';
 import { store } from '../store';
 import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
-import { portrait, speakerCard } from '../ui/portrait';
+import { DialogueLog, holdMs, moveLabel } from '../ui/dialogue';
+import { portrait, portraitStyle, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
 import { FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
@@ -101,6 +102,8 @@ export class BattleScene extends BaseScene {
   private shoutCache = new Map<string, string | null>();
   private speakerTimer = 0;
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
+  /** Every line shown this battle, so one that went by too fast can be read again. */
+  private said = new DialogueLog();
   /** Gold earned this battle from engine-confirmed tactics. */
   tacticGold = 0;
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
@@ -156,6 +159,7 @@ export class BattleScene extends BaseScene {
     this.firstBuild = true;
     this.shout = null;
     this.pendingView = null;
+    this.said.clear();
     const tip = this.launch.tip;
     if (tip) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line: tip.line, type: tip.type });
     void this.startPlayerTurn();
@@ -315,6 +319,7 @@ export class BattleScene extends BaseScene {
       { label: L.wide ? `♞ Pieces: ${this.pieceStyle === 'tokens' ? 'Tokens' : 'Classic'}` : '♞ Pieces', onClick: () => this.togglePieces() },
     ];
     if (!L.wide || L.short) ctrl.push({ label: '✎ Lesson', onClick: () => this.showLesson() });
+    else ctrl.push({ label: '💬 What was said', onClick: () => this.showHistory() });
     const cols = L.wide ? 2 : ctrl.length;
     const bw = (w - 8 * (cols - 1)) / cols;
     ctrl.forEach((k, i) => {
@@ -335,6 +340,25 @@ export class BattleScene extends BaseScene {
     status.setText(`${turnText}${this.statusLine}`);
     if (!L.wide || L.short) status.setMaxLines(3);
     c.add(status);
+
+    // Phones: the last line said stays in the panel (a strip if there's room, else a chip
+    // beside the status), and tapping it opens everything said this battle.
+    const last = this.said.last;
+    if ((!L.wide || L.short) && last) {
+      const stripH = 60;
+      const bottom = this.H - Math.max(12, this.safe.bottom);
+      if (y + Math.max(status.height, 40) + 10 + stripH <= bottom) {
+        c.add(this.saidStrip(x, y + Math.max(status.height, 40) + 10, w, stripH, last.info));
+        y += stripH + 10;
+      } else {
+        const chip = 52;
+        const lineH = status.height / Math.max(1, Math.min(3, status.getWrappedText().length));
+        status.setWordWrapWidth(w - 4 - chip - 10, true);
+        // The narrower status may need a fourth line; take it if the screen has room.
+        status.setMaxLines(bottom - y >= 4 * lineH ? 4 : 3);
+        c.add(this.saidChip(x + w - chip, y, chip, last.info));
+      }
+    }
     y += Math.max(status.height, 40) + 10;
 
     if (!L.wide || L.short) {
@@ -402,20 +426,40 @@ export class BattleScene extends BaseScene {
       }
       return;
     }
-    // Phone (or a short landscape screen): float over the bottom of the screen (or panel) for a few seconds.
+    // Phone (or a short landscape screen): float over the bottom of the screen (or panel),
+    // longer for longer lines. The panel keeps the last line, and every line is in the history.
+    const hold = holdMs(this.speaker.line);
     const age = performance.now() - this.speakerAt;
-    if (age > 4000) return;
+    if (age > hold + 800) return;
     const w = L.wide ? L.panel.w : this.W - 24;
     const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, w, this.speaker, this.launch.faction, true);
     const y = this.H - height - Math.max(12, this.safe.bottom);
     container.y = y;
     container.setDepth(50);
     // It floats over the controls, so a tap dismisses it instead of pressing a hidden button.
+    // Holding it keeps it up; letting go starts a fresh hold.
     const hit = this.add.zone(0, 0, w, height).setOrigin(0).setInteractive();
+    let downAt = 0;
+    const holdAgain = () => {
+      downAt = 0;
+      this.speakerAt = performance.now() - 300; // skip the entrance
+      this.drawSpeaker();
+    };
+    hit.on('pointerdown', () => {
+      downAt = performance.now();
+      this.tweens.killTweensOf(container);
+      container.setAlpha(1);
+      container.y = y;
+    });
     hit.on('pointerup', () => {
+      if (!downAt) return;
+      if (performance.now() - downAt > 350) return holdAgain();
+      downAt = 0;
       this.speakerAt = 0;
       container.destroy();
+      if (this.speakerLayer === container) this.speakerLayer = null;
     });
+    hit.on('pointerout', () => downAt && holdAgain());
     container.add(hit);
     this.speakerLayer = container;
     if (age < 300) {
@@ -423,7 +467,17 @@ export class BattleScene extends BaseScene {
       container.y = y + 12;
       this.tweens.add({ targets: container, alpha: 1, y, duration: 320, ease: 'Cubic.easeOut' });
     }
-    this.tweens.add({ targets: container, alpha: 0, y: y + 6, duration: 800, delay: Math.max(0, 3200 - age) });
+    this.tweens.add({
+      targets: container,
+      alpha: 0,
+      y: y + 6,
+      duration: 800,
+      delay: Math.max(0, hold - age),
+      onComplete: () => {
+        container.destroy();
+        if (this.speakerLayer === container) this.speakerLayer = null;
+      },
+    });
   }
 
   private speak(res: TurnResult, kept = false) {
@@ -460,7 +514,11 @@ export class BattleScene extends BaseScene {
       this.speakQueue.shift();
       this.speaker = next.info;
       this.speakerAt = performance.now();
-      if (this.board) this.drawSpeaker();
+      this.said.add(next.info, this.battle.log.length);
+      if (this.board) {
+        this.drawSpeaker();
+        this.drawPanel();
+      }
       this.pumpSpeaker();
     };
     const wait = next.gap - (performance.now() - this.speakerAt);
@@ -942,6 +1000,101 @@ export class BattleScene extends BaseScene {
     this.pieceStyle = this.pieceStyle === 'tokens' ? 'classic' : 'tokens';
     store.set('pieceStyle', this.pieceStyle);
     this.rebuild();
+  }
+
+  /** The last line said, in the panel: portrait, name and the line (tap for the history). */
+  private saidStrip(x: number, y: number, w: number, h: number, info: SpeakerInfo) {
+    const c = this.add.container(x, y);
+    const ally = info.side === 'ally';
+    const g = this.add.graphics();
+    g.fillStyle(C.surface, 0.92).fillRoundedRect(0, 0, w, h, 10);
+    g.lineStyle(1, C.line, 1).strokeRoundedRect(0.5, 0.5, w - 1, h - 1, 10);
+    g.fillStyle(ally ? C.gold : C.red, 1).fillRoundedRect(0, 0, 4, h, { tl: 10, bl: 10, tr: 0, br: 0 });
+    c.add(g);
+    const pw = 36;
+    portrait(this, 10, 7, pw, h - 14, info.type, info.side, this.launch.faction, c);
+    const tx = 10 + pw + 10;
+    const more = this.text(w - 12, h / 2, 'All ›', { fontFamily: SANS, fontSize: '12px', color: CSS.muted }).setOrigin(1, 0.5);
+    const tw = w - tx - more.width - 22;
+    const who = this.text(tx, 8, info.name.toUpperCase(), { fontFamily: SANS, fontSize: '10px', color: ally ? CSS.gold : CSS.red, letterSpacing: 0.6 });
+    if (who.width > tw) who.setScale(tw / who.width, 1);
+    const line = this.text(tx, 22, info.line, { fontFamily: SERIF, fontSize: '14px', color: CSS.ink, wordWrap: { width: tw, useAdvancedWrap: true }, lineSpacing: -1 });
+    line.setMaxLines(2);
+    if (line.getWrappedText().length > 2) line.setText(this.clip(line, info.line, 2));
+    c.add([who, line, more]);
+    this.tapZone(c, w, h, () => this.showHistory());
+    return c;
+  }
+
+  /** A small portrait chip for the last line said, when the panel has no room for the strip. */
+  private saidChip(x: number, y: number, s: number, info: SpeakerInfo) {
+    const c = this.add.container(x, y);
+    const g = this.add.graphics();
+    g.fillStyle(C.surface2, 1).fillRoundedRect(0, 0, s, s, 10);
+    g.lineStyle(1, C.line, 1).strokeRoundedRect(0.5, 0.5, s - 1, s - 1, 10);
+    c.add(g);
+    portrait(this, 5, 4, s - 10, s - 8, info.type, info.side, this.launch.faction, c);
+    // A speech badge says "this is what they said".
+    const badge = this.add.graphics();
+    badge.fillStyle(C.gold, 1).fillCircle(s - 4, 4, 9).fillTriangle(s - 10, 9, s - 4, 9, s - 13, 15);
+    c.add([badge, this.text(s - 4, 3, '…', { fontFamily: SANS, fontSize: '12px', fontStyle: 'bold', color: CSS.goldInk }).setOrigin(0.5)]);
+    this.tapZone(c, s, s, () => this.showHistory());
+    return c;
+  }
+
+  /** Makes a container a button: a press and release without dragging runs `onTap`. */
+  private tapZone(c: Phaser.GameObjects.Container, w: number, h: number, onTap: () => void) {
+    const zone = this.add.zone(0, 0, w, h).setOrigin(0).setInteractive({ useHandCursor: true });
+    let pressed = false;
+    zone.on('pointerdown', () => (pressed = true));
+    zone.on('pointerout', () => (pressed = false));
+    zone.on('pointerup', () => {
+      if (!pressed) return;
+      pressed = false;
+      onTap();
+    });
+    c.add(zone);
+  }
+
+  /** Cuts `full` to fit `lines` lines of `t`'s wrap width, ending in "…". */
+  private clip(t: Phaser.GameObjects.Text, full: string, lines: number) {
+    const words = full.split(' ');
+    let lo = 0;
+    let hi = words.length;
+    while (lo < hi) {
+      const mid = Math.ceil((lo + hi) / 2);
+      t.setText(`${words.slice(0, mid).join(' ')}…`);
+      if (t.getWrappedText().length <= lines) lo = mid;
+      else hi = mid - 1;
+    }
+    return `${words.slice(0, lo).join(' ')}…`;
+  }
+
+  /** Everything said this battle, oldest first, scrolled to the newest. */
+  private showHistory() {
+    let heading = '';
+    const rows = this.said.all
+      .map(({ info, plies }) => {
+        const ally = info.side === 'ally';
+        // A heading each time the move changes: "Start", "Move 1"…
+        const label = moveLabel(plies);
+        const head = label === heading ? '' : `<p class="said-move">${label}</p>`;
+        heading = label;
+        return `${head}<div class="dlg ${ally ? 'ally' : 'foe'}">
+          <div class="dlg-pic" style="${portraitStyle(info.type, ally ? 'ally' : this.launch.faction)}"></div>
+          <div><p class="who ${ally ? '' : 'foe'}">${esc(info.name)}</p><p>${esc(info.line)}</p></div>
+        </div>`;
+      })
+      .join('');
+    showModal({
+      eyebrow: this.battle.scenario.title,
+      title: 'What was said',
+      html: `<div class="said">${rows || '<p class="muted">Nobody has said anything yet.</p>'}</div>`,
+      buttons: [{ label: 'Back to the battle', kind: 'primary', onClick: () => {} }],
+      onDismiss: () => {},
+    });
+    const d = document.querySelector<HTMLElement>('#overlay .ov-dialog');
+    if (d) d.scrollTop = d.scrollHeight;
   }
 
   private showLesson() {

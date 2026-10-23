@@ -22,7 +22,7 @@ Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-r
 
 Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`). It's drawn as a green arrow and spoken by the piece's portrait. If the announced move is still legal after your move, they must play it ("Told you I would!"). If you made it illegal, a "Foiled!" banner shows. A rewind hears the same shout again.
 
-**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move: they keep the shout if it's still within the difficulty's window, and otherwise switch ("Changed my mind!"). The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
+**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move. The shouted move gets extra weight among moves within the difficulty's window, so Gentle goblins often keep it and Brave ones rarely do when it's become a mistake. When they switch because you guarded or moved the target, they say so ("Oi! You've guarded it!"). The rule is introduced as "They shout their plan. Your move can change it.", and the companion adds that the arrow is one plan: other threats still count. A rewind still hears the same shout. The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
 
 It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins are committed, you can also set traps, such as guarding the piece they promised to take. That makes battles feel like Into the Breach turns, where each turn is a small puzzle.
 
@@ -133,7 +133,7 @@ A simulated "greedy" player (always grabs the biggest capture) wins Trouble in t
 
 ## Playtest
 
-Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes; the planned warm-ups add about a minute per battle. Watch where they get stuck or bored, and whether they ask for Region 2. Once the guided path is built, also watch whether players who know an idea skip its warm-up quickly, and whether the try positions feel too easy or too hard. Record findings here.
+Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes; the planned warm-ups add about a minute per battle. Watch where they get stuck or bored, and whether they ask for Region 2. Win rates don't show whether the shout taught anything, so also ask: can they say why a goblin changed its plan, and can they spot a similar threat with no arrow? Once the guided path is built, also watch whether players who know an idea skip its warm-up quickly, and whether the try positions feel too easy or too hard. Record findings here.
 
 ## Original prototype scope
 

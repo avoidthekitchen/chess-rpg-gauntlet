@@ -106,7 +106,7 @@ A habit may never **force** a move the enemy wouldn't otherwise consider, such a
 
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
-| Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again: they keep the shout if it's still within the difficulty's window, and otherwise switch ("Changed my mind!"). Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built with a must-play rule, which breaks tell or tilt; changing to the re-decide rule in [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again, preferring the shouted move among moves within the difficulty's window but free to pick another. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built with a must-play rule, which breaks tell or tilt; changing to the re-decide rule in [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
 | Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Gentle, the companion names the target ("They're hunting your bishop!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
 | Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
 | Iron Legion | **Proud:** prefers to capture what you offer, among its good moves. On Gentle's wide window it takes some poisoned bait; on Brave it rarely does | Teaches traps and poisoned pieces: you learn which bait is good enough to tempt them. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"; "never declines" changed to "prefers" 2026-10-23); details with Region 4 |
@@ -137,7 +137,12 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 - **Blunder Ward:** warns once per battle when you're about to leave a piece undefended.
 - **Threat Sight:** always available on easy difficulty, a limited power on harder ones.
 
-**One feature, three uses.** Shouting goblins, the Scrying Orb and Far Sight all ask the engine the same question: what is the enemy's best move in this position? Goblins announce it every turn, the Orb shows it on demand, and Far Sight asks it about a move you haven't made yet. Once the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), a shout is an always-on Orb in the goblins' voice, so all three should share one code path. Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
+**One engine call, two questions.** All three ask the engine about a position, so they share one code path, but they show different things:
+
+- **Shout and Scrying Orb:** the move the enemy would actually pick if you passed, using its habit and difficulty. Goblins announce it every turn; the Orb shows it on demand. Once the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), a shout is an always-on Orb in the goblins' voice. Showing the plan never changes what the enemy then does.
+- **Far Sight:** the enemy's best reply after a move you're considering. It analyses the position after that move, not the passed-turn position.
+
+ Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
 
 **Ladder by Region** (approved 2026-10-22). Help arrives as the habits fade, so the player always has one rung of support:
 

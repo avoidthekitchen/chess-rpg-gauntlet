@@ -18,21 +18,22 @@ A fantasy tactics RPG that teaches real chess. You are a king who starts with al
 
 ## Core loop
 
-Pick a battle on the region map, win it for gold and XP, then spend in town before the next battle.
+Pick a battle on the region map, learn its idea in a short warm-up, win it for gold and XP, then spend in town before the next battle.
 
 ```mermaid
 flowchart LR
-    Map["Region map<br/>Pick the next battle"] --> Battle["Battle<br/>5 to 10 moves, one goal"]
+    Map["Region map<br/>Pick the next battle"] --> Warmup["Warm-up<br/>Show one, try one"]
+    Warmup --> Battle["Battle<br/>5 to 10 moves, one goal"]
     Battle --> Rewards["Rewards<br/>Gold, XP, bonus goals"]
     Rewards -->|to town| Town
     subgraph Town
-        Academy["Academy<br/>Lessons for each region"]
+        Library["Library<br/>Replay warm-ups, read tip cards"]
         Bounty["Bounty board<br/>Puzzles pay gold"] --> Tavern["Tavern<br/>Hire pieces with gold"]
     end
     Town -->|next battle| Map
 ```
 
-Each place has one job: the academy teaches a region's ideas in a safe space (unlimited undo, nothing at stake), battles test them under pressure (goals, move limits, scarce rewinds, gold at stake), and bounties repeat them with real puzzles until they stick, topping up gold. Clearing a region's battles opens its boss duel, which leads to the next region.
+Each step has one job. The **warm-up** teaches a battle's idea right before the battle, with nothing at stake. The **battle** tests it under pressure (goals, move limits, scarce rewinds, gold at stake). **Bounties** repeat it with real puzzles until it sticks, and bring back the ideas you got wrong. The map leads you through the ideas every player needs and lets you choose the rest ([Guided path](design/campaign.md#guided-path)). Clearing the main path and one branch opens the boss duel, which leads to the next region.
 
 ## Detailed design
 

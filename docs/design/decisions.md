@@ -11,11 +11,12 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
 - [ ] **Recurring characters:** Region 2's are named (Ashfang, Tadwell). Name the Region 3–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
 - [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
-- [ ] **Region 2 detailed design:** the [brief](regions/region-02-bandit-riders.md) is approved; the battles, academy and dialogue are designed by the builder and approved by the owner.
+- [ ] **Region 2 detailed design:** the [brief](regions/region-02-bandit-riders.md) is approved; the battles, warm-ups and dialogue are designed by the builder and approved by the owner.
 - [ ] **Regions 3–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
 - [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
 - [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
-- [ ] **Region 1 academy:** one short lesson per battle theme (threat awareness, protection, safe trades, back-rank mate, promotion), linked from each battle's briefing, with the in-battle lesson panel cut to a one-line reminder. Today it has only rook and queen mates ([Region 1](regions/region-01-bog-goblins.md#academy)).
+- [ ] **Region 1 guided path:** revise Region 1 to the [guided path](campaign.md#guided-path): a warm-up in each battle node, the map rewired to a main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), the rook and queen mates as Grubnak's boss warm-up, the academy turned into the library, and refresher bounties. The in-battle lesson panel becomes a one-line reminder. Spec as a GitHub issue once this design is approved ([Region 1](regions/region-01-bog-goblins.md#planned-guided-path)).
+- [ ] **Placement check:** an optional set of 5 or 6 puzzles at the start that marks warm-ups the player already knows, so they start ready to skip, and seeds the hidden adaptive rating. Design it with the adaptive rating.
 - [ ] **Shout rule:** decide after playtests whether goblins may abandon a shout that simply hangs a piece. The must-play rule makes traps easy, which shortens battles.
 - [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
 - [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
@@ -36,11 +37,21 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
 - [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
 - [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
+- [ ] Warm-up pay of 5g on the first solve, and whether refresher bounties pay like other bounties: first guesses, tune in playtests.
+- [ ] Warm-up bands (400–800 in Region 1, up to 1100–1500 in Region 5): check in playtests that the try position is easy for players who know the idea.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | Guided path replaces the separate academy: every battle node opens with a warm-up (show one, try one, a second try with a hint), and solving the first try skips straight to the battle. A warm-up never blocks a battle. Supersedes the 2026-10-21 academy row |
+| 2026-10-22 | Each Region's map has a required main path of headline battles in teaching order and branches you choose (revisits, mates, endgames). The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Replaces "any 4 of 5" for Region 1 and the Region 2 brief |
+| 2026-10-22 | Warm-up positions are Lichess puzzles (CC0) from the low end of each Region's warm-up band, tagged with the battle's theme; the words are our own |
+| 2026-10-22 | A boss gets a warm-up only when it tests something the battles didn't; Region 1's rook and queen mates become Grubnak's |
+| 2026-10-22 | The town's academy becomes the library: replay warm-ups you've seen, read tip cards, and later optional advanced lessons |
+| 2026-10-22 | Puzzle-only themes with no battle (zwischenzug, overloaded pieces, underpromotion and others) get a one-screen tip card on the bounty board, not a lesson |
+| 2026-10-22 | Refresher bounties: a theme you got wrong in a battle returns on the bounty board with its warm-up attached, at most 1 of 4 slots. Mistakes are drilled on the board, not with new map nodes |
+| 2026-10-22 | Curriculum revised: defending added to Region 1, removing the defender to Region 2, opposition moved from Region 5 to Region 3, lures and traps to Region 4. The order also draws on Bain, Heisman, Silman and Duolingo's path ([Curriculum](campaign.md#curriculum)) |
 | 2026-10-22 | Piece names are animal plus chess piece ("Owl Bishop", "Bog Rat Pawn"), and short names are the plain chess names for both sides, so players learn the real names |
 | 2026-10-22 | A pawn reaching the far rank is "promoted", not "knighted" |
 | 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |
@@ -64,7 +75,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Each enemy faction has its own species and shares only the chess headgear shapes; Bog Goblins are bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief |
 | 2026-10-22 | Bandit Rider placeholder art removed; Region 2 picks its own species when designed |
 | 2026-10-21 | The game is called Pawnshire; Gauntlet stays the name of the replay mode after the campaign |
-| 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks |
+| 2026-10-21 | Academy teaches the idea, battles test it under pressure, bounties repeat it until it sticks (the academy part superseded 2026-10-22 by the guided path's warm-ups) |
 | 2026-10-21 | The game stays 2D: tokens on the board, talking-head portraits beside it; 3D explored and deferred, with the mockups kept for reference |
 | 2026-10-21 | If 3D is revisited, use Rodin for AI-generated models (slight edge over Hunyuan3D; TRELLIS 2 not for hero pieces) |
 | 2026-10-21 | Talking-head portraits are tall portrait cards so headgear and shoulders fit |

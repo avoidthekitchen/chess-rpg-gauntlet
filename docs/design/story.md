@@ -42,7 +42,7 @@ Everyone below is in the game except the Lich King and the Region 2 characters. 
 | --- | --- | --- | --- | --- |
 | You, the Lion King | Lion · king | The player | Almost never speaks; others speak to you | — |
 | Sir Hob | Frog · knight | Starter choice | Eager, brave, a little show-off; quick jokes; "Hop to it!" | Forks and double attacks |
-| Sage Ollie | Owl · bishop | Starter choice; teaches the academy | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
+| Sage Ollie | Owl · bishop | Starter choice | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
 | Old Brick | Tortoise · rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
 | Saffron | Fox · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | — |
 | Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
@@ -61,7 +61,8 @@ How every line in the game should read, drawn from what works in Region 1:
 
 - **Short.** A talking-head quip during battle is one sentence, ideally under 12 words. A battle's tip and its dialogue lines are 1 or 2 sentences each, with 2 to 4 lines before the battle and 1 or 2 after. A boss or hero scene can run to 3 or 4 lines.
 - **Plain chess words, one image.** Companions teach with real terms ("guard it", "count attackers and defenders") plus at most one storybook image ("a wall of pawns can't move backwards"). No notation in dialogue except square names when pointing at the board.
-- **Teach, don't lecture.** The tip at the start of a battle is one actionable idea. The longer explanation lives in the lesson text and the academy.
+- **Teach, don't lecture.** The tip at the start of a battle is one actionable idea. The longer explanation lives in the warm-up and the library.
+- **Call back.** In later battles, the companion names the warm-up an idea came from ("Remember the hare's leap?"), so the spiral is visible.
 - **Gentle humor, never mean.** Enemies can be greedy, pompous or silly, and may gloat over a capture ("Should've guarded it, hee!"), but never insult the player. Losing is never mocked; the review and the companion are encouraging.
 - **Each faction sounds different.** Goblins are loud and greedy and announce things ("Oi! Next I'm grabbing your bishop on c4!"). Later factions need their own register, chosen with their AI habit.
 - **No lore dumps.** Story comes in one-line hints between battles and short scenes at Region ends. If a line explains history, cut it in half.

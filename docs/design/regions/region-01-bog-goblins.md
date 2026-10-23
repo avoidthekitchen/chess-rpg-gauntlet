@@ -4,7 +4,7 @@
 
 ## Design status
 
-Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
+Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. A third is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |
 | --- | --- |
@@ -57,9 +57,35 @@ Lineups are set by the scenario: your hired pieces stand in as named characters 
 
 ## Academy
 
-One lesson, taught by Sage Ollie: **Rook and queen checkmates**, as two practice battles (The Queen's Net, The Rook's Box) with unlimited undo against a lone king that defends perfectly. The first clear of each pays 10g (`src/game/academy.ts`).
+As built, one lesson, taught by Sage Ollie: **Rook and queen checkmates**, as two practice battles (The Queen's Net, The Rook's Box) with unlimited undo against a lone king that defends perfectly. The first clear of each pays 10g (`src/game/academy.ts`).
 
-This predates the decision that the academy teaches what the battles test. The Region 1 academy still needs one short lesson per battle theme; see [open TODOs](../decisions.md#open-todos).
+The [guided path](#planned-guided-path) replaces this academy with a warm-up in each battle node; these two exercises become Grubnak's boss warm-up.
+
+## Planned: guided path
+
+Approved 2026-10-22, not yet built. Region 1 is revised to the [guided path](../campaign.md#guided-path) as the worked example for every later Region. The code changes will be specced in a GitHub issue ([open TODO](../decisions.md#open-todos)).
+
+```mermaid
+flowchart BT
+    Town["Mudford Town"] --> Reeds["Main 1: Trouble in the Reeds<br/>threat awareness"]
+    Reeds --> Guard["Main 2: Lanterns at Mossbridge<br/>protection"]
+    Guard --> Trades["Main 3: The Swap Meet<br/>safe trades"]
+    Trades --> Backrank["Branch: Behind the Mud Wall<br/>back-rank mate"]
+    Trades --> Squire["Branch: The Pawn's Plunge<br/>promotion"]
+    Backrank -.-> Boss["Goblin Chief's camp<br/>opens after the main path and 1 branch"]
+    Squire -.-> Boss
+```
+
+| Battle | Warm-up idea | Warm-up tag |
+| --- | --- | --- |
+| Trouble in the Reeds | "What do they want?" Look at every check, capture and threat | `hangingPiece` |
+| Lanterns at Mossbridge | "Guard it, move it or block it" | `defensiveMove` |
+| The Swap Meet | "Count attackers and defenders" | `hangingPiece` |
+| Behind the Mud Wall | "The back rank" | `backRankMate` |
+| The Pawn's Plunge | "Run it home safely" | `promotion` |
+| Grubnak (boss warm-up) | The Queen's Net and The Rook's Box, as built | — |
+
+Also planned: the academy becomes the library, bounty tags add `defensiveMove`, `backRankMate` and `promotion`, refresher bounties, and the in-battle lesson panel cut to a one-line reminder. The battles themselves don't change, so their verification stands.
 
 ## Bounty board
 

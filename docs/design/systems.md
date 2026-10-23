@@ -28,7 +28,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 **Tactic detection.** When a move creates a known pattern, the game shows a banner like **FORK!**, **PIN!** or **SKEWER!** and pays bonus gold, like a combo in a fighting game. A banner must only appear when the tactic really works, or it teaches the wrong lesson: a "fork" where the forking piece simply gets captured is not a fork. So each banner needs two checks: a board rule spots the pattern, and the engine confirms the move actually wins something.
 
 - **At launch (clear board rules):** checkmate, fork, double check, discovered attack, pin, skewer, back-rank mate, promotion.
-- **Puzzles only (need judgment):** deflection, attraction, overloaded piece, zwischenzug, clearance, interference. These are hard to name automatically in live play, so they appear in puzzles, where the Lichess database already tags them.
+- **Puzzles only (need judgment):** deflection, attraction, overloaded piece, zwischenzug, clearance, interference. These are hard to name automatically in live play, so they appear in puzzles, where the Lichess database already tags them. One with no battle of its own gets a tip card instead of a warm-up ([Guided path](campaign.md#guided-path)).
 - **Built so far (Region 1):** checkmate, fork, check, promotion and capture are detected (`src/game/tactics.ts`). Fork banners, yours and the enemy's, show only when Stockfish confirms the fork wins material (`src/game/tacticCheck.ts`), and a confirmed fork pays gold. Checkmate needs no engine check. The other launch patterns are still to build.
 
 **Scenario format** (the `BattleDef` type in `src/game/content.ts`; each Region has one array of them, such as `REGION1_BATTLES` in `src/game/region1Battles.ts`): starting position (FEN) or, for bosses, the points budget and enemy setup; goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
@@ -75,6 +75,8 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 - **Follows the curriculum:** most bounties match the current region's themes; one or two revisit earlier regions, as the spiral does.
 - **Pays for challenge:** puzzles are picked near the player's hidden rating. Ones above it pay more; ones far below pay little.
 - **Mistake bounties:** positions where you blundered in a battle come back later as puzzles, like Lichess's "learn from your mistakes".
+- **Refresher bounties:** when the battle review finds a mistake in a battle, that battle's theme comes back as a bounty marked "Refresher", with its warm-up attached. At most 1 of the 4 slots. This replaces taking the player back to a lesson, and keeps the map free of nodes that come and go.
+- **Tip cards:** the first time a puzzle-only theme (such as zwischenzug) reaches the board, its bounty comes with a one-screen tip card. The library keeps every tip card you've seen.
 
 ## Enemies and difficulty
 
@@ -112,7 +114,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 | Context | Undo | Hints | Why |
 | --- | --- | --- | --- |
-| Lessons and training grounds | Unlimited | Free | Safe space to explore |
+| Warm-ups and the library | Unlimited | Free | Safe space to explore |
 | Battles | Rewind charges (set by difficulty) | Paid with powers | Consequences build the blunder-check habit |
 | After every battle | Full review | Best move shown | Learn from the biggest mistake |
 
@@ -162,7 +164,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Boss reward | 50g (Region 1) | `src/game/region1Boss.ts` |
 | Boss budget | 10 points, no queen (Region 1) | `R1_BOSS_BUDGET` in `src/game/region1Boss.ts` |
 | Boss reward, budget (Region 2, not built) | 50g; 16 points, queens allowed | Region 2 brief |
-| Wins that open the boss | 4 of 5 (Region 1) | `bossNeeds` in `src/game/region1.ts` |
+| Wins that open the boss | 4 of 5 (Region 1 today: any 4). Guided path (approved, not built): the main path plus 1 branch | `bossNeeds` in `src/game/region1.ts` |
 | Confirmed tactic gold | 5g a fork, at most 10g per battle ever | `TACTIC_GOLD`, `TACTIC_GOLD_CAP` in `src/game/economy.ts` |
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
 | Loss cost | Gentle 0, Brave 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
@@ -173,6 +175,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Bounties on the board | 4, refreshed after each battle | `BOUNTY_COUNT` in `src/game/economy.ts` |
 | Bounty target rating | Gentle 900, Brave 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |
-| Academy first clear | 10g per exercise | `src/game/academy.ts` |
+| Academy first clear | 10g per exercise (Region 1's academy, until the guided path replaces it) | `src/game/academy.ts` |
+| Warm-up first solve (not built) | 5g the first time you solve a battle's warm-up (first guess) | Guided path |
 | Review threshold | A move must cost about a pawn (90 centipawns) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |
 | Engine search timeout | 12 s, then the fallback AI takes over | `Engine` in `src/ai/engine.ts` |

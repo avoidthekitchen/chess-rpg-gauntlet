@@ -35,7 +35,7 @@ const OK_WIN: Record<string, RegExp> = {
   checkmate: /^Checkmate!/,
   promote: /^(Your pawn reaches|Checkmate!)/,
 };
-const OK_LOSS = /^(Out of moves|Checkmate\. Your king|A raider was left|Stalemate|The battle ends in a draw)/;
+const OK_LOSS = /^(Out of moves|They took it back|Checkmate\. Your king|A raider was left|Stalemate|The battle ends in a draw)/;
 
 interface Row {
   battle: string;

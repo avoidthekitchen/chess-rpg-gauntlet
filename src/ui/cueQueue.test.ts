@@ -107,6 +107,17 @@ describe('CueQueue', () => {
     expect(shown).toEqual(['a', 'Rewind']);
   });
 
+  it('drops an undone move’s waiting points even when another move follows immediately', () => {
+    const { q, cue, shown, tick } = setup();
+    cue('old close-up');
+    cue('old +3', 0);
+    q.clear(); // rewind
+    cue('new close-up');
+    cue('new +1', 0);
+    tick(5000);
+    expect(shown).toEqual(['old close-up', 'new close-up', 'new +1']);
+  });
+
   it('keeps a dropped cue’s points label, in order', () => {
     const { cue, shown, tick } = setup(1);
     cue('a');

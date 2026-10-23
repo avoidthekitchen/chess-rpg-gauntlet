@@ -143,5 +143,6 @@ The game is now called **Pawnshire** (title screen, page title, README, package 
 - Cue holds use scene time, so queued banners and the result wait pause when a background tab stops rendering.
 - Resizing or switching piece styles clears the queue before rebuilding removes its timers and visible cues. Later banners can still play.
 - Two regression tests use Phaser's real Clock and TweenManager with simulated time. They cover background tabs, resize recovery, and pending result waits.
-- Both tests fail without their respective fixes. `npm run ci` passes all 161 tests; the unit suite takes under one second locally.
+- Both tests fail without their respective fixes. `npm run ci` passes all 170 tests; the unit suite takes under one second locally.
 - Browser checks passed at 1280×800, 375×812, 375×553 and 844×390. Pausing and resuming the render loop preserves cue order; no runtime errors occurred.
+- Merged the newer rewind-popup fix from `main`. A queue test confirms that an immediate new move cannot revive an undone move’s points.

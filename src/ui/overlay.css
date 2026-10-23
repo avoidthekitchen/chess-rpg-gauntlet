@@ -325,3 +325,25 @@ body {
 .ov-text .review .who {
   margin-bottom: 2px;
 }
+
+/* Battle dialogue history: lines grouped under the move they were said on, newest last. */
+.said .dlg {
+  align-items: flex-start;
+  margin: 8px 0;
+}
+.said-move {
+  margin: 14px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+}
+.said-move:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}

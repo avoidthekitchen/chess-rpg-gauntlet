@@ -14,20 +14,13 @@ import type { BattleLaunch } from './scenes/Battle';
 import { esc, showModal, type ModalButton } from './ui/overlay';
 import { goTo } from './ui/screen';
 import { REVIEW_SLOT } from './ui/reviewText';
-import { FRAMING, SPECIES, pieceName } from './ui/speaker';
+import { portraitStyle } from './ui/portrait';
+import { SPECIES } from './ui/speaker';
 
 /**
  * Campaign flow between screens: battle briefings, launching battles with your
  * named characters, and what a win or a loss does to the save.
  */
-
-const base = import.meta.env.BASE_URL;
-
-/** Inline CSS that frames a figurine's head in a small portrait. */
-export function portraitStyle(type: PieceSymbol, side: 'ally' | 'bog') {
-  const f = FRAMING[type] ?? { size: 1.3, x: 0.5, y: 0.04 };
-  return `background-image:url('${base}sprites/${pieceName(type)}-${side}.webp');background-size:${f.size * 100}%;background-position:${f.x * 100}% ${f.y * 100}%`;
-}
 
 interface Voice {
   name: string;

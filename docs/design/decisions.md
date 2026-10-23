@@ -41,6 +41,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-22 | `npm run ci` is the local CI: quick checks always, engine playtests only when a change reaches them (found by following imports), `--full` before a Region ships |
 | 2026-10-22 | Piece names are animal plus chess piece ("Owl Bishop", "Bog Rat Pawn"), and short names are the plain chess names for both sides, so players learn the real names |
 | 2026-10-22 | A pawn reaching the far rank is "promoted", not "knighted" |
 | 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |

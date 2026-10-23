@@ -17,7 +17,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
 - [ ] **Region 1 guided path:** revise Region 1 to the [guided path](campaign.md#guided-path): a warm-up in each battle node, the map rewired to a main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), the rook and queen mates as Grubnak's boss warm-up, the academy turned into the library, and refresher bounties. The in-battle lesson panel becomes a one-line reminder. Spec as a GitHub issue once this design is approved ([Region 1](regions/region-01-bog-goblins.md#planned-guided-path)).
 - [ ] **Placement check:** an optional set of 5 or 6 puzzles at the start that marks warm-ups the player already knows, so they start ready to skip, and seeds the hidden adaptive rating. Design it with the adaptive rating.
-- [ ] **Shout rule:** decide after playtests whether goblins may abandon a shout that simply hangs a piece. The must-play rule makes traps easy, which shortens battles.
+- [x] **Shout rule:** decided 2026-10-23: goblins keep announcing, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), under the [tell or tilt](systems.md#ai-habits-by-faction) rule.
 - [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
 - [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
 - [x] **Region 2 numbers:** set in the [brief](regions/region-02-bandit-riders.md): 5 battles, 4 wins open the boss, Region 1's rewards and pay, and the Orb at 3 charges for 30g.
@@ -44,6 +44,11 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-23 | Faction habits follow "tell or tilt, never force": they may tell you something true or tilt the enemy's choice among moves within the difficulty's window, never force a move it wouldn't otherwise consider |
+| 2026-10-23 | Goblin shouts drop the must-play rule: they announce, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)). The shout shares the Scrying Orb's engine question and code path |
+| 2026-10-23 | Iron Legion's proud habit changes from "never declines a capture" to "prefers captures among its good moves" |
+| 2026-10-23 | Bounties built from your own blunder positions are dropped; refresher bounties (real Lichess puzzles on your weakest theme) replace them, and the battle review shows your mistake |
+| 2026-10-23 | The warm-up backup hint lights up the piece that moves, using the board's existing hint highlight; judge it in playtests |
 | 2026-10-22 | Guided path replaces the separate academy: every battle node opens with a warm-up (show one, try one, a second try with a hint), and solving the first try skips straight to the battle. A warm-up never blocks a battle. Supersedes the 2026-10-21 academy row |
 | 2026-10-22 | Each Region's map has a required main path of headline battles in teaching order and branches you choose (revisits, mates, endgames). The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Replaces "any 4 of 5" for Region 1 and the Region 2 brief |
 | 2026-10-22 | Warm-up positions are Lichess puzzles (CC0) from the low end of each Region's warm-up band, tagged with the battle's theme, or positions from Lichess Practice studies (preferred for endgame technique); the words are our own |
@@ -84,7 +89,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-21 | Talking-head portraits are tall portrait cards so headgear and shoulders fit |
 | 2026-10-21 | First implementation is one complete region, Region 1, in Phaser |
 | 2026-10-21 | Gauntlet unlocks after beating the Lich King and uses the puzzle themes the campaign doesn't |
-| 2026-10-21 | Bounty board: small, refreshes after each battle, follows the curriculum, pays more for harder puzzles, includes mistake bounties |
+| 2026-10-21 | Bounty board: small, refreshes after each battle, follows the curriculum, pays more for harder puzzles, includes mistake bounties (replaced by refresher bounties 2026-10-23) |
 | 2026-10-21 | Battles pay for the army; bounties pay for extras and catch-up |
 | 2026-10-21 | Boss budgets cap your army; only the Lich King battle allows a full chess set |
 | 2026-10-21 | All pieces usable and hireable after the tutorial; gold and growing boss budgets pace the army |

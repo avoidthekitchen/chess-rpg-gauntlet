@@ -74,8 +74,7 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 - **Small and refreshing:** 3 to 4 bounties at a time, refreshed after each battle. It can't be ground, and it mixes puzzles in between battles, which helps players remember.
 - **Follows the curriculum:** most bounties match the current region's themes; one or two revisit earlier regions, as the spiral does.
 - **Pays for challenge:** puzzles are picked near the player's hidden rating. Ones above it pay more; ones far below pay little.
-- **Mistake bounties:** positions where you blundered in a battle come back later as puzzles, like Lichess's "learn from your mistakes".
-- **Refresher bounties:** one slot (of the 4) brings back your weakest theme, with its warm-up attached and marked "Refresher". The game records, per theme, the mistakes the battle review finds and the bounties you solve or miss, like Lichess's puzzle dashboard. A theme you got wrong recently comes first; one you then solve twice in a row drops back, as in spaced repetition. This replaces sending the player back to a lesson, and keeps the map free of nodes that come and go.
+- **Refresher bounties:** one slot (of the 4) brings back your weakest theme, with its warm-up attached and marked "Refresher". The game records, per theme, the mistakes the battle review finds and the bounties you solve or miss, like Lichess's puzzle dashboard. A theme you got wrong recently comes first; one you then solve twice in a row drops back, as in spaced repetition. This replaces sending the player back to a lesson, and keeps the map free of nodes that come and go. It also replaces bounties built from your own blunder positions: those need an engine-made solution line with one clear best move, which is the hard part of how Lichess builds its database, and a weak one teaches the wrong answer. The battle review already shows your costliest mistake and the better move. So every bounty is a Lichess puzzle as published.
 - **Review set (library):** an optional run through the Region's warm-ups and the bounties you missed, timed, a little faster each pass, like the Woodpecker Method. It pays no gold; it's practice. The Gauntlet uses the same idea at full scale.
 - **Tip cards:** the first time a puzzle-only theme (such as zwischenzug) reaches the board, its bounty comes with a one-screen tip card. The library keeps every tip card you've seen.
 
@@ -83,7 +82,7 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 
 See [Regions and factions](campaign.md#regions-and-factions) for the campaign lineup and [curriculum](campaign.md#curriculum) for teaching themes.
 
-**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move and must play it if it's still legal (see [Powers and rewind](#powers-and-rewind)). The proud Iron Legion never declines a capture you offer, which teaches traps. The cult leader pins everything, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates. Each faction's habit is listed in [AI habits by faction](#ai-habits-by-faction).
+**AI personalities.** Enemy commanders have readable habits that create lessons. Bog Goblins shout their next move (see [Powers and rewind](#powers-and-rewind)). The proud Iron Legion prefers to take what you offer, which teaches traps. The cult leader prefers pins, which teaches unpinning. Personality is a layer over the engine: weighted move choice among the engine's top candidates. Each faction's habit is listed in [AI habits by faction](#ai-habits-by-faction).
 
 **Human-like mistakes.** Stockfish at low skill levels mixes perfect moves with random blunders, which feels unnatural. Early enemies should make believable mistakes, like missing a fork or leaving a piece undefended. The prototype does this by picking among several Stockfish candidate moves within a centipawn window; weaker enemies get a wider window.
 
@@ -98,12 +97,19 @@ See [campaign loss costs](campaign.md#campaign-and-gauntlet) for the consequence
 
 Every faction has one readable habit that teaches its Region's theme. Habits change what the enemy chooses or tells you, never how pieces move. All six were approved on 2026-10-22; each one's finer details are settled when its Region is designed.
 
+**Tell or tilt, never force** (approved 2026-10-23). A habit may:
+
+- **tell** you something true, such as the move they'd play or the piece they're hunting;
+- **tilt** the enemy's choice toward a kind of move, but only among moves the engine already rates good enough for the difficulty (its centipawn window).
+
+A habit may never **force** a move the enemy wouldn't otherwise consider, such as keeping a promise that now loses, or taking every piece offered. Real opponents answer your move, and the Lichess puzzles in warm-ups and bounties assume the best defence. A habit that makes the enemy walk into traps teaches the opposite. The difficulty window already makes weaker enemies fall for more traps, so help still fades without forcing anything.
+
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
-| Bog Goblins | **Shout:** announce the move they'd play if you passed, and play it if still legal. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit; committed moves can be trapped | Built ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again: they keep the shout if it's still within the difficulty's window, and otherwise switch ("Changed my mind!"). Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built with a must-play rule, which breaks tell or tilt; changing to the re-decide rule in [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
 | Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Gentle, the companion names the target ("They're hunting your bishop!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
 | Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
-| Iron Legion | **Proud:** never declines a capture you offer, even a poisoned one | Teaches traps and poisoned pieces. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"); details with Region 4 |
+| Iron Legion | **Proud:** prefers to capture what you offer, among its good moves. On Gentle's wide window it takes some poisoned bait; on Brave it rarely does | Teaches traps and poisoned pieces: you learn which bait is good enough to tempt them. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"; "never declines" changed to "prefers" 2026-10-23); details with Region 4 |
 | Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Approved, not built |
 | The Lich King | No habit; full strength for the difficulty | The final test: no tells | Approved |
 
@@ -129,7 +135,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 - **Blunder Ward:** warns once per battle when you're about to leave a piece undefended.
 - **Threat Sight:** always available on easy difficulty, a limited power on harder ones.
 
-**One feature, three uses.** Shouting goblins, the Scrying Orb and Far Sight all ask the engine the same question: what is the enemy's best move in this position? Goblins announce it automatically and commit to it, the Orb shows it on demand, and Far Sight asks it about a move you haven't made yet. Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
+**One feature, three uses.** Shouting goblins, the Scrying Orb and Far Sight all ask the engine the same question: what is the enemy's best move in this position? Goblins announce it every turn, the Orb shows it on demand, and Far Sight asks it about a move you haven't made yet. Once the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), a shout is an always-on Orb in the goblins' voice, so all three should share one code path. Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
 
 **Ladder by Region** (approved 2026-10-22). Help arrives as the habits fade, so the player always has one rung of support:
 

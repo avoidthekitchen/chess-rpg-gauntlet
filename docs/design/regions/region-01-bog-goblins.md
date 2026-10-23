@@ -22,6 +22,8 @@ Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-r
 
 Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`). It's drawn as a green arrow and spoken by the piece's portrait. If the announced move is still legal after your move, they must play it ("Told you I would!"). If you made it illegal, a "Foiled!" banner shows. A rewind hears the same shout again.
 
+**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move: they keep the shout if it's still within the difficulty's window, and otherwise switch ("Changed my mind!"). The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
+
 It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins are committed, you can also set traps, such as guarding the piece they promised to take. That makes battles feel like Into the Breach turns, where each turn is a small puzzle.
 
 On Gentle, your companion reads each shout for you a moment later. It says whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Brave leaves it to you ([help that fades](../../design.md#vision-and-pillars)).

@@ -7,7 +7,7 @@ How Region 1 was built and checked, written as the steps and quality bars every 
 ## Order of work
 
 1. **Design first.** Copy the [Region template](design/regions/region-template.md) and fill it in: faction and AI habit, curriculum mapping, the map's main path and branches, battles and their warm-ups, boss, hero and story beats. Start from the Region's row in the [battle outline](design/campaign.md#battle-outline-by-region). Check it against the [pillars](design.md#vision-and-pillars), the [main arc](design/story.md#main-story-arc) and the [names](design/glossary.md). Get the design approved by the owner before building content; for Region 2 onward, through the Region's spec issue on GitHub. Design questions you can't settle go to [open TODOs](design/decisions.md#open-todos).
-2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code. A new habit also needs a simulated player that understands it (`scripts/verify/simulate.ts` has one for shouts), or the verification bars below mean nothing.
+2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code. Every habit must follow [tell or tilt, never force](design/systems.md#ai-habits-by-faction). A new habit also needs a simulated player that understands it (`scripts/verify/simulate.ts` has one for shouts), or the verification bars below mean nothing.
 3. **Art.** Make the faction's token and portrait set, and any backgrounds, as [Art direction](design/art.md) describes. Then check the tokens on the real board at phone size (below).
 4. **Battles.** Write each battle as a `BattleDef`, meeting the [content rules](#battle-content-rules), and verify it with the engine until it meets the [bars](#verification-bars).
 5. **Warm-ups, bounties, boss, hero.** One warm-up per battle, meeting the [warm-up rules](#warm-up-content-rules); tip cards for the Region's puzzle-only themes; bounty puzzles built from the curriculum's tags (`npm run puzzles`); the boss duel verified like a battle, with a boss warm-up only if it tests something the battles didn't.
@@ -47,7 +47,7 @@ Every battle has a warm-up: one position your companion shows, one you try, and 
 - 1 or 2 moves for the solver, so a player who knows the idea solves it in under a minute.
 - The try and backup positions show the same idea as the battle, not just the same tag. Pick them by hand and check them on the board.
 - Not used as a bounty in the same Region.
-- Our own words, in the companion's voice ([voice guide](design/story.md#voice-and-dialogue)): one or two sentences for the shown position, one hint for the backup.
+- Our own words, in the companion's voice ([voice guide](design/story.md#voice-and-dialogue)): one or two sentences for the shown position. The backup's hint lights up the piece that moves, using the board's existing hint highlight.
 - Where Lichess has no tag or study for the theme (threat awareness, counting trades, development, open files), use the nearest tag or a position of our own, checked with the engine.
 - A warm-up never blocks the battle and has no move limit, rewinds or loss cost.
 

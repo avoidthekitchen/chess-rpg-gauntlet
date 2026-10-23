@@ -48,7 +48,7 @@ Players who know the moves can't always tell what they don't know. So the map gu
 
 1. **Show one.** Your companion plays through one position and names the idea in a sentence or two. About 30 seconds.
 2. **Try one.** You solve one position. Solve it first try and the battle starts: that's the test-out, so players who know the idea lose almost no time.
-3. **One more, with a hint,** if you missed. Then the battle starts either way. A warm-up never blocks a battle.
+3. **One more, with a hint,** if you missed. The hint lights up the piece that moves. Then the battle starts either way. A warm-up never blocks a battle.
 4. **The battle** tests the idea under pressure.
 5. **After a loss,** the retry offers a fresh warm-up position before you go again.
 6. **Replaying** a cleared battle for its bonus goals skips the warm-up.

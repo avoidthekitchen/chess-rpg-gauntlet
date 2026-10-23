@@ -16,7 +16,7 @@ describe('post-battle review', () => {
 
   it('does not flag a move that keeps a forced mate, or one that beat the engine’s pick', () => {
     expect(moveCost(m(1, 'Re2', 'Rd8+', 99_700, 99_500))).toBe(0);
-    // A shout trap: once the goblins' forced reply is counted, the move scores higher than "best".
+    // A deeper look can rate the played move above the engine's quick pick.
     expect(moveCost(m(1, 'Re2', 'h3', 100, 900))).toBe(0);
   });
 

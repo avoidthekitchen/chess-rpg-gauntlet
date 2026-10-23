@@ -9,7 +9,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
 /**
  * Engine-backed checks for the Region 1 lesson battles. For each battle, plays many full
  * games with the real shouting rule against the Gentle and Brave goblins:
- * - a competent (Stockfish, shout-aware) player must win at least 90% and usually earn the bonuses;
+ * - a competent (Stockfish) player, who treats the shout as a hint, must win at least 90% and usually earn the bonuses;
  * - a careless player (a random pick among a depth-1 top five) must lose most games;
  * - every game must end for a reason that fits the objective.
  * Two more players are reported but not asserted: `greedy` (always grabs the biggest capture,

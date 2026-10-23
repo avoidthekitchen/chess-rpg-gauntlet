@@ -13,7 +13,8 @@ import { button, coverImage, eyebrow } from '../ui/widgets';
 
 const INTRO: Line[] = [
   { who: 'narrator', text: 'The Bog Goblins have crept out of the marsh, stealing pots, pies and the occasional village.' },
-  { who: 'companion', text: 'They’re loud, greedy and not very clever. Listen to them: they shout their plans before they move!' },
+  { who: 'companion', text: 'They’re loud, greedy and not very clever. They shout their plan before they move, and your move can change it.' },
+  { who: 'companion', text: 'Their arrow shows one plan. Other threats still count, so keep looking!' },
   { who: 'chief', text: 'GRUBNAK HEARS YOU, LITTLE KING. Come to my camp and lose your crown in the mud!' },
 ];
 

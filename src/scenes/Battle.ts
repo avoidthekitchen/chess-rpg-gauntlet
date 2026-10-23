@@ -63,7 +63,7 @@ export interface BattleLaunch {
   eyebrow: string;
   /** Named characters, by the square they start on. Everyone else is unnamed militia. */
   names?: Partial<Record<Square, string>>;
-  /** Goblins announce their next move and must play it if it's still legal. */
+  /** Goblins announce their next move; after your move they decide again, preferring the shout. */
   shouts?: boolean;
   /** The companion's opening tip. */
   tip?: { type: PieceSymbol; name: string; line: string };
@@ -108,6 +108,8 @@ export class BattleScene extends BaseScene {
   private firstBuild = true;
   /** The move the goblins announced for this turn (UCI), and announcements by position so a rewind hears the same one. */
   private shout: string | null = null;
+  /** The position the shout was made in (your turn), to tell what your move changed. */
+  private shoutFen: string | null = null;
   private shoutCache = new Map<string, string | null>();
   private speakerTimer = 0;
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
@@ -531,14 +533,35 @@ export class BattleScene extends BaseScene {
     this.releaseHold(false);
   }
 
-  private speak(res: TurnResult, kept = false) {
+  /**
+   * What a goblin says when it drops a shout that's still legal. If the shout was a capture
+   * and you guarded the target (or the shout now loses the capturer), they say so, so a good
+   * defence feels earned; otherwise a plain change of mind.
+   */
+  private switchLine(shoutFen: string, fen: string, shout: string): string {
+    const me = this.battle.player;
+    const to = shout.slice(2, 4) as Square;
+    const before = new Chess(shoutFen);
+    const now = new Chess(fen);
+    const wanted = before.get(to);
+    if (wanted && wanted.color === me) {
+      const target = now.get(to);
+      if (!target || target.color !== me) return pickOne(['Oi! You moved it!', 'Where’d it go?!', 'Hey, come back with that!']);
+      if (now.attackers(to, me).length > before.attackers(to, me).length)
+        return pickOne(['Oi! You’ve guarded it!', 'Hey! That one’s guarded now!', 'Grr. You put a guard on it.']);
+    }
+    return pickOne(['Changed my mind!', 'New plan, lads!', 'Hmm. Not that. Something better!']);
+  }
+
+  private speak(res: TurnResult, kept = false, switched: string | null = null) {
     const m = res.move;
     const info = speakerLine(m, res.tactics, {
       faction: this.launch.faction,
       characterName: m.color === 'w' ? this.names.get(m.to) : undefined,
       commander: this.battle.scenario.enemy.name,
     });
-    if (kept && !res.tactics.includes('checkmate')) info.line = pickOne(['Told you I would!', 'Just like I shouted!', 'Hah! A goblin keeps its word!']);
+    if (kept && !res.tactics.includes('checkmate')) info.line = pickOne(['Told you I would!', 'Just like I shouted!', 'Hah! Did what I said!']);
+    else if (switched && !res.tactics.includes('checkmate')) info.line = switched;
     this.say(info);
   }
 
@@ -638,6 +661,7 @@ export class BattleScene extends BaseScene {
       this.thinking = false;
     }
     this.shout = uci;
+    this.shoutFen = fen;
     if (uci) {
       const from = uci.slice(0, 2) as Square;
       const piece = b.chess.get(from);
@@ -647,7 +671,7 @@ export class BattleScene extends BaseScene {
         const name = piece.type === 'k' ? b.scenario.enemy.name : FACTION_SPECIES[this.launch.faction][piece.type];
         this.say({ side: 'foe', name: `${name} shouts`, line, type: piece.type }, 1500);
         this.adviseOnShout(fen, uci);
-        const plan = `The goblins shout their plan: ${from}→${uci.slice(2, 4)}. They must do it if they still can.`;
+        const plan = `The goblins shout their plan: ${from}→${uci.slice(2, 4)}. Your move can change it.`;
         this.statusLine = b.log.length ? `${this.statusLine} ${plan}` : plan;
       }
     }
@@ -864,16 +888,16 @@ export class BattleScene extends BaseScene {
     const started = performance.now();
     let uci: string;
     const shout = this.shout;
-    const kept = shout !== null && shoutStands(b.fen, shout);
-    if (kept) uci = shout;
-    else {
-      try {
-        uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai);
-      } catch (err) {
-        console.warn('Enemy AI failed, using fallback', err);
-        uci = fallbackMove(new Chess(b.fen));
-      }
+    // The shout is a preference, never a promise: they decide again after your move.
+    const stands = shout !== null && shoutStands(b.fen, shout);
+    const switchLine = shout && stands && this.shoutFen ? this.switchLine(this.shoutFen, b.fen, shout) : null;
+    try {
+      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai, Math.random, { shout: stands ? shout : null });
+    } catch (err) {
+      console.warn('Enemy AI failed, using fallback', err);
+      uci = fallbackMove(new Chess(b.fen));
     }
+    const kept = stands && uci === shout;
     // A short pause so the enemy's move doesn't feel instant.
     const wait = 450 - (performance.now() - started);
     if (wait > 0) await sleep(wait);
@@ -886,7 +910,8 @@ export class BattleScene extends BaseScene {
     this.thinking = false;
     this.shout = null;
     this.statusLine = this.describe(res, 'enemy');
-    if (shout && !kept) this.statusLine = `Foiled! The goblins couldn’t do what they shouted. ${this.statusLine}`;
+    if (shout && !stands) this.statusLine = `Foiled! The goblins couldn’t do what they shouted. ${this.statusLine}`;
+    else if (shout && !kept) this.statusLine = `They changed their plan. ${this.statusLine}`;
     this.trackNames(res.move);
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
@@ -895,11 +920,11 @@ export class BattleScene extends BaseScene {
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
-    this.speak(shown, kept);
+    this.speak(shown, kept, shout && stands && !kept ? switchLine : null);
     const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
     if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
     else if (res.move.captured && !enemyCloseUp) this.showBanner('Piece lost', 'foe');
-    else if (shout && !kept) this.showBanner('Foiled!', 'ally');
+    else if (shout && !stands) this.showBanner('Foiled!', 'ally');
     this.refresh();
     this.checkFinished();
     void this.startPlayerTurn();
@@ -980,11 +1005,7 @@ export class BattleScene extends BaseScene {
     if (this.battle.status !== 'playing' && !this.finished) this.recordResult();
   }
 
-  /**
-   * Replays your moves through Stockfish to find the costliest one. When the goblins'
-   * shout still stood after your move, the move is judged after their forced reply,
-   * so a deliberate trap isn't mistaken for a blunder.
-   */
+  /** Replays your moves through Stockfish to find the costliest one. */
   private async review(b: Battle, token: number): Promise<ReviewResult> {
     if (engineStatus === 'fallback') return { ok: false };
     const chess = new Chess(b.scenario.fen);
@@ -1008,14 +1029,8 @@ export class BattleScene extends BaseScene {
       const after = new Chess(p.fen);
       after.move(p.san);
       let playedScore: number;
-      const shout = this.shoutCache.get(p.fen);
       if (after.isCheckmate()) playedScore = 100_000;
-      else if (shout && shoutStands(after.fen(), shout)) {
-        after.move({ from: shout.slice(0, 2), to: shout.slice(2, 4), promotion: shout[4] as PieceSymbol | undefined });
-        if (after.isCheckmate()) playedScore = -100_000;
-        else if (after.isGameOver()) playedScore = 0;
-        else playedScore = (await engine.analyse(after.fen(), DEPTH, 1))[0]?.score ?? 0;
-      } else if (after.isGameOver()) playedScore = 0;
+      else if (after.isGameOver()) playedScore = 0;
       else playedScore = -((await engine.analyse(after.fen(), DEPTH, 1))[0]?.score ?? 0);
       out.push({ number: firstNumber + i + 1, played: p.san, best: bestSan, bestScore: best.score, playedScore });
     }

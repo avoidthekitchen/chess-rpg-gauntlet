@@ -9,8 +9,8 @@ import type { NodeEngine } from './nodeEngine';
 
 /**
  * Plays whole battles the way the game does, including the shouting rule: before each
- * player move the goblins announce a move (cached by FEN), and after the player moves
- * they must play it if it's still legal.
+ * player move the goblins announce a move (cached by FEN, so a rewind hears the same one),
+ * and after the player moves they decide again, with the shout preferred but never forced.
  */
 
 export type PlayerKind = 'competent' | 'careless' | 'random' | 'greedy';
@@ -22,7 +22,7 @@ export interface GameResult {
   piecesLost: number;
   /** White and Black moves in UCI, alternating, White first. */
   moves: string[];
-  /** Black moves that were forced by a standing shout. */
+  /** Black moves that matched the shout (kept by preference, never forced). */
   shoutsKept: number;
 }
 
@@ -92,17 +92,14 @@ function everyRaidAnswerable(def: BattleDef, moves: string[]): boolean {
 
 const MATE_SCORE = 1_000_000;
 
-/**
- * A White move that wins by White's next move whatever Black replies, under the shouting
- * rule (a standing shout is Black's only reply). Engine-free and exhaustive.
- */
-function forcedWinIn2(def: BattleDef, moves: string[], shout: string | null): string | null {
+/** A White move that wins by White's next move whatever Black replies. Engine-free and exhaustive. */
+function forcedWinIn2(def: BattleDef, moves: string[]): string | null {
   const start = replay(def, moves);
   for (const w1 of legalUci(start.fen)) {
     const a = replay(def, [...moves, w1]);
     if (a.status === 'won') return w1;
     if (a.status === 'lost') continue;
-    const replies = shout && shoutStands(a.fen, shout) ? [shout] : legalUci(a.fen);
+    const replies = legalUci(a.fen);
     let forced = true;
     for (const r of replies) {
       const t = replay(def, [...moves, w1, r], 1e9);
@@ -131,17 +128,17 @@ function forcedWinIn2(def: BattleDef, moves: string[], shout: string | null): st
 }
 
 /**
- * A strong, shout-aware player: takes Stockfish's top candidates, and when the goblins'
- * announced move would still stand, scores the position after that forced reply.
+ * A strong player: looks at every legal move with Stockfish and the battle's goal in mind.
+ * It treats the shout as a hint, not a promise, so it assumes the goblins' best reply.
  */
-async function competentMove(def: BattleDef, moves: string[], shout: string | null, eng: NodeEngine): Promise<string> {
+async function competentMove(def: BattleDef, moves: string[], eng: NodeEngine): Promise<string> {
   const b = replay(def, moves);
-  const quick = forcedWinIn2(def, moves, shout);
+  const quick = forcedWinIn2(def, moves);
   if (quick) return quick;
   const cands = await eng.analyse(b.fen, 11, 5);
   // Mating battles need to see a few moves further.
   const evalDepth = def.objective.kind === 'checkmate' ? 13 : 9;
-  // Every legal move gets a look: quiet moves that only work because of the shout matter here.
+  // Every legal move gets a look, not just the engine's top five.
   const pool = [...new Set([...cands.map((c) => c.uci), ...legalUci(b.fen)])];
   let best = pool[0];
   let bestScore = -Infinity;
@@ -150,16 +147,7 @@ async function competentMove(def: BattleDef, moves: string[], shout: string | nu
     let score: number;
     if (t.status === 'won') score = MATE_SCORE;
     else if (t.status === 'lost') score = -MATE_SCORE;
-    else if (shout && shoutStands(t.fen, shout)) {
-      t.enemyMove(shout);
-      if (statusOf(t) === 'won') score = MATE_SCORE - 1;
-      else if (statusOf(t) === 'lost') score = -MATE_SCORE;
-      else if (!raidsAnswerable(t)) score = -MATE_SCORE + 1;
-      else {
-        const ev = (await eng.analyse(t.fen, evalDepth, 1))[0]?.score ?? 0;
-        score = ev + goalBonus(t);
-      }
-    } else if (!everyRaidAnswerable(def, [...moves, uci])) score = -MATE_SCORE / 2;
+    else if (!everyRaidAnswerable(def, [...moves, uci])) score = -MATE_SCORE / 2;
     else {
       const ev = -((await eng.analyse(t.fen, evalDepth, 1))[0]?.score ?? 0);
       score = ev + goalBonus(t);
@@ -218,7 +206,7 @@ export async function playGame(
     }
     const w =
       player === 'competent'
-        ? await competentMove(def, moves, shout, eng)
+        ? await competentMove(def, moves, eng)
         : player === 'careless'
           ? await carelessMove(b.fen, eng, rng)
           : player === 'greedy'
@@ -227,11 +215,9 @@ export async function playGame(
     b.playerMove(toInput(w));
     moves.push(w);
     if (b.status !== 'playing') break;
-    let reply: string;
-    if (shout && shoutStands(b.fen, shout)) {
-      reply = shout;
-      shoutsKept++;
-    } else reply = await chooseEnemyMove(b, eng.asEngine(), profile);
+    const stands = shout !== null && shoutStands(b.fen, shout);
+    const reply = await chooseEnemyMove(b, eng.asEngine(), profile, Math.random, { shout: stands ? shout : null });
+    if (stands && reply === shout) shoutsKept++;
     b.enemyMove(reply);
     moves.push(reply);
   }

@@ -66,4 +66,4 @@ How every line in the game should read, drawn from what works in Region 1:
 - **Gentle humor, never mean.** Enemies can be greedy, pompous or silly, and may gloat over a capture ("Should've guarded it, hee!"), but never insult the player. Losing is never mocked; the review and the companion are encouraging.
 - **Each faction sounds different.** Goblins are loud and greedy and announce things ("Oi! Next I'm grabbing your bishop on c4!"). Later factions need their own register, chosen with their AI habit.
 - **No lore dumps.** Story comes in one-line hints between battles and short scenes at Region ends. If a line explains history, cut it in half.
-- **Our own words.** Lessons follow the Lichess outline but never copy its text (see [Licensing](technical.md#licensing)).
+- **Our own words.** Lessons may use Lichess positions, but the text is always the companion's own voice, never Lichess's wording.

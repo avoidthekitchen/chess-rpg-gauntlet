@@ -47,7 +47,7 @@ One row per battle, meeting the [warm-up rules](../../playbook.md#warm-up-conten
 | Battle | Warm-up idea (one line) | Lichess tag and Practice outline | Shown position | Try position | Backup position and hint |
 | --- | --- | --- | --- | --- | --- |
 
-Positions are Lichess puzzle IDs, or a FEN for a position of our own. Add a boss warm-up row only if the boss tests something the battles didn't.
+Positions are Lichess puzzle IDs, a Lichess Practice study and chapter, or a FEN for a position of our own. Add a boss warm-up row only if the boss tests something the battles didn't.
 
 ## Bounty board
 

@@ -43,11 +43,12 @@ The [guided path](design/campaign.md#guided-path) sets the shape:
 Every battle has a warm-up: one position your companion shows, one you try, and one backup with a hint.
 
 - Positions are Lichess puzzles from the low end of the Region's warm-up band ([curriculum](design/campaign.md#curriculum)), tagged with the battle's theme, that pass the bounty quality filter.
+- Or positions from the matching Lichess Practice study (cleared for use; see [licensing](design/technical.md#licensing)). Prefer these for endgame technique, where puzzles rarely show the textbook position. Record the study and chapter.
 - 1 or 2 moves for the solver, so a player who knows the idea solves it in under a minute.
 - The try and backup positions show the same idea as the battle, not just the same tag. Pick them by hand and check them on the board.
 - Not used as a bounty in the same Region.
 - Our own words, in the companion's voice ([voice guide](design/story.md#voice-and-dialogue)): one or two sentences for the shown position, one hint for the backup.
-- Where Lichess has no tag for the theme (threat awareness, counting trades, development, open files), use the nearest tag or a position of our own, checked with the engine.
+- Where Lichess has no tag or study for the theme (threat awareness, counting trades, development, open files), use the nearest tag or a position of our own, checked with the engine.
 - A warm-up never blocks the battle and has no move limit, rewinds or loss cost.
 
 Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. A content test checks each one: the position is legal, the solution plays through, and its tag matches the battle's theme.

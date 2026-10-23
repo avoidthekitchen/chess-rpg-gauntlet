@@ -46,7 +46,8 @@ The one place to track unfinished design work. When one is resolved, move the an
 | --- | --- |
 | 2026-10-22 | Guided path replaces the separate academy: every battle node opens with a warm-up (show one, try one, a second try with a hint), and solving the first try skips straight to the battle. A warm-up never blocks a battle. Supersedes the 2026-10-21 academy row |
 | 2026-10-22 | Each Region's map has a required main path of headline battles in teaching order and branches you choose (revisits, mates, endgames). The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Replaces "any 4 of 5" for Region 1 and the Region 2 brief |
-| 2026-10-22 | Warm-up positions are Lichess puzzles (CC0) from the low end of each Region's warm-up band, tagged with the battle's theme; the words are our own |
+| 2026-10-22 | Warm-up positions are Lichess puzzles (CC0) from the low end of each Region's warm-up band, tagged with the battle's theme, or positions from Lichess Practice studies (preferred for endgame technique); the words are our own |
+| 2026-10-22 | Lichess Practice studies are cleared for use, confirmed by the owner: their positions may appear in warm-ups, tip cards and the library, credited to Lichess. Text stays in our own voice |
 | 2026-10-22 | A boss gets a warm-up only when it tests something the battles didn't; Region 1's rook and queen mates become Grubnak's |
 | 2026-10-22 | The town's academy becomes the library: replay warm-ups you've seen, read tip cards, run a timed review set (Woodpecker Method), and later optional advanced lessons |
 | 2026-10-22 | Puzzle-only themes with no battle (zwischenzug, overloaded pieces, underpromotion and others) get a one-screen tip card on the bounty board, not a lesson |

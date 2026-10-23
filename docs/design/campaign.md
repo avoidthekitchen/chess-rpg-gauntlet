@@ -53,7 +53,7 @@ Players who know the moves can't always tell what they don't know. So the map gu
 5. **After a loss,** the retry offers a fresh warm-up position before you go again.
 6. **Replaying** a cleared battle for its bonus goals skips the warm-up.
 
-Warm-up positions are real Lichess puzzles from the low end of the Region's warm-up band ([curriculum](#curriculum)), 1 or 2 moves for the solver, tagged with the battle's theme. The words are our own. Content rules are in the [playbook](../playbook.md#warm-up-content-rules).
+Warm-up positions are real Lichess puzzles from the low end of the Region's warm-up band ([curriculum](#curriculum)), 1 or 2 moves for the solver, tagged with the battle's theme. Endgame technique (opposition, key squares, Lucena, Philidor) uses positions from the matching Lichess Practice study instead, because puzzles rarely show the textbook position. The words are our own. Content rules are in the [playbook](../playbook.md#warm-up-content-rules).
 
 **The map has a main path and branches.**
 
@@ -91,7 +91,7 @@ The outline comes from Lichess: [Learn](https://lichess.org/learn), then [Practi
 - **The Woodpecker Method:** repeat a set of puzzles until they're fast. The library's review set uses it.
 - **Lichess's puzzle dashboard and Chessable's spaced repetition:** track how you do on each theme, and bring back the weakest. Refresher bounties use it ([bounty rules](systems.md#bounty-board-and-gold)).
 
-We borrow their order of topics, never their exercises. Lessons are our own writing; positions come from the Lichess puzzle database, which is CC0 ([licensing](technical.md#licensing)).
+We borrow their order of topics, never their exercises. Positions come from the Lichess puzzle database (CC0) and Lichess Practice studies (cleared for use); the lesson text is our own, in the companion's voice ([licensing](technical.md#licensing)).
 
 | Tier | Region | Main path (headline) | Branches | Warm-up band | Lichess Practice outline | Bounty tags | Tip cards |
 | --- | --- | --- | --- | --- | --- | --- | --- |

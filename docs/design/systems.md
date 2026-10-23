@@ -104,6 +104,15 @@ Every faction has one readable habit that teaches its Region's theme. Habits cha
 
 A habit may never **force** a move the enemy wouldn't otherwise consider, such as keeping a promise that now loses, or taking every piece offered. Real opponents answer your move, and the Lichess puzzles in warm-ups and bounties assume the best defence. A habit that makes the enemy walk into traps teaches the opposite. The difficulty window already makes weaker enemies fall for more traps, so help still fades without forcing anything.
 
+**How a tilt works.** Every enemy move comes from one weighted pick:
+
+1. The engine evaluates the candidate moves.
+2. Moves outside the difficulty's window are dropped.
+3. Each habit adds a capped weight bonus to the moves it likes (see [Tuning values](#tuning-values)).
+4. One random pick, better moves more likely.
+
+An enemy with two habits, such as a shouting raider, just adds both bonuses to the same pick. A bonus makes a move more likely, never certain: players can't count on the enemy taking bait. Bonuses belong to the faction's AI. Showing a plan (a shout, the Scrying Orb) only reveals the pick, so buying an Orb charge never makes another faction stubborn. When there is no engine analysis, today's simple fallback move choice still applies.
+
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
 | Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again, preferring the shouted move among moves within the difficulty's window but free to pick another. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built with a must-play rule, which breaks tell or tilt; changing to the re-decide rule in [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
@@ -115,7 +124,7 @@ A habit may never **force** a move the enemy wouldn't otherwise consider, such a
 
 The village **raider** in sieges is a battle-level habit any faction can use: it goes for villages first, but never makes a raid that allows mate in one (`raiderMove` in `src/ai/enemy.ts`).
 
-**Changing (approved 2026-10-23):** as built, the raider scores every legal move before the engine is asked, so it can play moves far outside the difficulty's window. That breaks tell or tilt. It will tilt instead: the engine finds the moves within the window, and the raider picks the one that puts the most pressure on villages. Siege battles are re-verified after the change, starting with Lanterns at Mossbridge ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
+**Changing (approved 2026-10-23):** as built, the raider scores every legal move before the engine is asked, so it can play moves far outside the difficulty's window. That breaks tell or tilt. It will tilt instead: moves that add village pressure get a capped bonus in the one weighted pick above. Siege battles are re-verified after the change, starting with Lanterns at Mossbridge ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
 
 ## Powers and rewind
 
@@ -183,6 +192,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
 | Loss cost | Gentle 0, Brave 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
 | Rewinds per battle | Gentle 3, Brave 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
+| Habit bonuses (approved, not built) | Starting values to tune: the goblin shout ×3 on the shouted move; the raider up to ×3, scaled by how much village pressure a move adds. With ×3, a shouted move 100 centipawns worse than the only alternative is kept about 37% of the time on Brave | [#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23) and [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) |
 | Enemy strength | Gentle: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Brave: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
 | Region 1 boss strength | Softer, since he doesn't shout: Gentle depth 4 within 400 centipawns, Brave depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
 | Scrying Orb (Region 2, not built) | 3 charges for 30g; one charge shows one enemy move | Region 2 brief |

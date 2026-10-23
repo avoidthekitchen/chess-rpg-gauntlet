@@ -43,6 +43,24 @@ export function dependencies(entry, read) {
   return seen;
 }
 
+const lines = (s) => s.split('\n').filter(Boolean);
+
+/**
+ * Files changed on this branch since it left main, plus uncommitted and untracked files.
+ * `git(...args)` returns git's output, or '' on failure. `base` is null when git can't find
+ * where the branch left main (a shallow or single-branch clone): then the change set is
+ * unknown, and the caller must run every check rather than trust an empty list.
+ */
+export function changedFiles(git) {
+  const base = git('merge-base', 'HEAD', 'origin/main') || git('merge-base', 'HEAD', 'main') || null;
+  const files = new Set([
+    ...(base ? lines(git('diff', '--name-only', `${base}...HEAD`)) : []),
+    ...lines(git('diff', '--name-only', 'HEAD')),
+    ...lines(git('ls-files', '--others', '--exclude-standard')),
+  ]);
+  return { base, files: [...files].sort() };
+}
+
 /**
  * Which slow checks to run for a set of changed files, and why.
  * Returns e.g. { battles: 'src/game/battle.ts', boss: null } (null means skip).

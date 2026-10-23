@@ -5,32 +5,19 @@
 
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { SLOW_CHECKS, slowChecksFor } from './plan.mjs';
+import { SLOW_CHECKS, changedFiles, slowChecksFor } from './plan.mjs';
 
 const args = new Set(process.argv.slice(2));
-const full = args.has('--full');
+let full = args.has('--full');
 const planOnly = args.has('--plan');
 
 const git = (...a) => {
   try {
-    return execFileSync('git', a, { encoding: 'utf8' }).trim();
+    return execFileSync('git', a, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch {
     return '';
   }
 };
-const lines = (s) => s.split('\n').filter(Boolean);
-
-/** Files changed on this branch since it left main, plus uncommitted and untracked files. */
-function changedFiles() {
-  const base = git('merge-base', 'HEAD', 'origin/main') || git('merge-base', 'HEAD', 'main');
-  const files = new Set([
-    ...(base ? lines(git('diff', '--name-only', `${base}...HEAD`)) : []),
-    ...lines(git('diff', '--name-only', 'HEAD')),
-    ...lines(git('ls-files', '--others', '--exclude-standard')),
-  ]);
-  return [...files].sort();
-}
-
 const read = (p) => (existsSync(p) ? readFileSync(p, 'utf8') : null);
 
 function run(label, cmd, cmdArgs) {
@@ -42,11 +29,17 @@ function run(label, cmd, cmdArgs) {
   }
 }
 
-const changed = changedFiles();
+const { base, files: changed } = changedFiles(git);
+if (!base && !full) {
+  // Without a base the change set is unknown, so fail closed: run everything rather than nothing.
+  console.warn('⚠ Can\'t find where this branch left main (no origin/main or main with shared history).');
+  console.warn('  Running every engine check. Fetch main (git fetch origin main) to run only what changed.');
+  full = true;
+}
 const plan = slowChecksFor(changed, read, full);
-console.log(`Changed files: ${changed.length}`);
+console.log(`Changed files: ${base ? changed.length : 'unknown'}`);
 for (const [name, why] of Object.entries(plan)) {
-  console.log(`  ${name.padEnd(8)} ${why ? `runs (${why === '--full' ? 'forced with --full' : `${why} changed`})` : 'skipped: nothing it depends on changed'}`);
+  console.log(`  ${name.padEnd(8)} ${why ? `runs (${why === '--full' ? (base ? 'forced with --full' : 'change set unknown') : `${why} changed`})` : 'skipped: nothing it depends on changed'}`);
 }
 if (planOnly) process.exit(0);
 

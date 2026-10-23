@@ -35,12 +35,17 @@ Open for the builder to design, within the limits below: the five battle positio
 
 Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details settled with this brief:
 
-- **The target.** Before your move, the bandits ask the engine for their best line if you passed. The first of your pieces that line wins or attacks is the target. A poster icon sits over it.
-- **Their choice.** Among their good moves (the difficulty's centipawn window), they prefer one that attacks or wins the target. They never commit to a move, so there's no "Foiled!" and no forced reply.
-- **No target.** If their best line wins or attacks nothing, no poster shows that turn.
+- **The plan behind it.** Before your move, the bandits make the same pick the Scrying Orb shows: their actual move if you passed, from the shared "if I passed" helper ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)). That pick uses their other habits (the raider, in a siege) but not the poster's own bonus. It is stored per position.
+- **The target.** Only that one move counts, not a longer line. If it captures one of your pieces, that piece is the target. Otherwise the target is the piece it newly attacks: attacked by any bandit after the move, but not before it. A poster icon sits over the target.
+- **Ties.** If the move newly attacks two or more pieces (a fork), the target is the highest-value one. Equal values go to the first square in the order a1, b1 … h8.
+- **No target.** If the move captures nothing and newly attacks nothing, no poster shows that turn. Pieces that were already attacked don't count.
 - **Kings.** Your king is never the target; a check is shown by the board as usual.
+- **The mark follows the piece through your move.** If you move the target, the poster moves with it. After your move, the bandits decide again with one weighted pick among moves in the window. A move that captures or attacks the target, wherever it now stands, gets the **poster bonus: ×3**, a starting tuning value. Combined with the raider bonus it is capped at ×3 in total, as for every habit ([AI habits](../systems.md#ai-habits-by-faction)). Next turn a new target is chosen from scratch.
+- **Their choice.** The bonus makes a move more likely, never certain. They never commit to a move, so there's no "Foiled!" and no forced reply.
+- **The poster and the Orb agree.** Both come from the same stored pick, so a charge spent on the Orb always shows the move behind the poster: the route to the target. Revealing it never changes what they then play.
 - **Gentle advice.** Your companion names the target a moment later ("They're hunting your bishop!"). On Brave, only the icon shows.
-- **Rewind.** A rewind shows the same poster again, as Region 1 does with shouts.
+- **Rewind.** A rewind shows the same poster again, from the stored pick, as Region 1 does with shouts.
+- **Worked positions.** The tests in [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12) use a small position for each case: a capture; a single new attack; a fork of a rook and a bishop (rook wins); a fork of two knights (square order wins); a piece that was already attacked (no poster); a quiet move (no poster); a check only (no poster); the target moved, and the bonus goes to moves that hit it on its new square; a poster plus a raider in a siege, capped at ×3; and a weighted pick that differs from the engine's best move, where the poster and the Orb still agree.
 - **Battle review.** No special case. The enemy isn't committed, so your move is judged the normal way. The builder confirms this holds in practice.
 - **Simulation.** `npm run verify:battles` needs a strong player that sees the poster, as `scripts/verify/simulate.ts` sees shouts.
 - **Ladder.** The second rung in [Powers and rewind](../systems.md#powers-and-rewind): you know what they want, not how. Forks and double attacks are how the target gets hit.
@@ -50,6 +55,15 @@ Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details s
 The Orb shows the full move the enemy would play if you passed: the same engine question as a goblin shout. It's sold in Waymeet as **3 charges for 30g**, bought with bounty gold. A charge lasts one turn. Charges carry over between battles, work on every difficulty, and work in the boss duel. Bought charges stack with no cap.
 
 It overlaps the poster on purpose: it bridges the drop from Region 1's whole move to Region 2's target only.
+
+**Spending a charge:**
+
+- A charge is spent only when the reveal succeeds. If the analysis fails, or you leave the battle while it runs, nothing is spent.
+- The button does nothing while a reveal is running, so repeated clicks spend one charge at most.
+- The revealed move is kept for that position for the rest of the attempt. Coming back to it, by rewind or by showing it again, is free.
+- A spent charge is never refunded, even when you rewind past it.
+- A rewind into a different line reaches a new position, so revealing there costs a new charge.
+- A retry (starting the battle again) is a new attempt: nothing is kept from the last one.
 
 ## Map
 
@@ -65,7 +79,7 @@ It overlaps the poster on purpose: it bridges the drop from Region 1's whole mov
 | 2 | Main | Double trouble | Skirmish · double attacks | A queen, bishop or rook fork, not only knights; the target is one half of the attack |
 | 3 | Main | Two at once | Skirmish · double check | A position where the only way through is a double check |
 | 4 | Branch | The banner wagons | Siege · safe trades and removing the defender (revisit) | The villages are banner wagons; reuse the siege rules and the `raider` AI, after it moves to tell or tilt ([AI habits](../systems.md#ai-habits-by-faction)). Taking a raider's defender should be the way to win a trade |
-| 5 | Branch | Into the trap | Skirmish · mating patterns | Mate in 2 or 3 from Lichess Checkmate Patterns II–IV. Leave smothered, Anastasia's, Arabian and Boden's mates to the Gauntlet ([campaign](../campaign.md#campaign-and-gauntlet)) |
+| 5 | Branch | Into the trap | Skirmish · mating patterns | A setup of 2 or 3 moves (win or deflect a defender, open a line) leads into a mate in 2 or 3 using a pattern from Lichess Checkmate Patterns II–IV, so a strong player needs 4 to 7 moves, as the [bars](../../playbook.md#verification-bars) ask. The position is our own: Practice positions stay in warm-ups and tip cards. The short mate is this battle's "Mate in two" warm-up. Leave smothered, Anastasia's, Arabian and Boden's mates to the Gauntlet ([campaign](../campaign.md#campaign-and-gauntlet)) |
 
 Enemy squads are knight-heavy: most battles give the bandits at least one hare rider. Rewards are 15–25g with two 5g bonus goals each, as in Region 1.
 
@@ -88,6 +102,19 @@ Tags `fork`, `doubleCheck`, `capturingDefender` and `mateIn2`, plus one or two b
 ## Hero: Tadwell, the Frog Captain
 
 A captain of the Lion King's old army, found guarding the last banner in Ashfang's camp. He joins as a named knight. He's formal and dutiful, proud of the old army, and a little stiff: a straight-backed contrast to Sir Hob's showing off. Like every hero, he doesn't teach lessons. He first matters in Region 3.
+
+**A full roster.** You may already own two knights, such as Sir Hob and a hired one. A hero then replaces a hired piece of the same type and refunds its price (30g for a knight), with a line saying so. The starter is never replaced, so the army stays within a chess set ([hiring rules](../systems.md#your-army)). If you own two hired knights, the most recently hired one leaves. The tests cover a roster with both knight slots filled, with and without Sir Hob.
+
+## Moving on from Region 1
+
+Built in the [Region registry](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/9):
+
+- **One record per Region.** The save keeps each Region's progress apart: battles cleared, boss beaten, hero joined. Today's global `bossBeaten` and `heroJoined` move into Region 1's record.
+- **Beating Grubnak opens Region 2.** It doesn't mark Ashfang beaten or Tadwell joined.
+- **Old saves.** A save from before the registry loads into Region 1 unchanged. One that has already beaten Grubnak loads with Region 1 complete and Region 2 open, keeps Saffron, and gets no second Saffron.
+- **Reloading** after moving on lands you in Region 2.
+- **Going back.** You can return to any earlier Region's map to play branches you skipped and earn bonus goals you missed, so you can practice more skills. Replays follow the [guided path](../campaign.md#guided-path) rules, so a cleared battle skips its warm-up.
+- **Bounty board.** The board uses the newest Region's pack. When you move on, unsolved Region 1 bounties are replaced with Region 2's; puzzles you've solved or failed stay done.
 
 ## Story beats
 

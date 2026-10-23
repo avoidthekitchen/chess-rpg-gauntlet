@@ -31,6 +31,7 @@ The one place to track unfinished design work. When one is resolved, move the an
     - goblin wording in battle ("Told you I would!", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
 - [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
 - [ ] **Region 1 boss results:** the no-shout boss's AI values are in the [tuning values](systems.md#tuning-values); on the next `npm run verify:battles`, record the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification). The boss check is the slow part of that run (384 full games).
+- [ ] **Hero on a full roster:** Saffron joins with no cap check (`addCharacter` in `src/game/campaign.ts`), so a player who hired a queen ends with two. Apply the replace-and-refund rule ([Your army](systems.md#your-army)) to every hero, with tests.
 - [x] **Tortoise name:** renamed "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
 ## Open questions
@@ -45,6 +46,11 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |
+| 2026-10-23 | Region 2's mating battle opens with a 2 or 3 move setup before a mate in 2 or 3, so it meets the 4 to 7 move bar with no exception. The short mate stays in its warm-up, and the battle position is our own |
+| 2026-10-23 | Scrying Orb charges are spent once, when a reveal succeeds; the answer is kept for that position within the attempt, shown again free on rewind, and never refunded. Failed or abandoned reveals cost nothing ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)) |
+| 2026-10-23 | Each Region keeps its own completion record. Players can return to earlier Regions to play skipped branches and missed bonus goals. The bounty board uses the newest Region's pack ([#9](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/9)) |
+| 2026-10-23 | A hero who joins a full roster replaces a hired piece of the same type and refunds its price. The starter is never replaced, so the army stays within a chess set. Applies to Saffron and Tadwell |
 | 2026-10-23 | Faction habits follow "tell or tilt, never force": they may tell you something true or tilt the enemy's choice among moves within the difficulty's window, never force a move it wouldn't otherwise consider |
 | 2026-10-23 | The siege raider moves to tell or tilt: the engine finds moves within the difficulty's window, and the raider picks the one with the most village pressure. Siege battles are re-verified ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)) |
 | 2026-10-23 | A boss may have a boss practice instead of a warm-up: a technique played out against the engine, unlimited undo, always skippable. Region 1's rook and queen mates are one |

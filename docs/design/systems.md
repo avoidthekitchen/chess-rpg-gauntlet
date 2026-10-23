@@ -115,16 +115,14 @@ An enemy with two habits, such as a shouting raider, applies both to the same pi
 
 | Faction | Habit | Why it teaches the theme | Status |
 | --- | --- | --- | --- |
-| Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again, preferring the shouted move among moves within the difficulty's window but free to pick another. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built with a must-play rule, which breaks tell or tilt; changing to the re-decide rule in [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) ([Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Bog Goblins | **Shout:** announce the move they'd play if you passed. After your move they decide again, preferring the shouted move among moves within the difficulty's window but free to pick another. Their boss, Grubnak, doesn't shout: the final exam | Shows the enemy's plan out loud, so "what does my opponent want?" becomes a habit | Built ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)); details in [Region 1](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins) |
 | Bandit Riders | **Wanted poster:** each turn they mark one of your pieces as their target: the piece their engine's best line goes after, shown with a poster icon over it. They choose among their good moves one that attacks or wins it, without committing to a move. On Gentle, the companion names the target ("They're hunting your bishop!") | Half the information of a shout: you know the target, not the route. Forks and double attacks are how the target gets hit, so you learn to spot them | Approved, not built; details in the [Region 2 brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster) |
 | Shadow Cult | **Binding:** prefers moves that pin or keep a pin | Teaches recognizing and escaping pins | Approved; details with Region 3 |
 | Iron Legion | **Proud:** prefers to capture what you offer, among its good moves. On Gentle's wide window it takes some poisoned bait; on Brave it rarely does | Teaches traps and poisoned pieces: you learn which bait is good enough to tempt them. Framed as pride, not greed, so it doesn't repeat the goblins and fits a disciplined army | Approved (renamed from "greedy"; "never declines" changed to "prefers" 2026-10-23); details with Region 4 |
 | Bone Wardens | **Relentless march:** prefers moves that push passed pawns and bring the king forward | Teaches king activity and racing in endgames | Approved, not built |
 | The Lich King | No habit; full strength for the difficulty | The final test: no tells | Approved |
 
-The village **raider** in sieges is a battle-level habit any faction can use: it goes for villages first, but never makes a raid that allows mate in one (`raiderMove` in `src/ai/enemy.ts`).
-
-**Changing (approved 2026-10-23):** as built, the raider scores every legal move before the engine is asked, so it can play moves far outside the difficulty's window. That breaks tell or tilt. It will tilt instead: moves that add village pressure get a capped bonus in the one weighted pick above. Siege battles are re-verified after the change, starting with Lanterns at Mossbridge ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
+The village **raider** in sieges is a battle-level habit any faction can use. It tilts: moves that add village pressure get a bonus in the one weighted pick above, up to x3 (`raidBonus` and `RAID_BONUS_MAX` in `src/ai/enemy.ts`). Burning an unguarded village gets the full x3; other moves get 1 plus the pressure they add. It stays inside the difficulty's window, so it never plays a move the engine rates far too weak. Built in [#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23). Without an engine, it falls back to the old village-first move (`raiderMove`, then `fallbackMove`).
 
 ## Powers and rewind
 
@@ -148,7 +146,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 **One engine call, two questions.** All three ask the engine about a position, so they share one code path, but they show different things:
 
-- **Shout and Scrying Orb:** the move the enemy would actually pick if you passed, using its habit and difficulty. Goblins announce it every turn; the Orb shows it on demand. Once the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), a shout is an always-on Orb in the goblins' voice. Showing the plan never changes what the enemy then does.
+- **Shout and Scrying Orb:** the move the enemy would actually pick if you passed, using its habit and difficulty. Goblins announce it every turn; the Orb shows it on demand. Both use `planIfPassed` in `src/ai/intent.ts`. Because the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), it is an always-on Orb in the goblins' voice. Showing the plan never changes what the enemy then does.
 - **Far Sight:** the enemy's best reply after a move you're considering. It analyses the position after that move, not the passed-turn position.
 
  Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
@@ -168,7 +166,7 @@ The Orb overlaps the wanted poster on purpose: it bridges the drop from the whol
 
 **Help that fades in Region 1.** On Gentle, the companion reads each goblin shout a moment later (is the target guarded, is the trade fair, is a village or the king the target). On Brave, it doesn't.
 
-**Battle review.** After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move. When a goblin's shout still stood after your move, your move is judged after their forced reply, so a deliberate trap isn't called a blunder (`review()` in `src/scenes/Battle.ts`; scoring in `src/game/review.ts`). Each new habit needs the same care here.
+**Battle review.** After every battle, Stockfish replays your last 12 moves and names the costliest one and the better move. Your move is judged the normal way, because no habit forces a reply (`review()` in `src/scenes/Battle.ts`; scoring in `src/game/review.ts`). Each new habit needs the same care here.
 
 **Deferred: free rewind.** A free rewind for spotting your own mistake is on hold because every version so far was confusing. Revisit after playtests, if at all.
 
@@ -192,7 +190,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
 | Loss cost | Gentle 0, Brave 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |
 | Rewinds per battle | Gentle 3, Brave 2, Champion 1, Grandmaster 0 | `src/game/difficulty.ts` |
-| Habit bonuses (approved, not built) | Starting values to tune: the goblin shout ×3 on the shouted move; the raider up to ×3, scaled by how much village pressure a move adds; a move's combined multiplier capped at ×3. Shout only, against one alternative 100 centipawns better: kept about 37% of the time on Brave and 61% on Gentle (34% on Gentle with no bonus) | [#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23) and [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) |
+| Habit bonuses (built) | The goblin shout ×3 on the shouted move; the raider up to ×3, scaled by how much village pressure a move adds; a move's combined multiplier capped at ×3. Starting values, still to tune. Shout only, against one alternative 100 centipawns better: kept about 37% of the time on Brave and 61% on Gentle (34% on Gentle with no bonus) | `SHOUT_BONUS`, `RAID_BONUS_MAX`, `BONUS_CAP` in `src/ai/enemy.ts` ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23), [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)) |
 | Enemy strength | Gentle: search depth 5, any move within 300 centipawns (hundredths of a pawn) of the best. Brave: depth 8, within 120. Champion: depth 11, within 40. Grandmaster: depth 15, best move only | `ai` in `src/game/difficulty.ts` |
 | Region 1 boss strength | Softer, since he doesn't shout: Gentle depth 4 within 400 centipawns, Brave depth 6 within 200 | `ai` on `R1_BOSS` in `src/game/region1Boss.ts` (any battle can override the difficulty's strength this way) |
 | Scrying Orb (Region 2, not built) | 3 charges for 30g; one charge shows one enemy move | Region 2 brief |

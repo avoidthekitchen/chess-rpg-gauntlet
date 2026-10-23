@@ -138,6 +138,14 @@ The brief's "reuse src/game and src/ai as they are" meant "build on the prototyp
 
 The game is now called **Pawnshire** (title screen, page title, README, package name, and the design doc). "Gauntlet" stays the name of the post-campaign replay mode. The URL stays `/chess-rpg/`.
 
+## Shout and raider tilt (#4, #23)
+
+- Every enemy move is one weighted pick among engine moves within the difficulty's window (`src/ai/enemy.ts`). Habits multiply move weights: shout x3 (`SHOUT_BONUS`), village raid up to x3 (`RAID_BONUS_MAX`), combined multiplier capped at x3 (`BONUS_CAP`). A shouted move missing from the engine's list is scored on its own. Without an engine, the old `raiderMove` and `fallbackMove` still apply.
+- Goblins no longer must play their shout. After your move they decide again and prefer it. "Foiled!" when your move made it illegal; "Oi! You've guarded it!", "Oi! You moved it!" or "Changed my mind!" when they drop a legal one. The map intro and companion lines say the arrow is one plan.
+- `planIfPassed` and `nullMoveFen` (`src/ai/intent.ts`) answer "what would you play if I passed?" for the shout and the future Scrying Orb (#13). Rewind hears the same shout, cached per position.
+- The battle review no longer judges your move after a forced reply. The simulator (`scripts/verify/simulate.ts`) models the new rule.
+- Next: re-verify the battles and redesign the ones that only worked because the shout was forced.
+
 ## Battle cue timing (PR #21)
 
 - Cue holds use scene time, so queued banners and the result wait pause when a background tab stops rendering.

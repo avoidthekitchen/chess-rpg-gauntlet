@@ -4,13 +4,13 @@
 
 ## Design status
 
-Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. A third is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
+Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. The goblins' shout change is built (they decide again after your move); the battles are being re-verified against it, and the faction's new species art is in flight. Another is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |
 | --- | --- |
 | Faction | Bog Goblins: their own swamp creatures (bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief) in muddy rags, wearing the same chess headgear as ours ([Art](../art.md)) |
 | Headline theme | Threat awareness, protection, safe trades, basic checkmates; revisits pawn promotion basics |
-| AI habit | **Shouting:** before your move the goblins announce the move they'd play if you passed, and must play it if it's still legal ([details](#ai-habit-shouting-goblins)) |
+| AI habit | **Shouting:** before your move the goblins announce the move they'd play if you passed, then decide again after your move ([details](#ai-habit-shouting-goblins)) |
 | Battles | 5 on a branching map; the boss opens after any 4 wins |
 | Academy | Rook and queen checkmates (Lichess Practice: Piece Checkmates I) |
 | Bounty tags | `hangingPiece`, `mateIn1` |
@@ -20,11 +20,11 @@ Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-r
 
 ## AI habit: shouting goblins
 
-Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`). It's drawn as a green arrow and spoken by the piece's portrait. If the announced move is still legal after your move, they must play it ("Told you I would!"). If you made it illegal, a "Foiled!" banner shows. A rewind hears the same shout again.
+Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`, using `planIfPassed` in `src/ai/intent.ts`). It's drawn as a green arrow and spoken by the piece's portrait. The status line says "Your move can change it."
 
-**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move. The shouted move gets a capped weight bonus in the enemy's [one weighted pick](../systems.md#ai-habits-by-faction), so goblins usually keep a plan that's still fine and usually drop one that's become bait, but players can't count on either. When they switch because you guarded or moved the target, they say so ("Oi! You've guarded it!"). The rule is introduced as "They shout their plan. Your move can change it.", and the companion adds that the arrow is one plan: other threats still count. A rewind still hears the same shout. The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
+After your move they decide again. The enemy's [one weighted pick](../systems.md#ai-habits-by-faction) gives the shouted move a x3 bonus (`SHOUT_BONUS` in `src/ai/enemy.ts`), so they usually keep a plan that's still fine and often drop one that has become bait. Players can't count on either. If your move made the shout illegal, a "Foiled!" banner shows. If they drop a shout that's still legal, they say why: "Oi! You've guarded it!" or "Oi! You moved it!" when the shout was a capture you guarded or moved, otherwise "Changed my mind!". If they keep it, they say "Told you I would!". A rewind hears the same shout again. The map intro tells the player: "They shout their plan before they move, and your move can change it." The companion adds: "Their arrow shows one plan. Other threats still count, so keep looking!"
 
-It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins are committed, you can also set traps, such as guarding the piece they promised to take. That makes battles feel like Into the Breach turns, where each turn is a small puzzle.
+It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins decide again, a trap isn't certain. You can guard the piece they promised to take, or make bait less attractive, but they may take it or walk away. That keeps each turn a small puzzle, like Into the Breach, without teaching that opponents walk into traps.
 
 On Gentle, your companion reads each shout for you a moment later. It says whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Brave leaves it to you ([help that fades](../../design.md#vision-and-pillars)).
 

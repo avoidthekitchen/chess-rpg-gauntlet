@@ -75,7 +75,7 @@ Warm-up positions are real Lichess puzzles from the low end of the Region's warm
 | Refresher bounties | Optional | A theme you got wrong in a battle comes back on the board ([bounty rules](systems.md#bounty-board-and-gold)) |
 | Tip cards | Optional | Shown the first time a puzzle-only theme reaches the board |
 
-**Tip cards** cover themes that have no battle of their own, such as zwischenzug. A tip card is one screen: the idea in a sentence or two and one example position. Each tip-card theme gets at least one bounty in its Region's pack: one with the theme's Lichess tag, or, for a theme with no tag (desperado, undermining, counter-check), a hand-picked puzzle or Practice position. It's a [puzzle-only theme](systems.md#battles), so bounties drill it and no battle tests it. Tip cards are never academy-style lessons, so lessons never outnumber battles.
+**Tip cards** cover themes that have no battle of their own, such as zwischenzug. A tip card is one screen: the idea in a sentence or two and one example position, which may come from a Lichess Practice study. Each tip-card theme gets at least one bounty in its Region's pack. Bounties are always published Lichess puzzles: one with the theme's tag, or, for a theme with no tag (desperado, undermining, counter-check), a published puzzle picked by hand. It's a [puzzle-only theme](systems.md#battles), so bounties drill it and no battle tests it. Tip cards are never academy-style lessons, so lessons never outnumber battles.
 
 ## Curriculum
 

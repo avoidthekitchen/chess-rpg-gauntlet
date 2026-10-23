@@ -11,7 +11,7 @@ function fakeClock() {
       timers.set(next, { at: now + ms, fn });
       return next++;
     },
-    clear: (h) => void timers.delete(h),
+    clear: (h) => void timers.delete(h as number),
   };
   const tick = (ms: number) => {
     const end = now + ms;
@@ -24,15 +24,15 @@ function fakeClock() {
     }
     now = end;
   };
-  return { clock, tick };
+  return { clock, tick, pending: () => timers.size };
 }
 
 function setup(maxWaiting = 2) {
-  const { clock, tick } = fakeClock();
+  const { clock, tick, pending } = fakeClock();
   const shown: string[] = [];
-  const q = new CueQueue(maxWaiting, clock);
+  const q = new CueQueue(clock, maxWaiting);
   const cue = (name: string, hold = 1000) => q.push({ hold, show: () => shown.push(name) });
-  return { q, cue, shown, tick };
+  return { q, cue, shown, tick, pending };
 }
 
 describe('CueQueue', () => {
@@ -105,5 +105,56 @@ describe('CueQueue', () => {
     cue('Rewind');
     tick(5000);
     expect(shown).toEqual(['a', 'Rewind']);
+  });
+
+  it('keeps a dropped cue’s points label, in order', () => {
+    const { cue, shown, tick } = setup(1);
+    cue('a');
+    cue('+1', 0);
+    cue('b'); // waiting: +1, b
+    cue('c'); // b goes, its neighbour +1 stays
+    tick(5000);
+    expect(shown).toEqual(['a', '+1', 'c']);
+  });
+
+  it('keeps one at a time when a cue pushes another as it shows', () => {
+    const { q, cue, shown, tick } = setup();
+    q.push({ hold: 1000, show: () => (shown.push('a'), cue('nested')) });
+    cue('b');
+    expect(shown).toEqual(['a']);
+    tick(1000);
+    expect(shown).toEqual(['a', 'nested']);
+    tick(1000);
+    expect(shown).toEqual(['a', 'nested', 'b']);
+  });
+
+  it('clear cancels the pending hold timer', () => {
+    const { q, cue, pending } = setup();
+    cue('a');
+    expect(pending()).toBe(1);
+    q.clear();
+    expect(pending()).toBe(0);
+  });
+
+  it('whenIdle resolves once the last hold ends, or on clear', async () => {
+    const { q, cue, tick } = setup();
+    await q.whenIdle(); // already idle
+    cue('a');
+    cue('b');
+    let idle = false;
+    void q.whenIdle().then(() => (idle = true));
+    tick(1000);
+    await Promise.resolve();
+    expect(idle).toBe(false);
+    tick(1000);
+    await Promise.resolve();
+    expect(idle).toBe(true);
+
+    cue('c');
+    let cleared = false;
+    void q.whenIdle().then(() => (cleared = true));
+    q.clear();
+    await Promise.resolve();
+    expect(cleared).toBe(true);
   });
 });

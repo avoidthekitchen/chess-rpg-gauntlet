@@ -14,27 +14,23 @@ export interface Cue {
 }
 
 export interface CueTimer {
-  set: (fn: () => void, ms: number) => number;
-  clear: (handle: number) => void;
+  set: (fn: () => void, ms: number) => unknown;
+  clear: (handle: unknown) => void;
 }
-
-const windowTimer: CueTimer = {
-  set: (fn, ms) => window.setTimeout(fn, ms),
-  clear: (handle) => window.clearTimeout(handle),
-};
 
 export class CueQueue {
   private waiting: Cue[] = [];
-  private timer = 0;
+  private timer: unknown = null;
+  private idleWaiters: (() => void)[] = [];
 
   constructor(
+    private readonly clock: CueTimer,
     private readonly maxWaiting = 2,
-    private readonly clock: CueTimer = windowTimer,
   ) {}
 
   /** True while a cue holds the middle of the board. */
   get busy(): boolean {
-    return this.timer !== 0;
+    return this.timer !== null;
   }
 
   push(cue: Cue): void {
@@ -46,23 +42,38 @@ export class CueQueue {
     this.pump();
   }
 
+  /** Resolves once every cue has shown and the last hold has ended (or the queue is cleared). */
+  whenIdle(): Promise<void> {
+    if (!this.busy && !this.waiting.length) return Promise.resolve();
+    return new Promise((resolve) => this.idleWaiters.push(resolve));
+  }
+
   /** Drops every waiting cue and frees the board at once (rewind, restart, leaving). */
   clear(): void {
-    if (this.timer) this.clock.clear(this.timer);
-    this.timer = 0;
+    if (this.timer !== null) this.clock.clear(this.timer);
+    this.timer = null;
     this.waiting = [];
+    this.settle();
   }
 
   private pump(): void {
-    while (!this.timer && this.waiting.length) {
+    while (this.timer === null && this.waiting.length) {
       const cue = this.waiting.shift()!;
-      cue.show();
+      // Hold the board before drawing, so a cue that pushes another can't jump the line.
       if (cue.hold > 0) {
         this.timer = this.clock.set(() => {
-          this.timer = 0;
+          this.timer = null;
           this.pump();
         }, cue.hold);
       }
+      cue.show();
     }
+    if (this.timer === null && !this.waiting.length) this.settle();
+  }
+
+  private settle(): void {
+    const waiters = this.idleWaiters;
+    this.idleWaiters = [];
+    for (const resolve of waiters) resolve();
   }
 }

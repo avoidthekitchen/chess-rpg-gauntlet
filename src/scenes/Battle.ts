@@ -35,9 +35,14 @@ const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
   fork: 'Enemy fork!',
   check: 'Check! Protect your king',
 };
-/** How long a close-up or banner holds the middle of the board before the next may show: until it's mostly faded, in ms. */
-const CLOSE_UP_HOLD = 1150;
-const BANNER_HOLD = 1100;
+/** A capture close-up stays this long, then fades. The next cue waits for the fade to end. */
+const CLOSE_UP_STAY = 1000;
+const CLOSE_UP_FADE = 260;
+/** A banner pops in, settles, stays, then fades. The next cue waits for the fade to end. */
+const BANNER_POP = 220;
+const BANNER_SETTLE = 120;
+const BANNER_STAY = 650;
+const BANNER_FADE = 420;
 
 export interface FinishView {
   eyebrow?: string;
@@ -110,7 +115,10 @@ export class BattleScene extends BaseScene {
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
   private session = 0;
   /** Close-ups and banners take turns in the middle of the board, so none covers another. */
-  private cues = new CueQueue();
+  private cues = new CueQueue({
+    set: (fn, ms) => this.time.delayedCall(ms, fn),
+    clear: (timer) => (timer as Phaser.Time.TimerEvent).remove(),
+  });
   /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
   private pendingView: FinishView | null = null;
 
@@ -558,7 +566,7 @@ export class BattleScene extends BaseScene {
     // Name the capturer now: by the time the cue shows, a later move may have taken it.
     const captured = m.captured;
     const name = m.color === 'w' ? this.names.get(m.to) : undefined;
-    this.cues.push({ hold: CLOSE_UP_HOLD, show: () => this.drawCloseUp(m, captured, name) });
+    this.cues.push({ hold: CLOSE_UP_STAY + CLOSE_UP_FADE, show: () => this.drawCloseUp(m, captured, name) });
     return true;
   }
 
@@ -599,7 +607,7 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: c, alpha: 1, duration: 120 });
     this.tweens.add({ targets: pc, x: 0, duration: 320, ease: 'Back.easeOut' });
     this.tweens.add({ targets: t, x: x + pw + 34, duration: 360, ease: 'Cubic.easeOut' });
-    this.tweens.add({ targets: c, alpha: 0, duration: 260, delay: 1000, onComplete: () => c.destroy() });
+    this.tweens.add({ targets: c, alpha: 0, duration: CLOSE_UP_FADE, delay: CLOSE_UP_STAY, onComplete: () => c.destroy() });
   }
 
   /** Floats a capture's or promotion's point change over its square: gold when you gain, red when you lose. */
@@ -627,7 +635,7 @@ export class BattleScene extends BaseScene {
   }
 
   private showBanner(text: string, kind: 'ally' | 'foe') {
-    this.cues.push({ hold: BANNER_HOLD, show: () => this.drawBanner(text, kind) });
+    this.cues.push({ hold: BANNER_POP + BANNER_SETTLE + BANNER_STAY + BANNER_FADE, show: () => this.drawBanner(text, kind) });
   }
 
   private drawBanner(text: string, kind: 'ally' | 'foe') {
@@ -649,9 +657,9 @@ export class BattleScene extends BaseScene {
     this.tweens.chain({
       targets: t,
       tweens: [
-        { scale: 1.08, alpha: 1, duration: 220, ease: 'Back.easeOut' },
-        { scale: 1, duration: 120 },
-        { alpha: 0, y: cy - 28, duration: 420, delay: 650, ease: 'Cubic.easeIn' },
+        { scale: 1.08, alpha: 1, duration: BANNER_POP, ease: 'Back.easeOut' },
+        { scale: 1, duration: BANNER_SETTLE },
+        { alpha: 0, y: cy - 28, duration: BANNER_FADE, delay: BANNER_STAY, ease: 'Cubic.easeIn' },
       ],
       onComplete: () => t.destroy(),
     });
@@ -696,6 +704,7 @@ export class BattleScene extends BaseScene {
   private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
     const b = this.battle;
     const sess = this.session;
+    const token = this.aiToken;
     const gainedBefore = b.materialGained();
     const balanceBefore = materialBalance(b.chess, b.player);
     const res = b.playerMove({ from, to, promotion });
@@ -704,12 +713,12 @@ export class BattleScene extends BaseScene {
     this.statusLine = this.describe(res, 'you');
     this.trackNames(res.move);
     await this.animate(res);
-    if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return; // rewound, restarted or left meanwhile
     const closeUp = this.closeUp(res.move);
     this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
-    if (this.battle !== b || this.session !== sess) return;
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const tactics = forkReal ? res.tactics : res.tactics.filter((t) => t !== 'fork');
     this.speak({ ...res, tactics });
     const tag = tactics.find((t) => PLAYER_BANNER[t]);
@@ -845,10 +854,10 @@ export class BattleScene extends BaseScene {
     const sess = this.session;
     const token = this.aiToken;
     const review = this.review(b, token);
-    // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
+    // Let the last close-up and banner play out (and the review finish, up to a few seconds) before the dialog covers the board.
     const minWait = new Promise((r) => setTimeout(r, won ? 1800 : 900));
     const capped = Promise.race([review, new Promise<ReviewResult>((r) => setTimeout(() => r({ ok: false }), 6000))]);
-    void Promise.all([minWait, capped]).then(([, result]) => {
+    void Promise.all([minWait, this.cues.whenIdle(), capped]).then(([, , result]) => {
       if (this.battle !== b || this.session !== sess || !this.sys.isActive() || !this.finished || token !== this.aiToken) return;
       const html = view.html.replace(REVIEW_SLOT, reviewHtml(result, won, b.reason));
       showModal({ eyebrow: view.eyebrow, title: view.title, html, tone: won ? 'won' : 'lost', buttons: view.buttons, wide: true });

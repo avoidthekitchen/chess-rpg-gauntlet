@@ -350,13 +350,20 @@ export class BattleScene extends BaseScene {
       if (y + Math.max(status.height, 40) + 10 + stripH <= bottom) {
         c.add(this.saidStrip(x, y + Math.max(status.height, 40) + 10, w, stripH, last.info));
         y += stripH + 10;
-      } else {
+      } else if (bottom - y >= 52) {
         const chip = 52;
         const lineH = status.height / Math.max(1, Math.min(3, status.getWrappedText().length));
         status.setWordWrapWidth(w - 4 - chip - 10, true);
-        // The narrower status may need a fourth line; take it if the screen has room.
-        status.setMaxLines(bottom - y >= 4 * lineH ? 4 : 3);
+        // The narrower status may need more lines; take what the screen has room for,
+        // and shrink the text if the goblins' plan still wouldn't fit.
+        const maxLines = Math.max(3, Math.floor((bottom - y) / lineH));
+        status.setMaxLines(maxLines);
+        for (const size of [14, 13]) {
+          if (status.getWrappedText().length <= maxLines) break;
+          status.setFontSize(size);
+        }
         c.add(this.saidChip(x + w - chip, y, chip, last.info));
+        y += Math.max(0, chip - Math.max(status.height, 40));
       }
     }
     y += Math.max(status.height, 40) + 10;
@@ -447,6 +454,7 @@ export class BattleScene extends BaseScene {
     };
     hit.on('pointerdown', () => {
       downAt = performance.now();
+      this.speakerAt = downAt - 300; // a rebuild while held keeps it up
       this.tweens.killTweensOf(container);
       container.setAlpha(1);
       container.y = y;
@@ -494,6 +502,7 @@ export class BattleScene extends BaseScene {
   /**
    * Shows a talking head. Lines with a `minGap` wait their turn until the previous line
    * has been up that long (shout, then advice); an immediate line (a move) drops stale ones.
+   * Only the turn's shout and advice use a gap, so the history treats them as turn-start lines.
    */
   private say(info: SpeakerInfo, minGap = 0) {
     if (minGap === 0) {
@@ -514,10 +523,12 @@ export class BattleScene extends BaseScene {
       this.speakQueue.shift();
       this.speaker = next.info;
       this.speakerAt = performance.now();
-      this.said.add(next.info, this.battle.log.length);
+      this.said.add(next.info, this.battle.log.length, next.gap > 0);
       if (this.board) {
         this.drawSpeaker();
-        this.drawPanel();
+        // Phones keep the last line in the panel.
+        const L = this.layout();
+        if (!L.wide || L.short) this.drawPanel();
       }
       this.pumpSpeaker();
     };
@@ -973,6 +984,11 @@ export class BattleScene extends BaseScene {
     this.finished = false;
     this.pendingView = null; // a rewind undoes the defeat, so nothing is charged
     b.rewind();
+    // Lines from the undone moves go, and stale ones still waiting aren't shown.
+    clearTimeout(this.speakerTimer);
+    this.speakerTimer = 0;
+    this.speakQueue = [];
+    this.said.rewindTo(b.log.length);
     this.restoreNames();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';

@@ -52,4 +52,18 @@ describe('DialogueLog', () => {
     expect(log.size).toBe(0);
     expect(log.last).toBeUndefined();
   });
+
+  it('forgets lines from undone moves on a rewind, and the turn lines that are said again', () => {
+    const log = new DialogueLog();
+    log.add(say('tip'), 0);
+    log.add(say('shout before move 1'), 0, true);
+    log.add(say('my move'), 1);
+    log.add(say('their reply'), 2);
+    log.add(say('shout before move 2'), 2, true);
+    log.add(say('my second move'), 3);
+    log.rewindTo(2);
+    expect(log.all.map((l) => l.info.line)).toEqual(['tip', 'shout before move 1', 'my move', 'their reply']);
+    log.rewindTo(0);
+    expect(log.all.map((l) => l.info.line)).toEqual(['tip']);
+  });
 });

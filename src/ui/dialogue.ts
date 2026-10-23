@@ -20,6 +20,8 @@ export interface SaidLine {
   info: SpeakerInfo;
   /** Half-moves played when it was said: 0 before the first move. */
   plies: number;
+  /** Said at the start of the player's turn (a shout or advice), so it's said again after a rewind. */
+  turnStart: boolean;
 }
 
 /** When a line was said, for the history: "Start", then "Move 1", "Move 2"… */
@@ -33,13 +35,21 @@ export class DialogueLog {
 
   constructor(private readonly cap = 80) {}
 
-  add(info: SpeakerInfo, plies: number) {
-    this.lines.push({ info, plies });
+  add(info: SpeakerInfo, plies: number, turnStart = false) {
+    this.lines.push({ info, plies, turnStart });
     if (this.lines.length > this.cap) this.lines.splice(0, this.lines.length - this.cap);
   }
 
   clear() {
     this.lines = [];
+  }
+
+  /**
+   * After a rewind to `plies` half-moves: drops lines from the undone moves, and the
+   * current turn's shout and advice, which are said again.
+   */
+  rewindTo(plies: number) {
+    this.lines = this.lines.filter((l) => l.plies < plies || (l.plies === plies && !l.turnStart));
   }
 
   get all(): readonly SaidLine[] {

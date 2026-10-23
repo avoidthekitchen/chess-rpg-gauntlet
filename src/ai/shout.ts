@@ -1,47 +1,24 @@
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import type { AiProfile } from '../game/difficulty';
 import type { Engine } from './engine';
-import { chooseEnemyMove, type EnemyView, type Rng } from './enemy';
+import type { EnemyView, Rng } from './enemy';
+import { nullMoveFen, planIfPassed } from './intent';
+
+export { nullMoveFen };
 
 /**
- * Shouting goblins: before your move, the enemy announces the move it would play if
- * you did nothing, and it must play that move if it's still legal after yours.
- * It's the same question as the Scrying Orb: "what is the enemy's best move here?"
+ * Shouting goblins: before your move, the enemy announces the move it would play if you
+ * passed (`planIfPassed`, the same question as the Scrying Orb). After your move it decides
+ * again: the shouted move gets a bonus in its weighted pick (`Habits.shout`), but it can
+ * switch, and it can't play the shout once your move made it illegal ("Foiled!").
  */
-
-/**
- * The position with the side to move skipped (a "null move"), so the other side can
- * be asked what it wants. Null when the side to move is in check, since skipping
- * would leave a king capturable.
- */
-export function nullMoveFen(fen: string): string | null {
-  const chess = new Chess(fen);
-  if (chess.inCheck()) return null;
-  const parts = fen.split(' ');
-  parts[1] = parts[1] === 'w' ? 'b' : 'w';
-  parts[3] = '-'; // an en passant chance belongs to the side that passed
-  const out = parts.join(' ');
-  try {
-    const flipped = new Chess(out);
-    return flipped.moves().length > 0 ? out : null;
-  } catch {
-    return null;
-  }
-}
 
 /** The move the enemy announces for the position where it's your turn, or null if it can't shout. */
-export async function planShout(battle: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
-  const fen = nullMoveFen(battle.fen);
-  if (!fen) return null;
-  try {
-    // Ask the enemy what it would play in the skipped-turn position.
-    return await chooseEnemyMove({ fen, scenario: battle.scenario }, engine, profile, rng);
-  } catch {
-    return null;
-  }
+export function planShout(battle: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
+  return planIfPassed(battle, engine, profile, rng);
 }
 
-/** Whether an announced move is still legal in this position (with the enemy to move). */
+/** Whether an announced move is still legal in this position (with the enemy to move). If not, the shout is foiled. */
 export function shoutStands(fen: string, uci: string): boolean {
   const chess = new Chess(fen);
   return chess

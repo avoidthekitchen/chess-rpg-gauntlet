@@ -4,6 +4,11 @@
 
 ## Design status
 
+**2026-10-23 pilot exception:** [#34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) replaces slot 3, Two at once, with a standalone four-wave puzzle ambush.
+The owner approved its revised decisions. Do not compose a custom position for that slot while the pilot runs.
+Its opening poster explains setup only. The live-battle poster below remains unchanged.
+The pilot runs locally at `?ambush=r2-two-at-once`; the Region registry, map, other slots and boss are separate work.
+
 **Brief approved 2026-10-22; detailed design not started.** This page is the brief: the calls the owner has made, and the limits for the parts still to design. Sections marked **To design** are filled in by whoever builds the Region, then approved by the owner before any content is built ([playbook](../../playbook.md#order-of-work)). Work is tracked in the [Region 2 spec issue](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/8) and its sub-issues.
 
 | | |

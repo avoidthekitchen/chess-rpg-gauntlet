@@ -27,6 +27,8 @@ async function start() {
   }
 
   const d = dpr();
+  const pilotScenes = import.meta.env.DEV && new URLSearchParams(location.search).get('ambush') === 'r2-two-at-once'
+    ? [(await import('./scenes/Ambush')).AmbushScene] : [];
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
@@ -42,7 +44,7 @@ async function start() {
     input: { activePointers: 2, windowEvents: false },
     // Testing aid: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
-    scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, MusterScene, BattleScene],
+    scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, MusterScene, BattleScene, ...pilotScenes],
   });
 
   // Size the canvas once Phaser has booted, and again whenever the window changes.

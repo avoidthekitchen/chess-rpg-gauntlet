@@ -36,6 +36,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 ## Open questions
 
+- [ ] Ambush pilot: tune miss limits, wave ratings, rewards and the 3–5 minute target after human playtests.
+- [ ] Ambush adoption (D9): three human playtesters on Gentle and Brave, then the owner's decision. Automated solves do not count.
+
 - [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
 - [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
 - [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
@@ -46,6 +49,17 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-23 | Ambush D1: Two at once is a standalone Region 2 pilot. Region 1 and #24 stay unchanged. Approved by the owner in chat; [revised #34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) records approval. |
+| 2026-10-23 | Ambush D2: four published puzzle waves replace play-out against the engine. Positions and replies stay unchanged; each wave ends with its published solution. |
+| 2026-10-23 | Ambush D3: all difficulties use the same puzzles. Assistance changes; later harder content must use different published puzzles. |
+| 2026-10-23 | Ambush D4: wrong legal moves count as misses and are taken back. Limits are unlimited/3/2/2. Loss costs follow the campaign. Grandmaster blocks Retry and launch after an uncleared loss. Retries replace only the lost wave; repeated failures keep its backup. |
+| 2026-10-23 | Ambush D5: accept the published move and alternative immediate mates when the expected move mates. Illegal taps do not count as misses. No engine evaluates answers. |
+| 2026-10-23 | Ambush D6: the poster marks the opening attack before setup and disappears afterwards. It never predicts a later reply. |
+| 2026-10-23 | Ambush D7: first win pays 20g; clean and no hints pay 5g each once. No tactic gold. Double-check banners appear on actual double checks. |
+| 2026-10-23 | Ambush D8: legal replay, rule tests and browser checks replace ambush engine tournaments. Custom battles and bosses retain their distinct bars. Shared changes run CI-selected regressions. |
+| 2026-10-23 | Ambush D9: wider adoption and Practice technique nodes wait for human evaluation and the owner's decision. Delivery of this pilot is a separate milestone. |
+| 2026-10-23 | Pilot storage is separate and development-only, seeded with 100g and a small roster. Reset affects only pilot data. An interrupted active attempt settles once as a retreat on reload. Leaving teaching is free. |
+| 2026-10-23 | Ambush and warm-up flows share puzzle mechanics, not necessarily a state machine. Rewards share the existing payout ledger through a small economy helper; battle stats and bonus kinds stay unchanged. |
 | 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |
 | 2026-10-23 | Region 2's mating battle opens with a 2 or 3 move setup before a mate in 2 or 3, so it meets the 4 to 7 move bar with no exception. The short mate stays in its warm-up, and the battle position is our own |
 | 2026-10-23 | Scrying Orb charges are spent once, when a reveal succeeds; the answer is kept for that position within the attempt, shown again free on rewind, and never refunded. Failed or abandoned reveals cost nothing ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)) |

@@ -18,7 +18,7 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 **Battle types**
 
 1. **Skirmish:** small armies. Checkmate, or win material within a set number of moves.
-2. **Ambush:** a real puzzle position ("the enemy walked into your trap, find the strike"), then play it out to a win against the AI. Turning an advantage into a win is a skill puzzles alone don't teach.
+2. **Ambush:** published Lichess puzzles framed as waves of one fight. Replies follow the published line; finishing that line clears the wave. No engine plays. The approved [Region 2 pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) tests four waves before wider adoption.
 3. **Siege:** survive a set number of turns while protecting village squares. Teaches defence and prophylaxis.
 4. **Promotion run:** escort a pawn to the far rank, where it's promoted in a small ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
@@ -176,6 +176,25 @@ The Orb overlaps the wanted poster on purpose: it bridges the drop from the whol
 **Banned power types:** anything that changes how pieces move, gives extra moves, swaps pieces, or adds terrain. Fun, but they teach the wrong chess.
 
 ## Tuning values
+
+### Ambush pilot: first guesses
+
+| Setting | Value | Source |
+| --- | --- | --- |
+| Waves | 4, each with a backup; 1 shown example | `src/game/region2Ambush.ts` |
+| Target wave ratings | 700, 850, 1000, 1150, each within 75 points | Published puzzle selection |
+| Miss limits | Gentle unlimited; Brave 3; Champion and Grandmaster 2 | `AMBUSH_HELP` |
+| Reward and bonuses | 20g; clean 5g; no hints 5g; no tactic gold | `TWO_AT_ONCE` |
+| Pilot purse | 100g; separate from campaign gold | `PILOT_GOLD` |
+| Target play time | 3–5 minutes; needs human playtests | Issue #34 |
+
+Hints identify a piece on Gentle and Brave. Difficulty never changes replies. A legal wrong move is taken back and counts as a miss.
+Retreat follows campaign loss costs. Grandmaster removes an uncleared ambush after a loss; launch and Retry both enforce this.
+Each attempt settles once. Reloading an unfinished pilot attempt counts as a retreat; an accepted victory stays a victory.
+The opening poster appears before setup and disappears after it. It describes that opening attack, not a later plan.
+The pilot launcher and its separate save exist only in development. Human evaluation decides wider adoption.
+
+### Existing campaign values
 
 The numbers the game uses today, and where each is set, so later Regions stay consistent. Most are first guesses to tune in playtests ([open questions](decisions.md#open-questions)).
 

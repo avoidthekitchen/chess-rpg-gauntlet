@@ -1,6 +1,63 @@
-# Region 1 build progress
+# Build progress
 
 Following "First implementation: Region 1" in `docs/design.md`. One entry per build step.
+
+## Region 2 ambush pilot — Two at once (#34)
+
+Built on 2026-10-23 in `codex/region2-ambush-pilot`, after the owner approved the revised issue.
+This is one standalone encounter. It does not ship Region 2 or decide the future curriculum.
+
+**Try it locally**
+
+Run `npm run dev`, then open `http://localhost:5173/?ambush=r2-two-at-once`.
+The launcher offers all four difficulties and three companions. Brave is the default.
+Each fresh pilot starts with 100g and a seeded roster.
+Reset Pilot clears only `pawnshire-ambush-pilot-v1`; the campaign save stays separate.
+The launch path is development-only and is absent from the production bundle.
+
+**Content and authoring**
+
+- Nine unchanged Lichess puzzles: one demonstration, four main positions and four backups.
+- Rebuild the shortlist with `npm run puzzles -- --candidates doubleCheck --min 600 --max 1250`. Raw data remains uncommitted.
+- The candidate command found 4,281 qualifying solutions and retained a shortlist of 166, favouring smaller boards within rating bands.
+- Nine positions were selected, replayed and reviewed on the board. Each records its source, quality data and selection reason.
+- The content uses rook/bishop, rook/knight and queen/knight double checks. Wave 3 finishes by winning material, not mating.
+- Some shortlisted puzzles gave double check only at the end. They were rejected because the opening instruction would be misleading.
+- Content work comprised those selections, three teaching lines, four coaching lines, briefing and victory text.
+- Selection and writing were not timed separately from implementation. The count of discarded positions inspected was also not recorded.
+- The shortlist size is measured; it is not a claim that all 166 positions received manual review.
+- A timing comparison with a Region 1 battle still needs the owner's baseline and a separately timed follow-up encounter.
+
+**Implementation choices**
+
+- Published move validation reuses the bounty helpers. Ambush retry, loss and completion rules have their own pure state machine.
+- Battles and ambushes share payout and win-recording helpers. Their different bonus rules keep separate types and statistics.
+- The opening poster describes only the setup move. It disappears before the player starts solving.
+- Accepted moves and settlement persist before animations. Reloading an unfinished attempt records one retreat.
+- Region 1 art stands in for Bandit Riders. Campaign map integration and the Region 2 boss remain separate work.
+
+**Review and validation**
+
+- A separate review agent found three issues: clipped phone actions, hidden compact coaching, and misleading follow-up feedback.
+- All three were fixed. The reviewer checked the fixes and found no further actionable code issues.
+- The short phone panel scrolls while its action buttons stay visible. Coaching remains available at every size.
+- Follow-up misses ask for the finish, rather than another double check. A regression test covers the material-winning continuation.
+- Browser runs cover the demonstration, four waves, hints, misses, losses, retries, wins and once-only replay bonuses.
+- All four backup branches were completed through board clicks, including the final backup that starts with the player's king in check.
+- All four difficulty limits, Grandmaster relaunch blocking, cancelled retreats and repeated reloads passed browser checks.
+- Exiting during a move animation settles one loss. Exiting during the accepted winning move preserves the win and its payout.
+- The WANTED label appears before setup and clears before input. Its position was checked after canvas rendering on desktop and phone.
+- Desktop checks at 1280×800, portrait checks at 375×553 and 375×812, and landscape checks at 844×390 passed without runtime errors.
+- Action buttons remain within the viewport on the three phone layouts. Short panels scroll to expose coaching and result details.
+- Type checking, the production build and all 195 unit tests passed after the final polish.
+- The shared economy change selects the existing boss engine regression. Its final result is recorded below when complete.
+
+**Human evaluation still needed**
+
+Three human playtesters should try Gentle and Brave, report completion times, and comment on the example and poster.
+Ask whether it feels like a battle or a set of bounties with a story.
+Automated solutions do not measure human difficulty, enjoyment or the 3–5 minute target.
+D9 remains open until the owner reviews that evidence.
 
 ## Step 1: Phaser game with the battle screen ported
 

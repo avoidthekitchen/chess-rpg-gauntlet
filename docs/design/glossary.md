@@ -77,6 +77,7 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 | Threat Sight | Highlights for squares the enemy attacks and your pieces that can be won |
 | Rewind | Undo your last move and the enemy's reply; limited charges in battles |
 | Bounty | A real Lichess puzzle on the town's bounty board that pays gold |
+| Ambush | A fight made of published puzzle waves; each wave ends at its published solution |
 | Bonus goal | An optional goal in a battle that pays extra gold once (shown as a star on the map) |
 | Warm-up | The short lesson that opens a battle node: your companion shows one position, then you try one ([Guided path](campaign.md#guided-path)) |
 | Main path | A Region's required battles, the headline themes in teaching order |

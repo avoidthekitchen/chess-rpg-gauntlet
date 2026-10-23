@@ -18,6 +18,8 @@ Work in small steps, each one tested, checked in the browser, committed, and log
 
 ## Battle content rules
 
+These rules cover custom short battles. Ambushes follow their own rules below. Bosses retain the separate full-game bars under Verification.
+
 The battle content tests (`src/game/region1Battles.test.ts`) check these. Today the tests are written for Region 1 (they expect the region "The Bog" and shouting enemies); making them run for every Region is an [open TODO](design/decisions.md#open-todos).
 
 - A legal start with White to move, the enemy not already in check, and villages empty.
@@ -56,6 +58,9 @@ Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. 
 
 ## Verification bars
 
+These engine checks cover custom battles and bosses. Published ambush content needs legal replays and integration checks, not simulated-player tournaments.
+Shared-code changes still run any engine regression checks selected by `npm run ci`. Do not weaken the selector to skip them.
+
 `npm run verify:battles` plays every battle and the boss many times with the real enemy AI, the faction habit included, using simulated players (`scripts/verify/`). The battles take about 8 minutes and the boss longer, so `npm run ci` runs each only when a change can affect it. A battle passes when:
 
 - A **strong** player (Stockfish, aware of the habit) wins at least 90% on Gentle and on Brave, and earns each bonus goal in at least half its wins.
@@ -66,6 +71,19 @@ Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. 
 The boss passes when, with each starter's typical army at the budget, a strong player loses (checkmate or draw) at most 15% of games and wins at least 60%. A boss is a full game, so it gets a looser bar than a battle; games that hit the simulator's 80-move cap count as unfinished, not lost (`scripts/verify/boss.verify.test.ts`). Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
 
 When a new rule changes how battles end (as material goals once did), re-run verification for every Region, not just the new one (`npm run ci -- --full`).
+
+## Ambush content rules
+
+- Use published positions, setup moves, solver moves and replies without alteration. Stop at the solution endpoint.
+- Keep 1–3 solver moves per wave. The pilot has one shown example, four waves and one backup per wave.
+- Apply the bounty quality filter. Record source id, URL, rating, quality fields and why each puzzle teaches the idea.
+- Verify that the solver performs the tagged tactic. Show its banner on that move, not an unrelated final capture.
+- Check legality, solution replay, alternative mates and rating order. A backup stays within 75 points of its main puzzle.
+- Reserve all selected ids from bounty and warm-up content. Review each board and its line for teaching fit and variety.
+- Test hints, misses, retries, first-win rewards, bonus rewards and exactly-once settlement.
+- Test exits and reloads, including exits during setup, replies and victory animations. Leaving teaching is free.
+- Keep the pilot save separate. Grandmaster removal blocks both Retry and direct launch; Reset Pilot clears only pilot data.
+- Review the code independently, then play through the four viewport sizes. Record human feedback separately from automated checks.
 
 ## Checks before each commit
 

@@ -444,7 +444,8 @@ export class BattleScene extends BaseScene {
     // longer for longer lines. The panel keeps the last line, and every line is in the history.
     const hold = holdMs(this.speaker.line);
     const age = performance.now() - this.speakerAt;
-    if (age > hold + 800) return;
+    // A held card never expires: a rebuild (e.g. the browser bar resizing the screen) redraws it.
+    if (age > hold + 800 && !this.heldAt) return;
     const w = L.wide ? L.panel.w : this.W - 24;
     const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, w, this.speaker, this.launch.faction, true);
     const y = this.H - height - Math.max(12, this.safe.bottom);

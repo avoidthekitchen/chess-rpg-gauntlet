@@ -14,6 +14,7 @@ import { objectiveText, type Scenario } from '../game/scenarios';
 import type { TacticTag } from '../game/tactics';
 import { threatMap } from '../game/threats';
 import { store } from '../store';
+import { CueQueue } from '../ui/cueQueue';
 import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
 import { portrait, speakerCard } from '../ui/portrait';
@@ -34,6 +35,9 @@ const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
   fork: 'Enemy fork!',
   check: 'Check! Protect your king',
 };
+/** How long a close-up or banner holds the middle of the board before the next may show: until it's mostly faded, in ms. */
+const CLOSE_UP_HOLD = 1150;
+const BANNER_HOLD = 1100;
 
 export interface FinishView {
   eyebrow?: string;
@@ -105,6 +109,8 @@ export class BattleScene extends BaseScene {
   tacticGold = 0;
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
   private session = 0;
+  /** Close-ups and banners take turns in the middle of the board, so none covers another. */
+  private cues = new CueQueue();
   /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
   private pendingView: FinishView | null = null;
 
@@ -122,6 +128,7 @@ export class BattleScene extends BaseScene {
     this.launch = data;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       clearTimeout(this.speakerTimer);
+      this.cues.clear();
       this.aiToken++;
       this.session++;
     });
@@ -139,6 +146,7 @@ export class BattleScene extends BaseScene {
 
   private reset() {
     clearTimeout(this.speakerTimer);
+    this.cues.clear();
     this.speakerTimer = 0;
     this.speakQueue = [];
     this.aiToken++;
@@ -543,9 +551,19 @@ export class BattleScene extends BaseScene {
   /**
    * XCOM-style moment: when a real piece (not a pawn) is captured, a cinematic band
    * sweeps across the board with the capturer's portrait. Doesn't block play.
+   * Returns whether one was queued.
    */
   private closeUp(m: Move): boolean {
     if (!this.board || !m.captured || m.captured === 'p' || matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    // Name the capturer now: by the time the cue shows, a later move may have taken it.
+    const captured = m.captured;
+    const name = m.color === 'w' ? this.names.get(m.to) : undefined;
+    this.cues.push({ hold: CLOSE_UP_HOLD, show: () => this.drawCloseUp(m, captured, name) });
+    return true;
+  }
+
+  private drawCloseUp(m: Move, captured: PieceSymbol, name: string | undefined) {
+    if (!this.board) return;
     const L = this.layout();
     const bw = L.board.w;
     const bh = Math.min(150, this.board.height * 0.36);
@@ -561,9 +579,8 @@ export class BattleScene extends BaseScene {
     const pc = this.add.container(0, 0);
     portrait(this, x + 18, y + 10, pw, bh - 20, m.promotion ?? m.piece, ally ? 'ally' : 'foe', this.launch.faction, pc);
     c.add(pc);
-    const name = this.names.get(m.to);
     const who = ally ? (name ?? `Your ${pieceName(m.piece)}`) : `Their ${pieceName(m.piece)}`;
-    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes ${ally ? 'their' : 'your'} ${pieceName(m.captured)}!`, {
+    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes ${ally ? 'their' : 'your'} ${pieceName(captured)}!`, {
       fontFamily: SERIF,
       fontSize: `${Math.round(Math.min(30, bh * 0.2))}px`,
       fontStyle: 'bold',
@@ -583,21 +600,18 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: pc, x: 0, duration: 320, ease: 'Back.easeOut' });
     this.tweens.add({ targets: t, x: x + pw + 34, duration: 360, ease: 'Cubic.easeOut' });
     this.tweens.add({ targets: c, alpha: 0, duration: 260, delay: 1000, onComplete: () => c.destroy() });
-    return true;
   }
 
   /** Floats a capture's or promotion's point change over its square: gold when you gain, red when you lose. */
-  private floatPoints(sq: Square, delta: number, delay = 0) {
+  private floatPoints(sq: Square, delta: number) {
     const label = swingLabel(delta);
-    if (!this.board || !label) return;
-    if (delay > 0) {
-      // Wait for the capture close-up to clear, so the label doesn't cover its text.
-      const b = this.battle;
-      const plies = b.chess.history().length;
-      // Skip it if the battle restarted or the move was rewound meanwhile.
-      this.time.delayedCall(delay, () => this.battle === b && b.chess.history().length >= plies && this.floatPoints(sq, delta));
-      return;
-    }
+    if (!label) return;
+    // It waits behind any close-up so it doesn't cover the close-up's text, but holds nothing up.
+    this.cues.push({ hold: 0, show: () => this.drawPoints(sq, delta, label) });
+  }
+
+  private drawPoints(sq: Square, delta: number, label: string) {
+    if (!this.board) return;
     const p = this.board.squareCenter(sq);
     const t = this.text(p.x, p.y, label, {
       fontFamily: SANS,
@@ -612,12 +626,11 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: t, y: still ? p.y : p.y - 44, alpha: 0, duration: 900, delay: 500, ease: 'Cubic.easeIn', onComplete: () => t.destroy() });
   }
 
-  private showBanner(text: string, kind: 'ally' | 'foe', delay = 0) {
-    if (delay > 0) {
-      const b = this.battle;
-      window.setTimeout(() => this.sys.isActive() && this.battle === b && this.showBanner(text, kind), delay);
-      return;
-    }
+  private showBanner(text: string, kind: 'ally' | 'foe') {
+    this.cues.push({ hold: BANNER_HOLD, show: () => this.drawBanner(text, kind) });
+  }
+
+  private drawBanner(text: string, kind: 'ally' | 'foe') {
     if (!this.board) return;
     const L = this.layout();
     const cx = L.board.x + L.board.w / 2;
@@ -693,7 +706,7 @@ export class BattleScene extends BaseScene {
     await this.animate(res);
     if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
     const closeUp = this.closeUp(res.move);
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, closeUp ? 1150 : 0);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
     if (this.battle !== b || this.session !== sess) return;
@@ -702,8 +715,8 @@ export class BattleScene extends BaseScene {
     const tag = tactics.find((t) => PLAYER_BANNER[t]);
     if (tag === 'fork' && this.launch.tacticGold) {
       this.tacticGold += TACTIC_GOLD;
-      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally', closeUp ? 1150 : 0);
-    } else if (tag && !(tag === 'capture' && closeUp)) this.showBanner(PLAYER_BANNER[tag]!, 'ally', closeUp ? 1150 : 0);
+      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally');
+    } else if (tag && !(tag === 'capture' && closeUp)) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
     this.refresh();
     this.checkFinished();
     if (b.isEnemyTurn()) void this.enemyTurn();
@@ -771,13 +784,13 @@ export class BattleScene extends BaseScene {
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const enemyCloseUp = this.closeUp(res.move);
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, enemyCloseUp ? 1150 : 0);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
     this.speak(shown, kept);
     const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
-    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe', enemyCloseUp ? 1150 : 0);
+    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
     else if (res.move.captured && !enemyCloseUp) this.showBanner('Piece lost', 'foe');
     else if (shout && !kept) this.showBanner('Foiled!', 'ally');
     this.refresh();
@@ -918,6 +931,7 @@ export class BattleScene extends BaseScene {
     this.restoreNames();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';
+    this.cues.clear(); // what was waiting belongs to the moves just undone
     this.showBanner('Rewind', 'ally');
     this.refresh();
     void this.startPlayerTurn();

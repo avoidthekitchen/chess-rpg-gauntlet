@@ -30,7 +30,7 @@ export const R1_BOSS: Omit<BattleDef, 'fen'> = {
   kind: 'boss',
   theme: 'Everything so far',
   enemy: { name: 'Grubnak, the Toad Chief', personality: 'standard' },
-  intro: 'The Goblin Chief waits behind a wall of eight bog rats and one sneaky salamander. He doesn’t shout his plans. Bring your best 10 points of army.',
+  intro: 'The Goblin Chief waits behind a wall of eight bog rat pawns and one sneaky salamander knight. He doesn’t shout his plans. Bring your best 10 points of army.',
   lesson:
     'A full game: develop your pieces and keep them protected. Grubnak doesn’t shout his plans, so after every goblin move, ask yourself what it attacks. Trade only when it’s safe, open a file for your rook, and once Grubnak’s wall is broken, hunt the king with checks that leave him no squares.',
   tip: 'Every piece matters today. Grubnak won’t tell us his plans, so watch every move he makes!',

@@ -41,10 +41,10 @@ Everyone below is in the game except the Lich King and the Region 2 characters. 
 | Character | Species · piece | Role | Voice | Teaches |
 | --- | --- | --- | --- | --- |
 | You, the Lion King | Lion · king | The player | Almost never speaks; others speak to you | — |
-| Sir Hob | Frog Knight · knight | Starter choice | Eager, brave, a little show-off; quick jokes; "Hop to it!" | Forks and double attacks |
-| Sage Ollie | Owl Bishop | Starter choice; teaches the academy | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
-| Old Brick | Tortoise Rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
-| Saffron | Fox Queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | — |
+| Sir Hob | Frog · knight | Starter choice | Eager, brave, a little show-off; quick jokes; "Hop to it!" | Forks and double attacks |
+| Sage Ollie | Owl · bishop | Starter choice; teaches the academy | Patient, dry wit, slightly scholarly; asks you questions | Pins, skewers, long diagonals |
+| Old Brick | Tortoise · rook | Starter choice | Slow, steady, few words; calm under pressure | Back ranks, open files, holding the line |
+| Saffron | Fox · queen | Region 1 hero | Confident, quick, a bit vain; "I go wherever I please" | — |
 | Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 boss | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
 | Ashfang, the Bandit Lord | Wolf · king | [Region 2](regions/region-02-bandit-riders.md) boss (planned) | Smooth, mocking, counts everything in coin; a thief, not a brute | — |
 | Tadwell, the Frog Captain | Frog Knight · knight | [Region 2](regions/region-02-bandit-riders.md) hero (planned) | Formal, dutiful, proud of the old army; a little stiff | — |

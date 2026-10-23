@@ -71,12 +71,12 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 
 **Done**
 - The Goblin Chief's camp opens on the map after four wins. Its briefing leads to a muster screen (`src/scenes/Muster.ts`) where you pick your army from the pieces you own, up to Grubnak's 10-point budget with no queen (`src/game/boss.ts`: standard values, per-type caps, a "best fit" suggestion that puts your companion first). Big armies switch to two compact columns so 15 pieces still fit a phone.
-- The duel (`src/game/region1Boss.ts`): your picks on their usual home squares against Grubnak behind a full wall of eight bog rat pawns and one frog knight (11 points). Objective: checkmate, no move limit. 50g reward, plus bonus goals for no rewinds and winning within 30 moves. The goblins still shout.
+- The duel (`src/game/region1Boss.ts`): your picks on their usual home squares against Grubnak behind a full wall of eight bog rat pawns and one salamander knight (11 points). Objective: checkmate, no move limit. 50g reward, plus bonus goals for no rewinds and winning within 30 moves. The goblins still shout.
 - Hero recruit: winning the duel frees Saffron the Fox Queen, who joins your army as a named hero with her own portrait and lines. After the boss, the map says the Bog is safe and region 2 comes in a later build.
 - Engine check (`scripts/verify/boss.verify.test.ts`): a strong Stockfish player wins 100% with each starter's typical 10-point army on Gentle and Brave, and with no hires at all (5 points). Careless and greedy simulated players win 0-17%.
 
 **Simplified or decided without the doc**
-- Grubnak's army (eight pawns and a knight) and the 50g reward are my picks.
+- Grubnak's army (eight pawns and a salamander knight) and the 50g reward are my picks.
 - The hero is a fox queen. She can't fight Grubnak (no queens), so she matters from region 2 on.
 - The goblins shout in the boss duel too. I tried turning it off: a strong player still won in 4-11 moves, so the shouts aren't what makes the duel short.
 
@@ -104,7 +104,7 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 - **Material help.** Battles with a material goal show the piece values under the meter and in the brief. Every capture or promotion floats its point change over the square: gold "+3" for you, red "−3" against you. The meter is net, so a sacrifice shows as a loss, then a gain.
 - **Victory confetti** with your pieces hopping, short screen fades, bonus stars on cleared map nodes (like a perfect island in Into the Breach), and a "!" on Town when new bounties are up.
 
-**My playtest**: Trouble in the Reeds on Knight as the owl. I missed the second threat and lost my knight, recaptured with a pawn, used a quiet shout to take their knight for free, then set a trap so their forced rook move walked into my bishop. I won in 5 moves, and the review agreed nothing was a real mistake. That's the Into the Breach feel the design asks for.
+**My playtest**: Trouble in the Reeds on Brave as the owl. I missed the second threat and lost my knight, recaptured with a pawn, used a quiet shout to take their knight for free, then set a trap so their forced rook move walked into my bishop. I won in 5 moves, and the review agreed nothing was a real mistake. That's the Into the Breach feel the design asks for.
 
 ## Code review (Opus 5.5 High) and fixes
 

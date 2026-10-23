@@ -18,7 +18,7 @@ describe('boss budget', () => {
 
   it('applies the boss’s piece caps (no queen in region 1)', () => {
     const c = checkArmy(['q'], r1);
-    expect(c).toEqual({ ok: false, points: 9, reason: 'No queen allowed in this duel.' });
+    expect(c).toEqual({ ok: false, points: 9, reason: 'No queens allowed in this duel.' });
     expect(canAdd([], 'q', r1)).toBe(false);
     expect(canAdd(['r', 'n'], 'p', r1)).toBe(true);
     expect(canAdd(['r', 'n', 'p', 'p'], 'p', r1)).toBe(false);

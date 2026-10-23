@@ -181,7 +181,9 @@ export class BattleScene extends BaseScene {
       const short = H < 600;
       return { wide: true, short, topH, board: { x: bx, y: topH, w: bw }, panel: { x: bx + bw + 24, y: topH + 8, w: panelW } };
     }
-    const sq = Math.min(W / BOARD_SPAN, (H - topH - 250 - safe.bottom) / BOARD_TALL, 64);
+    // Room for the panel under the board; a material goal adds the piece-value line.
+    const panelH = 250 + (this.launch?.scenario.objective.kind === 'winMaterial' ? 22 : 0);
+    const sq = Math.min(W / BOARD_SPAN, (H - topH - panelH - safe.bottom) / BOARD_TALL, 64);
     const bw = sq * BOARD_SPAN;
     const bx = (W - bw) / 2;
     const bh = sq * BOARD_TALL;
@@ -585,9 +587,17 @@ export class BattleScene extends BaseScene {
   }
 
   /** Floats a capture's or promotion's point change over its square: gold when you gain, red when you lose. */
-  private floatPoints(sq: Square, delta: number) {
+  private floatPoints(sq: Square, delta: number, delay = 0) {
     const label = swingLabel(delta);
     if (!this.board || !label) return;
+    if (delay > 0) {
+      // Wait for the capture close-up to clear, so the label doesn't cover its text.
+      const b = this.battle;
+      const plies = b.chess.history().length;
+      // Skip it if the battle restarted or the move was rewound meanwhile.
+      this.time.delayedCall(delay, () => this.battle === b && b.chess.history().length >= plies && this.floatPoints(sq, delta));
+      return;
+    }
     const p = this.board.squareCenter(sq);
     const t = this.text(p.x, p.y, label, {
       fontFamily: SANS,
@@ -682,8 +692,8 @@ export class BattleScene extends BaseScene {
     this.trackNames(res.move);
     await this.animate(res);
     if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     const closeUp = this.closeUp(res.move);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, closeUp ? 1150 : 0);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
     if (this.battle !== b || this.session !== sess) return;
@@ -760,8 +770,8 @@ export class BattleScene extends BaseScene {
     this.trackNames(res.move);
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     const enemyCloseUp = this.closeUp(res.move);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, enemyCloseUp ? 1150 : 0);
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };

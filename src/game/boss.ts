@@ -27,7 +27,7 @@ export function checkArmy(picks: HireType[], budget: Budget): ArmyCheck {
   return { ok: true, points };
 }
 
-const NAMES: Record<HireType, string> = { p: 'pawns', n: 'knights', b: 'bishops', r: 'rooks', q: 'queen' };
+const NAMES: Record<HireType, string> = { p: 'pawns', n: 'knights', b: 'bishops', r: 'rooks', q: 'queens' };
 
 /** Whether adding one more piece of type `t` would still fit. */
 export function canAdd(picks: HireType[], t: HireType, budget: Budget): boolean {

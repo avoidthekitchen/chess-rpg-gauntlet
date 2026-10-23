@@ -18,7 +18,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
  * Env: VERIFY_GAMES (games per player per difficulty, default 24), VERIFY_BATTLE (one id),
  * VERIFY_ENGINES (parallel Stockfish processes, default 8), VERIFY_SHOW=1 prints competent
  * losses and VERIFY_SHOW=all every game. With VERIFY_BATTLE set, VERIFY_FEN,
- * VERIFY_OBJECTIVE (JSON) and VERIFY_VILLAGES (c3,f3) try a variant without editing the battle.
+ * VERIFY_OBJECTIVE (JSON), VERIFY_VILLAGES (c3,f3) and VERIFY_BONUSES (JSON) try a variant without editing the battle.
  */
 
 const GAMES = Number(process.env.VERIFY_GAMES ?? 24);
@@ -92,6 +92,7 @@ const tuned = (b: BattleDef): BattleDef => ({
   fen: process.env.VERIFY_FEN ?? b.fen,
   objective: process.env.VERIFY_OBJECTIVE ? JSON.parse(process.env.VERIFY_OBJECTIVE) : b.objective,
   villages: process.env.VERIFY_VILLAGES ? (process.env.VERIFY_VILLAGES.split(',') as BattleDef['villages']) : b.villages,
+  bonuses: process.env.VERIFY_BONUSES ? JSON.parse(process.env.VERIFY_BONUSES) : b.bonuses,
 });
 const battles = REGION1_BATTLES.filter((b) => !ONLY || b.id === ONLY).map((b) => (ONLY ? tuned(b) : b));
 

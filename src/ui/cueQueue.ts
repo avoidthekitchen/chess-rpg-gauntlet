@@ -13,6 +13,7 @@ export interface Cue {
   hold: number;
 }
 
+/** The queue waits on these timers. If something can cancel them behind the queue's back, call `clear()` too, or it stays busy for good. */
 export interface CueTimer {
   set: (fn: () => void, ms: number) => unknown;
   clear: (handle: unknown) => void;

@@ -114,10 +114,14 @@ export class BattleScene extends BaseScene {
   tacticGold = 0;
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
   private session = 0;
-  /** Close-ups and banners take turns in the middle of the board, so none covers another. */
+  /**
+   * Close-ups and banners take turns in the middle of the board, so none covers another.
+   * Window timers, not the scene clock: a rebuild (resize, piece style) wipes scene timers,
+   * which would leave the queue stuck and the result dialog never opening.
+   */
   private cues = new CueQueue({
-    set: (fn, ms) => this.time.delayedCall(ms, fn),
-    clear: (timer) => (timer as Phaser.Time.TimerEvent).remove(),
+    set: (fn, ms) => window.setTimeout(fn, ms),
+    clear: (timer) => window.clearTimeout(timer as number),
   });
   /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
   private pendingView: FinishView | null = null;

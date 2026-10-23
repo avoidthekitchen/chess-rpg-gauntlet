@@ -1,7 +1,7 @@
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import type { AiProfile } from '../game/difficulty';
 import type { Engine } from './engine';
-import type { EnemyView, Rng } from './enemy';
+import type { EnemyView, Habits, Rng } from './enemy';
 import { nullMoveFen, planIfPassed } from './intent';
 
 export { nullMoveFen };
@@ -46,4 +46,34 @@ export function shoutLine(fen: string, uci: string, villages: Square[] = []): st
   if (move.promotion) return `Watch me grow big on ${to}!`;
   if (chess.inCheck()) return `I’m coming to ${to} to poke your king!`;
   return `Next I’m going to ${to}! Hah!`;
+}
+
+/**
+ * The habits a battle's enemy brings to its reply. Only a shouting battle gets the shout
+ * bonus, and only while the shout is still legal; a plan shown any other way (the Scrying
+ * Orb) never becomes a habit.
+ */
+export function replyHabits(shouts: boolean, shout: string | null, fen: string): Habits {
+  return { shout: shouts && shout && shoutStands(fen, shout) ? shout : null };
+}
+
+/** Shouts by position, so a rewind (or a replayed position) hears the same shout instead of a fresh pick. */
+export class ShoutBook {
+  private byFen = new Map<string, string | null>();
+
+  has(fen: string): boolean {
+    return this.byFen.has(fen);
+  }
+
+  get(fen: string): string | null | undefined {
+    return this.byFen.get(fen);
+  }
+
+  /** The shout for this position: the remembered one, or a new plan that's then remembered. */
+  async plan(view: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
+    if (this.byFen.has(view.fen)) return this.byFen.get(view.fen)!;
+    const uci = await planShout(view, engine, profile, rng);
+    this.byFen.set(view.fen, uci);
+    return uci;
+  }
 }

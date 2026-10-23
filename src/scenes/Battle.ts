@@ -1,7 +1,7 @@
 import { Chess, type Move, type PieceSymbol, type Square } from 'chess.js';
 import Phaser from 'phaser';
 import { chooseEnemyMove, fallbackMove } from '../ai/enemy';
-import { planShout, shoutLine, shoutStands } from '../ai/shout';
+import { replyHabits, ShoutBook, shoutLine, shoutStands } from '../ai/shout';
 import { engine, engineStatus } from '../engineHost';
 import { Battle, type TurnResult } from '../game/battle';
 import { DIFFICULTIES, type AiProfile, type DifficultyId } from '../game/difficulty';
@@ -110,7 +110,7 @@ export class BattleScene extends BaseScene {
   private shout: string | null = null;
   /** The position the shout was made in (your turn), to tell what your move changed. */
   private shoutFen: string | null = null;
-  private shoutCache = new Map<string, string | null>();
+  private shoutBook = new ShoutBook();
   private speakerTimer = 0;
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
   /** Every line shown this battle, so one that went by too fast can be read again. */
@@ -142,7 +142,7 @@ export class BattleScene extends BaseScene {
     this.board = null;
     this.panelLayer = null;
     this.speakerLayer = null;
-    this.shoutCache = new Map();
+    this.shoutBook = new ShoutBook();
     this.launch = data;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       clearTimeout(this.speakerTimer);
@@ -535,16 +535,16 @@ export class BattleScene extends BaseScene {
 
   /**
    * What a goblin says when it drops a shout that's still legal. If the shout was a capture
-   * and you guarded the target (or the shout now loses the capturer), they say so, so a good
-   * defence feels earned; otherwise a plain change of mind.
+   * and you moved or guarded the target, they say so, so a good defence feels earned; otherwise
+   * (or when they hit that square some other way) a plain change of mind.
    */
-  private switchLine(shoutFen: string, fen: string, shout: string): string {
+  private switchLine(shoutFen: string, fen: string, shout: string, reply: string): string {
     const me = this.battle.player;
     const to = shout.slice(2, 4) as Square;
     const before = new Chess(shoutFen);
     const now = new Chess(fen);
     const wanted = before.get(to);
-    if (wanted && wanted.color === me) {
+    if (wanted && wanted.color === me && reply.slice(2, 4) !== to) {
       const target = now.get(to);
       if (!target || target.color !== me) return pickOne(['Oi! You moved it!', 'Where’d it go?!', 'Hey, come back with that!']);
       if (now.attackers(to, me).length > before.attackers(to, me).length)
@@ -649,15 +649,15 @@ export class BattleScene extends BaseScene {
     const b = this.battle;
     if (!this.launch.shouts || !b.isPlayerTurn()) return;
     const fen = b.fen;
-    let uci = this.shoutCache.get(fen);
+    let uci = this.shoutBook.get(fen);
     if (uci === undefined) {
       const token = this.aiToken;
       const sess = this.session;
+      const book = this.shoutBook;
       this.thinking = true;
       this.refresh();
-      uci = await planShout(b, engineStatus === 'fallback' ? null : engine, this.ai);
+      uci = await book.plan(b, engineStatus === 'fallback' ? null : engine, this.ai);
       if (token !== this.aiToken || this.battle !== b || this.session !== sess || b.fen !== fen) return;
-      this.shoutCache.set(fen, uci);
       this.thinking = false;
     }
     this.shout = uci;
@@ -890,14 +890,16 @@ export class BattleScene extends BaseScene {
     const shout = this.shout;
     // The shout is a preference, never a promise: they decide again after your move.
     const stands = shout !== null && shoutStands(b.fen, shout);
-    const switchLine = shout && stands && this.shoutFen ? this.switchLine(this.shoutFen, b.fen, shout) : null;
+    const shoutFen = this.shoutFen;
+    const playerFen = b.fen;
     try {
-      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai, Math.random, { shout: stands ? shout : null });
+      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai, Math.random, replyHabits(!!this.launch.shouts, shout, b.fen));
     } catch (err) {
       console.warn('Enemy AI failed, using fallback', err);
       uci = fallbackMove(new Chess(b.fen));
     }
     const kept = stands && uci === shout;
+    const switchLine = shout && stands && !kept && shoutFen ? this.switchLine(shoutFen, playerFen, shout, uci) : null;
     // A short pause so the enemy's move doesn't feel instant.
     const wait = 450 - (performance.now() - started);
     if (wait > 0) await sleep(wait);

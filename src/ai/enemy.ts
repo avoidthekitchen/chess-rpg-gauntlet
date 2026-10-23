@@ -158,8 +158,11 @@ function allowsMateInOne(after: Chess): boolean {
   });
 }
 
-/** Used when Stockfish can't load: take the best capture, otherwise any move. */
-export function fallbackMove(chess: Chess, rng: Rng = Math.random): string {
+/**
+ * Used when Stockfish can't load: mate, else the best capture, else the shouted move (so a
+ * shout still means something without an engine), otherwise any move.
+ */
+export function fallbackMove(chess: Chess, rng: Rng = Math.random, prefer?: string | null): string {
   const fen = chess.fen();
   const moves = chess.moves({ verbose: true });
   const mate = moves.find((m) => {
@@ -170,6 +173,7 @@ export function fallbackMove(chess: Chess, rng: Rng = Math.random): string {
   if (mate) return uciOf(mate);
   const captures = moves.filter((m) => captureGain(fen, m) > 0).sort((a, b) => captureGain(fen, b) - captureGain(fen, a));
   if (captures.length) return uciOf(captures[0]);
+  if (prefer && moves.some((m) => uciOf(m) === prefer)) return prefer;
   return uciOf(moves[Math.floor(rng() * moves.length)]);
 }
 
@@ -208,8 +212,15 @@ async function candidatesWith(fen: string, engine: Engine, profile: AiProfile, e
     if (!reply) return usable;
     score = -reply.score;
   }
-  // The single-move search can't beat the engine's own best; it only decides whether the move is in the window.
-  return [...usable, { uci: extra, score: Math.min(score, usable[0].score) }];
+  // The main search already ranked it below every listed move, so it can't score above the
+  // worst of them; the single search only decides whether it drops out of the window.
+  return [...usable, { uci: extra, score: Math.min(score, usable[usable.length - 1].score) }];
+}
+
+/** The combined multiplier for each move: the raider's village tilt times the shout's, capped in `candidateOdds`. */
+export function habitBonus(view: EnemyView, habits: Habits): Bonus {
+  const raid = view.scenario.enemy.personality === 'raider' ? raidBonus(view.fen, view.scenario.villages ?? []) : null;
+  return (uci) => (raid ? raid(uci) : 1) * (habits.shout && uci === habits.shout ? SHOUT_BONUS : 1);
 }
 
 /**
@@ -229,15 +240,11 @@ export async function chooseEnemyMove(
   const villages = battle.scenario.villages ?? [];
   if (engine) {
     const usable = await candidatesWith(battle.fen, engine, profile, habits.shout);
-    if (usable.length) {
-      const raid = raider ? raidBonus(battle.fen, villages) : null;
-      const bonus: Bonus = (uci) => (raid ? raid(uci) : 1) * (habits.shout && uci === habits.shout ? SHOUT_BONUS : 1);
-      return pickCandidate(usable, profile.maxLoss, rng, bonus);
-    }
+    if (usable.length) return pickCandidate(usable, profile.maxLoss, rng, habitBonus(battle, habits));
   }
   if (raider) {
     const raid = raiderMove(chess, villages, rng);
     if (raid) return raid;
   }
-  return fallbackMove(chess, rng);
+  return fallbackMove(chess, rng, habits.shout);
 }

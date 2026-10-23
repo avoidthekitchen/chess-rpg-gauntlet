@@ -1,6 +1,6 @@
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import { chooseEnemyMove } from '../../src/ai/enemy';
-import { planShout, shoutStands } from '../../src/ai/shout';
+import { replyHabits, ShoutBook, shoutStands } from '../../src/ai/shout';
 import { Battle, type MoveInput, type Status } from '../../src/game/battle';
 import type { BattleDef } from '../../src/game/content';
 import type { AiProfile } from '../../src/game/difficulty';
@@ -9,7 +9,7 @@ import type { NodeEngine } from './nodeEngine';
 
 /**
  * Plays whole battles the way the game does, including the shouting rule: before each
- * player move the goblins announce a move (cached by FEN, so a rewind hears the same one),
+ * player move the goblins announce a move (cached by position, as in the game),
  * and after the player moves they decide again, with the shout preferred but never forced.
  */
 
@@ -129,7 +129,7 @@ function forcedWinIn2(def: BattleDef, moves: string[]): string | null {
 
 /**
  * A strong player: looks at every legal move with Stockfish and the battle's goal in mind.
- * It treats the shout as a hint, not a promise, so it assumes the goblins' best reply.
+ * It ignores the shout and assumes the goblins' best reply.
  */
 async function competentMove(def: BattleDef, moves: string[], eng: NodeEngine): Promise<string> {
   const b = replay(def, moves);
@@ -194,16 +194,12 @@ export async function playGame(
   await eng.newGame();
   const b = new Battle(def, 0);
   const moves: string[] = [];
-  const shoutCache = new Map<string, string | null>();
+  const book = new ShoutBook();
   let shoutsKept = 0;
   for (let guard = 0; guard < 80 && b.status === 'playing'; guard++) {
     let shout: string | null;
     if (!def.shouts) shout = null; // e.g. the Goblin Chief, who keeps his plans to himself
-    else if (shoutCache.has(b.fen)) shout = shoutCache.get(b.fen)!;
-    else {
-      shout = await planShout(b, eng.asEngine(), profile);
-      shoutCache.set(b.fen, shout);
-    }
+    else shout = await book.plan(b, eng.asEngine(), profile);
     const w =
       player === 'competent'
         ? await competentMove(def, moves, eng)
@@ -216,7 +212,7 @@ export async function playGame(
     moves.push(w);
     if (b.status !== 'playing') break;
     const stands = shout !== null && shoutStands(b.fen, shout);
-    const reply = await chooseEnemyMove(b, eng.asEngine(), profile, Math.random, { shout: stands ? shout : null });
+    const reply = await chooseEnemyMove(b, eng.asEngine(), profile, Math.random, replyHabits(!!def.shouts, shout, b.fen));
     if (stands && reply === shout) shoutsKept++;
     b.enemyMove(reply);
     moves.push(reply);

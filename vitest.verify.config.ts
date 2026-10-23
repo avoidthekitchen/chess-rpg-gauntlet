@@ -6,7 +6,8 @@ export default defineConfig({
     include: ['scripts/verify/**/*.verify.test.ts'],
     testTimeout: 60 * 60 * 1000,
     hookTimeout: 60_000,
-    // One file drives a pool of Stockfish processes itself.
-    fileParallelism: false,
+    // Each file drives its own pool of Stockfish processes, but its game simulation runs on one
+    // core, so the battle and boss files run side by side (measured: more engines per file don't help).
+    fileParallelism: true,
   },
 });

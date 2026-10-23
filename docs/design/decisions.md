@@ -66,6 +66,8 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | "Checks, captures, threats" (Heisman) is Region 1's first warm-up and its one-line battle reminder |
 | 2026-10-22 | Region 4's strategy is tested with new battle goal kinds (develop and castle within N moves, take the open file first), not puzzles |
 | 2026-10-22 | Curriculum revised: defending added to Region 1, removing the defender to Region 2, opposition moved from Region 5 to Region 3, lures and traps to Region 4, `mateIn3` as a revisit in Regions 3 and 4. The order also draws on Bain, Heisman, Silman, Polgar, Yusupov and Duolingo's path ([Curriculum](campaign.md#curriculum)) |
+| 2026-10-22 | Battle dialogue can always be read again: on phones a floating line stays up longer the longer it is (and while held), the last line stays in the panel, and "What was said" lists every line this battle |
+| 2026-10-22 | `npm run ci` is the local CI: quick checks always, engine playtests only when a change reaches them (found by following imports), `--full` before a Region ships |
 | 2026-10-22 | Piece names are animal plus chess piece ("Owl Bishop", "Bog Rat Pawn"), and short names are the plain chess names for both sides, so players learn the real names |
 | 2026-10-22 | A pawn reaching the far rank is "promoted", not "knighted" |
 | 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |

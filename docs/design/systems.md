@@ -202,4 +202,5 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Academy first clear | 10g per exercise (Region 1's academy, until the guided path replaces it) | `src/game/academy.ts` |
 | Warm-up first solve (not built) | 5g the first time you solve a battle's warm-up (first guess) | Guided path |
 | Review threshold | A move must cost about a pawn (90 centipawns) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |
+| Talking-head time on phones | 1.2 s + 60 ms per character, between 3.2 s and 9 s, then a 0.8 s fade | `holdMs` in `src/ui/dialogue.ts` |
 | Engine search timeout | 12 s, then the fallback AI takes over | `Engine` in `src/ai/engine.ts` |

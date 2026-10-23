@@ -5,6 +5,6 @@ export default defineConfig({
   base: './',
   test: {
     // Engine-backed checks (scripts/verify) are slow and run separately with `npm run verify:battles`.
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'scripts/ci/**/*.test.ts'],
   },
 });

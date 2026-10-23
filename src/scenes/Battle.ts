@@ -14,9 +14,11 @@ import { objectiveText, type Scenario } from '../game/scenarios';
 import type { TacticTag } from '../game/tactics';
 import { threatMap } from '../game/threats';
 import { store } from '../store';
+import { CueQueue } from '../ui/cueQueue';
 import { closeModal, esc, showModal, type ModalButton } from '../ui/overlay';
 import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type BoardView, type PieceStyle } from '../ui/phaserBoard';
-import { portrait, speakerCard } from '../ui/portrait';
+import { DialogueLog, holdMs, moveLabel } from '../ui/dialogue';
+import { portrait, portraitStyle, speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
 import { FACTION_SPECIES, SPECIES, pieceName, speakerLine, type Faction, type SpeakerInfo } from '../ui/speaker';
 import { C, CSS, SANS, SERIF } from '../ui/theme';
@@ -34,6 +36,14 @@ const ENEMY_BANNER: Partial<Record<TacticTag, string>> = {
   fork: 'Enemy fork!',
   check: 'Check! Protect your king',
 };
+/** A capture close-up stays this long, then fades. The next cue waits for the fade to end. */
+const CLOSE_UP_STAY = 1000;
+const CLOSE_UP_FADE = 260;
+/** A banner pops in, settles, stays, then fades. The next cue waits for the fade to end. */
+const BANNER_POP = 220;
+const BANNER_SETTLE = 120;
+const BANNER_STAY = 650;
+const BANNER_FADE = 420;
 
 export interface FinishView {
   eyebrow?: string;
@@ -101,10 +111,22 @@ export class BattleScene extends BaseScene {
   private shoutCache = new Map<string, string | null>();
   private speakerTimer = 0;
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
+  /** Every line shown this battle, so one that went by too fast can be read again. */
+  private said = new DialogueLog();
+  /** When the player pressed the floating card (0 when not held). Held lines wait for release. */
+  private heldAt = 0;
   /** Gold earned this battle from engine-confirmed tactics. */
   tacticGold = 0;
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
   private session = 0;
+  /**
+   * Close-ups and banners take turns in the middle of the board, so none covers another.
+   * Scene time pauses with the animations when the game stops rendering.
+   */
+  private cues = new CueQueue({
+    set: (fn, ms) => this.time.delayedCall(ms, fn),
+    clear: (timer) => (timer as Phaser.Time.TimerEvent).remove(),
+  });
   /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
   private pendingView: FinishView | null = null;
 
@@ -122,6 +144,7 @@ export class BattleScene extends BaseScene {
     this.launch = data;
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       clearTimeout(this.speakerTimer);
+      this.cues.clear();
       this.aiToken++;
       this.session++;
     });
@@ -139,8 +162,10 @@ export class BattleScene extends BaseScene {
 
   private reset() {
     clearTimeout(this.speakerTimer);
+    this.cues.clear();
     this.speakerTimer = 0;
     this.speakQueue = [];
+    this.heldAt = 0;
     this.aiToken++;
     engine.stop();
     this.battle = new Battle(this.launch.scenario, this.launch.practice ? 999 : this.difficulty.rewinds);
@@ -156,9 +181,17 @@ export class BattleScene extends BaseScene {
     this.firstBuild = true;
     this.shout = null;
     this.pendingView = null;
+    this.said.clear();
     const tip = this.launch.tip;
     if (tip) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line: tip.line, type: tip.type });
     void this.startPlayerTurn();
+  }
+
+  protected rebuild() {
+    // Rebuild destroys the visible cues and their scene timers. Release the queue too,
+    // so later cues and a pending result dialog cannot wait on a removed timer.
+    this.cues.clear();
+    super.rebuild();
   }
 
   protected canRebuild() {
@@ -209,6 +242,8 @@ export class BattleScene extends BaseScene {
     this.firstBuild = false;
     this.panelLayer = null;
     this.speakerLayer = null;
+    this.input.off('pointerup', this.onPointerUp, this);
+    this.input.on('pointerup', this.onPointerUp, this);
     this.input.keyboard?.off('keydown-ESC');
     this.input.keyboard?.on('keydown-ESC', () => {
       this.selected = null;
@@ -315,6 +350,7 @@ export class BattleScene extends BaseScene {
       { label: L.wide ? `♞ Pieces: ${this.pieceStyle === 'tokens' ? 'Tokens' : 'Classic'}` : '♞ Pieces', onClick: () => this.togglePieces() },
     ];
     if (!L.wide || L.short) ctrl.push({ label: '✎ Lesson', onClick: () => this.showLesson() });
+    else ctrl.push({ label: '💬 What was said', onClick: () => this.showHistory() });
     const cols = L.wide ? 2 : ctrl.length;
     const bw = (w - 8 * (cols - 1)) / cols;
     ctrl.forEach((k, i) => {
@@ -335,6 +371,34 @@ export class BattleScene extends BaseScene {
     status.setText(`${turnText}${this.statusLine}`);
     if (!L.wide || L.short) status.setMaxLines(3);
     c.add(status);
+
+    // Phones: the last line said stays in the panel (a strip if there's room, else a chip
+    // beside the status), and tapping it opens everything said this battle.
+    const last = this.said.last;
+    if ((!L.wide || L.short) && last) {
+      const stripH = 60;
+      const bottom = this.H - Math.max(12, this.safe.bottom);
+      if (y + Math.max(status.height, 40) + 10 + stripH <= bottom) {
+        c.add(this.saidStrip(x, y + Math.max(status.height, 40) + 10, w, stripH, last.info));
+        y += stripH + 10;
+      } else {
+        // The chip shrinks to the room left (it may use most of the bottom margin), but
+        // never disappears: it's the only way into the history on short screens.
+        const chip = Math.round(Math.min(52, Math.max(34, bottom + 8 - y)));
+        const lineH = status.height / Math.max(1, Math.min(3, status.getWrappedText().length));
+        status.setWordWrapWidth(w - 4 - chip - 10, true);
+        // The narrower status may need more lines; take what the screen has room for,
+        // and shrink the text if the goblins' plan still wouldn't fit.
+        const maxLines = Math.max(3, Math.floor((bottom - y) / lineH));
+        status.setMaxLines(maxLines);
+        for (const size of [14, 13]) {
+          if (status.getWrappedText().length <= maxLines) break;
+          status.setFontSize(size);
+        }
+        c.add(this.saidChip(x + w - chip, y, chip, last.info));
+        y += Math.max(0, chip - Math.max(status.height, 40));
+      }
+    }
     y += Math.max(status.height, 40) + 10;
 
     if (!L.wide || L.short) {
@@ -402,20 +466,30 @@ export class BattleScene extends BaseScene {
       }
       return;
     }
-    // Phone (or a short landscape screen): float over the bottom of the screen (or panel) for a few seconds.
+    // Phone (or a short landscape screen): float over the bottom of the screen (or panel),
+    // longer for longer lines. The panel keeps the last line, and every line is in the history.
+    const hold = holdMs(this.speaker.line);
     const age = performance.now() - this.speakerAt;
-    if (age > 4000) return;
+    // A held card never expires: a rebuild (e.g. the browser bar resizing the screen) redraws it.
+    if (age > hold + 800 && !this.heldAt) return;
     const w = L.wide ? L.panel.w : this.W - 24;
     const { container, height } = speakerCard(this, L.wide ? L.panel.x : 12, 0, w, this.speaker, this.launch.faction, true);
     const y = this.H - height - Math.max(12, this.safe.bottom);
     container.y = y;
     container.setDepth(50);
     // It floats over the controls, so a tap dismisses it instead of pressing a hidden button.
+    // Holding it keeps it up; letting go starts a fresh hold.
     const hit = this.add.zone(0, 0, w, height).setOrigin(0).setInteractive();
-    hit.on('pointerup', () => {
-      this.speakerAt = 0;
-      container.destroy();
+    hit.on('pointerdown', () => {
+      this.heldAt = performance.now();
+      this.speakerAt = this.heldAt - 300; // a rebuild while held keeps it up
+      this.tweens.killTweensOf(container);
+      container.setAlpha(1);
+      container.y = y;
     });
+    // A quick tap dismisses it; letting go after a hold starts a fresh hold.
+    hit.on('pointerup', () => this.heldAt && this.releaseHold(performance.now() - this.heldAt <= 350));
+    hit.on('pointerout', () => this.releaseHold(false));
     container.add(hit);
     this.speakerLayer = container;
     if (age < 300) {
@@ -423,7 +497,38 @@ export class BattleScene extends BaseScene {
       container.y = y + 12;
       this.tweens.add({ targets: container, alpha: 1, y, duration: 320, ease: 'Cubic.easeOut' });
     }
-    this.tweens.add({ targets: container, alpha: 0, y: y + 6, duration: 800, delay: Math.max(0, 3200 - age) });
+    if (this.heldAt) return; // still under the player's finger after a rebuild
+    this.tweens.add({
+      targets: container,
+      alpha: 0,
+      y: y + 6,
+      duration: 800,
+      delay: Math.max(0, hold - age),
+      onComplete: () => {
+        container.destroy();
+        if (this.speakerLayer === container) this.speakerLayer = null;
+      },
+    });
+  }
+
+  /** Lets go of a held card: dismiss it (a tap) or give it a fresh hold, then show any waiting line. */
+  private releaseHold(dismiss: boolean) {
+    if (!this.heldAt) return;
+    this.heldAt = 0;
+    if (dismiss) {
+      this.speakerAt = 0;
+      this.speakerLayer?.destroy();
+      this.speakerLayer = null;
+    } else {
+      this.speakerAt = performance.now() - 300; // skip the entrance
+      this.drawSpeaker();
+    }
+    this.pumpSpeaker();
+  }
+
+  /** A finger lifted anywhere still releases a held card. */
+  private onPointerUp() {
+    this.releaseHold(false);
   }
 
   private speak(res: TurnResult, kept = false) {
@@ -440,6 +545,7 @@ export class BattleScene extends BaseScene {
   /**
    * Shows a talking head. Lines with a `minGap` wait their turn until the previous line
    * has been up that long (shout, then advice); an immediate line (a move) drops stale ones.
+   * Only the turn's shout and advice use a gap, so the history treats them as turn-start lines.
    */
   private say(info: SpeakerInfo, minGap = 0) {
     if (minGap === 0) {
@@ -457,10 +563,18 @@ export class BattleScene extends BaseScene {
     if (!next) return;
     const show = () => {
       this.speakerTimer = 0;
+      // The player is holding the current line: the next one waits until they let go.
+      if (this.heldAt) return;
       this.speakQueue.shift();
       this.speaker = next.info;
       this.speakerAt = performance.now();
-      if (this.board) this.drawSpeaker();
+      this.said.add(next.info, this.battle.log.length, next.gap > 0);
+      if (this.board) {
+        this.drawSpeaker();
+        // Phones keep the last line in the panel.
+        const L = this.layout();
+        if (!L.wide || L.short) this.drawPanel();
+      }
       this.pumpSpeaker();
     };
     const wait = next.gap - (performance.now() - this.speakerAt);
@@ -543,9 +657,19 @@ export class BattleScene extends BaseScene {
   /**
    * XCOM-style moment: when a real piece (not a pawn) is captured, a cinematic band
    * sweeps across the board with the capturer's portrait. Doesn't block play.
+   * Returns whether one was queued.
    */
   private closeUp(m: Move): boolean {
     if (!this.board || !m.captured || m.captured === 'p' || matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+    // Name the capturer now: by the time the cue shows, a later move may have taken it.
+    const captured = m.captured;
+    const name = m.color === 'w' ? this.names.get(m.to) : undefined;
+    this.cues.push({ hold: CLOSE_UP_STAY + CLOSE_UP_FADE, show: () => this.drawCloseUp(m, captured, name) });
+    return true;
+  }
+
+  private drawCloseUp(m: Move, captured: PieceSymbol, name: string | undefined) {
+    if (!this.board) return;
     const L = this.layout();
     const bw = L.board.w;
     const bh = Math.min(150, this.board.height * 0.36);
@@ -561,9 +685,8 @@ export class BattleScene extends BaseScene {
     const pc = this.add.container(0, 0);
     portrait(this, x + 18, y + 10, pw, bh - 20, m.promotion ?? m.piece, ally ? 'ally' : 'foe', this.launch.faction, pc);
     c.add(pc);
-    const name = this.names.get(m.to);
     const who = ally ? (name ?? `Your ${pieceName(m.piece)}`) : `Their ${pieceName(m.piece)}`;
-    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes ${ally ? 'their' : 'your'} ${pieceName(m.captured)}!`, {
+    const t = this.text(x + pw + 34, y + bh / 2, `${who}\ntakes ${ally ? 'their' : 'your'} ${pieceName(captured)}!`, {
       fontFamily: SERIF,
       fontSize: `${Math.round(Math.min(30, bh * 0.2))}px`,
       fontStyle: 'bold',
@@ -582,22 +705,19 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: c, alpha: 1, duration: 120 });
     this.tweens.add({ targets: pc, x: 0, duration: 320, ease: 'Back.easeOut' });
     this.tweens.add({ targets: t, x: x + pw + 34, duration: 360, ease: 'Cubic.easeOut' });
-    this.tweens.add({ targets: c, alpha: 0, duration: 260, delay: 1000, onComplete: () => c.destroy() });
-    return true;
+    this.tweens.add({ targets: c, alpha: 0, duration: CLOSE_UP_FADE, delay: CLOSE_UP_STAY, onComplete: () => c.destroy() });
   }
 
   /** Floats a capture's or promotion's point change over its square: gold when you gain, red when you lose. */
-  private floatPoints(sq: Square, delta: number, delay = 0) {
+  private floatPoints(sq: Square, delta: number) {
     const label = swingLabel(delta);
-    if (!this.board || !label) return;
-    if (delay > 0) {
-      // Wait for the capture close-up to clear, so the label doesn't cover its text.
-      const b = this.battle;
-      const plies = b.chess.history().length;
-      // Skip it if the battle restarted or the move was rewound meanwhile.
-      this.time.delayedCall(delay, () => this.battle === b && b.chess.history().length >= plies && this.floatPoints(sq, delta));
-      return;
-    }
+    if (!label) return;
+    // It waits behind any close-up so it doesn't cover the close-up's text, but holds nothing up.
+    this.cues.push({ hold: 0, show: () => this.drawPoints(sq, delta, label) });
+  }
+
+  private drawPoints(sq: Square, delta: number, label: string) {
+    if (!this.board) return;
     const p = this.board.squareCenter(sq);
     const t = this.text(p.x, p.y, label, {
       fontFamily: SANS,
@@ -612,12 +732,11 @@ export class BattleScene extends BaseScene {
     this.tweens.add({ targets: t, y: still ? p.y : p.y - 44, alpha: 0, duration: 900, delay: 500, ease: 'Cubic.easeIn', onComplete: () => t.destroy() });
   }
 
-  private showBanner(text: string, kind: 'ally' | 'foe', delay = 0) {
-    if (delay > 0) {
-      const b = this.battle;
-      window.setTimeout(() => this.sys.isActive() && this.battle === b && this.showBanner(text, kind), delay);
-      return;
-    }
+  private showBanner(text: string, kind: 'ally' | 'foe') {
+    this.cues.push({ hold: BANNER_POP + BANNER_SETTLE + BANNER_STAY + BANNER_FADE, show: () => this.drawBanner(text, kind) });
+  }
+
+  private drawBanner(text: string, kind: 'ally' | 'foe') {
     if (!this.board) return;
     const L = this.layout();
     const cx = L.board.x + L.board.w / 2;
@@ -636,9 +755,9 @@ export class BattleScene extends BaseScene {
     this.tweens.chain({
       targets: t,
       tweens: [
-        { scale: 1.08, alpha: 1, duration: 220, ease: 'Back.easeOut' },
-        { scale: 1, duration: 120 },
-        { alpha: 0, y: cy - 28, duration: 420, delay: 650, ease: 'Cubic.easeIn' },
+        { scale: 1.08, alpha: 1, duration: BANNER_POP, ease: 'Back.easeOut' },
+        { scale: 1, duration: BANNER_SETTLE },
+        { alpha: 0, y: cy - 28, duration: BANNER_FADE, delay: BANNER_STAY, ease: 'Cubic.easeIn' },
       ],
       onComplete: () => t.destroy(),
     });
@@ -683,6 +802,7 @@ export class BattleScene extends BaseScene {
   private async playerMove(from: Square, to: Square, promotion?: PieceSymbol) {
     const b = this.battle;
     const sess = this.session;
+    const token = this.aiToken;
     const gainedBefore = b.materialGained();
     const balanceBefore = materialBalance(b.chess, b.player);
     const res = b.playerMove({ from, to, promotion });
@@ -691,19 +811,19 @@ export class BattleScene extends BaseScene {
     this.statusLine = this.describe(res, 'you');
     this.trackNames(res.move);
     await this.animate(res);
-    if (this.battle !== b || this.session !== sess) return; // restarted or left meanwhile
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return; // rewound, restarted or left meanwhile
     const closeUp = this.closeUp(res.move);
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, closeUp ? 1150 : 0);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     // A fork banner only shows when the engine agrees it wins something.
     const forkReal = await forkCheck;
-    if (this.battle !== b || this.session !== sess) return;
+    if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const tactics = forkReal ? res.tactics : res.tactics.filter((t) => t !== 'fork');
     this.speak({ ...res, tactics });
     const tag = tactics.find((t) => PLAYER_BANNER[t]);
     if (tag === 'fork' && this.launch.tacticGold) {
       this.tacticGold += TACTIC_GOLD;
-      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally', closeUp ? 1150 : 0);
-    } else if (tag && !(tag === 'capture' && closeUp)) this.showBanner(PLAYER_BANNER[tag]!, 'ally', closeUp ? 1150 : 0);
+      this.showBanner(`Fork! +${TACTIC_GOLD}g`, 'ally');
+    } else if (tag && !(tag === 'capture' && closeUp)) this.showBanner(PLAYER_BANNER[tag]!, 'ally');
     this.refresh();
     this.checkFinished();
     if (b.isEnemyTurn()) void this.enemyTurn();
@@ -771,13 +891,13 @@ export class BattleScene extends BaseScene {
     await this.animate(res);
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const enemyCloseUp = this.closeUp(res.move);
-    this.floatPoints(res.move.to, b.materialGained() - gainedBefore, enemyCloseUp ? 1150 : 0);
+    this.floatPoints(res.move.to, b.materialGained() - gainedBefore);
     const forkReal = await enemyFork;
     if (token !== this.aiToken || this.battle !== b || this.session !== sess) return;
     const shown = forkReal ? res : { ...res, tactics: res.tactics.filter((t) => t !== 'fork') };
     this.speak(shown, kept);
     const tag = shown.tactics.find((t) => ENEMY_BANNER[t]);
-    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe', enemyCloseUp ? 1150 : 0);
+    if (tag) this.showBanner(ENEMY_BANNER[tag]!, 'foe');
     else if (res.move.captured && !enemyCloseUp) this.showBanner('Piece lost', 'foe');
     else if (shout && !kept) this.showBanner('Foiled!', 'ally');
     this.refresh();
@@ -832,10 +952,10 @@ export class BattleScene extends BaseScene {
     const sess = this.session;
     const token = this.aiToken;
     const review = this.review(b, token);
-    // Let the last banner land (and the review finish, up to a few seconds) before the dialog covers the board.
+    // Let the last close-up and banner play out (and the review finish, up to a few seconds) before the dialog covers the board.
     const minWait = new Promise((r) => setTimeout(r, won ? 1800 : 900));
     const capped = Promise.race([review, new Promise<ReviewResult>((r) => setTimeout(() => r({ ok: false }), 6000))]);
-    void Promise.all([minWait, capped]).then(([, result]) => {
+    void Promise.all([minWait, this.cues.whenIdle(), capped]).then(([, , result]) => {
       if (this.battle !== b || this.session !== sess || !this.sys.isActive() || !this.finished || token !== this.aiToken) return;
       const html = view.html.replace(REVIEW_SLOT, reviewHtml(result, won, b.reason));
       showModal({ eyebrow: view.eyebrow, title: view.title, html, tone: won ? 'won' : 'lost', buttons: view.buttons, wide: true });
@@ -915,9 +1035,16 @@ export class BattleScene extends BaseScene {
     this.finished = false;
     this.pendingView = null; // a rewind undoes the defeat, so nothing is charged
     b.rewind();
+    // Lines from the undone moves go, and stale ones still waiting aren't shown.
+    clearTimeout(this.speakerTimer);
+    this.speakerTimer = 0;
+    this.speakQueue = [];
+    this.heldAt = 0;
+    this.said.rewindTo(b.log.length);
     this.restoreNames();
     this.board?.rewindEffect();
     this.statusLine = 'Time folds back. Try a different move.';
+    this.cues.clear(); // what was waiting belongs to the moves just undone
     this.showBanner('Rewind', 'ally');
     this.refresh();
     void this.startPlayerTurn();
@@ -942,6 +1069,101 @@ export class BattleScene extends BaseScene {
     this.pieceStyle = this.pieceStyle === 'tokens' ? 'classic' : 'tokens';
     store.set('pieceStyle', this.pieceStyle);
     this.rebuild();
+  }
+
+  /** The last line said, in the panel: portrait, name and the line (tap for the history). */
+  private saidStrip(x: number, y: number, w: number, h: number, info: SpeakerInfo) {
+    const c = this.add.container(x, y);
+    const ally = info.side === 'ally';
+    const g = this.add.graphics();
+    g.fillStyle(C.surface, 0.92).fillRoundedRect(0, 0, w, h, 10);
+    g.lineStyle(1, C.line, 1).strokeRoundedRect(0.5, 0.5, w - 1, h - 1, 10);
+    g.fillStyle(ally ? C.gold : C.red, 1).fillRoundedRect(0, 0, 4, h, { tl: 10, bl: 10, tr: 0, br: 0 });
+    c.add(g);
+    const pw = 36;
+    portrait(this, 10, 7, pw, h - 14, info.type, info.side, this.launch.faction, c);
+    const tx = 10 + pw + 10;
+    const more = this.text(w - 12, h / 2, 'All ›', { fontFamily: SANS, fontSize: '12px', color: CSS.muted }).setOrigin(1, 0.5);
+    const tw = w - tx - more.width - 22;
+    const who = this.text(tx, 8, info.name.toUpperCase(), { fontFamily: SANS, fontSize: '10px', color: ally ? CSS.gold : CSS.red, letterSpacing: 0.6 });
+    if (who.width > tw) who.setScale(tw / who.width, 1);
+    const line = this.text(tx, 22, info.line, { fontFamily: SERIF, fontSize: '14px', color: CSS.ink, wordWrap: { width: tw, useAdvancedWrap: true }, lineSpacing: -1 });
+    line.setMaxLines(2);
+    if (line.getWrappedText().length > 2) line.setText(this.clip(line, info.line, 2));
+    c.add([who, line, more]);
+    this.tapZone(c, w, h, () => this.showHistory());
+    return c;
+  }
+
+  /** A small portrait chip for the last line said, when the panel has no room for the strip. */
+  private saidChip(x: number, y: number, s: number, info: SpeakerInfo) {
+    const c = this.add.container(x, y);
+    const g = this.add.graphics();
+    g.fillStyle(C.surface2, 1).fillRoundedRect(0, 0, s, s, 10);
+    g.lineStyle(1, C.line, 1).strokeRoundedRect(0.5, 0.5, s - 1, s - 1, 10);
+    c.add(g);
+    portrait(this, 5, 4, s - 10, s - 8, info.type, info.side, this.launch.faction, c);
+    // A speech badge says "this is what they said".
+    const badge = this.add.graphics();
+    badge.fillStyle(C.gold, 1).fillCircle(s - 4, 4, 9).fillTriangle(s - 10, 9, s - 4, 9, s - 13, 15);
+    c.add([badge, this.text(s - 4, 3, '…', { fontFamily: SANS, fontSize: '12px', fontStyle: 'bold', color: CSS.goldInk }).setOrigin(0.5)]);
+    this.tapZone(c, s, s, () => this.showHistory());
+    return c;
+  }
+
+  /** Makes a container a button: a press and release without dragging runs `onTap`. */
+  private tapZone(c: Phaser.GameObjects.Container, w: number, h: number, onTap: () => void) {
+    const zone = this.add.zone(0, 0, w, h).setOrigin(0).setInteractive({ useHandCursor: true });
+    let pressed = false;
+    zone.on('pointerdown', () => (pressed = true));
+    zone.on('pointerout', () => (pressed = false));
+    zone.on('pointerup', () => {
+      if (!pressed) return;
+      pressed = false;
+      onTap();
+    });
+    c.add(zone);
+  }
+
+  /** Cuts `full` to fit `lines` lines of `t`'s wrap width, ending in "…". */
+  private clip(t: Phaser.GameObjects.Text, full: string, lines: number) {
+    const words = full.split(' ');
+    let lo = 0;
+    let hi = words.length;
+    while (lo < hi) {
+      const mid = Math.ceil((lo + hi) / 2);
+      t.setText(`${words.slice(0, mid).join(' ')}…`);
+      if (t.getWrappedText().length <= lines) lo = mid;
+      else hi = mid - 1;
+    }
+    return `${words.slice(0, lo).join(' ')}…`;
+  }
+
+  /** Everything said this battle, oldest first, scrolled to the newest. */
+  private showHistory() {
+    let heading = '';
+    const rows = this.said.all
+      .map(({ info, plies }) => {
+        const ally = info.side === 'ally';
+        // A heading each time the move changes: "Start", "Move 1"…
+        const label = moveLabel(plies);
+        const head = label === heading ? '' : `<p class="said-move">${label}</p>`;
+        heading = label;
+        return `${head}<div class="dlg ${ally ? 'ally' : 'foe'}">
+          <div class="dlg-pic" style="${portraitStyle(info.type, ally ? 'ally' : this.launch.faction)}"></div>
+          <div><p class="who ${ally ? '' : 'foe'}">${esc(info.name)}</p><p>${esc(info.line)}</p></div>
+        </div>`;
+      })
+      .join('');
+    showModal({
+      eyebrow: this.battle.scenario.title,
+      title: 'What was said',
+      html: `<div class="said">${rows || '<p class="muted">Nobody has said anything yet.</p>'}</div>`,
+      buttons: [{ label: 'Back to the battle', kind: 'primary', onClick: () => {} }],
+      onDismiss: () => {},
+    });
+    const d = document.querySelector<HTMLElement>('#overlay .ov-dialog');
+    if (d) d.scrollTop = d.scrollHeight;
   }
 
   private showLesson() {

@@ -10,7 +10,9 @@ Play it: https://unformedideas.com/chess-rpg/
 npm install
 npm run dev              # http://localhost:5173
 npm test                 # rules, campaign, economy, bounty, boss and AI tests
-npm run verify:battles   # engine-backed playtests of every battle and the boss (a few minutes)
+npm run check            # type-check, build and unit tests (under a minute)
+npm run ci               # check, plus the engine playtests your changes can affect (--full for all, --plan to preview)
+npm run verify:battles   # engine-backed playtests of every battle and the boss (15 minutes or more)
 npm run build            # static site in dist/
 npm run puzzles          # rebuild the bounty puzzles from the Lichess database (downloads ~250 MB to data/raw/)
 ```

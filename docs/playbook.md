@@ -56,7 +56,7 @@ Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. 
 
 ## Verification bars
 
-`npm run verify:battles` plays every battle and the boss many times with the real enemy AI, the faction habit included, using simulated players (`scripts/verify/`). It takes a few minutes. A battle passes when:
+`npm run verify:battles` plays every battle and the boss many times with the real enemy AI, the faction habit included, using simulated players (`scripts/verify/`). The battles take about 8 minutes and the boss longer, so `npm run ci` runs each only when a change can affect it. A battle passes when:
 
 - A **strong** player (Stockfish, aware of the habit) wins at least 90% on Gentle and on Brave, and earns each bonus goal in at least half its wins.
 - A **careless** player (a random pick from a shallow search's top five) wins at most 40%.
@@ -65,12 +65,12 @@ Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. 
 
 The boss passes when, with each starter's typical army at the budget, a strong player loses (checkmate or draw) at most 15% of games and wins at least 60%. A boss is a full game, so it gets a looser bar than a battle; games that hit the simulator's 80-move cap count as unfinished, not lost (`scripts/verify/boss.verify.test.ts`). Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
 
-When a new rule changes how battles end (as material goals once did), re-run verification for every Region, not just the new one.
+When a new rule changes how battles end (as material goals once did), re-run verification for every Region, not just the new one (`npm run ci -- --full`).
 
 ## Checks before each commit
 
-- `npm test` passes and `npx tsc --noEmit` is clean.
-- `npm run verify:battles` passes if any battle, rule or AI changed.
+- `npm run ci` passes. It always runs the quick checks (`npm run check`: type-check, build and unit tests, under a minute). Then it runs only the engine checks your branch can affect: it follows each check's imports, so a change to a battle, a rule, the AI or anything they import reruns it, and a screen, art or docs change skips it. `npm run ci -- --plan` shows what would run, and why.
+- `npm run ci -- --full` runs every engine check. Use it before a Region ships, and when a new rule changes how battles end.
 - Browser check of what changed, at these sizes:
 
 | Size | Why |

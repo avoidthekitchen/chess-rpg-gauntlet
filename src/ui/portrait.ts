@@ -1,8 +1,14 @@
 import type { Color, PieceSymbol } from 'chess.js';
 import type Phaser from 'phaser';
 import type { BaseScene } from './screen';
-import { FRAMING, portraitKey, tokenPortraitKey, type Faction, type Side, type SpeakerInfo } from './speaker';
+import { FRAMING, pieceName, portraitKey, tokenPortraitKey, type Faction, type Side, type SpeakerInfo } from './speaker';
 import { C, CSS, SANS, SERIF } from './theme';
+
+/** Inline CSS that frames a figurine's head in a small HTML portrait (dialogue in the overlay). */
+export function portraitStyle(type: PieceSymbol, side: 'ally' | Faction) {
+  const f = FRAMING[type] ?? { size: 1.3, x: 0.5, y: 0.04 };
+  return `background-image:url('${import.meta.env.BASE_URL}sprites/${pieceName(type)}-${side}.webp');background-size:${f.size * 100}%;background-position:${f.x * 100}% ${f.y * 100}%`;
+}
 
 /**
  * Draws a tall portrait of a piece into a box: the detailed figurine framed on its head

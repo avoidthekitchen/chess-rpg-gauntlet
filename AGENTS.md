@@ -6,7 +6,7 @@ Pawnshire is a storybook chess tactics RPG (Phaser 4 + TypeScript + Vite, chess.
 
 - **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Faction habits change what the enemy chooses or tells you, never how pieces move.
 - **`src/game` has no screen code.** Rules, campaign, economy and content live there with unit tests; scenes talk to them through small interfaces.
-- **Every new rule gets a test, and every battle gets verified** (`npm run verify:battles`) to the bars in the [playbook](docs/playbook.md#verification-bars).
+- **Every new rule gets a test, and every battle is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). `npm run ci` before each PR reruns the engine playtests whenever a change can reach them; `npm run ci -- --full` reruns all of them before a Region ships.
 - **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), numbers from [Tuning values](docs/design/systems.md#tuning-values).
 - **Design calls the docs don't settle** go in [decisions](docs/design/decisions.md): a decision-log row, or an open TODO when it needs the owner.
 
@@ -16,7 +16,10 @@ Pawnshire is a storybook chess tactics RPG (Phaser 4 + TypeScript + Vite, chess.
 npm run dev              # http://localhost:5173 (?loop=timeout keeps it running in a background tab)
 npm test                 # unit tests
 npx tsc --noEmit         # type-check
-npm run verify:battles   # engine playtests of every battle and the boss (a few minutes)
+npm run check            # type-check, build and unit tests (under a minute)
+npm run ci               # check, plus only the engine playtests your branch can affect
+npm run ci -- --full     # check, plus every engine playtest (before a Region ships)
+npm run verify:battles   # engine playtests of every battle and the boss (15 minutes or more)
 npm run puzzles          # rebuild bounty puzzles from the Lichess database (download goes to data/raw/)
 npm run deploy           # build, stage and deploy to Cloudflare
 ```

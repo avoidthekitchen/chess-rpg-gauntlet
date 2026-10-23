@@ -1,7 +1,9 @@
 import { Chess } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Engine, parseInfo } from './engine';
-import { fallbackMove, pickCandidate, raiderMove } from './enemy';
+import type { Candidate } from './engine';
+import { candidateOdds, chooseEnemyMove, fallbackMove, pickCandidate, raiderMove, raidBonus, type Rng } from './enemy';
+import { planIfPassed } from './intent';
 
 describe('pickCandidate', () => {
   const cands = [
@@ -93,5 +95,204 @@ describe('Engine', () => {
     // Later searches return at once instead of queueing behind the stuck one.
     expect(await e.analyse('4k3/8/8/8/8/8/8/4K3 w - - 0 1', 8, 1)).toEqual([]);
     expect(onFailure).toHaveBeenCalledTimes(1);
+  });
+});
+
+/** A tiny seeded PRNG so sampling tests are repeatable. */
+function mulberry32(seed: number): Rng {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+const BRAVE = { depth: 4, multiPv: 3, maxLoss: 120 };
+const GENTLE = { depth: 4, multiPv: 3, maxLoss: 300 };
+const pOf = (odds: { uci: string; p: number }[], uci: string) => odds.find((o) => o.uci === uci)?.p ?? 0;
+
+describe('candidateOdds', () => {
+  // The best move, and the shouted move 100 cp worse.
+  const two: Candidate[] = [
+    { uci: 'c6e5', score: 0 },
+    { uci: 'c6d4', score: -100 },
+  ];
+  const shout = (uci: string) => (uci === 'c6d4' ? 3 : 1);
+
+  it('gives a shouted move about 37% on Brave and 61% on Gentle', () => {
+    expect(pOf(candidateOdds(two, 120, shout), 'c6d4')).toBeCloseTo(0.37, 2);
+    expect(pOf(candidateOdds(two, 300, shout), 'c6d4')).toBeCloseTo(0.61, 2);
+  });
+
+  it('is about 34% on Gentle with no bonus', () => {
+    expect(pOf(candidateOdds(two, 300), 'c6d4')).toBeCloseTo(0.34, 2);
+  });
+
+  it('adds up to 1', () => {
+    const total = candidateOdds(two, 300, shout).reduce((a, o) => a + o.p, 0);
+    expect(total).toBeCloseTo(1, 10);
+  });
+
+  it('makes the bonus move likelier than without it', () => {
+    expect(pOf(candidateOdds(two, 120, shout), 'c6d4')).toBeGreaterThan(pOf(candidateOdds(two, 120), 'c6d4'));
+  });
+
+  it('never gives a move outside the window any chance, bonus or not', () => {
+    const far: Candidate[] = [...two, { uci: 'c6a5', score: -500 }];
+    const odds = candidateOdds(far, 120, (uci) => (uci === 'c6a5' ? 3 : 1));
+    expect(odds.map((o) => o.uci)).not.toContain('c6a5');
+    for (const seed of [1, 2, 3]) expect(pickCandidate(far, 120, mulberry32(seed), () => 3)).not.toBe('c6a5');
+  });
+
+  it('caps the combined bonus at x3', () => {
+    const capped = pOf(candidateOdds(two, 120, (uci) => (uci === 'c6d4' ? 9 : 1)), 'c6d4');
+    expect(capped).toBeCloseTo(pOf(candidateOdds(two, 120, shout), 'c6d4'), 10);
+    expect(capped).toBeCloseTo(0.37, 2);
+  });
+
+  it('ignores bonuses below 1', () => {
+    expect(pOf(candidateOdds(two, 120, () => 0.2), 'c6d4')).toBeCloseTo(pOf(candidateOdds(two, 120), 'c6d4'), 10);
+  });
+});
+
+describe('pickCandidate with a bonus', () => {
+  it('samples at the rate the odds say', () => {
+    const two: Candidate[] = [
+      { uci: 'c6e5', score: 0 },
+      { uci: 'c6d4', score: -100 },
+    ];
+    const rng = mulberry32(42);
+    let hits = 0;
+    for (let i = 0; i < 2000; i++) if (pickCandidate(two, 120, rng, (u) => (u === 'c6d4' ? 3 : 1)) === 'c6d4') hits++;
+    expect(Math.abs(hits / 2000 - 0.37)).toBeLessThan(0.05);
+  });
+});
+
+describe('raidBonus', () => {
+  it('is x3 for a move onto an unguarded village', () => {
+    const fen = '4k3/8/2n5/8/8/8/8/4K3 b - - 0 1';
+    expect(new Chess(fen).moves({ verbose: true }).some((m) => m.from + m.to === 'c6d4')).toBe(true);
+    expect(raidBonus(fen, ['d4'])('c6d4')).toBe(3);
+  });
+
+  it('is 1 for a move that adds no village pressure', () => {
+    // The knight already eyes d4; hopping to e5 gives that up.
+    expect(raidBonus('4k3/8/2n5/8/8/8/8/4K3 b - - 0 1', ['d4'])('c6e5')).toBe(1);
+  });
+
+  it('is 2 for a move that adds one point of pressure', () => {
+    const fen = '1n2k3/8/8/8/8/8/8/4K3 b - - 0 1';
+    const bonus = raidBonus(fen, ['d4']);
+    expect(bonus('b8c6')).toBe(2); // now attacks d4
+    expect(bonus('b8a6')).toBe(1); // doesn't
+  });
+
+  it('is 1 for everything when there are no villages, and for illegal moves', () => {
+    expect(raidBonus('4k3/8/2n5/8/8/8/8/4K3 b - - 0 1', [])('c6d4')).toBe(1);
+    expect(raidBonus('4k3/8/2n5/8/8/8/8/4K3 b - - 0 1', ['d4'])('a1a2')).toBe(1);
+  });
+});
+
+describe('chooseEnemyMove with a fake engine', () => {
+  // A white pawn keeps K+N v K from being an instant draw after Nd4.
+  const FEN = '4k3/8/2n5/8/8/8/P7/4K3 b - - 0 1';
+  const standard = { enemy: { name: 'Test', personality: 'standard' as const }, villages: [] };
+  const raiderScenario = { enemy: { name: 'Test', personality: 'raider' as const }, villages: ['d4' as const] };
+
+  /** An engine that answers from a table of fen -> candidates and remembers what it was asked. */
+  function fake(table: Record<string, Candidate[]>) {
+    const asked: string[] = [];
+    const engine = {
+      analyse: async (fen: string) => {
+        asked.push(fen);
+        return table[fen] ?? [];
+      },
+    } as unknown as Engine;
+    return { engine, asked };
+  }
+
+  const best = { uci: 'c6e5', score: 0 };
+
+  it('never plays a shouted move outside the window', async () => {
+    const { engine } = fake({ [FEN]: [best, { uci: 'c6d4', score: -500 }] });
+    for (let seed = 1; seed <= 200; seed++) {
+      expect(await chooseEnemyMove({ fen: FEN, scenario: standard }, engine, BRAVE, mulberry32(seed), { shout: 'c6d4' })).toBe('c6e5');
+    }
+  });
+
+  describe('a shouted move missing from the engine list', () => {
+    // After Nd4 it's White's turn; the reply's score is from White's side, so score 50 means Nd4 is worth -50 to Black.
+    const after = new Chess(FEN);
+    after.move('Nd4');
+    const reply = (score: number) => ({ [FEN]: [best], [after.fen()]: [{ uci: 'e1e2', score }] });
+
+    it('is scored with a second search and can be picked when inside the window', async () => {
+      const { engine, asked } = fake(reply(50));
+      const picks = new Set<string>();
+      for (let seed = 1; seed <= 100; seed++) {
+        picks.add(await chooseEnemyMove({ fen: FEN, scenario: standard }, engine, BRAVE, mulberry32(seed), { shout: 'c6d4' }));
+      }
+      expect(asked).toContain(after.fen());
+      expect(picks).toEqual(new Set(['c6e5', 'c6d4']));
+    });
+
+    it('is never picked when the search puts it outside the window', async () => {
+      const { engine, asked } = fake(reply(500));
+      for (let seed = 1; seed <= 100; seed++) {
+        expect(await chooseEnemyMove({ fen: FEN, scenario: standard }, engine, BRAVE, mulberry32(seed), { shout: 'c6d4' })).toBe('c6e5');
+      }
+      expect(asked).toContain(after.fen());
+    });
+
+    it('is not searched when the shout is illegal', async () => {
+      const { engine, asked } = fake({ [FEN]: [best] });
+      await chooseEnemyMove({ fen: FEN, scenario: standard }, engine, BRAVE, mulberry32(1), { shout: 'a1a2' });
+      expect(asked).toEqual([FEN]);
+    });
+  });
+
+  it('keeps a raider inside the window even when the village burn is much worse', async () => {
+    const { engine } = fake({ [FEN]: [best, { uci: 'c6d4', score: -500 }] });
+    for (let seed = 1; seed <= 200; seed++) {
+      expect(await chooseEnemyMove({ fen: FEN, scenario: raiderScenario }, engine, BRAVE, mulberry32(seed))).toBe('c6e5');
+    }
+  });
+
+  it('caps a shouting raider whose shout is also a village burn at x3', async () => {
+    const { engine } = fake({ [FEN]: [best, { uci: 'c6d4', score: -100 }] });
+    const rng = mulberry32(7);
+    let hits = 0;
+    for (let i = 0; i < 2000; i++) {
+      if ((await chooseEnemyMove({ fen: FEN, scenario: raiderScenario }, engine, BRAVE, rng, { shout: 'c6d4' })) === 'c6d4') hits++;
+    }
+    // x3 (raid) times x3 (shout) is capped at x3, so about 37%, not 64%.
+    expect(Math.abs(hits / 2000 - 0.37)).toBeLessThan(0.05);
+  });
+
+  it('still uses the raider village plan with no engine', async () => {
+    expect(await chooseEnemyMove({ fen: FEN, scenario: raiderScenario }, null, BRAVE, () => 0)).toBe('c6d4');
+  });
+
+  it('is not changed by asking planIfPassed first (same seed)', async () => {
+    // After 1.e4, Black to move. The engine offers the first three legal moves of whichever side is up.
+    const start = new Chess();
+    start.move('e4');
+    const engine = {
+      analyse: async (fen: string): Promise<Candidate[]> =>
+        new Chess(fen)
+          .moves({ verbose: true })
+          .slice(0, 3)
+          .map((m, i) => ({ uci: m.from + m.to + (m.promotion ?? ''), score: -i * 40 })),
+    } as unknown as Engine;
+    const view = { fen: start.fen(), scenario: standard };
+    for (let seed = 1; seed <= 30; seed++) {
+      const alone = await chooseEnemyMove(view, engine, GENTLE, mulberry32(seed));
+      await planIfPassed(view, engine, GENTLE, mulberry32(seed + 1000));
+      const after = await chooseEnemyMove(view, engine, GENTLE, mulberry32(seed));
+      expect(after).toBe(alone);
+    }
   });
 });

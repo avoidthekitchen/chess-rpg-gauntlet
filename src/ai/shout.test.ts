@@ -1,17 +1,6 @@
 import { Chess } from 'chess.js';
 import { describe, expect, it } from 'vitest';
-import { nullMoveFen, planShout, shoutLine, shoutStands } from './shout';
-
-describe('nullMoveFen', () => {
-  it('passes the turn and drops the en passant square', () => {
-    const fen = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2';
-    expect(nullMoveFen(fen)).toBe('rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2');
-  });
-
-  it('refuses when the side to move is in check', () => {
-    expect(nullMoveFen('4k3/8/8/8/8/8/4r3/4K3 w - - 0 1')).toBeNull();
-  });
-});
+import { planShout, shoutLine, shoutStands } from './shout';
 
 describe('shoutStands', () => {
   // Black knight on c6 announced Nd4. White to move first, then it's Black's turn.

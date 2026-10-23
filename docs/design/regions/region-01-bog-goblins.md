@@ -131,7 +131,7 @@ A simulated "greedy" player (always grabs the biggest capture) wins Trouble in t
 
 ## Playtest
 
-Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes. Watch where they get stuck or bored, and whether they ask for Region 2. Record findings here.
+Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes; the planned warm-ups add about a minute per battle. Watch where they get stuck or bored, and whether they ask for Region 2. Once the guided path is built, also watch whether players who know an idea skip its warm-up quickly, and whether the try positions feel too easy or too hard. Record findings here.
 
 ## Original prototype scope
 

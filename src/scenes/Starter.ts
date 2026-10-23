@@ -1,6 +1,6 @@
 import { STARTERS, type StarterType } from '../game/campaign';
 import type { DifficultyId } from '../game/difficulty';
-import { portraitStyle } from '../flow';
+import { portraitStyle } from '../ui/portrait';
 import { startCampaign } from '../save';
 import { esc, showModal } from '../ui/overlay';
 import { BaseScene } from '../ui/screen';

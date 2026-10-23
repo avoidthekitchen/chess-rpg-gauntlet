@@ -78,5 +78,11 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 | Rewind | Undo your last move and the enemy's reply; limited charges in battles |
 | Bounty | A real Lichess puzzle on the town's bounty board that pays gold |
 | Bonus goal | An optional goal in a battle that pays extra gold once (shown as a star on the map) |
+| Warm-up | The short lesson that opens a battle node: your companion shows one position, then you try one ([Guided path](campaign.md#guided-path)) |
+| Main path | A Region's required battles, the headline themes in teaching order |
+| Branch | A battle off the main path that you choose: a revisit, a mate or an endgame |
+| Library | The town building where you replay warm-ups and read tip cards (replaces the academy) |
+| Tip card | A one-screen explanation of a puzzle-only theme, shown when it first reaches the bounty board |
+| Refresher | A bounty that brings back a theme you got wrong in a battle |
 | Boss budget | The most points of army you may bring to a boss duel |
 | Gauntlet | The replay mode that unlocks after the campaign |

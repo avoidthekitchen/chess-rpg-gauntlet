@@ -4,7 +4,7 @@
 
 ## Design status
 
-Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
+Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. A third is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |
 | --- | --- |
@@ -21,6 +21,8 @@ Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-r
 ## AI habit: shouting goblins
 
 Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`). It's drawn as a green arrow and spoken by the piece's portrait. If the announced move is still legal after your move, they must play it ("Told you I would!"). If you made it illegal, a "Foiled!" banner shows. A rewind hears the same shout again.
+
+**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move. The shouted move gets a capped weight bonus in the enemy's [one weighted pick](../systems.md#ai-habits-by-faction), so goblins usually keep a plan that's still fine and usually drop one that's become bait, but players can't count on either. When they switch because you guarded or moved the target, they say so ("Oi! You've guarded it!"). The rule is introduced as "They shout their plan. Your move can change it.", and the companion adds that the arrow is one plan: other threats still count. A rewind still hears the same shout. The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
 
 It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins are committed, you can also set traps, such as guarding the piece they promised to take. That makes battles feel like Into the Breach turns, where each turn is a small puzzle.
 
@@ -57,9 +59,35 @@ Lineups are set by the scenario: your hired pieces stand in as named characters 
 
 ## Academy
 
-One lesson, taught by Sage Ollie: **Rook and queen checkmates**, as two practice battles (The Queen's Net, The Rook's Box) with unlimited undo against a lone king that defends perfectly. The first clear of each pays 10g (`src/game/academy.ts`).
+As built, one lesson, taught by Sage Ollie: **Rook and queen checkmates**, as two practice battles (The Queen's Net, The Rook's Box) with unlimited undo against a lone king that defends perfectly. The first clear of each pays 10g (`src/game/academy.ts`).
 
-This predates the decision that the academy teaches what the battles test. The Region 1 academy still needs one short lesson per battle theme; see [open TODOs](../decisions.md#open-todos).
+The [guided path](#planned-guided-path) replaces this academy with a warm-up in each battle node; these two exercises become Grubnak's boss practice.
+
+## Planned: guided path
+
+Approved 2026-10-22, not yet built. Region 1 is revised to the [guided path](../campaign.md#guided-path) as the worked example for every later Region. The code changes will be specced in a GitHub issue ([open TODO](../decisions.md#open-todos)).
+
+```mermaid
+flowchart BT
+    Town["Mudford Town"] --> Reeds["Main 1: Trouble in the Reeds<br/>threat awareness"]
+    Reeds --> Guard["Main 2: Lanterns at Mossbridge<br/>protection"]
+    Guard --> Trades["Main 3: The Swap Meet<br/>safe trades"]
+    Trades --> Backrank["Branch: Behind the Mud Wall<br/>back-rank mate"]
+    Trades --> Squire["Branch: The Pawn's Plunge<br/>promotion"]
+    Backrank -.-> Boss["Goblin Chief's camp<br/>opens after 4 wins"]
+    Squire -.-> Boss
+```
+
+| Battle | Warm-up idea | Warm-up tag |
+| --- | --- | --- |
+| Trouble in the Reeds | "What do they want?" Look at every check, capture and threat | `hangingPiece` |
+| Lanterns at Mossbridge | "Guard it, move it or block it" | `defensiveMove` |
+| The Swap Meet | "Count attackers and defenders" | `hangingPiece` |
+| Behind the Mud Wall | "The back rank" | `backRankMate` |
+| The Pawn's Plunge | "Run it home safely" | `promotion` |
+| Grubnak (boss practice) | The Queen's Net and The Rook's Box, as built: played out to mate, unlimited undo, skippable | — |
+
+Also planned: the academy becomes the library (with a review set), bounty tags add `defensiveMove`, `backRankMate` and `promotion`, refresher bounties, and the in-battle lesson panel cut to a one-line reminder: "Checks, captures, threats: theirs, then yours." The battles themselves don't change, so their verification stands.
 
 ## Bounty board
 
@@ -105,7 +133,7 @@ A simulated "greedy" player (always grabs the biggest capture) wins Trouble in t
 
 ## Playtest
 
-Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes. Watch where they get stuck or bored, and whether they ask for Region 2. Record findings here.
+Not yet run. The test from the original scope still stands: 3 to 5 people who know the moves but lose to tactics play Region 1. It should take them 30 to 45 minutes; the planned warm-ups add about a minute per battle. Watch where they get stuck or bored, and whether they ask for Region 2. Win rates don't show whether the shout taught anything, so also ask: can they say why a goblin changed its plan, and can they spot a similar threat with no arrow? Once the guided path is built, also watch whether players who know an idea skip its warm-up quickly, and whether the try positions feel too easy or too hard. Record findings here.
 
 ## Original prototype scope
 

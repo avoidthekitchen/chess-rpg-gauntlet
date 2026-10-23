@@ -38,7 +38,8 @@ Decided: the game is open source under GPL-3, so Stockfish ships with it.
 | Stockfish | GPL-3 | Game source must be published under GPL-3 if we ship it |
 | chessground (Lichess board UI) | GPL-3 | Same as Stockfish; or write our own board |
 | Lichess site code (lila) | AGPL-3 | Don't copy code unless the game is AGPL too |
-| Learn and Practice lesson text | Not checked | Write our own lessons; use theirs only as an outline |
+| Lichess Practice studies | Cleared for use (confirmed by the owner, 2026-10-22) | Their positions can be used in warm-ups, tip cards and the library. Lesson text is still our own, in the companion's voice, for consistency rather than licensing. Credit Lichess in the game's credits |
+| Published courses (Steps Method, Bain, Silman, Polgar, Yusupov) | Copyrighted | Borrow the order of topics only, never their exercises or text |
 
 - GPL apps can ship on the App Store: the official Lichess mobile app is GPL-3 and on the App Store.
 - Every build ships Stockfish's license file; the prototype already does.

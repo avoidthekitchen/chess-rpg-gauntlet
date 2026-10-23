@@ -48,10 +48,12 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Each Region's map has a required main path of headline battles in teaching order and branches you choose (revisits, mates, endgames). The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Replaces "any 4 of 5" for Region 1 and the Region 2 brief |
 | 2026-10-22 | Warm-up positions are Lichess puzzles (CC0) from the low end of each Region's warm-up band, tagged with the battle's theme; the words are our own |
 | 2026-10-22 | A boss gets a warm-up only when it tests something the battles didn't; Region 1's rook and queen mates become Grubnak's |
-| 2026-10-22 | The town's academy becomes the library: replay warm-ups you've seen, read tip cards, and later optional advanced lessons |
+| 2026-10-22 | The town's academy becomes the library: replay warm-ups you've seen, read tip cards, run a timed review set (Woodpecker Method), and later optional advanced lessons |
 | 2026-10-22 | Puzzle-only themes with no battle (zwischenzug, overloaded pieces, underpromotion and others) get a one-screen tip card on the bounty board, not a lesson |
-| 2026-10-22 | Refresher bounties: a theme you got wrong in a battle returns on the bounty board with its warm-up attached, at most 1 of 4 slots. Mistakes are drilled on the board, not with new map nodes |
-| 2026-10-22 | Curriculum revised: defending added to Region 1, removing the defender to Region 2, opposition moved from Region 5 to Region 3, lures and traps to Region 4. The order also draws on Bain, Heisman, Silman and Duolingo's path ([Curriculum](campaign.md#curriculum)) |
+| 2026-10-22 | Refresher bounties: the game tracks results per theme, and one of the 4 bounty slots brings back your weakest theme with its warm-up attached (spaced-repetition style). Mistakes are drilled on the board, not with new map nodes |
+| 2026-10-22 | "Checks, captures, threats" (Heisman) is Region 1's first warm-up and its one-line battle reminder |
+| 2026-10-22 | Region 4's strategy is tested with new battle goal kinds (develop and castle within N moves, take the open file first), not puzzles |
+| 2026-10-22 | Curriculum revised: defending added to Region 1, removing the defender to Region 2, opposition moved from Region 5 to Region 3, lures and traps to Region 4, `mateIn3` as a revisit in Regions 3 and 4. The order also draws on Bain, Heisman, Silman, Polgar, Yusupov and Duolingo's path ([Curriculum](campaign.md#curriculum)) |
 | 2026-10-22 | Piece names are animal plus chess piece ("Owl Bishop", "Bog Rat Pawn"), and short names are the plain chess names for both sides, so players learn the real names |
 | 2026-10-22 | A pawn reaching the far rank is "promoted", not "knighted" |
 | 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |

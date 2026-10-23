@@ -85,7 +85,7 @@ flowchart BT
 | The Pawn's Plunge | "Run it home safely" | `promotion` |
 | Grubnak (boss warm-up) | The Queen's Net and The Rook's Box, as built | — |
 
-Also planned: the academy becomes the library, bounty tags add `defensiveMove`, `backRankMate` and `promotion`, refresher bounties, and the in-battle lesson panel cut to a one-line reminder. The battles themselves don't change, so their verification stands.
+Also planned: the academy becomes the library (with a review set), bounty tags add `defensiveMove`, `backRankMate` and `promotion`, refresher bounties, and the in-battle lesson panel cut to a one-line reminder: "Checks, captures, threats: theirs, then yours." The battles themselves don't change, so their verification stands.
 
 ## Bounty board
 

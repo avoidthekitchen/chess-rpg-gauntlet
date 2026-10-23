@@ -75,7 +75,8 @@ Battles pay for the army; bounties pay for extras and catch-up, and every bounty
 - **Follows the curriculum:** most bounties match the current region's themes; one or two revisit earlier regions, as the spiral does.
 - **Pays for challenge:** puzzles are picked near the player's hidden rating. Ones above it pay more; ones far below pay little.
 - **Mistake bounties:** positions where you blundered in a battle come back later as puzzles, like Lichess's "learn from your mistakes".
-- **Refresher bounties:** when the battle review finds a mistake in a battle, that battle's theme comes back as a bounty marked "Refresher", with its warm-up attached. At most 1 of the 4 slots. This replaces taking the player back to a lesson, and keeps the map free of nodes that come and go.
+- **Refresher bounties:** one slot (of the 4) brings back your weakest theme, with its warm-up attached and marked "Refresher". The game records, per theme, the mistakes the battle review finds and the bounties you solve or miss, like Lichess's puzzle dashboard. A theme you got wrong recently comes first; one you then solve twice in a row drops back, as in spaced repetition. This replaces sending the player back to a lesson, and keeps the map free of nodes that come and go.
+- **Review set (library):** an optional run through the Region's warm-ups and the bounties you missed, timed, a little faster each pass, like the Woodpecker Method. It pays no gold; it's practice. The Gauntlet uses the same idea at full scale.
 - **Tip cards:** the first time a puzzle-only theme (such as zwischenzug) reaches the board, its bounty comes with a one-screen tip card. The library keeps every tip card you've seen.
 
 ## Enemies and difficulty

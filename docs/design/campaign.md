@@ -83,10 +83,13 @@ The outline comes from Lichess: [Learn](https://lichess.org/learn), then [Practi
 
 - **The Steps Method** (Brunia and van Wijgerden): a spiral, where each Region brings back earlier themes at a harder level, and defending is taught as its own skill.
 - **Bain's *Chess Tactics for Students*:** one motif at a time, in a fixed order (pin, fork, skewer, discovered attack, double check, removing the defender, and so on).
-- **Heisman's "checks, captures, threats":** the habit Region 1 builds, checking what both sides can do before every move.
+- **Heisman's "checks, captures, threats":** the habit Region 1 builds, checking what both sides can do before every move. It's Region 1's first warm-up and the companion's one-line reminder in every Region 1 battle: "Checks, captures, threats: theirs, then yours."
 - **Silman's *Complete Endgame Course*:** teach each endgame at the level that needs it, so opposition comes in Region 3, not with the rook endgames in Region 5.
 - **Duolingo's path:** a guided route with a test-out, instead of a menu of lessons.
-- **The Woodpecker Method:** repeat a set of puzzles until they're fast. Bounties and the Gauntlet use this.
+- **Polgar's mate ladder:** mate in 1, then 2, then 3. `mateIn1` in Region 1, `mateIn2` in Region 2, and `mateIn3` as a revisit in the bounties of Regions 3 and 4.
+- **Yusupov's mixed chapters:** each Region teaches a little tactics, strategy and endgame, not only its headline. The branches carry the mates and endgames thread for this.
+- **The Woodpecker Method:** repeat a set of puzzles until they're fast. The library's review set uses it.
+- **Lichess's puzzle dashboard and Chessable's spaced repetition:** track how you do on each theme, and bring back the weakest. Refresher bounties use it ([bounty rules](systems.md#bounty-board-and-gold)).
 
 We borrow their order of topics, never their exercises. Lessons are our own writing; positions come from the Lichess puzzle database, which is CC0 ([licensing](technical.md#licensing)).
 
@@ -95,8 +98,8 @@ We borrow their order of topics, never their exercises. Lessons are our own writ
 | 0 (skippable) | "Teach me the moves" tutorial | Movement, captures, check, mate in one | — | — | All of Learn | `mateIn1` | — |
 | 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Threat awareness, protection, safe trades | Back-rank mate; promotion | 400–800 | Checkmate Patterns I; Piece Checkmates I (boss warm-up) | `hangingPiece`, `defensiveMove`, `mateIn1`, `backRankMate`, `promotion` | — |
 | 2 | [Bandit Riders](regions/region-02-bandit-riders.md) | Knight forks, double attacks, double check | Safe trades and removing the defender (revisit); mating patterns | 600–1000 | The Fork, Double Check, Checkmate Patterns II–IV | `fork`, `doubleCheck`, `capturingDefender`, `mateIn2` | — |
-| 3 | Shadow Cult | Pins, escaping pins, skewers and x-rays, discovered attacks (4 headline) | Opposition (endgame) | 800–1200 | The Pin, The Skewer, X-Ray, Discovered Attacks, Opposition, Key Squares | `pin`, `skewer`, `xRayAttack`, `discoveredAttack`, `pawnEndgame` | Zwischenzug, overloaded pieces |
-| 4 | Iron Legion | Development, lures and traps, king safety | Open files (our own); removing defenders mid-game (revisit) | 1000–1400 | Attraction, Greek Gift, Deflection; our own strategy lessons | `opening`, `attackingF2F7`, `attraction`, `trappedPiece`, `kingsideAttack`, `exposedKing`, `deflection` | Desperado, undermining |
+| 3 | Shadow Cult | Pins, escaping pins, skewers and x-rays, discovered attacks (4 headline) | Opposition (endgame) | 800–1200 | The Pin, The Skewer, X-Ray, Discovered Attacks, Opposition, Key Squares | `pin`, `skewer`, `xRayAttack`, `discoveredAttack`, `pawnEndgame`; `mateIn3` (revisit) | Zwischenzug, overloaded pieces |
+| 4 | Iron Legion | Development, lures and traps, king safety | Open files (our own); removing defenders mid-game (revisit) | 1000–1400 | Attraction, Greek Gift, Deflection; our own strategy lessons | `opening`, `attackingF2F7`, `attraction`, `trappedPiece`, `kingsideAttack`, `queensideAttack`, `exposedKing`, `deflection`; `mateIn3` (revisit) | Desperado, undermining |
 | 5 | Bone Wardens | Passed-pawn races, king activity and zugzwang, rook behind the passer | Lucena and Philidor; endgame tactics (revisit) | 1100–1500 | Pawn Endgames, Zugzwang, Rook Endgames | `pawnEndgame`, `zugzwang`, `rookEndgame`, `promotion`, `skewer` | Underpromotion |
 | Final | The Lich King | Complete games | — | 1300–1700 (library only) | Advanced Tactics and Knight & Bishop Mate, as optional library lessons | `deflection`, `attraction`, `intermezzo`, `clearance`, `interference`, `quietMove`, `sacrifice` | Clearance, interference, counter-check |
 
@@ -104,7 +107,7 @@ Notes on the table:
 
 - **Two departures from Lichess's order:** basic endgames come before advanced tactics, because most coaches teach them earlier, and Region 4 adds strategy lessons Lichess doesn't have.
 - **Region 3 has 4 headline battles** on its main path and one branch, because pins, skewers and discoveries all need a battle. Its boss opens after the main path, so the opposition branch is optional there.
-- **The warm-up band** sets warm-up difficulty only. Bounty packs keep a wide rating range (Region 1's is 400–1899), because bounties are picked near the player's rating ([bounty rules](systems.md#bounty-board-and-gold)).
+- **The warm-up band** sets warm-up difficulty only. Bounty packs keep a wide rating range (Region 1's is 400–1899), because bounties are picked near the player's rating ([bounty rules](systems.md#bounty-board-and-gold)). Difficulty still rises by Region, because later packs hold harder themes.
 - **Tag names are Lichess's.** Lichess has no `overloading` tag, so overloaded-piece bounties use `deflection` and `capturingDefender`. `underPromotion` has only about 100 good puzzles per band, so it's a tip card, not a bounty tag.
 - **Lichess has no tag** for threat awareness, counting trades, development or open files. Their warm-ups use the nearest tag or a position of our own, and the battles do most of the teaching.
 
@@ -146,13 +149,13 @@ The draft battles for every Region. Each Region's own document settles its battl
 
 Tip cards: zwischenzug (`intermezzo`, 14k) and overloaded pieces (`deflection`).
 
-**Region 4: Iron Legion.** Lichess has the least here, so battles carry the strategy.
+**Region 4: Iron Legion.** Lichess has the least here, so battles carry the strategy. Their goals test a plan, not a single tactic: for example "develop every minor piece and castle within 8 moves" or "get a rook to the open file before they do". Those are new goal kinds, so they're new rules with tests ([playbook](../playbook.md#order-of-work)). `mateIn3` puzzles (40k) revisit Polgar's mate ladder in the bounties.
 
 | Path | Battle · theme | Warm-up idea | Lichess outline | Warm-up and bounty tags |
 | --- | --- | --- | --- | --- |
 | Main 1 | Development race | "Every piece out by move 10" | Our own | `opening`, `attackingF2F7` (7.6k) |
 | Main 2 | Poisoned bait · lures and traps (uses the proud habit) | "Lure and trap" | Attraction | `attraction` (48k), `trappedPiece` (15k) |
-| Main 3 | King safety | "Open the castled king" | Greek Gift | `kingsideAttack`, `exposedKing` (30k) |
+| Main 3 | King safety | "Open the castled king" | Greek Gift | `kingsideAttack`, `queensideAttack` (13k), `exposedKing` (30k) |
 | Branch | Open files and the 7th rank | "Rooks want open files" | Our own | `backRankMate` (revisit) |
 | Branch | Removing defenders mid-game (revisit) | "Overload and deflect" | Deflection | `deflection` (52k), `capturingDefender` |
 

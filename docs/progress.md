@@ -137,3 +137,11 @@ The brief's "reuse src/game and src/ai as they are" meant "build on the prototyp
 - **Difficulty blurbs** (`src/game/difficulty.ts`): written for players who know the moves, replacing the override in the title screen.
 
 The game is now called **Pawnshire** (title screen, page title, README, package name, and the design doc). "Gauntlet" stays the name of the post-campaign replay mode. The URL stays `/chess-rpg/`.
+
+## Battle cue timing (PR #21)
+
+- Cue holds use scene time, so queued banners and the result wait pause when a background tab stops rendering.
+- Resizing or switching piece styles clears the queue before rebuilding removes its timers and visible cues. Later banners can still play.
+- Two regression tests use Phaser's real Clock and TweenManager with simulated time. They cover background tabs, resize recovery, and pending result waits.
+- Both tests fail without their respective fixes. `npm run ci` passes all 161 tests; the unit suite takes under one second locally.
+- Browser checks passed at 1280×800, 375×812, 375×553 and 844×390. Pausing and resuming the render loop preserves cue order; no runtime errors occurred.

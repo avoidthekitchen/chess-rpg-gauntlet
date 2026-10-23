@@ -116,12 +116,11 @@ export class BattleScene extends BaseScene {
   private session = 0;
   /**
    * Close-ups and banners take turns in the middle of the board, so none covers another.
-   * Window timers, not the scene clock: a rebuild (resize, piece style) wipes scene timers,
-   * which would leave the queue stuck and the result dialog never opening.
+   * Scene time pauses with the animations when the game stops rendering.
    */
   private cues = new CueQueue({
-    set: (fn, ms) => window.setTimeout(fn, ms),
-    clear: (timer) => window.clearTimeout(timer as number),
+    set: (fn, ms) => this.time.delayedCall(ms, fn),
+    clear: (timer) => (timer as Phaser.Time.TimerEvent).remove(),
   });
   /** The finished battle's dialog, built (and the result recorded) the moment it ended. */
   private pendingView: FinishView | null = null;
@@ -179,6 +178,13 @@ export class BattleScene extends BaseScene {
     const tip = this.launch.tip;
     if (tip) this.say({ side: 'ally', name: `${tip.name} · ${SPECIES[tip.type]}`, line: tip.line, type: tip.type });
     void this.startPlayerTurn();
+  }
+
+  protected rebuild() {
+    // Rebuild destroys the visible cues and their scene timers. Release the queue too,
+    // so later cues and a pending result dialog cannot wait on a removed timer.
+    this.cues.clear();
+    super.rebuild();
   }
 
   protected canRebuild() {

@@ -104,6 +104,8 @@ export class BattleScene extends BaseScene {
   private speakQueue: { info: SpeakerInfo; gap: number }[] = [];
   /** Every line shown this battle, so one that went by too fast can be read again. */
   private said = new DialogueLog();
+  /** When the player pressed the floating card (0 when not held). Held lines wait for release. */
+  private heldAt = 0;
   /** Gold earned this battle from engine-confirmed tactics. */
   tacticGold = 0;
   /** Bumped when the scene starts or shuts down, so async work from a battle you left stops. */
@@ -144,6 +146,7 @@ export class BattleScene extends BaseScene {
     clearTimeout(this.speakerTimer);
     this.speakerTimer = 0;
     this.speakQueue = [];
+    this.heldAt = 0;
     this.aiToken++;
     engine.stop();
     this.battle = new Battle(this.launch.scenario, this.launch.practice ? 999 : this.difficulty.rewinds);
@@ -213,6 +216,8 @@ export class BattleScene extends BaseScene {
     this.firstBuild = false;
     this.panelLayer = null;
     this.speakerLayer = null;
+    this.input.off('pointerup', this.onPointerUp, this);
+    this.input.on('pointerup', this.onPointerUp, this);
     this.input.keyboard?.off('keydown-ESC');
     this.input.keyboard?.on('keydown-ESC', () => {
       this.selected = null;
@@ -350,8 +355,10 @@ export class BattleScene extends BaseScene {
       if (y + Math.max(status.height, 40) + 10 + stripH <= bottom) {
         c.add(this.saidStrip(x, y + Math.max(status.height, 40) + 10, w, stripH, last.info));
         y += stripH + 10;
-      } else if (bottom - y >= 52) {
-        const chip = 52;
+      } else {
+        // The chip shrinks to the room left (it may use most of the bottom margin), but
+        // never disappears: it's the only way into the history on short screens.
+        const chip = Math.round(Math.min(52, Math.max(34, bottom + 8 - y)));
         const lineH = status.height / Math.max(1, Math.min(3, status.getWrappedText().length));
         status.setWordWrapWidth(w - 4 - chip - 10, true);
         // The narrower status may need more lines; take what the screen has room for,
@@ -446,28 +453,16 @@ export class BattleScene extends BaseScene {
     // It floats over the controls, so a tap dismisses it instead of pressing a hidden button.
     // Holding it keeps it up; letting go starts a fresh hold.
     const hit = this.add.zone(0, 0, w, height).setOrigin(0).setInteractive();
-    let downAt = 0;
-    const holdAgain = () => {
-      downAt = 0;
-      this.speakerAt = performance.now() - 300; // skip the entrance
-      this.drawSpeaker();
-    };
     hit.on('pointerdown', () => {
-      downAt = performance.now();
-      this.speakerAt = downAt - 300; // a rebuild while held keeps it up
+      this.heldAt = performance.now();
+      this.speakerAt = this.heldAt - 300; // a rebuild while held keeps it up
       this.tweens.killTweensOf(container);
       container.setAlpha(1);
       container.y = y;
     });
-    hit.on('pointerup', () => {
-      if (!downAt) return;
-      if (performance.now() - downAt > 350) return holdAgain();
-      downAt = 0;
-      this.speakerAt = 0;
-      container.destroy();
-      if (this.speakerLayer === container) this.speakerLayer = null;
-    });
-    hit.on('pointerout', () => downAt && holdAgain());
+    // A quick tap dismisses it; letting go after a hold starts a fresh hold.
+    hit.on('pointerup', () => this.heldAt && this.releaseHold(performance.now() - this.heldAt <= 350));
+    hit.on('pointerout', () => this.releaseHold(false));
     container.add(hit);
     this.speakerLayer = container;
     if (age < 300) {
@@ -475,6 +470,7 @@ export class BattleScene extends BaseScene {
       container.y = y + 12;
       this.tweens.add({ targets: container, alpha: 1, y, duration: 320, ease: 'Cubic.easeOut' });
     }
+    if (this.heldAt) return; // still under the player's finger after a rebuild
     this.tweens.add({
       targets: container,
       alpha: 0,
@@ -486,6 +482,26 @@ export class BattleScene extends BaseScene {
         if (this.speakerLayer === container) this.speakerLayer = null;
       },
     });
+  }
+
+  /** Lets go of a held card: dismiss it (a tap) or give it a fresh hold, then show any waiting line. */
+  private releaseHold(dismiss: boolean) {
+    if (!this.heldAt) return;
+    this.heldAt = 0;
+    if (dismiss) {
+      this.speakerAt = 0;
+      this.speakerLayer?.destroy();
+      this.speakerLayer = null;
+    } else {
+      this.speakerAt = performance.now() - 300; // skip the entrance
+      this.drawSpeaker();
+    }
+    this.pumpSpeaker();
+  }
+
+  /** A finger lifted anywhere still releases a held card. */
+  private onPointerUp() {
+    this.releaseHold(false);
   }
 
   private speak(res: TurnResult, kept = false) {
@@ -520,6 +536,8 @@ export class BattleScene extends BaseScene {
     if (!next) return;
     const show = () => {
       this.speakerTimer = 0;
+      // The player is holding the current line: the next one waits until they let go.
+      if (this.heldAt) return;
       this.speakQueue.shift();
       this.speaker = next.info;
       this.speakerAt = performance.now();
@@ -988,6 +1006,7 @@ export class BattleScene extends BaseScene {
     clearTimeout(this.speakerTimer);
     this.speakerTimer = 0;
     this.speakQueue = [];
+    this.heldAt = 0;
     this.said.rewindTo(b.log.length);
     this.restoreNames();
     this.board?.rewindEffect();

@@ -17,6 +17,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
 - [ ] **Region 1 guided path:** revise Region 1 to the [guided path](campaign.md#guided-path): a warm-up in each battle node, the map rewired to a main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), the rook and queen mates as Grubnak's boss warm-up, the academy turned into the library, and refresher bounties. The in-battle lesson panel becomes a one-line reminder. Spec as a GitHub issue once this design is approved ([Region 1](regions/region-01-bog-goblins.md#planned-guided-path)).
 - [ ] **Placement check:** an optional set of 5 or 6 puzzles at the start that marks warm-ups the player already knows, so they start ready to skip, and seeds the hidden adaptive rating. Design it with the adaptive rating.
+- [ ] **Siege raider:** move the raider to tell or tilt and re-verify the sieges ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
 - [x] **Shout rule:** decided 2026-10-23: goblins keep announcing, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), under the [tell or tilt](systems.md#ai-habits-by-faction) rule.
 - [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
 - [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
@@ -45,6 +46,9 @@ The one place to track unfinished design work. When one is resolved, move the an
 | Date | Decision |
 | --- | --- |
 | 2026-10-23 | Faction habits follow "tell or tilt, never force": they may tell you something true or tilt the enemy's choice among moves within the difficulty's window, never force a move it wouldn't otherwise consider |
+| 2026-10-23 | The siege raider moves to tell or tilt: the engine finds moves within the difficulty's window, and the raider picks the one with the most village pressure. Siege battles are re-verified ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)) |
+| 2026-10-23 | A boss may have a boss practice instead of a warm-up: a technique played out against the engine, unlimited undo, always skippable. Region 1's rook and queen mates are one |
+| 2026-10-23 | Each tip-card theme gets at least one bounty in its Region's pack, by its Lichess tag or hand-picked when it has none |
 | 2026-10-23 | Goblin shouts drop the must-play rule: they announce, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)). The shout shares the Scrying Orb's engine question and code path |
 | 2026-10-23 | Iron Legion's proud habit changes from "never declines a capture" to "prefers captures among its good moves" |
 | 2026-10-23 | Bounties built from your own blunder positions are dropped; refresher bounties (real Lichess puzzles on your weakest theme) replace them, and the battle review shows your mistake |

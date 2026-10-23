@@ -61,7 +61,7 @@ Lineups are set by the scenario: your hired pieces stand in as named characters 
 
 As built, one lesson, taught by Sage Ollie: **Rook and queen checkmates**, as two practice battles (The Queen's Net, The Rook's Box) with unlimited undo against a lone king that defends perfectly. The first clear of each pays 10g (`src/game/academy.ts`).
 
-The [guided path](#planned-guided-path) replaces this academy with a warm-up in each battle node; these two exercises become Grubnak's boss warm-up.
+The [guided path](#planned-guided-path) replaces this academy with a warm-up in each battle node; these two exercises become Grubnak's boss practice.
 
 ## Planned: guided path
 
@@ -74,7 +74,7 @@ flowchart BT
     Guard --> Trades["Main 3: The Swap Meet<br/>safe trades"]
     Trades --> Backrank["Branch: Behind the Mud Wall<br/>back-rank mate"]
     Trades --> Squire["Branch: The Pawn's Plunge<br/>promotion"]
-    Backrank -.-> Boss["Goblin Chief's camp<br/>opens after the main path and 1 branch"]
+    Backrank -.-> Boss["Goblin Chief's camp<br/>opens after 4 wins"]
     Squire -.-> Boss
 ```
 
@@ -85,7 +85,7 @@ flowchart BT
 | The Swap Meet | "Count attackers and defenders" | `hangingPiece` |
 | Behind the Mud Wall | "The back rank" | `backRankMate` |
 | The Pawn's Plunge | "Run it home safely" | `promotion` |
-| Grubnak (boss warm-up) | The Queen's Net and The Rook's Box, as built | — |
+| Grubnak (boss practice) | The Queen's Net and The Rook's Box, as built: played out to mate, unlimited undo, skippable | — |
 
 Also planned: the academy becomes the library (with a review set), bounty tags add `defensiveMove`, `backRankMate` and `promotion`, refresher bounties, and the in-battle lesson panel cut to a one-line reminder: "Checks, captures, threats: theirs, then yours." The battles themselves don't change, so their verification stands.
 

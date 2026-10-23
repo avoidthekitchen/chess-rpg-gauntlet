@@ -60,7 +60,7 @@ Warm-up positions are real Lichess puzzles from the low end of the Region's warm
 - **Main path (required):** the Region's headline battles, in teaching order. Usually 3.
 - **Branches (choose):** the other battles, which revisit an earlier Region's theme or carry the mates and endgames thread. Either can come first.
 - **The boss opens after 4 wins:** the whole main path, plus 1 branch when the main path has 3. It's still 4 of 5, but which 4 is set.
-- **Boss warm-up:** only when the boss tests something the battles didn't, such as Region 1's rook and queen mates.
+- **Boss warm-up:** only when the boss tests something the battles didn't. It follows the warm-up rules, with one exception: a **boss practice** plays a technique out against the engine, with unlimited undo and no move limit, such as Region 1's rook and queen mates. A boss practice is offered before the boss and can always be skipped.
 
 **What's required, recommended and optional**
 
@@ -75,7 +75,7 @@ Warm-up positions are real Lichess puzzles from the low end of the Region's warm
 | Refresher bounties | Optional | A theme you got wrong in a battle comes back on the board ([bounty rules](systems.md#bounty-board-and-gold)) |
 | Tip cards | Optional | Shown the first time a puzzle-only theme reaches the board |
 
-**Tip cards** cover themes that have no battle of their own, such as zwischenzug. A tip card is one screen: the idea in a sentence or two and one example position. It's a [puzzle-only theme](systems.md#battles), so bounties drill it and no battle tests it. Tip cards are never academy-style lessons, so lessons never outnumber battles.
+**Tip cards** cover themes that have no battle of their own, such as zwischenzug. A tip card is one screen: the idea in a sentence or two and one example position. Each tip-card theme gets at least one bounty in its Region's pack: one with the theme's Lichess tag, or, for a theme with no tag (desperado, undermining, counter-check), a hand-picked puzzle or Practice position. It's a [puzzle-only theme](systems.md#battles), so bounties drill it and no battle tests it. Tip cards are never academy-style lessons, so lessons never outnumber battles.
 
 ## Curriculum
 
@@ -98,10 +98,10 @@ We borrow their order of topics, never their exercises. Positions come from the 
 | 0 (skippable) | "Teach me the moves" tutorial | Movement, captures, check, mate in one | — | — | All of Learn | `mateIn1` | — |
 | 1 | [Bog Goblins](regions/region-01-bog-goblins.md) | Threat awareness, protection, safe trades | Back-rank mate; promotion | 400–800 | Checkmate Patterns I; Piece Checkmates I (boss warm-up) | `hangingPiece`, `defensiveMove`, `mateIn1`, `backRankMate`, `promotion` | — |
 | 2 | [Bandit Riders](regions/region-02-bandit-riders.md) | Knight forks, double attacks, double check | Safe trades and removing the defender (revisit); mating patterns | 600–1000 | The Fork, Double Check, Checkmate Patterns II–IV | `fork`, `doubleCheck`, `capturingDefender`, `mateIn2` | — |
-| 3 | Shadow Cult | Pins, escaping pins, skewers and x-rays, discovered attacks (4 headline) | Opposition (endgame) | 800–1200 | The Pin, The Skewer, X-Ray, Discovered Attacks, Opposition, Key Squares | `pin`, `skewer`, `xRayAttack`, `discoveredAttack`, `pawnEndgame`; `mateIn3` (revisit) | Zwischenzug, overloaded pieces |
-| 4 | Iron Legion | Development, lures and traps, king safety | Open files (our own); removing defenders mid-game (revisit) | 1000–1400 | Attraction, Greek Gift, Deflection; our own strategy lessons | `opening`, `attackingF2F7`, `attraction`, `trappedPiece`, `kingsideAttack`, `queensideAttack`, `exposedKing`, `deflection`; `mateIn3` (revisit) | Desperado, undermining |
-| 5 | Bone Wardens | Passed-pawn races, king activity and zugzwang, rook behind the passer | Lucena and Philidor; endgame tactics (revisit) | 1100–1500 | Pawn Endgames, Zugzwang, Rook Endgames | `pawnEndgame`, `zugzwang`, `rookEndgame`, `promotion`, `skewer` | Underpromotion |
-| Final | The Lich King | Complete games | — | 1300–1700 (library only) | Advanced Tactics and Knight & Bishop Mate, as optional library lessons | `deflection`, `attraction`, `intermezzo`, `clearance`, `interference`, `quietMove`, `sacrifice` | Clearance, interference, counter-check |
+| 3 | Shadow Cult | Pins, escaping pins, skewers and x-rays, discovered attacks (4 headline) | Opposition (endgame) | 800–1200 | The Pin, The Skewer, X-Ray, Discovered Attacks, Opposition, Key Squares | `pin`, `skewer`, `xRayAttack`, `discoveredAttack`, `pawnEndgame`; `mateIn3` (revisit); tip cards: `intermezzo`, `deflection`, `capturingDefender` | Zwischenzug, overloaded pieces |
+| 4 | Iron Legion | Development, lures and traps, king safety | Open files (our own); removing defenders mid-game (revisit) | 1000–1400 | Attraction, Greek Gift, Deflection; our own strategy lessons | `opening`, `attackingF2F7`, `attraction`, `trappedPiece`, `kingsideAttack`, `queensideAttack`, `exposedKing`, `deflection`; `mateIn3` (revisit); tip cards: hand-picked (no Lichess tag) | Desperado, undermining |
+| 5 | Bone Wardens | Passed-pawn races, king activity and zugzwang, rook behind the passer | Lucena and Philidor; endgame tactics (revisit) | 1100–1500 | Pawn Endgames, Zugzwang, Rook Endgames | `pawnEndgame`, `zugzwang`, `rookEndgame`, `promotion`, `skewer`; tip card: `underPromotion` | Underpromotion |
+| Final | The Lich King | Complete games | — | 1300–1700 (library only) | Advanced Tactics and Knight & Bishop Mate, as optional library lessons | `deflection`, `attraction`, `intermezzo`, `clearance`, `interference`, `quietMove`, `sacrifice`; counter-check hand-picked | Clearance, interference, counter-check |
 
 Notes on the table:
 
@@ -124,7 +124,7 @@ The draft battles for every Region. Each Region's own document settles its battl
 | Main 3 | The Swap Meet · safe trades | "Count attackers and defenders" | Our own | `hangingPiece` |
 | Branch | Behind the Mud Wall · back-rank mate | "The back rank" | Checkmate Patterns I | `backRankMate` (16k), `mateIn1` |
 | Branch | The Pawn's Plunge · promotion | "Run it home safely" | Learn: the pawn | `promotion` (6k), `advancedPawn` |
-| Boss warm-up | Grubnak (no queen) | Rook and queen mates against a lone king | Piece Checkmates I | — |
+| Boss practice | Grubnak (no queen) | Rook and queen mates against a lone king, played out | Piece Checkmates I | — |
 
 **Region 2: Bandit Riders.** The approved brief's slots, with removing the defender added to the revisit.
 

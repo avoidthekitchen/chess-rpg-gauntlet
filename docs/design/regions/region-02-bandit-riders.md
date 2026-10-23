@@ -11,7 +11,7 @@
 | Faction | Bandit Riders: masked highway thieves. Raccoon cutpurses, hare riders, magpies, badgers, a stoat and Ashfang the wolf, in dark cloaks and masks ([species](#art)) |
 | Headline theme | Forks, double attacks, mating patterns; revisits safe trades |
 | AI habit | **Wanted poster:** each turn they mark the piece they're hunting, but not the move ([details](#ai-habit-wanted-poster)) |
-| Battles | 5 on a [guided path](../campaign.md#guided-path): a main path of 3, then 2 branches; the boss opens after the main path and 1 branch |
+| Battles | 5 on a [guided path](../campaign.md#guided-path): a main path of 3, then 2 branches; the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)) |
 | Warm-ups | One per battle, coached by your starter companion, plus a boss warm-up on stopping forks |
 | Bounty tags | `fork`, `doubleCheck`, `capturingDefender`, `mateIn2`; one or two bounties from Region 1's `hangingPiece` and `mateIn1` |
 | Boss | Ashfang, the Bandit Lord: a 16-point budget, queens allowed, and he posts no wanted posters |
@@ -24,7 +24,7 @@ Decided by the owner (don't change without a decision-log row):
 
 - The species, names and places in the table above.
 - The habit and how it fades: target only, Gentle advice names it, the boss has none.
-- The numbers: 5 battles, 4 wins open the boss (the main path and 1 branch, per the guided path decided 2026-10-22), 15–25g per battle, a 50g boss, a 16-point boss budget.
+- The numbers: 5 battles, 4 wins open the boss (per the [guided path](../campaign.md#guided-path) unlock rule, decided 2026-10-22), 15–25g per battle, a 50g boss, a 16-point boss budget.
 - The Scrying Orb arrives here: 3 charges for 30g in Waymeet.
 - The hero is a frog knight captain of the old army.
 - XP, levels and titles are **not** in Region 2. They get their own issue later.
@@ -53,7 +53,7 @@ It overlaps the poster on purpose: it bridges the drop from Region 1's whole mov
 
 ## Map
 
-**To design.** Five battles on a [guided path](../campaign.md#guided-path), following the [map rules](../../playbook.md#map-rules): slots 1–3 below are the main path in that order, slots 4 and 5 are branches, and the boss opens after the main path and 1 branch.
+**To design.** Five battles on a [guided path](../campaign.md#guided-path), following the [map rules](../../playbook.md#map-rules): slots 1–3 below are the main path in that order, slots 4 and 5 are branches, and the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)).
 
 ## Battles
 
@@ -64,7 +64,7 @@ It overlaps the poster on purpose: it bridges the drop from Region 1's whole mov
 | 1 | Main | First ambush | Skirmish · knight forks | The poster shows which piece a hare rider is after; you dodge with tempo, then land a fork of your own |
 | 2 | Main | Double trouble | Skirmish · double attacks | A queen, bishop or rook fork, not only knights; the target is one half of the attack |
 | 3 | Main | Two at once | Skirmish · double check | A position where the only way through is a double check |
-| 4 | Branch | The banner wagons | Siege · safe trades and removing the defender (revisit) | The villages are banner wagons; reuse the siege rules and the `raider` AI. Taking a raider's defender should be the way to win a trade |
+| 4 | Branch | The banner wagons | Siege · safe trades and removing the defender (revisit) | The villages are banner wagons; reuse the siege rules and the `raider` AI, after it moves to tell or tilt ([AI habits](../systems.md#ai-habits-by-faction)). Taking a raider's defender should be the way to win a trade |
 | 5 | Branch | Into the trap | Skirmish · mating patterns | Mate in 2 or 3 from Lichess Checkmate Patterns II–IV. Leave smothered, Anastasia's, Arabian and Boden's mates to the Gauntlet ([campaign](../campaign.md#campaign-and-gauntlet)) |
 
 Enemy squads are knight-heavy: most battles give the bandits at least one hare rider. Rewards are 15–25g with two 5g bonus goals each, as in Region 1.

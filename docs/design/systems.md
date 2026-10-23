@@ -115,6 +115,8 @@ A habit may never **force** a move the enemy wouldn't otherwise consider, such a
 
 The village **raider** in sieges is a battle-level habit any faction can use: it goes for villages first, but never makes a raid that allows mate in one (`raiderMove` in `src/ai/enemy.ts`).
 
+**Changing (approved 2026-10-23):** as built, the raider scores every legal move before the engine is asked, so it can play moves far outside the difficulty's window. That breaks tell or tilt. It will tilt instead: the engine finds the moves within the window, and the raider picks the one that puts the most pressure on villages. Siege battles are re-verified after the change, starting with Lanterns at Mossbridge ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
+
 ## Powers and rewind
 
 Undo is unlimited in training and limited in battles, like Into the Breach's one Reset Turn. Scarce rewinds are what make players double-check before moving, and that habit is the skill being taught.
@@ -171,7 +173,7 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Boss reward | 50g (Region 1) | `src/game/region1Boss.ts` |
 | Boss budget | 10 points, no queen (Region 1) | `R1_BOSS_BUDGET` in `src/game/region1Boss.ts` |
 | Boss reward, budget (Region 2, not built) | 50g; 16 points, queens allowed | Region 2 brief |
-| Wins that open the boss | 4 of 5 (Region 1 today: any 4). Guided path (approved, not built): the main path plus 1 branch | `bossNeeds` in `src/game/region1.ts` |
+| Wins that open the boss | 4 of 5 (Region 1 today: any 4). Guided path (approved, not built): 4 wins as set by the [unlock rule](campaign.md#guided-path) | `bossNeeds` in `src/game/region1.ts` |
 | Confirmed tactic gold | 5g a fork, at most 10g per battle ever | `TACTIC_GOLD`, `TACTIC_GOLD_CAP` in `src/game/economy.ts` |
 | Fork confirmation margin | Engine eval at least 0.8 pawns better than the material count before the move | `FORK_MARGIN` in `src/game/tacticCheck.ts` |
 | Loss cost | Gentle 0, Brave 10% of gold, Champion and Grandmaster 25% | `lossCost` in `src/game/economy.ts` |

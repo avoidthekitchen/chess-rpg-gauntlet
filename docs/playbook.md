@@ -10,7 +10,7 @@ How Region 1 was built and checked, written as the steps and quality bars every 
 2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code. Every habit must follow [tell or tilt, never force](design/systems.md#ai-habits-by-faction). A new habit also needs a simulated player that understands it (`scripts/verify/simulate.ts` has one for shouts), or the verification bars below mean nothing.
 3. **Art.** Make the faction's token and portrait set, and any backgrounds, as [Art direction](design/art.md) describes. Then check the tokens on the real board at phone size (below).
 4. **Battles.** Write each battle as a `BattleDef`, meeting the [content rules](#battle-content-rules), and verify it with the engine until it meets the [bars](#verification-bars).
-5. **Warm-ups, bounties, boss, hero.** One warm-up per battle, meeting the [warm-up rules](#warm-up-content-rules); tip cards for the Region's puzzle-only themes; bounty puzzles built from the curriculum's tags (`npm run puzzles`); the boss duel verified like a battle, with a boss warm-up only if it tests something the battles didn't.
+5. **Warm-ups, bounties, boss, hero.** One warm-up per battle, meeting the [warm-up rules](#warm-up-content-rules); tip cards for the Region's puzzle-only themes, each with at least one bounty in the pack; bounty puzzles built from the curriculum's tags, tip-card tags included (`npm run puzzles`); the boss duel verified like a battle, with a boss warm-up only if it tests something the battles didn't.
 6. **Play it.** Play every battle yourself on Gentle and Brave, at desktop and phone sizes, and fix what feels flat or confusing.
 7. **Review, deploy, record.** A fresh-eyes review, a deploy and a live check, then the records (below).
 
@@ -35,7 +35,7 @@ The [guided path](design/campaign.md#guided-path) sets the shape:
 
 - A main path of the headline battles in teaching order, usually 3, each opening the next.
 - Branches open after the main path: revisits of earlier Regions, mates and endgames.
-- The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3.
+- The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Elsewhere, link to this rule rather than restating it.
 - Every theme in the Region's curriculum row is either a battle (with a warm-up) or a tip card. No separate lessons.
 
 ## Warm-up content rules
@@ -50,6 +50,7 @@ Every battle has a warm-up: one position your companion shows, one you try, and 
 - Our own words, in the companion's voice ([voice guide](design/story.md#voice-and-dialogue)): one or two sentences for the shown position. The backup's hint lights up the piece that moves, using the board's existing hint highlight.
 - Where Lichess has no tag or study for the theme (threat awareness, counting trades, development, open files), use the nearest tag or a position of our own, checked with the engine.
 - A warm-up never blocks the battle and has no move limit, rewinds or loss cost.
+- The one exception is a **boss practice** ([guided path](design/campaign.md#guided-path)): a technique played out against the engine, such as rook and queen mates. It has unlimited undo, is offered before the boss, and can always be skipped. It isn't held to the 1–2 move rule.
 
 Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. A content test checks each one: the position is legal, the solution plays through, and its tag matches the battle's theme.
 

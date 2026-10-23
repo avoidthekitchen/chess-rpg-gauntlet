@@ -33,7 +33,7 @@ flowchart LR
     Town -->|next battle| Map
 ```
 
-Each step has one job. The **warm-up** teaches a battle's idea right before the battle, with nothing at stake. The **battle** tests it under pressure (goals, move limits, scarce rewinds, gold at stake). **Bounties** repeat it with real puzzles until it sticks, and bring back the ideas you got wrong. The map leads you through the ideas every player needs and lets you choose the rest ([Guided path](design/campaign.md#guided-path)). Clearing the main path and one branch opens the boss duel, which leads to the next region.
+Each step has one job. The **warm-up** teaches a battle's idea right before the battle, with nothing at stake. The **battle** tests it under pressure (goals, move limits, scarce rewinds, gold at stake). **Bounties** repeat it with real puzzles until it sticks, and bring back the ideas you got wrong. The map leads you through the ideas every player needs and lets you choose the rest ([Guided path](design/campaign.md#guided-path)). Four wins in the right places open the boss duel ([the rule](design/campaign.md#guided-path)), which leads to the next region.
 
 ## Detailed design
 

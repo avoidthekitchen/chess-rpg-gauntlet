@@ -306,6 +306,60 @@
       }
     },
     {
+      "id": "mqbS0",
+      "fen": "8/P5R1/8/8/5K2/6p1/6k1/r7 b - - 1 55",
+      "moves": [
+        "a1a3",
+        "g7g3",
+        "a3g3",
+        "a7a8q"
+      ],
+      "rating": 913,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/mqbS0",
+      "reason": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn\u2019s file to g3; the pawn then promotes. Published line after setup: Rxg3+, Rxg3, a8=Q+.",
+      "quality": {
+        "rd": 87,
+        "popularity": 91,
+        "plays": 1225
+      }
+    },
+    {
+      "id": "ykqWD",
+      "fen": "6k1/1P6/8/1r4p1/8/6R1/4K3/8 b - - 0 50",
+      "moves": [
+        "g8g7",
+        "g3g5",
+        "b5g5",
+        "b7b8q"
+      ],
+      "rating": 974,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/ykqWD",
+      "reason": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn\u2019s file to g5; the pawn then promotes. Published line after setup: Rxg5+, Rxg5, b8=Q.",
+      "quality": {
+        "rd": 78,
+        "popularity": 89,
+        "plays": 813
+      }
+    },
+    {
       "id": "QWUnM",
       "fen": "6k1/2B5/5p1p/2pb1r2/P1Br4/1P1P4/3KR1PP/8 w - - 4 35",
       "moves": [
@@ -353,60 +407,6 @@
         "rd": 80,
         "popularity": 90,
         "plays": 1285
-      }
-    },
-    {
-      "id": "mqbS0",
-      "fen": "8/P5R1/8/8/5K2/6p1/6k1/r7 b - - 1 55",
-      "moves": [
-        "a1a3",
-        "g7g3",
-        "a3g3",
-        "a7a8q"
-      ],
-      "rating": 913,
-      "themes": [
-        "advancedPawn",
-        "crushing",
-        "deflection",
-        "endgame",
-        "promotion",
-        "rookEndgame",
-        "short"
-      ],
-      "source": "https://lichess.org/training/mqbS0",
-      "reason": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn’s file to g3; the pawn then promotes. Published line after setup: Rxg3+, Rxg3, a8=Q+.",
-      "quality": {
-        "rd": 87,
-        "popularity": 91,
-        "plays": 1225
-      }
-    },
-    {
-      "id": "ykqWD",
-      "fen": "6k1/1P6/8/1r4p1/8/6R1/4K3/8 b - - 0 50",
-      "moves": [
-        "g8g7",
-        "g3g5",
-        "b5g5",
-        "b7b8q"
-      ],
-      "rating": 974,
-      "themes": [
-        "advancedPawn",
-        "crushing",
-        "deflection",
-        "endgame",
-        "promotion",
-        "rookEndgame",
-        "short"
-      ],
-      "source": "https://lichess.org/training/ykqWD",
-      "reason": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn’s file to g5; the pawn then promotes. Published line after setup: Rxg5+, Rxg5, b8=Q.",
-      "quality": {
-        "rd": 78,
-        "popularity": 89,
-        "plays": 813
       }
     },
     {

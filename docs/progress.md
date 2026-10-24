@@ -1,5 +1,15 @@
 # Build progress
 
+## 2026-10-24 — Finale review follow-up
+
+- Repair the derived finale flag without discarding completed lessons or stars. Invalid terminal wins settle without credit or lockout.
+- Continue opens an unseen ending. The finale map offers one ending button; completion no longer dominates earlier maps.
+- Registered progression milestones replace scene-specific finale routing. Tests cover committed wins while animation is pending.
+- The runner test now exercises registered lessons. Story lines avoid repeated reveals and give each companion a chapter callback.
+- Reordered the last encounter before its mating finish and narrowed the subtitle to ideas from every chapter.
+- `npm run ci` passed: type-check, build, and 461 tests in 31 files. The dependency selector required no engine rerun.
+- Full legacy release failures remain unwaived; this is a draft staging review update.
+
 ## 2026-10-24 — Lich King finale (#45)
 
 - Two direct four-wave mixed encounters use 18 fresh published sources. No new required technique enters through a backup.

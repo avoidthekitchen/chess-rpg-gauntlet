@@ -108,7 +108,7 @@ describe('finale completion', () => {
     expect(settleJourney(save)).toBe(false);
   });
 
-  it('rejects a non-mate or invalid terminal board without crediting the final win', () => {
+  it('settles an invalid final win without credit or a permanent lockout', () => {
     for (const fen of ['not a position', '7k/8/8/8/8/8/8/K7 w - - 0 1']) {
       const save = newJourney();
       save.completed = ids.slice(0, -1);
@@ -116,10 +116,12 @@ describe('finale completion', () => {
       expect(beginJourneyLesson(save, last)).toBe(true);
       const def = courseLesson(last)!;
       Object.assign(save.active!.run, { status: 'won', wave: def.waves.length - 1, fen });
-      expect(settleJourney(save)).toBe(false);
-      expect(save.active!.run.settled).toBe(false);
+      expect(settleJourney(save)).toBe(true);
+      expect(save.active!.run.settled).toBe(true);
+      expect(save.active!.run.status).toBe('lost');
       expect(save.finaleComplete).toBe(false);
-      expect(save.attempts).toBe(0);
+      expect(save.attempts).toBe(1);
+      expect(beginJourneyLesson(save, ids[0])).toBe(true);
       expect(save.completed).not.toContain(last);
     }
   });

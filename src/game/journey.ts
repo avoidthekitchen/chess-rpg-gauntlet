@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js';
 import { startAmbush, type AmbushRun } from './ambush';
 import type { StarterType } from './campaign';
 import { COURSE_REGIONS, courseLesson } from './curriculum';
@@ -12,6 +13,7 @@ export interface JourneyResult {
 }
 export interface JourneySave {
   version: 1;
+  finaleComplete: boolean;
   difficulty: DifficultyId;
   starter: StarterType;
   currentRegion: string;
@@ -24,7 +26,7 @@ export interface JourneySave {
 }
 
 export function newJourney(difficulty: DifficultyId = 'knight', starter: StarterType = 'n'): JourneySave {
-  return { version: 1, difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
+  return { version: 1, finaleComplete: false, difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
     stars: {}, attempts: 0, retryWaves: {}, active: null, lastResult: null };
 }
 
@@ -41,7 +43,7 @@ export function regionUnlocked(save: JourneySave, id: string): boolean {
 }
 
 export const journeyComplete = (save: JourneySave): boolean =>
-  COURSE_REGIONS.every(region => region.lessons.every(id => save.completed.includes(id)));
+  save.finaleComplete && COURSE_REGIONS.every(region => region.lessons.every(id => save.completed.includes(id)));
 
 /** All difficulties permit retries. The old campaign's Grandmaster removal does not apply. */
 export function beginJourneyLesson(save: JourneySave, id: string): boolean {
@@ -66,11 +68,17 @@ export function settleJourney(save: JourneySave, abandon = false, interrupted = 
   if (abandon && run.status !== 'won') run.status = 'lost';
   if (run.status !== 'won' && run.status !== 'lost') return false;
   const won = run.status === 'won';
+  const region = COURSE_REGIONS.find(candidate => candidate.id === lesson.regionId);
+  const finalLesson = region?.kind === 'finale' && region.lessons.at(-1) === active.lessonId;
+  if (won && finalLesson) {
+    try { if (!new Chess(run.fen).isCheckmate()) return false; } catch { return false; }
+  }
   run.settled = true;
   save.attempts++;
   save.lastResult = { lessonId: active.lessonId, won, clean: won && run.misses === 0,
     noHint: won && run.hintsUsed === 0, interrupted: !won && interrupted };
   if (won) {
+    if (finalLesson) save.finaleComplete = true;
     if (!save.completed.includes(active.lessonId)) save.completed.push(active.lessonId);
     const previous = save.stars[active.lessonId];
     save.stars[active.lessonId] = { clean: !!previous?.clean || run.misses === 0,

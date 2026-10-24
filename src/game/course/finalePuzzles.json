@@ -1,0 +1,464 @@
+{
+  "finale-threshold": [
+    {
+      "id": "ERa4T",
+      "fen": "7R/p7/1b3n2/4K3/8/8/k4P2/8 w - - 6 45",
+      "moves": [
+        "e5f6",
+        "b6d4",
+        "f6f5",
+        "d4h8"
+      ],
+      "rating": 1076,
+      "themes": [
+        "crushing",
+        "endgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/ERa4T",
+      "reason": "The bishop checks from d4; the king on f6 moves away and the bishop takes the rook behind it on h8. Published line after setup: Bd4+, Kf5, Bxh8.",
+      "quality": {
+        "rd": 77,
+        "popularity": 94,
+        "plays": 324
+      }
+    },
+    {
+      "id": "3E96a",
+      "fen": "8/8/3Rk3/p7/3K4/4N3/Pr6/8 b - - 0 51",
+      "moves": [
+        "e6d6",
+        "e3c4",
+        "d6e7",
+        "c4b2"
+      ],
+      "rating": 1008,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/3E96a",
+      "reason": "The knight checks from c4 and attacks the rook on b2. The published king reply allows the knight to capture that rook. Published line after setup: Nc4+, Ke7, Nxb2.",
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 454
+      }
+    },
+    {
+      "id": "62A3N",
+      "fen": "8/8/8/2N2kR1/7K/8/3r4/3n4 b - - 4 58",
+      "moves": [
+        "f5f6",
+        "c5e4",
+        "f6f7",
+        "e4d2"
+      ],
+      "rating": 967,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/62A3N",
+      "reason": "The knight checks from e4 and attacks the rook on d2. The published king reply allows the knight to capture that rook. Published line after setup: Ne4+, Kf7, Nxd2.",
+      "quality": {
+        "rd": 77,
+        "popularity": 99,
+        "plays": 1826
+      }
+    },
+    {
+      "id": "CBjXF",
+      "fen": "2kr4/ppp3pp/1q6/2b1pR2/4P3/2P2QP1/PPK3P1/3R4 w - - 3 27",
+      "moves": [
+        "f5f8",
+        "d8f8",
+        "f3g4",
+        "c8b8"
+      ],
+      "rating": 1253,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/CBjXF",
+      "reason": "Without a response, the opponent has immediate mate with f8d8 or d1d8. Rxf8 removes every immediate mate; after Qg4+, Kb8 keeps the king safe. Published line after setup: Rxf8, Qg4+, Kb8.",
+      "quality": {
+        "rd": 80,
+        "popularity": 92,
+        "plays": 1340
+      }
+    },
+    {
+      "id": "IdUNF",
+      "fen": "r4rk1/p4n1p/2p3p1/1p3qP1/4pP2/2Q5/PPP1B3/1K1R3R w - - 2 24",
+      "moves": [
+        "h1h7",
+        "g8h7",
+        "d1h1",
+        "h7g8"
+      ],
+      "rating": 1270,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/IdUNF",
+      "reason": "Without a response, the opponent has immediate mate with c3g7. Kxh7 removes every immediate mate; after Rh1+, Kg8 keeps the king safe. Published line after setup: Kxh7, Rh1+, Kg8.",
+      "quality": {
+        "rd": 76,
+        "popularity": 87,
+        "plays": 9503
+      }
+    },
+    {
+      "id": "JNKkg",
+      "fen": "8/8/8/1P1p2p1/2pK1k2/8/8/8 b - - 0 38",
+      "moves": [
+        "g5g4",
+        "b5b6",
+        "g4g3",
+        "b6b7",
+        "g3g2",
+        "b7b8q"
+      ],
+      "rating": 806,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/JNKkg",
+      "reason": "The pawn on b5 is passed: no enemy pawn ahead lies on its file or a neighbouring file. Three consecutive pushes promote on b8 with check, before the opposing pawn can promote. Published line after setup: b6, g3, b7, g2, b8=Q+.",
+      "quality": {
+        "rd": 83,
+        "popularity": 99,
+        "plays": 1267
+      }
+    },
+    {
+      "id": "gI0hw",
+      "fen": "8/8/4p1K1/1k4P1/p7/8/5P2/8 w - - 0 44",
+      "moves": [
+        "g6f6",
+        "a4a3",
+        "g5g6",
+        "a3a2",
+        "g6g7",
+        "a2a1q"
+      ],
+      "rating": 835,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/gI0hw",
+      "reason": "The pawn on a4 is passed: no enemy pawn ahead lies on its file or a neighbouring file. Three consecutive pushes promote on a1 with check, before the opposing pawn can promote. Published line after setup: a3, g6, a2, g7, a1=Q+.",
+      "quality": {
+        "rd": 76,
+        "popularity": 99,
+        "plays": 664
+      }
+    },
+    {
+      "id": "0aWlo",
+      "fen": "8/1K6/8/8/1pkq4/8/2Q5/8 b - - 12 49",
+      "moves": [
+        "c4b5",
+        "c2c6",
+        "b5a5",
+        "c6a6"
+      ],
+      "rating": 1058,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "queenEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/0aWlo",
+      "reason": "The queen gives Qc6+; after the king replies Ka5, Qa6# delivers legal checkmate. This is the taught two-move calculation, not a general lone-king mating exercise. Published line after setup: Qc6+, Ka5, Qa6#.",
+      "quality": {
+        "rd": 85,
+        "popularity": 94,
+        "plays": 749
+      }
+    },
+    {
+      "id": "0RaDJ",
+      "fen": "2K5/5k2/2PQ4/q7/8/8/8/8 w - - 0 70",
+      "moves": [
+        "c6c7",
+        "a5a8",
+        "c8d7",
+        "a8e8"
+      ],
+      "rating": 989,
+      "themes": [
+        "endgame",
+        "master",
+        "mate",
+        "mateIn2",
+        "queenEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/0RaDJ",
+      "reason": "The queen gives Qa8+; after the king replies Kd7, Qe8# delivers legal checkmate. This is the taught two-move calculation, not a general lone-king mating exercise. Published line after setup: Qa8+, Kd7, Qe8#.",
+      "quality": {
+        "rd": 80,
+        "popularity": 96,
+        "plays": 1059
+      }
+    }
+  ],
+  "finale-last-board": [
+    {
+      "id": "idVEo",
+      "fen": "8/8/8/6k1/7p/r4P1R/5K2/8 b - - 3 54",
+      "moves": [
+        "a3b3",
+        "f3f4",
+        "g5f5",
+        "h3b3"
+      ],
+      "rating": 1107,
+      "themes": [
+        "crushing",
+        "discoveredAttack",
+        "endgame",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/idVEo",
+      "reason": "The pawn moves from f3 with check, uncovering the rook on h3 against the rook on b3. After the king moves, the uncovered rook captures its target. Published line after setup: f4+, Kf5, Rxb3.",
+      "quality": {
+        "rd": 76,
+        "popularity": 100,
+        "plays": 856
+      }
+    },
+    {
+      "id": "1xVVV",
+      "fen": "r3kbnr/pp3ppp/2n1p3/3q4/3P4/P4B2/1P3PPP/RNBQK2R b KQkq - 0 9",
+      "moves": [
+        "d5d4",
+        "f3c6",
+        "b7c6",
+        "d1d4"
+      ],
+      "rating": 787,
+      "themes": [
+        "crushing",
+        "intermezzo",
+        "opening",
+        "short"
+      ],
+      "source": "https://lichess.org/training/1xVVV",
+      "reason": "The enemy queen has captured on d4. First capture its knight defender on c6 with check. After the pawn recaptures, take the queen on d4. Published line after setup: Bxc6+, bxc6, Qxd4.",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 458
+      }
+    },
+    {
+      "id": "LmJKq",
+      "fen": "q3kb1r/Bp2pppp/2np1n2/8/2P5/Q4B2/PP3PPP/R4RK1 b k - 2 15",
+      "moves": [
+        "a8a7",
+        "f3c6",
+        "b7c6",
+        "a3a7"
+      ],
+      "rating": 833,
+      "themes": [
+        "crushing",
+        "intermezzo",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/LmJKq",
+      "reason": "The enemy queen has captured on a7. First capture its knight defender on c6 with check. After the pawn recaptures, take the queen on a7. Published line after setup: Bxc6+, bxc6, Qxa7.",
+      "quality": {
+        "rd": 83,
+        "popularity": 96,
+        "plays": 3771
+      }
+    },
+    {
+      "id": "QWUnM",
+      "fen": "6k1/2B5/5p1p/2pb1r2/P1Br4/1P1P4/3KR1PP/8 w - - 4 35",
+      "moves": [
+        "c7d6",
+        "d5c4",
+        "b3c4",
+        "d4d6"
+      ],
+      "rating": 1251,
+      "themes": [
+        "advantage",
+        "discoveredAttack",
+        "endgame",
+        "pin",
+        "short"
+      ],
+      "source": "https://lichess.org/training/QWUnM",
+      "reason": "The bishop on d5 is pinned to its king on g8. It captures the pinning bishop on c4, keeping its king safe. Then follow bxc4 with Rxd6. Published line after setup: Bxc4, bxc4, Rxd6.",
+      "quality": {
+        "rd": 74,
+        "popularity": 100,
+        "plays": 2275
+      }
+    },
+    {
+      "id": "l0NYo",
+      "fen": "8/5pk1/6p1/p3pb1p/P2q4/1PRBQ2P/1KP2rP1/8 w - - 0 33",
+      "moves": [
+        "e3d4",
+        "e5d4",
+        "c3c5",
+        "f5d3"
+      ],
+      "rating": 1257,
+      "themes": [
+        "advantage",
+        "endgame",
+        "master",
+        "pin",
+        "short"
+      ],
+      "source": "https://lichess.org/training/l0NYo",
+      "reason": "The pawn on e5 is pinned to its king on g7. It captures the pinning queen on d4, keeping its king safe. Then follow Rc5 with Bxd3. Published line after setup: exd4, Rc5, Bxd3.",
+      "quality": {
+        "rd": 80,
+        "popularity": 90,
+        "plays": 1285
+      }
+    },
+    {
+      "id": "mqbS0",
+      "fen": "8/P5R1/8/8/5K2/6p1/6k1/r7 b - - 1 55",
+      "moves": [
+        "a1a3",
+        "g7g3",
+        "a3g3",
+        "a7a8q"
+      ],
+      "rating": 913,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/mqbS0",
+      "reason": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn’s file to g3; the pawn then promotes. Published line after setup: Rxg3+, Rxg3, a8=Q+.",
+      "quality": {
+        "rd": 87,
+        "popularity": 91,
+        "plays": 1225
+      }
+    },
+    {
+      "id": "ykqWD",
+      "fen": "6k1/1P6/8/1r4p1/8/6R1/4K3/8 b - - 0 50",
+      "moves": [
+        "g8g7",
+        "g3g5",
+        "b5g5",
+        "b7b8q"
+      ],
+      "rating": 974,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/ykqWD",
+      "reason": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn’s file to g5; the pawn then promotes. Published line after setup: Rxg5+, Rxg5, b8=Q.",
+      "quality": {
+        "rd": 78,
+        "popularity": 89,
+        "plays": 813
+      }
+    },
+    {
+      "id": "uFhSB",
+      "fen": "5rk1/3Q1p2/6p1/8/5R2/8/2q3PP/1r3R1K w - - 1 30",
+      "moves": [
+        "f4f7",
+        "b1f1",
+        "f7f1",
+        "f8f1"
+      ],
+      "rating": 1053,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short",
+        "xRayAttack"
+      ],
+      "source": "https://lichess.org/training/uFhSB",
+      "reason": "The rook on f8 looks through the enemy rook on f7 toward f1. Rxf1+ forces that blocker to capture there; Rxf1# recaptures and gives checkmate. Published line after setup: Rxf1+, Rxf1, Rxf1#.",
+      "quality": {
+        "rd": 77,
+        "popularity": 95,
+        "plays": 4250
+      }
+    },
+    {
+      "id": "oH2I9",
+      "fen": "1Q2r2k/6pp/3Q4/3p4/4q3/2P4P/4p1PK/8 b - - 0 40",
+      "moves": [
+        "e2e1q",
+        "d6f8",
+        "e8f8",
+        "b8f8"
+      ],
+      "rating": 1013,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "sacrifice",
+        "short",
+        "xRayAttack"
+      ],
+      "source": "https://lichess.org/training/oH2I9",
+      "reason": "The queen on b8 looks through the enemy rook on e8 toward f8. Qf8+ forces that blocker to capture there; Qxf8# recaptures and gives checkmate. Published line after setup: Qf8+, Rxf8, Qxf8#.",
+      "quality": {
+        "rd": 77,
+        "popularity": 97,
+        "plays": 4818
+      }
+    }
+  ]
+}

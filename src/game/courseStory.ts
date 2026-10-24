@@ -41,3 +41,28 @@ export function chapterStory(regionId: string, starter: StarterType): StoryLine[
   };
   return chapters[regionId] ?? [{ speaker: companion, line: closing }];
 }
+
+/** The first table opens the last encounter, without claiming the kingdom is free. */
+export function finaleInterlude(starter: StarterType): StoryLine[] {
+  return [
+    { speaker: 'The Lich King', line: 'You returned after every mistake. I turned my board over.' },
+    { speaker: STARTERS[starter].name, line: {
+      n: 'I have landed in worse places. You can always look again.',
+      b: 'A mistake is something to study, Your Majesty.',
+      r: 'Set the pieces straight. Take the next step.',
+    }[starter] },
+    { speaker: 'The Lich King', line: 'Then sit with me. One last table.' },
+  ];
+}
+
+export function journeyEnding(starter: StarterType): StoryLine[] {
+  return [
+    { speaker: 'The Lich King', line: 'Checkmate. I accept it. I have kept this crown too long.' },
+    { speaker: 'Saffron, the Fox Queen', line: 'The gates are open. Pawnshire is waiting for its king.' },
+    { speaker: STARTERS[starter].name, line: {
+      n: 'From the ferry to the keep. Not bad for a few hops.',
+      b: 'A kingdom restored, and still more to learn. A good beginning.',
+      r: 'The road is safe. Let us go home.',
+    }[starter] },
+  ];
+}

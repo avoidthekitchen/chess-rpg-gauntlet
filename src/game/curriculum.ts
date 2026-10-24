@@ -1,3 +1,5 @@
+import finalePuzzles from './course/finalePuzzles.json';
+import { finaleSeeds, finaleRegion } from './course/finale';
 import originalPuzzles from './curriculumPuzzles.json';
 import region5Puzzles from './course/region5Puzzles.json';
 import { region5Seeds, region5Region } from './course/region5';
@@ -5,7 +7,7 @@ import region4Puzzles from './course/region4Puzzles.json';
 import { region4Seeds, region4Region } from './course/region4';
 import region3Puzzles from './course/region3Puzzles.json';
 import { region3Seeds, region3Region } from './course/region3';
-const puzzles = { ...originalPuzzles, ...region3Puzzles, ...region4Puzzles, ...region5Puzzles };
+const puzzles = { ...originalPuzzles, ...region3Puzzles, ...region4Puzzles, ...region5Puzzles, ...finalePuzzles };
 import type { AmbushDef, AmbushPuzzle } from './ambush';
 
 export interface CourseLesson extends AmbushDef {
@@ -147,13 +149,13 @@ const originalSeeds: LessonSeed[] = [
   },
 ];
 
-const seeds = [...originalSeeds, ...region3Seeds, ...region4Seeds, ...region5Seeds];
+const seeds = [...originalSeeds, ...region3Seeds, ...region4Seeds, ...region5Seeds, ...finaleSeeds];
 
 /** Source positions and published lines are unchanged. Difficulty changes assistance, not the chess. */
 export const COURSE_LESSONS: CourseLesson[] = seeds.map(seed => {
   const selected: AmbushPuzzle[] = puzzles[seed.id as keyof typeof puzzles];
   return {
-    ...seed, regionId: seed.id.slice(0, 2), review: seed.review ?? false,
+    ...seed, regionId: seed.id.split('-')[0], review: seed.review ?? false,
     kind: 'ambush', reward: 0, bonuses: [], before: [seed.before], after: [seed.after],
     show: selected[0],
     showLines: { n: seed.demo, b: seed.demo, r: seed.demo },
@@ -181,6 +183,7 @@ export const COURSE_REGIONS: CourseRegion[] = [
   region3Region,
   region4Region,
   region5Region,
+  finaleRegion,
 ];
 
 export const courseLesson = (id: string): CourseLesson | undefined => COURSE_LESSONS.find(lesson => lesson.id === id);

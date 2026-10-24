@@ -42,14 +42,14 @@ Borrow sequencing ideas only. Do not copy these authors' exercises, explanations
 | Region 1 · The Bog | Loose pieces; safe captures; answering check by capturing the checker; back-rank mate; promotion to checkmate; Grubnak's mixed review. | Piece movement, inspecting replies, material counting, basic mate and promotion. | Answering check covers selected captures, not every escape. Promotion examples do not teach pawn-ending technique. |
 | Region 2 · The Kingsroad | Knight forks; queen double attacks; double check; removing defenders; mate in two; Ashfang's mixed review. | Two targets, forcing checks, removing a guard, planning a reply and finish. | Fork examples use checks. This does not establish general fork prevention or quiet double attacks. |
 
-Each existing Region has five three-wave lessons and a four-wave review. Preserve their content and saved completion.
+Each of these first two Regions has five three-wave lessons and a four-wave review. Preserve their content and saved completion.
 Double check stays in Region 2. Later discoveries explain and revisit its mechanism; they do not relocate the lesson.
 
-## Remaining core path
+## Completed core path
 
 All rows use unchanged [Lichess database puzzles](https://database.lichess.org/#puzzles), with original coaching.
 Tags below are candidate searches, not proof of teaching fit. Verify the actual board and complete published line.
-Region 3 has 57 verified sources; Regions 4 and 5 each have 55. Later counts are planning targets. Split an overloaded lesson when needed; do not force every chapter into five lessons.
+Region 3 has 57 verified sources; Regions 4 and 5 each have 55. The finale adds 18. All 273 source positions are distinct. Split an overloaded lesson when needed; do not force every chapter into five lessons.
 
 | Stage and order | Skill sequence | Prerequisites | Published source candidates | Spaced revisits and mixed assessment |
 | --- | --- | --- | --- | --- |

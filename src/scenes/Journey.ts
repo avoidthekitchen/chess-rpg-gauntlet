@@ -7,10 +7,10 @@ import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/journey.css';
-import { chapterStory } from '../game/courseStory';
+import { chapterStory, finaleInterlude, journeyEnding } from '../game/courseStory';
 import { journeyRoute, journeyTrail } from '../ui/journeyLayout';
 
-type Page = 'title' | 'setup' | 'map' | 'journal' | 'settings' | 'story';
+type Page = 'title' | 'setup' | 'map' | 'journal' | 'settings' | 'story' | 'interlude' | 'ending';
 const ART = { n: 'knight', b: 'bishop', r: 'rook' };
 const HELP: Record<DifficultyId, string> = {
   squire: 'Unlimited tries, hints and advice before every position.',
@@ -35,6 +35,8 @@ export class JourneyScene extends BaseScene {
     this.page = data.page ?? 'title';
     this.storyRegion = data.storyRegion ?? '';
     if (this.page === 'story' && !courseRegion(this.storyRegion)?.lessons.every(id => this.save?.completed.includes(id))) this.page = 'map';
+    if (this.page === 'interlude' && !this.save?.completed.includes('finale-threshold')) this.page = 'map';
+    if (this.page === 'ending' && !this.save?.finaleComplete) this.page = 'map';
     this.difficulty = this.save?.difficulty ?? 'knight';
     this.starter = this.save?.starter ?? 'n';
     this.hud = document.createElement('main');
@@ -53,7 +55,8 @@ export class JourneyScene extends BaseScene {
   }
 
   protected build() {
-    const mapArt = courseRegion(this.save?.currentRegion ?? '')?.mapArt ?? 'map-region1';
+    const backdrop = this.page === 'ending' || this.page === 'interlude' ? 'finale' : this.page === 'story' ? this.storyRegion : this.save?.currentRegion ?? '';
+    const mapArt = courseRegion(backdrop)?.mapArt ?? 'map-region1';
     coverImage(this, this.page === 'title' || this.page === 'setup' ? 'bg-title' : `bg-${mapArt}`, this.page === 'title' ? .3 : .18);
     this.render();
   }
@@ -83,11 +86,22 @@ export class JourneyScene extends BaseScene {
     this.hud.classList.toggle('journey-road', current.id === 'r2');
     const header = `<header class="journey-header"><button class="journey-menu" data-action="menu" aria-label="Open journey menu">☰</button><button class="journey-wordmark" data-action="page:map">Pawnshire</button><nav aria-label="Journey navigation">${this.btn('page:map', 'Map', this.page === 'map' ? 'selected' : '')}${this.btn('page:journal', 'Journal', this.page === 'journal' ? 'selected' : '')}${this.btn('page:settings', 'Settings', this.page === 'settings' ? 'selected' : '')}</nav><span class="journey-total" aria-label="${stars} stars earned">★ ${stars}</span></header>`;
     let body = '';
-    if (this.page === 'story') {
+    if (this.page === 'ending' || this.page === 'interlude') {
+      const ending = this.page === 'ending';
+      const lines = ending ? journeyEnding(save.starter) : finaleInterlude(save.starter);
+      body = `<section class="journey-paper journey-story journey-ending"><p class="journey-kicker">${ending ? 'The journey is complete' : 'The Lich King · Between the tables'}</p>
+        <img class="journey-ending-companion" src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt="${esc(STARTERS[save.starter].name)}"/>
+        <h1>${ending ? 'A crown worth carrying.' : 'One last table.'}</h1>
+        <p class="journey-story-lead">${ending ? 'The Lich King accepts checkmate. The gates open, the banners rise, and the road home belongs to Pawnshire again.' : 'The first four boards are settled. Your companion stays beside you as the Lich King sets the last table.'}</p>
+        <div class="journey-story-lines">${lines.map(line => `<blockquote><p>${esc(line.line)}</p><cite>${esc(line.speaker)}</cite></blockquote>`).join('')}</div>
+        <div class="journey-actions">${ending ? this.btn('page:map', 'Revisit the journey', 'primary') : this.btn('lesson:finale-last-board', 'Take your place', 'primary')}${this.btn('page:journal', 'Read your journal')}${ending ? this.btn('lesson:finale-last-board', 'Practise the last encounter') : this.btn('page:map', 'Back to the map')}</div>
+        ${ending ? `<footer class="journey-credits"><h2>Thank you for playing Pawnshire</h2><p>Keep looking, keep learning, and return whenever you like. Every earlier lesson and your earned stars are still here.</p><p>Published positions and solution lines: <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a>, shared under CC0. Original story and companion notes by Pawnshire.</p><p>Built with Phaser and chess.js. Storybook landscapes created with AI assistance.</p><p>Want to keep learning? <a href="https://lichess.org/practice" target="_blank" rel="noopener">Explore Lichess Practice</a>.</p></footer>` : ''}</section>`;
+    } else if (this.page === 'story') {
       const chapter = courseRegion(this.storyRegion)!;
       const nextChapter = COURSE_REGIONS[COURSE_REGIONS.indexOf(chapter) + 1];
       const lines = chapterStory(chapter.id, save.starter);
-      body = `<section class="journey-paper journey-story"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p><h1>${esc(chapter.title)} is free.</h1><p class="journey-story-lead">${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => `<blockquote><p>${esc(line.line)}</p><cite>${esc(line.speaker)}</cite></blockquote>`).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
+      const heading = ({ r3: 'The bindings are broken.', r4: 'The banners come home.', r5: 'The gate is open.' } as Record<string, string>)[chapter.id] ?? `${chapter.title} is free.`;
+      body = `<section class="journey-paper journey-story"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p><h1>${esc(heading)}</h1><p class="journey-story-lead">${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => `<blockquote><p>${esc(line.line)}</p><cite>${esc(line.speaker)}</cite></blockquote>`).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
     } else if (this.page === 'settings') {
       body = `<section class="journey-paper journey-settings"><h1>Make yourself at home</h1><p>Adjust the help and choose your companion. Your lessons and stars stay earned.</p>${this.options()}<div class="journey-actions">${this.btn('page:map', 'Back to the journey', 'primary')}${this.btn('moves', 'Piece movement guide')}${this.btn('page:title', 'Title screen')}</div><hr><h2>A fresh start</h2><p>Reset all lessons and stars in this journey.</p>${this.btn('reset', 'Reset journey', 'quiet')}</section>`;
     } else if (this.page === 'journal') {
@@ -107,11 +121,11 @@ export class JourneyScene extends BaseScene {
       const chapterDone = completedHere === current.lessons.length;
       // Custom-property URLs resolve beside the built stylesheet, so make the map URL absolute.
       const mapArt = new URL(`${import.meta.env.BASE_URL}backgrounds/${current.mapArt ?? 'map-region1'}.webp`, document.baseURI).href;
-      body = `<section class="journey-map-heading"><div><p class="journey-kicker">Chapter ${COURSE_REGIONS.indexOf(current) + 1}</p><h1>${esc(current.title)}</h1><p>${esc(current.subtitle)}</p></div><div class="journey-map-navigation"><label class="journey-region-picker">Travel to a chapter<select data-region-picker aria-label="Choose a chapter">${COURSE_REGIONS.map((r, i) => `<option value="${esc(r.id)}" ${r.id === current.id ? 'selected' : ''} ${regionUnlocked(save, r.id) ? '' : 'disabled'}>${i + 1}. ${esc(r.title)}${regionUnlocked(save, r.id) ? '' : ' · Locked'}</option>`).join('')}</select></label>${next ? this.btn(`lesson:${next.id}`, `Continue: ${next.title}`, 'primary journey-continue') : this.btn('page:journal', 'Open your journal', 'primary')}</div></section>
-      ${finished ? `<section class="journey-finale" role="status"><span aria-hidden="true">✦ ★ ✦</span><h2>The road is yours.</h2><p>You have completed all ${COURSE_REGIONS.length} available chapters. Revisit any lesson or return for the stars you missed.</p><p>The next chapters are still beyond the horizon.</p></section>` : save.lastResult?.won && courseLesson(save.lastResult.lessonId)?.review ? `<section class="journey-chapter-complete" role="status"><strong>★ ${esc(courseRegion(courseLesson(save.lastResult.lessonId)!.regionId)!.title)} complete!</strong> The next chapter is open.</section>` : ''}
+      body = `<section class="journey-map-heading"><div><p class="journey-kicker">${current.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(current) + 1}`}</p><h1>${esc(current.title)}</h1><p>${esc(current.subtitle)}</p></div><div class="journey-map-navigation"><label class="journey-region-picker">Travel the journey<select data-region-picker aria-label="Choose a chapter">${COURSE_REGIONS.map((r, i) => `<option value="${esc(r.id)}" ${r.id === current.id ? 'selected' : ''} ${regionUnlocked(save, r.id) ? '' : 'disabled'}>${r.kind === 'finale' ? 'Finale' : i + 1}. ${esc(r.title)}${regionUnlocked(save, r.id) ? '' : ' · Locked'}</option>`).join('')}</select></label>${next ? this.btn(`lesson:${next.id}`, `Continue: ${next.title}`, 'primary journey-continue') : this.btn('page:journal', 'Open your journal', 'primary')}</div></section>
+      ${finished ? `<section class="journey-finale" role="status"><span aria-hidden="true">✦ ★ ✦</span><h2>Pawnshire is free.</h2><p>Five Regions and the Lich King’s final boards are complete. Every lesson remains open for practice.</p>${this.btn('ending', 'See the ending again')}</section>` : save.lastResult?.won && courseLesson(save.lastResult.lessonId)?.review && courseRegion(courseLesson(save.lastResult.lessonId)!.regionId)?.kind !== 'finale' ? `<section class="journey-chapter-complete" role="status"><strong>★ ${esc(courseRegion(courseLesson(save.lastResult.lessonId)!.regionId)!.title)} complete!</strong> The next chapter is open.</section>` : ''}
       ${save.lastResult?.interrupted ? '<p class="journey-notice" role="status">Your unfinished attempt ended when you left. Completed lessons and stars are safe; you can retry.</p>' : ''}
       <div class="journey-map" style="--map-art:url('${esc(mapArt)}');--phone-map-height:${phoneHeight}px"><svg class="journey-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><polyline class="journey-route-wide" points="${journeyRoute(desktop)}"/><polyline class="journey-route-phone" points="${journeyRoute(phone)}"/></svg><ol class="journey-trail" aria-label="${esc(current.title)} lessons in order">${nodes}</ol><p class="journey-map-caption">${completedHere} of ${current.lessons.length} encounters complete · ${DIFFICULTIES[save.difficulty].label}</p></div>
-      <footer class="journey-map-footer"><div class="journey-companion-note"><img src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt=""/><p><strong>${esc(STARTERS[save.starter].name)}</strong><br>${chapterDone ? esc(current.outro) : esc(current.intro)}</p></div><div class="journey-stars-note">${chapterDone ? this.btn(`story:${current.id}`, 'Read the chapter ending') : ''}<p class="journey-help">Stars: complete a lesson, solve cleanly, and solve without hints. Revisit to earn any you missed.</p></div></footer>`;
+      <footer class="journey-map-footer"><div class="journey-companion-note"><img src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt=""/><p><strong>${esc(STARTERS[save.starter].name)}</strong><br>${chapterDone ? esc(current.outro) : esc(current.intro)}</p></div><div class="journey-stars-note">${current.kind === 'finale' ? (save.finaleComplete ? this.btn('ending', 'See the ending again') : save.completed.includes('finale-threshold') ? this.btn('interlude', 'Read the story so far') : '') : chapterDone ? this.btn(`story:${current.id}`, 'Read the chapter ending') : ''}<p class="journey-help">Stars: complete a lesson, solve cleanly, and solve without hints. Revisit to earn any you missed.</p></div></footer>`;
     }
     this.hud.innerHTML = `${header}<div class="journey-content">${body}</div>`;
   }
@@ -155,13 +169,17 @@ export class JourneyScene extends BaseScene {
       showModal({ title: 'The pieces, at a glance', html: `<div class="journey-moves"><p><strong>King:</strong> one square in any direction. Never move into check.</p><p><strong>Queen:</strong> any distance along a rank, file or diagonal.</p><p><strong>Rook:</strong> any distance straight along a rank or file.</p><p><strong>Bishop:</strong> any distance diagonally.</p><p><strong>Knight:</strong> two squares one way, then one sideways. It can jump over pieces.</p><p><strong>Pawn:</strong> forward one square, or two from its starting square if clear. Capture one square diagonally forward. Reach the last rank to promote.</p><p>Except the knight, pieces cannot jump over other pieces. When your king is in check, your move must make it safe.</p><p>For castling, en passant and interactive practice, visit <a href="https://lichess.org/learn" target="_blank" rel="noopener">Lichess Learn</a>.</p></div>`, buttons: [{ label: 'Ready', kind: 'primary', onClick: () => {} }], onDismiss: () => {} }); return;
     }
     if (!this.save) return;
+    if (action === 'ending' || action === 'interlude') {
+      if (action === 'ending' ? !this.save.finaleComplete : !this.save.completed.includes('finale-threshold')) return;
+      this.page = action; this.rebuild(); this.hud.scrollTop = 0; return;
+    }
     if (action === 'menu') {
       showModal({ title: 'Your journey', html: `<p>${DIFFICULTIES[this.save.difficulty].label} · ${this.save.completed.length} of ${COURSE_LESSONS.length} encounters complete</p>`, buttons: [{ label: 'Resume', kind: 'primary', onClick: () => {} }, { label: 'Settings', onClick: () => { this.page = 'settings'; this.rebuild(); this.hud.scrollTop = 0; } }, { label: 'Title screen', onClick: () => { this.page = 'title'; this.rebuild(); this.hud.scrollTop = 0; } }], onDismiss: () => {} }); return;
     }
     if (action.startsWith('story:')) {
       const id = action.slice(6);
       if (!courseRegion(id)?.lessons.every(lessonId => this.save!.completed.includes(lessonId))) return;
-      this.storyRegion = id; this.page = 'story'; this.rebuild(); this.hud.scrollTop = 0; return;
+      this.storyRegion = id; this.page = courseRegion(id)?.kind === 'finale' ? 'ending' : 'story'; this.rebuild(); this.hud.scrollTop = 0; return;
     }
     if (action.startsWith('travel:')) {
       const id = action.slice(7); if (!regionUnlocked(this.save, id)) return;

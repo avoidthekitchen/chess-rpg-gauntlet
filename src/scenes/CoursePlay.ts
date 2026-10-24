@@ -162,7 +162,7 @@ export class CoursePlayScene extends BaseScene {
     this.hud.classList.toggle('course-finished', this.phase === 'won' || this.phase === 'lost');
     if (this.phase === 'briefing') {
       this.hud.innerHTML = `<div class="ambush-launcher"><section class="ambush-card">
-        <p class="journey-kicker">${esc(region.title)} · ${def.review ? 'Final challenge' : 'Guided lesson'}</p>
+        <p class="journey-kicker">${esc(region.title)} · ${def.review ? region.kind === 'finale' ? 'Finale · Mixed challenge' : 'Chapter review' : 'Guided lesson'}</p>
         <h1>${esc(def.title)}</h1><p class="ambush-deck">${esc(def.objective)}</p>
         <div class="ambush-story">${courseStoryBefore(def, this.save.starter).map(s => `<p>${esc(s)}</p>`).join('')}</div>
         <div class="course-intro-dialogue">${courseIntro(def, this.save.starter).map(info => courseDialogueRow(info)).join('')}</div>
@@ -179,9 +179,9 @@ export class CoursePlayScene extends BaseScene {
     else if (this.phase === 'taught') actions = this.btn(this.exampleOnly ? 'home' : 'begin', this.exampleOnly ? 'Back to journal' : 'Try it yourself', true) + this.btn('watch', 'Watch again');
     else if (['solving', 'replying', 'setup'].includes(this.phase)) actions = help.hints ? this.btn('hint', 'Hint: show a piece', false, this.phase !== 'solving' || this.busy) : '<span class="ambush-nohelp">No hints on this difficulty</span>';
     else if (this.phase === 'waveWon') actions = this.btn('next', 'Next position', true);
-    else if (this.phase === 'won') actions = this.btn('home', 'Continue journey', true) + this.btn('begin', 'Replay lesson');
+    else if (this.phase === 'won') actions = this.btn('home', def.id === 'finale-last-board' ? 'See the ending' : def.id === 'finale-threshold' ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
     else if (this.phase === 'lost') actions = this.btn('begin', 'Try again', true) + this.btn('home', 'Back to map');
-    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
+    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.id === 'finale-threshold' ? 'First table complete' : def.id === 'finale-last-board' ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
     const coach = teaching ? def.showLines[this.save.starter]
       : this.phase === 'solving' && run && !def.review && (help.coaching === 'all' || help.coaching === 'first' && run.wave === 0)
         ? run.step === 0 ? def.waves[run.wave].line
@@ -406,7 +406,10 @@ export class CoursePlayScene extends BaseScene {
   private home() {
     this.session++; this.holds.clear(); this.cueHolds.clear(); this.cue = null; this.speech.clear(); this.busy = false;
     settleJourney(this.save, true); persistJourney(this.save);
-    goTo(this.game, 'journey', { page: this.exampleOnly ? 'journal' : this.phase === 'won' && this.lesson.review ? 'story' : 'map', storyRegion: this.lesson.regionId });
+    const acceptedWin = ['won', 'replying'].includes(this.phase) && this.save.active?.lessonId === this.lesson.id && this.save.active.run.status === 'won';
+    const page = this.exampleOnly ? 'journal' : !acceptedWin || !this.lesson.review ? 'map'
+      : this.lesson.id === 'finale-threshold' ? 'interlude' : this.lesson.id === 'finale-last-board' ? 'ending' : 'story';
+    goTo(this.game, 'journey', { page, storyRegion: this.lesson.regionId });
   }
 
   private leave() {

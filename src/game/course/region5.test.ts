@@ -156,8 +156,11 @@ describe('Bone Wardens published source mechanisms', () => {
     expect(c.moves({ verbose: true }).every(m => m.piece === 'k')).toBe(true);
   });
 
-  it('takes a shortest open king route to each next pawn capture in all seven teaching sources', () => {
-    for (const p of puzzles['r5-king-use']) {
+  it('takes a shortest open king route in all seven teaching and both review sources', () => {
+    const kingSources = byKind('king-use');
+    expect(kingSources).toHaveLength(9);
+    const reviewIds = new Set(puzzles['r5-gate-review'].map(p => p.id));
+    for (const p of kingSources) {
       const c = start(p);
       for (let i = 1; i < p.moves.length; i++) {
         if (i % 2) {
@@ -173,6 +176,11 @@ describe('Bone Wardens published source mechanisms', () => {
           const distance = kingDistance(c, from, target!);
           expect(Number.isFinite(distance), p.id).toBe(true);
           expect(kingDistance(c, to, target!), `${p.id} ${p.moves[i]}`).toBe(distance - 1);
+          if (reviewIds.has(p.id)) {
+            const shortestSteps = c.moves({ verbose: true }).filter(move =>
+              move.piece === 'k' && kingDistance(c, move.to, target!) === distance - 1);
+            expect(shortestSteps.map(move => move.lan), `${p.id} review route`).toEqual([p.moves[i]]);
+          }
         }
         const move = c.move(uciMove(p.moves[i]));
         if (i === p.moves.length - 1) expect(move.captured, p.id).toBe('p');

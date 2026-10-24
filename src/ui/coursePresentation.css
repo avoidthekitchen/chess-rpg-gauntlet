@@ -78,7 +78,7 @@
 
 /* Speech is its own surface, never a row in the lesson's scrolling content. */
 .course-speech-layer { z-index:6; }
-.course-play .course-speech { position:absolute; z-index:2; pointer-events:auto; padding:12px; border:1px solid #8f7445; border-radius:9px; background:#211b27f5; box-shadow:0 8px 28px #0008; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+.course-play .course-speech { position:absolute; z-index:2; pointer-events:auto; padding:12px; border:1px solid #8f7445; border-radius:9px; background:#211b27; box-shadow:0 8px 28px #0008; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
 .course-play .course-speech[hidden] { display:none; }
 .course-play .course-speech .course-dialogue { margin:0; gap:12px; }
 .course-play .course-speech .course-dialogue p { font-size:18px; }
@@ -104,7 +104,8 @@
 }
 
 /* Feedback stays inside the advice area (or the desktop dialogue slot), off the board. */
-.course-play .course-moment { z-index:2; overflow-y:auto; overscroll-behavior:contain; }
+.course-play .course-moment { z-index:2; background:#171218; animation-name:course-feedback-in; overflow-y:auto; overscroll-behavior:contain; }
+@keyframes course-feedback-in { from { transform:scale(.96); } to { transform:scale(1); } }
 .course-play .course-moment[hidden] { display:none; }
 .course-play .course-moment .course-portrait { height:var(--feedback-portrait-height, 96px); width:calc(var(--feedback-portrait-height, 96px) * .75); }
 .course-play .course-speech.toast .course-portrait { max-height:var(--feedback-portrait-height, 64px); }

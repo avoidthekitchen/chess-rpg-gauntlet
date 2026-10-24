@@ -4,6 +4,7 @@
 
 - At the owner's request, compact dialogue now overlays lesson advice instead of the board. Action buttons stay clear.
 - Capture, check, and mate banners use the same bounds. Roomy desktop layouts use the existing dialogue space beside the board.
+- Opaque cards keep underlying advice from showing through dialogue or capture text.
 - Rotation hides feedback while the moving board waits for its layout rebuild. Dialogue remains available in history.
 - Chromium checks covered 393×852, 375×553, 844×390, and 1280×800. WebKit covered the three compact sizes.
 - Frame sampling found no board/action overlap during speech and move banners, and no clipped capture text in the checked demonstrations.

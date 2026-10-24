@@ -7,7 +7,10 @@
 - Reload preserves preview progress. Reset restarts that preview. Removing the parameter returns to the normal journey save.
 - Production ignores the shortcut. Independent code review found no blocker in gating, storage isolation, reload, or reset.
 - Type-check, build, and 474 tests passed. CI selected the unchanged engine harness from the whole branch; its redundant rerun was stopped.
-- The preceding full engine result remains applicable: boss passed, with one unwaived legacy trades failure. Public preview checks follow deployment.
+- The preceding full engine result remains applicable: boss passed, with one unwaived legacy trades failure.
+- Deployed `8f77559`; Cloudflare version `c040abf2-c4e3-417c-ac33-0a3ae09614c1`.
+- Public Chromium checked all six shortcuts at 375×553, preview settings reload, lesson entry, interrupted reload exactly once, and normal-save preservation.
+- The normal save remained byte-for-byte unchanged throughout preview use. The preview notice and return link fit the short-phone map.
 
 ## 2026-10-24 — First complete journey integration (#46)
 

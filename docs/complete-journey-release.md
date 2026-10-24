@@ -77,6 +77,17 @@ The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gau
 
 ## Staging
 
+### Region shortcut follow-up
+
+Current application revision: `8f77559e149463c6f1a3811b3d284bcf883f72dd`.
+Cloudflare version: `c040abf2-c4e3-417c-ac33-0a3ae09614c1`.
+Use `?region=1`–`5` or `?region=finale` for a separate saved preview. Production builds ignore these parameters.
+The follow-up passed 474 tests, type-check, build, and independent code review.
+Public Chromium checked all six maps at 375×553, settings reload, lesson entry, interrupted reload, and unchanged normal saves.
+The earlier full-engine outcome below remains unchanged; this follow-up does not alter engine inputs.
+
+### Original complete-journey publication
+
 Destination: https://unformedideas.com/staging-chess-rpg/.
 Verified application revision: `1859ee8ba53913eaa826eb7366755c392563f463`.
 Cloudflare version: `b09d67fa-6f5c-4ab3-a9c3-5b49ecb7566b`.

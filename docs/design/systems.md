@@ -8,9 +8,9 @@ Pawnshire teaches tactics through published Lichess puzzles, framed as encounter
 The player already knows how pieces move. The entry screen states this and offers a short moves reminder.
 All board moves follow ordinary chess rules.
 
-Regions 1 and 2 each contain five guided lessons and a mixed chapter review.
+Regions 1–2 each contain five guided lessons; Regions 3–5 each contain six. Each chapter ends with a mixed review.
 Each guided lesson has an optional demonstration, three practice waves, and one backup position per wave.
-Each review has four waves, its own example in the content, and backups.
+Reviews have four, four, seven, six, and six waves. The finale adds two four-wave encounters. All retain examples and backups.
 The current review interface launches the challenge directly, keeping the tactic hidden.
 Future Region length follows learning prerequisites; five lessons is not a universal chapter quota.
 
@@ -58,8 +58,9 @@ Grubnak and Ashfang host mixed reviews in the story; those reviews are published
 
 `src/game/journey.ts` owns unlocks, attempt settlement, and completion records.
 Each lesson opens after all preceding lessons are complete. Completed lessons stay available for practice.
-Clearing Grubnak’s review opens The Kingsroad. Clearing Ashfang’s review completes the current two-chapter journey.
-Later Regions are planning, not playable destinations.
+Each regional review opens the next destination, through all five Regions.
+The first Lich King encounter opens the second. Actual checkmate in the final encounter saves finale completion and opens the ending.
+Earlier lessons and the ending remain replayable. Stars, help settings, and perfect play never gate progress.
 
 Each lesson has three practice goals:
 
@@ -72,7 +73,9 @@ Each lesson has three practice goals:
 Stars are recorded once and can be improved on later attempts. Replays never remove an earned star.
 Only completion opens the next lesson; the other stars never gate progress.
 
-`src/journeySave.ts` persists the journey under `pawnshire-journey-v1`.
+`src/journeySave.ts` uses `pawnshire-journey-v1` in production and `pawnshire-staging-journey-v1` on staging.
+Staging copies old shared progress once, then never changes the production key. Region previews remain separate.
+A rejected raw save is retained under the active key’s `:recovery` suffix before replacement.
 It validates progress and reconstructs the active board from the published line rather than trusting stored FEN.
 Reloading an unfinished attempt settles it as interrupted; an accepted victory remains a victory.
 Continue restores progress. Starting a new journey confirms replacement and clears only that journey.
@@ -80,9 +83,11 @@ Legacy campaign and standalone pilot saves remain separate and unchanged.
 
 ## Presentation and truthful feedback
 
-Teaching text takes priority over flavor dialogue.
-Keep the full current advice visible without scrolling on phone views, including Gentle and the longest lesson text.
-Temporary portrait speech lives outside the lesson’s scrolling content and away from advice and controls.
+Keep the full current advice visible without scrolling when the learner first chooses a move, including Gentle and the longest lesson text.
+Compact speech clears whenever the player can choose a move or read a completed example. All lines remain in history.
+Temporary portrait speech stays outside the lesson’s scrolling content. On compact screens it overlays advice, leaving board squares and action buttons clear.
+During demonstrations and move feedback, temporary speech may cover advice for 3.2–9 seconds, ending sooner when dismissed or replaced.
+The advice returns automatically; no tap is required to reveal it. This compact-screen exception prioritizes visible piece movement.
 Roomy desktops retain the last speaker in a separate panel; phones and short landscape screens use temporary cards.
 The 44px portrait button opens a conversation history grouped by example and practice position.
 
@@ -114,10 +119,10 @@ Ratings guide selection; they do not promise how difficult a position feels to a
 
 | Value | Current setting | Set or checked in |
 | --- | --- | --- |
-| Built chapters | 2; 5 guided lessons and 1 mixed review each | `COURSE_REGIONS`, `COURSE_LESSONS` in `src/game/curriculum.ts` |
+| Built chapters | 5 Regions with 5, 5, 6, 6, 6 guided lessons and one review each; finale has two encounters | `COURSE_REGIONS`, `COURSE_LESSONS` in `src/game/curriculum.ts` |
 | Guided practice | 3 waves; 1 demonstration and 1 backup per wave | `curriculum.ts`, `curriculum.test.ts` |
-| Chapter review | 4 waves; its own example and backups | `curriculum.ts`, `curriculum.test.ts` |
-| Distinct published positions | 88 across examples, main waves, and backups | `src/game/curriculum.test.ts` |
+| Chapter review | 4, 4, 7, 6, 6 waves; finale 4 + 4; each has its own example and backups | `curriculum.ts`, `curriculum.test.ts` |
+| Distinct published positions | 273 across examples, main waves, and backups | `src/game/curriculum.test.ts` |
 | Solver moves per position | 1–3 after the setup move | `curriculum.test.ts` |
 | Selected rating bounds | 400–1300 | `curriculum.test.ts`, `scripts/select-curriculum.mjs` |
 | Main/backup rating difference | At most 200 | `curriculum.test.ts` |

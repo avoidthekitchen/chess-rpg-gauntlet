@@ -50,7 +50,7 @@ The table records established roles, not a claim that every character and scene 
 | Saffron | Fox · queen | Region 1 story ally | Confident, quick, a bit vain; "I go wherever I please" | — |
 | Grubnak, the Goblin Chief | Toad · king (the Toad Chief) | Region 1 review host | Loud, greedy, talks about himself in the third person; a bully, not evil | — |
 | Ashfang, the Bandit Lord | Wolf · king | [Region 2](regions/region-02-bandit-riders.md) review host | Smooth, mocking, counts everything in coin; a thief, not a brute | — |
-| Tadwell, the Frog Captain | Frog Knight · knight | [Region 2](regions/region-02-bandit-riders.md) story ally (planned) | Formal, dutiful, proud of the old army; a little stiff | — |
+| Tadwell, the Frog Captain | Frog Knight · knight | [Region 2](regions/region-02-bandit-riders.md) story ally | Formal, dutiful, proud of the old army; a little stiff | — |
 | The Lich King | Skeleton · king | Final villain | Cold and courtly, never raises his voice; talks about games he refused to lose | — |
 | General Flint | Lion · king | Iron Legion review host, then story ally | Proud, clipped commands; learns to distinguish duty from pride | — |
 | The Bone Wardens | Skeleton animals · collective | Region 5 review hosts | Quiet, watchful, few words; their watch ends at the keep’s gate | — |
@@ -80,4 +80,4 @@ Write board-specific dialogue only after inspecting the source. Never promise an
 On mixed reviews, keep titles, intros, and initial dialogue neutral about the tactic.
 Correct chess terminology takes priority over a joke. A missed puzzle is an opportunity to try again, never a narrative punishment.
 
-The chapter arc is approved narrative direction. Missing interludes and ally scenes remain content work, not implemented mechanics.
+The five chapter endings, finale interlude, and ending now carry this arc. Allies join the story without adding roster mechanics.

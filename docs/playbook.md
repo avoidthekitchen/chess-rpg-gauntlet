@@ -3,13 +3,14 @@
 [Design overview](design.md) · [Region template](design/regions/region-template.md) · [Syllabus](design/syllabus.md) · [Build progress](progress.md)
 
 Build a clear learning path from unchanged published Lichess puzzles, with Pawnshire’s storybook presentation.
-Regions 1 and 2 provide the built examples: five guided lessons followed by a mixed review in each.
-Future chapters follow teaching prerequisites; they need not repeat that exact lesson count.
+The built journey contains five Regions and a two-encounter finale.
+Chapters follow teaching prerequisites; they need not repeat the same lesson count.
 
 The [curriculum-first direction](curriculum-first.md) records the approved scope.
 Armies, gold, recruitment, faction AI, paid powers, and live bosses are deferred.
 The [legacy playbook](legacy-playbook.md) preserves their earlier content workflow.
-Retained engine battles still meet the regression bars below.
+The owner retired legacy battle benchmarks as release gates on 2026-10-24 because the curriculum replaces that material.
+Their scripts and results remain available as optional historical diagnostics.
 
 ## Order of work
 
@@ -27,12 +28,13 @@ Work in small, reviewable steps and log material changes in [build progress](pro
 
 ## Lesson content rules
 
-`src/game/curriculum.ts` defines lessons. `src/game/curriculumPuzzles.json` stores their published positions and metadata.
+`src/game/curriculum.ts` registers lessons. `curriculumPuzzles.json` and the chapter packs under `src/game/course/` preserve published positions and metadata.
 Use the shared runner in `src/game/ambush.ts` for tactical lines.
 
 - Preserve each published FEN, setup move, solution, and reply. Stop at the source endpoint.
 - Each current guided lesson has one optional example, three waves, and one backup per wave.
-- Each current chapter review has four waves drawn from taught ideas, its own example in content, and backups.
+- Reviews have four waves in Regions 1–2, seven in Region 3, and six in Regions 4–5. Each has a stored example and backups.
+- The finale has two four-wave reviews. Its stored examples do not add demonstration buttons.
 - A source contains 1–3 solver moves after setup. Choose positions that show the exact lesson, not just its tag.
 - Preserve source id, URL, rating, themes, rating deviation, popularity, plays, and the reason it belongs.
 - Apply the [current quality and rating checks](design/systems.md#tuning-values). Do not copy the standalone pilot’s tighter rating limits.
@@ -53,7 +55,8 @@ Each lesson opens after every earlier lesson is complete. Completed encounters r
 Each Region ends with a mixed review of taught skills. Finishing that review opens the next built Region.
 Stars mark completion, no misses, and no hints; only completion gates the route.
 
-The current journey reaches the Bone Wardens’ review. The Lich King capstone remains unbuilt.
+The current journey reaches the Lich King’s actual checkmate, a saved ending, credits, and replay.
+The finale follows the five Regions; it is not a sixth teaching chapter.
 Region briefs distinguish implemented content from pending browser and release checks.
 
 Keep the winding painted route and short story encounters.
@@ -94,11 +97,12 @@ Verify these current behaviors:
 - Journey reset and play leave legacy campaign and pilot saves unchanged.
 - Truthful banners, player-color speaking identity, companion identity, reduced motion, and cancellation after exit.
 
-### Legacy engine regressions
+### Optional legacy engine diagnostics
 
 Keep the existing selector and all retained engine checks intact.
 `npm run verify:battles` exercises custom battles and the legacy boss with real enemy AI and simulated players in `scripts/verify/`.
-These checks can take 15 minutes or more; `npm run ci` selects them by changed dependencies.
+These checks can take 15 minutes or more. `npm run ci -- --legacy` opts into dependency-based selection.
+Their historical thresholds below do not block curriculum merges or releases.
 
 For a retained custom battle:
 
@@ -116,14 +120,17 @@ The [legacy playbook](legacy-playbook.md) preserves custom battle and warm-up au
 ## CI before a PR and release
 
 Run `npm run ci` before each PR. Keep the existing checks before each commit too.
-It runs type-check, build, and unit tests through `npm run check`, then selected engine regressions.
-The selector follows each check’s imports and includes changed dependencies across the branch.
-A screen or documentation change may skip engine work; a shared dependency change may select it.
-`npm run ci -- --plan` reports what would run and why. Do not weaken selection to avoid legacy checks.
+It runs type-check, build, and unit tests through `npm run check`.
+`npm run ci -- --full` runs the same current checks; it does not re-enable retired benchmarks.
+Source verification and the browser checks below remain required for affected lessons and flows.
 
-Run `npm run ci -- --full` before a Region ships, and when a rule changes how battles end.
-Published lesson content does not remove this full-suite release requirement.
-Record the command and actual outcome; a planned check is not a pass.
+For optional historical diagnostics, use `npm run ci -- --legacy` to select affected engine checks by dependency.
+Use `npm run ci -- --legacy --full` or `npm run verify:battles` to run the whole historical engine suite.
+`npm run ci -- --legacy --plan` reports selection without running checks.
+Record actual outcomes; the retired benchmark's failure is neither a curriculum blocker nor a passing result.
+The legacy harness uses a fixed `VERIFY_SEED` corpus, with separate game seeds for scenario, difficulty, player, and index.
+Failed cells print replay moves and seeds. Wilson intervals describe sample uncertainty; they do not replace the existing pass thresholds.
+Changing the seed after seeing a failure is not a release fix.
 
 ## Browser and mobile checks
 
@@ -136,8 +143,10 @@ Check the affected flow at all four viewports, including Gentle and the longest 
 | 375×553 | Full advice and main controls fit the short phone viewport |
 | 844×390 | Landscape layout keeps the board, advice, and controls usable; temporary speech |
 
-Temporary speech must be outside lesson scroll content and must not cover teaching text or actions.
-Do not put a large portrait ahead of the advice, hide text behind a tap, or truncate current advice.
+Temporary speech stays outside lesson scroll content. On compact screens it may cover advice; board squares and action buttons must stay clear.
+Capture and check banners follow the same bounds. Verify those bounds while moves animate, not only after speech disappears.
+Compact speech clears before each player choice and the completed-example takeaway. During animations, temporary cards may cover advice; history retains every line.
+Advice returns automatically. Keep it untruncated, and do not require a tap to reveal it outside this temporary overlay.
 The history button needs a 44×44 CSS pixel target and an accessible name.
 Keep long history scrollable while its heading and close control remain visible.
 Check keyboard access, classic pieces, reduced motion, rotations, and repeated entry and exit.

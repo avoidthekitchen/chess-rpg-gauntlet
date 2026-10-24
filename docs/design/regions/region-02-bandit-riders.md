@@ -20,7 +20,7 @@ This implementation supersedes the former custom-battle and hired-army spec in #
 
 Exact display titles, sources, and coaching are authoritative in `src/game/curriculum.ts` and `curriculumPuzzles.json`.
 Five lessons lead in order to Ashfang's four-position review. Normal lessons have three practice positions, an example, and backups.
-At present, clearing Ashfang completes the implemented two-chapter journey. Earlier lessons remain replayable.
+Clearing Ashfang opens the Shadow Cult chapter. Earlier lessons remain replayable.
 Region 3 must extend this transition without losing existing completion or stars.
 
 ## Story and cast
@@ -41,7 +41,7 @@ Identity text must match the art actually shown; board colors remain distinct fr
 
 ## Verification and playtest
 
-The complete two-chapter journey, published lines, retries, progression, saves, and phone layouts have been checked.
+The accepted two-chapter baseline checked published lines, retries, progression, saves, and phone layouts. Current full-journey evidence lives in [the release record](../../complete-journey-release.md).
 Independent code, curriculum, and presentation reviews were addressed; the owner accepted the result.
 See [build progress](../../progress.md) for exact evidence and deployments.
 

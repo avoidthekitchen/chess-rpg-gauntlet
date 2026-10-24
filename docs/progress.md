@@ -1,5 +1,40 @@
 # Build progress
 
+One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
+
+## 2026-10-24 — Retire the legacy benchmark gate
+
+- The owner confirmed that new material replaces the legacy campaign, so its battle benchmark no longer blocks merges or releases.
+- CI now requires explicit `--legacy` opt-in for historical engine diagnostics. The existing selector, thresholds, logs and tests remain available.
+- Current curriculum validation remains required. Updated contributor instructions and the five PRs; no merge or application deployment is part of this change.
+- `npm run ci -- --full` passed type-check, build and 496 tests. The plan check confirms explicit `--legacy --full` still selects both historical suites.
+
+## 2026-10-24 — Follow-up review corrections
+
+- Corrected Kp2Gw's queen-defender explanation and strengthened its board-based checks.
+- Replaced ERCLb's truncated material trade with x4f2j/fdj22 and tested unique non-checking defensive captures.
+- Replaced kuWwt's untaught opposition with VIy5h. Shortest-route checks now include both king-review sources.
+- Named reused portraits by faction and chess role. Species labels require matching artwork.
+- Kept compact advice clear during player choices and completed examples; fixed terminal-move wording and measured journal offsets.
+- Corrected tuning counts and finale table order. Recorded deferred loading, remediation and recovery-notice work explicitly.
+- The integrated build and 496 tests passed; all 273 sources match the original database. Independent content and UI code reviews found no remaining issue.
+- Targeted desktop and phone WebKit checks passed locally and on public staging. Historical full-engine output is committed; its release failure remains unwaived.
+- Deployed `e473d2a`; Cloudflare version `b05138a2-f1ac-4615-9148-85f4dea4e49b`. Replied to all 11 new inline findings and each review summary.
+
+## 2026-10-24 — Address the five PR reviews
+
+- Corrected teaching sources, narrowed unsupported claims and strengthened tests around the actual chess decisions.
+- Mixed review order, added missing file coverage and retained Region 5's saved unlock order.
+- Repaired derived completion and obsolete attempts. Staging now has a separate save key, with one-time copying and rejected-save recovery.
+- Moved faction presentation content into `src/game`, documented species, and removed repeated story reveals.
+- Fixed demonstration rotation, setup-dialogue timing, victory text clipping, chapter-picker focus and journal navigation.
+- Type-check, build and 492 tests passed. All 273 published puzzle records matched the local source database.
+- Fresh normal-control preview runs completed Region 3 and the finale in phone WebKit, and Region 4 in desktop Chromium.
+- The release record distinguishes these runs from earlier full journeys. Legacy failures remain unwaived; PRs remain draft.
+- Deployed `27a3a9c`; Cloudflare version `f0243edb-2b70-4a3a-872e-4bb8fb9537e9`. Public artifacts match the tested build.
+- Public phone WebKit passed setup advice, demo rotation and ending/reload checks. All 65 inline review comments received replies.
+- Fresh full `npm run verify:battles` finished in 1,799.52 seconds: boss passed; 11 tests passed and only trades Brave 21/24 failed.
+
 ## 2026-10-24 — Finale review follow-up
 
 - Repair the derived finale flag without discarding completed lessons or stars. Invalid terminal wins settle without credit or lockout.
@@ -9,6 +44,56 @@
 - Reordered the last encounter before its mating finish and narrowed the subtitle to ideas from every chapter.
 - `npm run ci` passed: type-check, build, and 461 tests in 31 files. The dependency selector required no engine rerun.
 - Full legacy release failures remain unwaived; this is a draft staging review update.
+
+## 2026-10-24 — Keep moving pieces visible
+
+- At the owner's request, compact dialogue now overlays lesson advice instead of the board. Action buttons stay clear.
+- Capture, check, and mate banners use the same bounds. Roomy desktop layouts use the existing dialogue space beside the board.
+- Opaque cards keep underlying advice from showing through dialogue or capture text.
+- Rotation hides feedback while the moving board waits for its layout rebuild. Dialogue remains available in history.
+- Chromium checks covered 393×852, 375×553, 844×390, and 1280×800. WebKit covered the three compact sizes.
+- Frame sampling found no board/action overlap during speech and move banners, and no clipped capture text in the checked demonstrations.
+- WebKit passed rotation during capture, hidden feedback until rebuild, dismissal, and conversation history checks.
+- Final type-check, build, and 474 tests passed across 33 files. Independent layout review found no blocker.
+- Public Chromium repeated four viewport checks; WebKit repeated phone and short-phone capture checks with no overlap or runtime exceptions.
+- The final opacity adjustment received another short-phone WebKit check. Report-only CSP console notices did not block assets or gameplay.
+- Deployed `a70192e`; Cloudflare version `994caac9-a981-49c5-9aa1-baa51d6b5efd`.
+
+## 2026-10-24 — Staging region shortcuts
+
+- Added `?region=1`–`5` and `?region=finale` to staging and development, opening the requested chapter map directly.
+- Each region preview has separate saved test progress. Earlier chapters are marked complete; the requested chapter starts unsolved.
+- Reload preserves preview progress. Reset restarts that preview. Removing the parameter returns to the normal journey save.
+- Production ignores the shortcut. Independent code review found no blocker in gating, storage isolation, reload, or reset.
+- Type-check, build, and 474 tests passed. CI selected the unchanged engine harness from the whole branch; its redundant rerun was stopped.
+- The preceding full engine result remains applicable: boss passed, with one unwaived legacy trades failure.
+- Deployed `8f77559`; Cloudflare version `c040abf2-c4e3-417c-ac33-0a3ae09614c1`.
+- Public Chromium checked all six shortcuts at 375×553, preview settings reload, lesson entry, interrupted reload exactly once, and normal-save preservation.
+- The normal save remained byte-for-byte unchanged throughout preview use. The preview notice and return link fit the short-phone map.
+
+## 2026-10-24 — First complete journey integration (#46)
+
+The complete review build has 35 encounters, 28 learned journal ideas, and 273 distinct published sources.
+See the [release record](complete-journey-release.md) for stacked PRs, validation, staging, and future save-compatible rollback.
+
+- A fresh independent reviewer checked 529 solver states, 1,860 save round trips, and 72 alternate-mate recovery cases. No critical code finding remained.
+- Corrected a misleading retry promise: repeated failure uses the same backup, rather than promising a fresh board every time.
+- A real browser check found the completed-example takeaway clipped at 375×553. It now replaces the redundant demonstration advice.
+- The existing demonstration remains in conversation history. Main practice advice and the fixed 44px controls are preserved.
+- At integration revision `1859ee8`, `npm run check` passed type-check, build, and 470 tests across 32 files.
+- Full `npm run ci -- --full` completed: boss passed; battles passed ten of eleven tests, including repeatability. Its engine stage took 1,833.49 seconds.
+- The full command exited 1 for trades Brave wins: 21/24 (87.5%), below 90%. No other final engine test failed; this gate remains unwaived.
+- The original full baseline finished: boss passed, battles passed nine of ten tests, with guard Brave flawless 11/23 below 50%.
+- The regression harness now seeds both shout planning and enemy choices. Game identities survive pool/filter changes; failed cells print replay traces.
+- Thresholds, sample sizes, content, and simulator heuristics are unchanged. The first seeded battle run exposed trades Brave 21/24, below 90%.
+- Desktop Chromium on Brave difficulty and iPhone-sized WebKit on Gentle completed all 35 encounters and 119 main positions through normal UI controls, earning 105 stars each.
+- All four help settings, five viewport sizes, keyboard controls, rotation, classic pieces, and reduced motion passed focused checks.
+- Fixed a brief transition flash by queuing outgoing cleanup before the next scene initializes. Four regression tests and independent browser checks passed.
+- Initial staging revision `7238891` passed public font, lesson, save, reset, viewport, and WebKit touch checks.
+- Final staging revision `1859ee8` passed repeated artifact matching, fresh navigation cleanup, and Old Brick ending/persistence checks.
+- Full journeys preceded the final navigation fix. The final build received focused desktop, WebKit, and public rechecks.
+- Exact isolated PR snapshots also passed: R3 395 tests, R4 398, R5 407, finale 456. Earlier workspace totals included concurrently prepared tests.
+
 
 ## 2026-10-24 — Lich King finale (#45)
 
@@ -54,14 +139,13 @@
 - Pin escape covers capturing the pinning attacker. Wider escape methods remain unclaimed.
 - Maps and progress totals now follow registered chapters. Old version-1 saves retain completion and stars.
 - Added a compact chapter picker, replayable chapter endings, Cult dialogue, and an illustrated Cult landscape.
-- `npm run ci` passed: type-check, build, and 405 tests at that checkpoint, including concurrently prepared content tests.
+- The isolated Region 3 snapshot passed type-check, build, and 395 tests. The earlier workspace total of 405 included concurrent content tests.
 - Independent Chromium checks at 375×553 and 844×390 showed complete current advice and 44×44 history targets.
 - Full baseline regression was started before implementation. Legacy `r1-guard` failed its Brave flawless bonus: 11/23 wins, below 50%.
 - Boss checks were still running at this checkpoint. No threshold was lowered and no legacy waiver was assumed.
 - Complete normal-UI desktop/WebKit runs and public staging verification continue in the integration record.
 
 
-One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
 ## Reconciled foundation and Region 3 handoff
 

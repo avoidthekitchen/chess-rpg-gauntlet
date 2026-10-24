@@ -1,7 +1,8 @@
-// Local CI: the quick checks always, then only the slow engine checks this branch's changes can affect.
-//   npm run ci            quick checks + the slow checks your changes reach
-//   npm run ci -- --full  quick checks + every slow check (before a Region ships)
-//   npm run ci -- --plan  just print which slow checks would run, and why
+// Curriculum CI always runs type-check, build, and unit tests.
+//   npm run ci                         current release checks (--full is compatible)
+//   npm run ci -- --legacy             additionally select historical engine diagnostics
+//   npm run ci -- --legacy --full      additionally run every historical engine diagnostic
+//   npm run ci -- --plan               print the plan without running checks
 
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
@@ -27,6 +28,16 @@ function run(label, cmd, cmdArgs) {
     console.error(`\n✗ ${label} failed`);
     process.exit(r.status ?? 1);
   }
+}
+
+// The owner retired the legacy benchmark as a release gate on 2026-10-24.
+// Keep the original selector and thresholds available only through explicit opt-in.
+if (!args.has('--legacy')) {
+  console.log('Legacy engine benchmarks: excluded from curriculum release checks (use --legacy to opt in).');
+  if (planOnly) process.exit(0);
+  run('Quick checks', 'npm', ['run', 'check']);
+  console.log('\n✓ Curriculum release checks passed');
+  process.exit(0);
 }
 
 const { base, files: changed } = changedFiles(git);

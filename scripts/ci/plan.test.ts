@@ -61,7 +61,7 @@ describe('ci plan', () => {
     expect(changedFiles(git)).toEqual({ base: null, files: ['notes.txt'] });
   });
 
-  it('runs every engine check in a clone without main (integration)', () => {
+  it('keeps legacy benchmarks opt-in even with --full or no main branch (integration)', () => {
     const runner = fileURLToPath(new URL('./run.mjs', import.meta.url));
     const dir = mkdtempSync(join(tmpdir(), 'ci-nobase-'));
     try {
@@ -70,7 +70,12 @@ describe('ci plan', () => {
       writeFileSync(join(dir, 'battle.ts'), 'export {};');
       git('add', '.');
       git('commit', '-q', '-m', 'a committed rule change');
-      const out = execFileSync(process.execPath, [runner, '--plan'], { cwd: dir, encoding: 'utf8', stdio: 'pipe' });
+      for (const flags of [[], ['--full']]) {
+        const current = execFileSync(process.execPath, [runner, '--plan', ...flags], { cwd: dir, encoding: 'utf8', stdio: 'pipe' });
+        expect(current).toContain('Legacy engine benchmarks: excluded');
+        expect(current).not.toMatch(/(?:battles|boss)\s+runs/);
+      }
+      const out = execFileSync(process.execPath, [runner, '--legacy', '--plan'], { cwd: dir, encoding: 'utf8', stdio: 'pipe' });
       expect(out).toContain('Changed files: unknown');
       expect(out).toMatch(/battles\s+runs \(change set unknown\)/);
       expect(out).toMatch(/boss\s+runs \(change set unknown\)/);

@@ -4,6 +4,7 @@ import type { BattleDef } from '../../src/game/content';
 import { DIFFICULTIES, type DifficultyId } from '../../src/game/difficulty';
 import { REGION1_BATTLES } from '../../src/game/region1Battles';
 import { NodeEngine } from './nodeEngine';
+import { DEFAULT_SEED, gameSeed, gameTrace, rateReport, seededRng } from './diagnostics';
 import { playGame, replay, runPool, type GameResult, type PlayerKind } from './simulate';
 
 /**
@@ -15,7 +16,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
  * Two more players are reported but not asserted: `greedy` (always grabs the biggest capture,
  * else pushes a pawn) and `random`. The simulation never rewinds.
  *
- * Env: VERIFY_GAMES (games per player per difficulty, default 24), VERIFY_BATTLE (one id),
+ * Env: VERIFY_SEED (corpus namespace, default pawnshire-legacy-v1), VERIFY_GAMES (games per player per difficulty, default 24), VERIFY_BATTLE (one id),
  * VERIFY_ENGINES (parallel Stockfish processes, default 8), VERIFY_SHOW=1 prints competent
  * losses and VERIFY_SHOW=all every game. With VERIFY_BATTLE set, VERIFY_FEN,
  * VERIFY_OBJECTIVE (JSON), VERIFY_VILLAGES (c4,e3) and VERIFY_BONUSES (JSON) try a variant without editing the battle.
@@ -25,6 +26,7 @@ const GAMES = Number(process.env.VERIFY_GAMES ?? 24);
 const ONLY = process.env.VERIFY_BATTLE;
 const POOL = Number(process.env.VERIFY_ENGINES ?? 8);
 const SHOW = process.env.VERIFY_SHOW ?? '';
+const SEED = process.env.VERIFY_SEED ?? DEFAULT_SEED;
 const LEVELS: DifficultyId[] = ['squire', 'knight'];
 const PLAYERS: PlayerKind[] = ['competent', 'careless', 'greedy', 'random'];
 
@@ -54,6 +56,7 @@ const rows: Row[] = [];
 let engines: NodeEngine[] = [];
 
 beforeAll(async () => {
+  process.stdout.write(`Legacy battle corpus: VERIFY_SEED=${JSON.stringify(SEED)}, ${GAMES} games per cell; intervals describe sampling uncertainty, gates are unchanged.\n`);
   engines = Array.from({ length: POOL }, () => new NodeEngine());
   await Promise.all(engines.map((e) => e.ready));
 });
@@ -96,6 +99,18 @@ const tuned = (b: BattleDef): BattleDef => ({
 });
 const battles = REGION1_BATTLES.filter((b) => !ONLY || b.id === ONLY).map((b) => (ONLY ? tuned(b) : b));
 
+// Exercise the real UCI adapter too: ucinewgame must remove prior games' search state.
+it('repeats a seeded game across reused and fresh engines', async () => {
+  const def = REGION1_BATTLES.find((b) => b.id === 'r1-guard')!;
+  const seed = gameSeed(SEED, 'battle', def.id, 'knight', 'competent', 0);
+  const play = (engine: NodeEngine) => playGame(def, DIFFICULTIES.knight.ai, 'competent', engine, seededRng(seed));
+  const first = await play(engines[0]);
+  expect(await play(engines[0])).toEqual(first);
+  const fresh = new NodeEngine();
+  try { await fresh.ready; expect(await play(fresh)).toEqual(first); }
+  finally { fresh.quit(); }
+});
+
 describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
   it('cannot be won on the first move', () => {
     const chess = new Chess(def.fen);
@@ -106,10 +121,13 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
   });
 
   it('is won by competent play and lost by careless play', async () => {
-    const jobs: { level: DifficultyId; player: PlayerKind; run: (e: NodeEngine) => Promise<GameResult> }[] = [];
+    const jobs: { level: DifficultyId; player: PlayerKind; seed: number; index: number; run: (e: NodeEngine) => Promise<GameResult> }[] = [];
     for (const level of LEVELS)
       for (const player of PLAYERS)
-        for (let i = 0; i < GAMES; i++) jobs.push({ level, player, run: (e) => playGame(def, DIFFICULTIES[level].ai, player, e) });
+        for (let i = 0; i < GAMES; i++) {
+          const seed = gameSeed(SEED, 'battle', def.id, level, player, i);
+          jobs.push({ level, player, seed, index: i, run: (e) => playGame(def, DIFFICULTIES[level].ai, player, e, seededRng(seed)) });
+        }
     const results = await runPool(
       engines,
       jobs.map((j) => j.run),
@@ -118,7 +136,9 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
     const failures: string[] = [];
     for (const level of LEVELS)
       for (const player of PLAYERS) {
-        const games = results.filter((_, i) => jobs[i].level === level && jobs[i].player === player);
+        const cell = results.flatMap((game, i) => jobs[i].level === level && jobs[i].player === player ? [{ game, job: jobs[i] }] : []);
+        const games = cell.map(({ game }) => game);
+        const failureCount = failures.length;
         const wins = games.filter((g) => g.status === 'won');
         const bonus: Record<string, number> = {};
         const reasons: Record<string, number> = {};
@@ -128,7 +148,6 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
           reasons[key] = (reasons[key] ?? 0) + 1;
           const okReason = g.status === 'won' ? OK_WIN[def.objective.kind].test(g.reason) : OK_LOSS.test(g.reason);
           if (!okReason || g.status === 'playing') failures.push(`${level} ${player}: unexpected end "${g.reason}" (${g.status})`);
-          if (SHOW && (player === 'competent' || SHOW === 'all') && (g.status !== 'won' || SHOW === 'all')) process.stdout.write(`${def.id} ${level} ${player} ${g.status}: ${g.moves.join(" ")} — ${g.reason}\n`);
         }
         rows.push({
           battle: def.id,
@@ -142,12 +161,20 @@ describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {
           reasons,
         });
         const rate = wins.length / games.length;
+        process.stdout.write(`${def.id} ${level} ${player}: wins ${rateReport(wins.length, games.length)}${player === 'competent' ? Object.entries(bonus).map(([key, hits]) => `; ${key} ${rateReport(hits, wins.length)}`).join('') : ''}\n`);
         if (player === 'competent') {
           if (rate < 0.9) failures.push(`${level}: competent win rate ${Math.round(rate * 100)}% < 90%`);
           for (const [k, v] of Object.entries(bonus))
             if (v < wins.length / 2) failures.push(`${level}: competent bonus ${k} only ${v}/${wins.length}`);
         }
         if (player === 'careless' && rate > 0.4) failures.push(`${level}: careless win rate ${Math.round(rate * 100)}% > 40%`);
+        // On a failed cell include every trace, including wins missing a required bonus.
+        // A namespace, labels and index identify the seed independently of pool order.
+        for (const { game, job } of cell) {
+          if (failures.length > failureCount || SHOW === 'all' || (SHOW && player === 'competent' && game.status !== 'won')) {
+            process.stdout.write(gameTrace(`${def.id} ${level} ${player} game=${job.index}`, job.seed, game) + '\n');
+          }
+        }
       }
     expect(failures).toEqual([]);
   });

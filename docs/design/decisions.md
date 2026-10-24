@@ -7,16 +7,22 @@
 The accepted two-chapter journey is the foundation for all remaining Regions.
 The owner authorizes routine curriculum and implementation choices with best judgment; no repeated design approval is required.
 Independent review, source verification, applicable CI, and browser checks remain required.
+The owner retired the legacy battle benchmark gate on 2026-10-24 because new material replaces that campaign.
 
 ## Open TODOs
 
-- [ ] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
-- [ ] Deliver the remaining [syllabus](syllabus.md), preserving prerequisites and revisits across chapters.
+- [x] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
+- [x] Deliver the basic five-Region journey and finale, preserving prerequisites and revisits. Technique and refresher extensions remain below.
 - [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
 - [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
-- [ ] Add missing story transitions and ally scenes; distinguish planned scenes from built ones.
+- [x] Add chapter transitions, named ally appearances, the finale interlude, and a saved ending.
+- [ ] Add position-specific wrong-move explanations, including promotion alternatives, and optional solution review after a failed attempt. This needs a teaching design beyond #40/#41.
+- [ ] Explain repaired or unreadable saves to the player and offer a clear recovery path; keep the preserved raw backup.
+- [ ] Audit startup loading: lazy chapter artwork and splitting legacy code need re-entry, failure and offline checks.
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
 - [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
+
+- [x] Retire the legacy battle benchmark as a merge and release gate, per the owner’s 2026-10-24 instruction. Preserve results and optional diagnostics; replacement curriculum checks remain required.
 
 ## Open questions
 
@@ -38,6 +44,13 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | The owner retired legacy battle benchmarks as release gates because new material will replace them. CI requires explicit `--legacy` opt-in for historical engine diagnostics. This clears the benchmark blocker without changing its results or authorizing merge or production deployment. |
+| 2026-10-24 | Superseded by the owner’s later deprecation decision: review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
+| 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |
+| 2026-10-24 | Use faction plus chess-role labels while borrowing Bog artwork. Display species names only with matching art. The earlier canonical-label exception is superseded; future species concepts need art and naming review. |
+| 2026-10-24 | The finale revisits ideas rather than enforcing a rising rating at every wave. Its opening offers a foothold; actual checkmate is the closing payoff. Published ratings are selection guidance, not a difficulty guarantee. |
+| 2026-10-24 | Owner prioritizes seeing piece movement. Compact dialogue and move banners overlay lesson advice, never board squares or action buttons. Desktop uses the dialogue space beside the board. |
+| 2026-10-24 | Staging and development accept `?region=1`–`5` or `finale`. Each region preview uses separate test storage and marks only earlier chapters complete. Production ignores the shortcut. |
 | 2026-10-24 | The finale has two four-wave reviews and a separate interlude. Actual final checkmate sets an explicit saved completion flag before animation. Ending and earlier lessons remain replayable. |
 | 2026-10-24 | Region 5 uses 55 unchanged sources for short endgame decisions. Teach the opponent-promotes-first race before review; underpromotion means the only immediate mate. Rook support covers forcing clearance and deflection. |
 | 2026-10-24 | Region 4 teaches bishop development with check, file tactics, exposed-king checks, deflection, intermediate checking captures, and actual mate-threat defence. Overload is not claimed. |

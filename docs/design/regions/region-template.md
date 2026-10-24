@@ -6,7 +6,8 @@ Copy this file to `region-NN-<faction>.md` for a new curriculum chapter.
 Describe the learning sequence before selecting boards. Link shared rules instead of repeating them.
 Record an unresolved design call in [decisions](../decisions.md) rather than inventing a mechanic to fill the template.
 
-The built Regions 1 and 2 each use five guided lessons and a mixed review.
+Regions 1 and 2 use five guided lessons each; Regions 3–5 use six each. Every Region ends with a mixed review.
+Review lengths are 4, 4, 7, 6 and 6 waves. The finale adds two four-wave encounters.
 Future Region length follows prerequisites and coverage, not a mandatory five-lesson quota.
 Armies, gold, powers, faction move selection, and live boss duels are deferred; they are not chapter prerequisites.
 The [legacy playbook](../../legacy-playbook.md) preserves that earlier authoring model.
@@ -70,7 +71,7 @@ Write demonstrations, prompts, and feedback in our own voice.
 | Review wave | Previously taught idea | Main source | Backup source | Why recognition is required |
 | --- | --- | --- | --- | --- |
 
-Current reviews use four waves and a stored example; the interface enters the challenge directly.
+Reviews use four to seven waves according to skill coverage, plus a stored example; the interface enters the challenge directly.
 Keep titles and pre-answer prompts neutral. Withhold theme-specific coaching until the move demonstrates the idea.
 Check backups for taught coverage and accidental answer leakage too.
 A named chief can host the review through story and portraits without a live engine duel.

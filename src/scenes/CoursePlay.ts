@@ -1,8 +1,9 @@
+import { COURSE_FOE_ART } from '../game/courseCast';
 import { Chess, type Move, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
-import { journeyMilestone, beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
+import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
@@ -10,7 +11,7 @@ import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phas
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
-import { captureLine, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
+import { captureLine, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
@@ -48,12 +49,13 @@ export class CoursePlayScene extends BaseScene {
   private style: PieceStyle = 'tokens';
   private exampleOnly = false;
   private valid = false;
+  private feedbackLayoutPending = false;
 
   constructor() { super('course-play'); }
 
   init(data: { lessonId?: string; exampleOnly?: boolean } = {}) {
     this.session++;
-    this.valid = false;
+    this.valid = false; this.feedbackLayoutPending = false;
     const save = loadJourney();
     const lesson = courseLesson(data.lessonId ?? '');
     if (!save || !lesson || !lessonUnlocked(save, lesson.id)) {
@@ -100,6 +102,11 @@ export class CoursePlayScene extends BaseScene {
   }
 
   requestLayout() {
+    // The board rebuild waits for an in-flight move; hide feedback until both agree again.
+    this.feedbackLayoutPending = true;
+    if (this.speechElement) this.speechElement.hidden = true;
+    const moment = this.hud?.querySelector<HTMLElement>('.course-moment');
+    if (moment) moment.hidden = true;
     this.cueHolds.clear(); this.cue = null;
     super.requestLayout();
   }
@@ -122,12 +129,14 @@ export class CoursePlayScene extends BaseScene {
 
   protected build() {
     if (!this.valid) return;
+    this.feedbackLayoutPending = false;
     // Transient moments are discarded when a deferred resize rebuilds the board.
     this.cue = null;
-    coverImage(this, courseRegion(this.lesson.regionId)?.mapArt ? `bg-${courseRegion(this.lesson.regionId)!.mapArt}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
+    const art = courseRegion(this.lesson.regionId)?.mapArt;
+    coverImage(this, art ? `bg-${art}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
-      faction: 'bog', style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
+      faction: COURSE_FOE_ART, style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
       onSquare: sq => this.onSquare(sq),
     });
     this.refresh();
@@ -179,10 +188,10 @@ export class CoursePlayScene extends BaseScene {
     else if (this.phase === 'taught') actions = this.btn(this.exampleOnly ? 'home' : 'begin', this.exampleOnly ? 'Back to journal' : 'Try it yourself', true) + this.btn('watch', 'Watch again');
     else if (['solving', 'replying', 'setup'].includes(this.phase)) actions = help.hints ? this.btn('hint', 'Hint: show a piece', false, this.phase !== 'solving' || this.busy) : '<span class="ambush-nohelp">No hints on this difficulty</span>';
     else if (this.phase === 'waveWon') actions = this.btn('next', 'Next position', true);
-    else if (this.phase === 'won') actions = this.btn('home', def.id === 'finale-last-board' ? 'See the ending' : def.id === 'finale-threshold' ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
+    else if (this.phase === 'won') actions = this.btn('home', def.id === finalEncounter() ? 'See the ending' : def.regionId === finaleChapter()?.id && def.id !== finalEncounter() ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
     else if (this.phase === 'lost') actions = this.btn('begin', 'Try again', true) + this.btn('home', 'Back to map');
-    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.id === 'finale-threshold' ? 'First table complete' : def.id === 'finale-last-board' ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
-    const coach = teaching ? def.showLines[this.save.starter]
+    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.regionId === finaleChapter()?.id && def.id !== finalEncounter() ? 'First table complete' : def.id === finalEncounter() ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
+    const coach = this.phase === 'taught' ? def.takeaway : teaching ? def.showLines[this.save.starter]
       : this.phase === 'solving' && run && !def.review && (help.coaching === 'all' || help.coaching === 'first' && run.wave === 0)
         ? run.step === 0 ? def.waves[run.wave].line
           : this.chess.isCheck() ? 'Your king is in check. Find a safe reply that finishes the line.'
@@ -201,11 +210,11 @@ export class CoursePlayScene extends BaseScene {
     const result = this.phase === 'won' ? `<div class="ambush-result course-victory">${courseDialogueRow(companionReaction(this.save.starter, 'win'), 'course-victory-voice')}
       <div class="course-stars" aria-label="Lesson stars">${[['Finished', this.save.completed.includes(def.id)], ['No misses', stars?.clean], ['No hints', stars?.noHint]].map(([label, earned]) => `<span role="img" aria-label="${label}: ${earned ? 'earned' : 'not earned'}${this.earnedStars.includes(String(label)) ? ', new star' : ''}" class="${earned ? 'earned' : ''} ${this.earnedStars.includes(String(label)) ? 'new-star' : ''}"><b aria-hidden="true">${earned ? '★' : '☆'}</b>${label}${this.earnedStars.includes(String(label)) ? '<small>New star</small>' : ''}</span>`).join('')}</div>
       <p>${esc(def.takeaway)}</p>${def.after.map(s => `<p>${esc(s)}</p>`).join('')}</div>`
-      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1; the position you missed gets a fresh board.</p></div>` : '';
+      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1. A similar position replaces the one you first missed.</p></div>` : '';
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);
-    const moment = this.cue ? `<div class="course-moment ${this.cue.capture ? 'capture' : ''}" style="left:${l.x}px;top:${l.y + l.width * BOARD_TALL / BOARD_SPAN * .3}px;width:${l.width}px" role="status">${coursePortrait(this.cue.info)}<div><small>${esc(this.cue.labels.join(' · '))}</small><strong>${esc(this.cue.title)}</strong></div></div>` : '';
+    const moment = this.cue ? `<div class="course-moment ${this.cue.capture ? 'capture' : ''}" hidden role="status">${coursePortrait(this.cue.info)}<div><small>${esc(this.cue.labels.join(' · '))}</small><strong>${esc(this.cue.title)}</strong></div></div>` : '';
     this.hud.innerHTML = `<header class="ambush-top">${this.btn('leave', '← Map')}<div><span class="journey-kicker">${esc(region.title)}</span><strong>${esc(def.title)}</strong></div>${this.btn('style', this.style === 'tokens' ? 'Classic pieces' : 'Animal pieces')}</header>
       <section class="ambush-panel" style="left:${l.panelX}px;top:${l.panelY}px;width:${l.panelWidth}px;max-height:${panelHeight}px" aria-label="Lesson controls">
       <div class="ambush-panel-scroll" tabindex="0" aria-label="Lesson status and companion advice">
@@ -216,7 +225,26 @@ export class CoursePlayScene extends BaseScene {
       ${run && !teaching && !['won', 'lost'].includes(this.phase) ? `<p class="ambush-bonuses">${run.misses === 0 ? '☆' : '–'} No misses &nbsp; ${run.hintsUsed === 0 ? '☆' : '–'} No hints</p>` : ''}
       <p class="ambush-source">Published Lichess position${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? ` · <a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">${esc(this.puzzle.id)}</a>` : ''}</p>
       </div><div class="ambush-actions">${actions}</div></section>${moment}`;
+    const momentElement = this.hud.querySelector<HTMLElement>('.course-moment');
+    if (momentElement) this.positionFeedback(momentElement, persistentSpeech);
     this.renderSpeech();
+  }
+
+  /** Compact feedback covers advice, never squares or the fixed action row. */
+  private positionFeedback(element: HTMLElement, persistent: boolean) {
+    if (this.feedbackLayoutPending) { element.hidden = true; return; }
+    const anchor = this.hud.querySelector<HTMLElement>(persistent ? '.ambush-panel' : '.ambush-panel-scroll');
+    if (!anchor) { element.hidden = true; return; }
+    const bounds = anchor.getBoundingClientRect();
+    const top = persistent ? bounds.bottom + 12 : bounds.top;
+    const height = persistent ? Math.min(156, this.H - this.safe.bottom - top - 8) : bounds.height;
+    element.hidden = height < 44;
+    element.style.left = `${bounds.left}px`;
+    element.style.top = `${top}px`;
+    element.style.width = `${bounds.width}px`;
+    element.style.maxHeight = `${Math.max(0, height)}px`;
+    // Keep the portrait and text readable even in a short landscape advice area.
+    element.style.setProperty('--feedback-portrait-height', `${Math.max(24, Math.min(96, height - 26))}px`);
   }
 
   private action(action: string) {
@@ -257,7 +285,9 @@ export class CoursePlayScene extends BaseScene {
     await this.holds.wait(650); if (token !== this.session) return;
     await this.play(this.puzzle.moves[0], token); if (token !== this.session) return;
     this.phase = 'solving';
-    this.message = this.chess.isCheck() ? 'Your king is in check. Find the best reply.' : this.lesson.review ? 'Your move. Look for checks, captures and threats.' : this.lesson.objective;
+    // Setup flavour stays in history; the learner sees the objective before choosing.
+    this.speech.dismiss();
+    this.message = this.chess.isCheck() ? 'Your king is in check. Find the best reply.' : this.lesson.objective;
     this.refresh(); this.flushLayout();
   }
 
@@ -287,6 +317,8 @@ export class CoursePlayScene extends BaseScene {
     this.busy = true;
     const animation = this.board?.animateMove(move); this.refresh();
     await animation; if (token !== this.session) return;
+    // Rebuild at the first idle point, before the next cue or dialogue begins.
+    this.busy = false; this.flushLayout(); this.busy = true;
     if (!silent) {
       const cues = courseMoveCues(this.chess, move, accepted, this.puzzle.id, publishedIndex);
       const info = courseMoveSpeaker(move, this.solver, cues, this.lesson.regionId);
@@ -296,7 +328,7 @@ export class CoursePlayScene extends BaseScene {
       }
       this.speech.show(info);
     }
-    this.busy = false; this.refresh();
+    this.busy = false; this.flushLayout(); this.refresh();
   }
 
   private async moveMoment(move: Move, info: SpeakerInfo, labels: CourseCue[], token: number) {
@@ -312,7 +344,7 @@ export class CoursePlayScene extends BaseScene {
     const info = this.speech.info;
     if (!this.hud || !this.valid) return;
     const persistent = this.W >= 640 && this.W > this.H && this.H >= 650;
-    const visible = !!info && !this.cue && !['briefing', 'won', 'lost'].includes(this.phase) && (persistent || this.speech.visible);
+    const visible = !!info && !this.cue && courseAllowsSpeech(this.phase, persistent) && (persistent || this.speech.visible);
     if (!visible) {
       if (this.speechElement) this.speechElement.hidden = true;
       return;
@@ -333,17 +365,11 @@ export class CoursePlayScene extends BaseScene {
       });
     }
     const element = this.speechElement;
-    const l = this.layout();
-    element.hidden = false;
     element.className = `course-speech ${persistent ? 'persistent' : 'toast'}`;
     const content = courseDialogueRow(info!, 'course-speech-voice') + (persistent ? '' : '<button data-dismiss-speech title="Dismiss dialogue" aria-label="Dismiss dialogue">×</button>');
     // Preserve the node and a reader's focus across ordinary board/HUD updates.
     if (element.dataset.line !== content) { element.innerHTML = content; element.dataset.line = content; }
-    element.style.left = `${persistent ? l.panelX : l.x + 8}px`;
-    element.style.width = `${persistent ? l.panelWidth : l.width - 16}px`;
-    const panel = this.hud.querySelector<HTMLElement>('.ambush-panel');
-    element.style.top = `${persistent ? (panel?.getBoundingClientRect().bottom ?? l.panelY) + 12 : l.y + l.width * BOARD_TALL / BOARD_SPAN - 8}px`;
-    element.style.maxHeight = `${persistent ? 156 : Math.max(100, l.width * BOARD_TALL / BOARD_SPAN - 24)}px`;
+    this.positionFeedback(element, persistent);
     if (this.speechLayer && element.parentElement !== this.speechLayer) this.speechLayer.appendChild(element);
   }
 
@@ -382,7 +408,7 @@ export class CoursePlayScene extends BaseScene {
     }
     this.phase = 'replying'; this.hintSquare = null;
     this.speech.clear();
-    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : 'Your move…';
+    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : outcome.moves.length > 1 ? 'Good move. Watch their reply…' : 'Good move…';
     for (let i = 0; i < outcome.moves.length; i++) {
       await this.play(outcome.moves[i], token, outcome.verdict !== 'miss' && i === 0, 1 + run.step * 2 + i, outcome.verdict === 'miss'); if (token !== this.session) return;
       if (i < outcome.moves.length - 1) {

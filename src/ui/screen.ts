@@ -127,11 +127,15 @@ export abstract class BaseScene extends Phaser.Scene {
 }
 
 /**
- * Goes to a screen from anywhere (e.g. a dialog callback), stopping every other running
- * scene. `this.scene.start()` only stops the scene it's called on, which isn't always
+ * Goes to a screen from anywhere (e.g. a dialog callback), stopping other active or queued
+ * scenes. `this.scene.start()` only stops the scene it's called on, which isn't always
  * the one on screen.
  */
 export function goTo(game: Phaser.Game, key: string, data?: object) {
-  for (const s of game.scene.getScenes(true)) if (s.scene.key !== key) s.scene.stop();
-  game.scene.start(key, data);
+  const target = game.scene.getScene(key);
+  if (!target) { console.warn(`Unknown scene ${key}`); return; }
+  // Include dormant scenes: another navigation may already have queued their start.
+  // Queue the destination too, so outgoing shutdown/save cleanup precedes its init.
+  for (const s of game.scene.getScenes(false)) if (s.scene.key !== key) s.scene.stop();
+  target.scene.start(key, data);
 }

@@ -5,6 +5,7 @@ import { DIFFICULTIES, type DifficultyId } from '../../src/game/difficulty';
 import type { HireType } from '../../src/game/economy';
 import { R1_BOSS, R1_BOSS_ARMY } from '../../src/game/region1Boss';
 import { NodeEngine } from './nodeEngine';
+import { DEFAULT_SEED, gameSeed, gameTrace, rateReport, seededRng } from './diagnostics';
 import { playGame, runPool, type GameResult, type PlayerKind } from './simulate';
 
 /**
@@ -12,10 +13,12 @@ import { playGame, runPool, type GameResult, type PlayerKind } from './simulate'
  * starter, after one hire), other budget-legal mixes such as two towers, and the free
  * starting army (5-7 points). With every full army, a competent player must almost never
  * lose and should usually finish the job; a careless one should usually lose.
- * Env: VERIFY_GAMES (default 8), VERIFY_ARMIES.
+ * Env: VERIFY_GAMES (default 8), VERIFY_ARMIES, VERIFY_SEED, VERIFY_SHOW=1 (losses) or all.
  */
 
 const GAMES = Number(process.env.VERIFY_GAMES ?? 8);
+const SEED = process.env.VERIFY_SEED ?? DEFAULT_SEED;
+const SHOW = process.env.VERIFY_SHOW ?? '';
 const POOL = Number(process.env.VERIFY_ENGINES ?? 8);
 const LEVELS: DifficultyId[] = ['squire', 'knight'];
 const PLAYERS: PlayerKind[] = ['competent', 'careless', 'greedy'];
@@ -43,6 +46,7 @@ const ONLY = process.env.VERIFY_ARMIES?.split(',').map((x) => x.trim());
 
 let engines: NodeEngine[] = [];
 beforeAll(async () => {
+  process.stdout.write(`Legacy boss corpus: VERIFY_SEED=${JSON.stringify(SEED)}, ${GAMES} games per cell; intervals describe sampling uncertainty, gates are unchanged.\n`);
   engines = Array.from({ length: POOL }, () => new NodeEngine());
   await Promise.all(engines.map((e) => e.ready));
 });
@@ -58,10 +62,13 @@ describe('Goblin Chief duel', () => {
       for (const level of LEVELS) {
         const cells: string[] = [];
         for (const player of PLAYERS) {
-          const jobs = Array.from({ length: GAMES }, () => (eng: NodeEngine) => playGame(def, def.ai?.[level] ?? DIFFICULTIES[level].ai, player, eng));
+          const seeds = Array.from({ length: GAMES }, (_, i) => gameSeed(SEED, 'boss', name, level, player, i));
+          const jobs = seeds.map((seed) => (eng: NodeEngine) => playGame(def, def.ai?.[level] ?? DIFFICULTIES[level].ai, player, eng, seededRng(seed)));
+          const failureCount = failures.length;
           const res: GameResult[] = await runPool(engines, jobs);
           const wins = res.filter((r) => r.status === 'won');
           const rate = wins.length / res.length;
+          process.stdout.write(`${name} ${level} ${player}: wins ${rateReport(wins.length, res.length)}; losses ${rateReport(res.filter((r) => r.status === 'lost').length, res.length)}\n`);
           const avg = wins.length ? wins.reduce((a, r) => a + r.playerMoves, 0) / wins.length : 0;
           const fastest = wins.length ? Math.min(...wins.map((r) => r.playerMoves)) : 0;
           const losses = res.filter((r) => r.status === 'lost');
@@ -77,6 +84,11 @@ describe('Goblin Chief duel', () => {
             if (lossRate > MAX_LOSS_RATE) failures.push(`${name} @${level}: competent lost ${losses.length}/${res.length}`);
             if (rate < MIN_WIN_RATE) failures.push(`${name} @${level}: competent won only ${wins.length}/${res.length}`);
           }
+          res.forEach((game, i) => {
+            if (failures.length > failureCount || SHOW === 'all' || (SHOW && player === 'competent' && game.status !== 'won')) {
+              process.stdout.write(gameTrace(`${name} ${level} ${player} game=${i}`, seeds[i], game) + '\n');
+            }
+          });
         }
         table.push(`${name.padEnd(30)} ${level.padEnd(7)} ${cells.join(' | ')}`);
       }

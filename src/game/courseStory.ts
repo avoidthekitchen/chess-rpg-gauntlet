@@ -34,9 +34,9 @@ export function chapterStory(regionId: string, starter: StarterType): StoryLine[
     ],
     r3: [
       { speaker: 'The Cult Leader', line: 'We promised they would lose nothing. We left them unable to move.' },
-      { speaker: companion, line: 'The ledger names him. A Lion King who refused to accept checkmate.' },
+      { speaker: companion, line: { n: 'The ledger names him! A Lion King who would not accept losing.', b: 'The ledger confirms it: a Lion King who refused to accept losing.', r: 'The ledger names the old king. He would not accept losing.' }[starter] },
       { speaker: 'The Lich King', line: 'A loss is only final when one accepts it.' },
-      { speaker: companion, line: 'The Iron Legion’s general serves him. Let us bring the army home.' },
+      { speaker: companion, line: { n: 'His general commands the Iron Legion. Let us bring our soldiers home!', b: 'His general commands the Iron Legion. Their loyalty has been misdirected.', r: 'The Iron Legion serves his general. We shall bring them home.' }[starter] },
     ],
   };
   return chapters[regionId] ?? [{ speaker: companion, line: closing }];

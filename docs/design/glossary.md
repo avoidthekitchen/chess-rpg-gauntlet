@@ -54,10 +54,15 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | --- | --- | --- |
 | Bog Goblins | 1 | Their own species names, in [Art direction](art.md); in battle, the king speaks as the battle's commander |
 | Bandit Riders | 2 | Their own species names, in [Art direction](art.md) and the [Region 2 brief](regions/region-02-bandit-riders.md) |
-| Shadow Cult | 3 | Chosen with the Region |
-| Iron Legion | 4 | Chosen with the Region |
-| Bone Wardens | 5 | Chosen with the Region (skeleton animals) |
-| The Lich King's army | Final | Chosen with the Region |
+| Shadow Cult | 3 | Cult Mouse Pawn, Cult Hare Knight, Cult Owl Bishop, Cult Tortoise Rook, Cult Fox Queen, Cult Lion King |
+| Iron Legion | 4 | Legion Mouse Pawn, Legion Horse Knight, Legion Owl Bishop, Legion Tortoise Rook, Legion Fox Queen, Legion Lion King |
+| Bone Wardens | 5 | Skeleton Mouse Pawn, Skeleton Horse Knight, Skeleton Owl Bishop, Skeleton Tortoise Rook, Skeleton Fox Queen, Skeleton Lion King |
+| The Lich King's army | Final | The Bone Wardens’ skeleton species names |
+
+The new species rows are provisional art concepts, not current portrait labels. Recheck distinctness from companion species before producing dedicated art.
+Until then, Regions 2–5 and the finale use faction plus chess-role labels, without claiming the borrowed portrait depicts those species.
+
+General Flint is the lion general and Iron Legion review host. He is a king chess piece, not a former ruler of Pawnshire.
 
 ## Places
 
@@ -117,6 +122,6 @@ The following names describe the retained original game or later ideas, not curr
 | Boss budget | The most points of army you may bring to a boss duel |
 | Gauntlet | The replay mode that unlocks after the campaign |
 
-General Flint is the Iron Legion’s proud general and Region 4 review host. He returns to Pawnshire’s side after the review.
+
 
 The Bone Wardens collectively host Region 5’s review. They are the Lich King’s skeleton-animal vanguard; no new named leader is introduced.

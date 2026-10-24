@@ -37,7 +37,7 @@ Allies and opponents may play either chess color; ivory and ebony identify color
 | [Shadow Cult](regions/region-03-shadow-cult.md) | Built | Pins, capturing pinning attackers, skewers, x-rays, discoveries; earlier revisits | Fear and binding; discover the Lich King's identity |
 | [Iron Legion](regions/region-04-iron-legion.md) | Built | Tactical coordination, king safety, forcing sequences, defensive resources | Pride; win the kingdom's soldiers back |
 | [Bone Wardens](regions/region-05-bone-wardens.md) | Built | Short pawn races, safe king captures, rook support and skewers, immediate knight-promotion mates | Reach the keep through the Lich's vanguard |
-| Lich King | Syllabus planned | Mixed capstone of taught skills, using fresh published positions | The king who refused defeat finally accepts it |
+| [Lich King](regions/finale-lich-king.md) | Built | Mixed capstone of taught skills, using fresh published positions | The king who refused defeat finally accepts it |
 
 The final capstone does not require a full live engine game or a hired army.
 Region 2 currently reuses earlier art. Keep future faction species and costumes as art direction, not a content dependency.
@@ -70,5 +70,5 @@ They are not required for new Regions. Historical details are in [legacy campaig
 
 ## Battle outline by Region
 
-The active outline is the [syllabus](syllabus.md). The Lich King capstone remains the next unbuilt chapter.
+The active outline is the [syllabus](syllabus.md). All five Regions and the Lich King capstone are built; further technique and refresher work remains separate.
 Older warm-up bands, branch counts, bounty packs, and boss armies remain in the historical campaign document.

@@ -4,7 +4,7 @@
 
 ## Status and promise
 
-Planning baseline, 2026-10-23. Regions 1–2 exist in `src/game/curriculum.ts`; Regions 3–5 and the finale below are proposed content.
+Implementation baseline, 2026-10-24. Regions 1–3 are registered; later chapters remain proposed until their implementation PRs land.
 The owner approved completing the published-puzzle journey. These plans need implementation and verification, not another design-approval gate.
 
 Players must already know how pieces move. The core teaches tactical recognition, calculation, defensive resources, and short endgame decisions.
@@ -49,11 +49,11 @@ Double check stays in Region 2. Later discoveries explain and revisit its mechan
 
 All rows use unchanged [Lichess database puzzles](https://database.lichess.org/#puzzles), with original coaching.
 Tags below are candidate searches, not proof of teaching fit. Verify the actual board and complete published line.
-Counts are planning targets. Split an overloaded lesson when needed; do not force every chapter into five lessons.
+Region 3 has 57 verified sources. Later counts are planning targets. Split an overloaded lesson when needed; do not force every chapter into five lessons.
 
 | Stage and order | Skill sequence | Prerequisites | Published source candidates | Spaced revisits and mixed assessment |
 | --- | --- | --- | --- | --- |
-| Region 3 · Shadow Cult | Six lessons: exploit pins; escape pins; skewers; x-rays; discovered attacks; discoveries into double check. | R1 reply checking and king safety; R2 two targets and defender removal. | `pin`; `pin` plus `defensiveMove`; `skewer`; `xRayAttack`; `discoveredAttack`; `doubleCheck`. See the detailed brief. | Return to safe captures in pins, defender removal in x-rays, and R2 double check after discoveries. Seven fresh review waves cover five new mechanisms and two earlier strands. |
+| Region 3 · Shadow Cult | Six lessons: exploit pins; capture the pinning attacker; checking skewers; x-ray exchanges; checking discoveries; double-check revisit. | R1 reply checking and king safety; R2 two targets and defender removal. | `pin`; `pin` plus `defensiveMove`; `skewer`; `xRayAttack`; `discoveredAttack`; `doubleCheck`. See the detailed brief. | Return to safe captures in pins, defender removal in x-rays, and R2 double check after discoveries. Seven fresh review waves cover five new mechanisms and two earlier strands. |
 | Region 4 · Iron Legion | Six lessons: development with a forcing tempo; open-file tactics; exposed-king attacks; deflection and overloaded defenders; intermediate moves; meeting a mating threat. | R1 safe exchanges; R2 mate in two and defender removal; R3 line tactics and defensive calculation. | `opening` with a verified developing move; `backRankMate` or `rookEndgame` on a decisive file; `exposedKing`; `deflection`, `capturingDefender`; `intermezzo`; `defensiveMove`. | Revisit pins before deflection and safe trades before intermediate moves. Six fresh review waves mix coordination, combinations, defence, and earlier line tactics. |
 | Region 5 · Bone Wardens | Six lessons: advance a passed pawn; calculate a pawn race; use the king in a short continuation; rook support for promotion; endgame skewers and defender removal; choose a required underpromotion. | R1 promotion; R2 forcing replies; R3 skewers; R4 intermediate moves and deflection. | `advancedPawn`, `promotion`, `pawnEndgame`; `rookEndgame` with verified rook support; `skewer`, `deflection`; `underPromotion`. | Revisit promotion early, then return to skewers after pawn work. Six fresh review waves mix pawn and rook decisions with earlier tactics. |
 | Finale · The Lich King | Two four-wave mixed encounters, separated by a short story beat. No new required motif. | Completed chapter reviews and every skill actually used in the selected lines. | Fresh puzzles drawn from the taught source families. Include attack, defence, a mating finish, and a short endgame decision. | First set spans earlier Regions; second combines familiar mechanisms and ends with a taught mating finish. Keep both unlabeled. No full live game is required. |

@@ -9,19 +9,20 @@ import { puzzleStart } from './bounty';
 const allPuzzles = COURSE_LESSONS.flatMap(l => [l.show, ...l.waves.flatMap(w => [w.main, w.backup])]);
 const value: Record<string, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
 
-describe('published two-region curriculum', () => {
-  it('links two complete regions, each with five lessons and a final mixed review', () => {
-    expect(COURSE_REGIONS.map(r => r.id)).toEqual(['r1', 'r2']);
-    expect(COURSE_LESSONS).toHaveLength(12);
-    expect(new Set(COURSE_LESSONS.map(l => l.id)).size).toBe(12);
+describe('published curriculum', () => {
+  it('links complete chapters while preserving the accepted first two chapters', () => {
+    expect(COURSE_REGIONS.slice(0, 2).map(r => r.id)).toEqual(['r1', 'r2']);
+    expect(new Set(COURSE_LESSONS.map(l => l.id)).size).toBe(COURSE_LESSONS.length);
     for (const region of COURSE_REGIONS) {
       expect(courseRegion(region.id)).toBe(region);
-      expect(region.lessons).toHaveLength(6);
+      const original = ['r1', 'r2'].includes(region.id);
+      expect(region.lessons.length).toBeGreaterThanOrEqual(2);
+      if (original) expect(region.lessons).toHaveLength(6);
       region.lessons.forEach((id, i) => {
         const lesson = courseLesson(id)!;
         expect(lesson.regionId).toBe(region.id);
-        expect(lesson.review).toBe(i === 5);
-        expect(lesson.waves).toHaveLength(i === 5 ? 4 : 3);
+        expect(lesson.review).toBe(i === region.lessons.length - 1);
+        if (original) expect(lesson.waves).toHaveLength(i === 5 ? 4 : 3);
         expect(lesson.objective.length).toBeGreaterThan(15);
         expect(lesson.takeaway.length).toBeGreaterThan(15);
       });
@@ -31,9 +32,10 @@ describe('published two-region curriculum', () => {
     expect(courseRegion('missing')).toBeUndefined();
   });
 
-  it('uses 88 distinct source puzzles, with no existing bounty overlap', () => {
-    expect(allPuzzles).toHaveLength(88);
-    expect(new Set(allPuzzles.map(p => p.id)).size).toBe(88);
+  it('reserves distinct sources across every chapter and excludes existing bounties', () => {
+    const original = COURSE_LESSONS.filter(l => ['r1', 'r2'].includes(l.regionId)).flatMap(l => [l.show, ...l.waves.flatMap(w => [w.main, w.backup])]);
+    expect(original).toHaveLength(88);
+    expect(new Set(allPuzzles.map(p => p.id)).size).toBe(allPuzzles.length);
     const bountyIds = new Set([...mateBounties, ...hangingBounties].map(p => p.id));
     for (const p of allPuzzles) expect(bountyIds.has(p.id), p.id).toBe(false);
   });

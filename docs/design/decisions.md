@@ -38,6 +38,10 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | Region 3 uses 57 unchanged published sources. Pin escape teaches capturing the pinning attacker along its line; blocking and moving the rear piece remain unclaimed. |
+| 2026-10-24 | Derive map stops and totals from registered chapters. A compact chapter picker and taller phone trail support seven-node chapters without changing old progress. |
+| 2026-10-24 | Chapter endings are replayable story pages. Completion alone opens the next chapter; seeing an ending never awards duplicate stars or blocks travel. |
+| 2026-10-24 | Add generated ink-and-watercolour chapter landscapes. Reuse existing board tokens with honest faction identity until dedicated sets are available. |
 | 2026-10-24 | Owner waived the remaining legacy boss verification for the reconciliation merge after the new journey replaced Region 1 battles and boss. Record the interrupted full run and legacy sampling finding; do not change thresholds or CI selection. Issue #42 tracks reproducibility. |
 | 2026-10-24 | Owner approved reconciling docs and issues before Region 3. Merge #37 after integration checks; close completed or superseded work accurately. Keep staging separate from production release. |
 | 2026-10-24 | Story, companions, faction voices, painted maps, and readable dialogue are core. Allies can join the cast without recruitment or powers. Published boards never depend on a persistent roster. |

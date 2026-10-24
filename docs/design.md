@@ -41,12 +41,13 @@ Scheduled refreshers and dedicated technique exercises are planned, not part of 
 
 ## Built and next
 
-The Bog and The Kingsroad are built: five guided lessons and a mixed review each, using 88 distinct published positions.
+The Bog, The Kingsroad, and Shadow Cult are implemented, using 145 distinct published positions.
+The first two chapters have five lessons each; the Cult adds six lessons and a seven-wave mixed review.
 The accepted build is available on [staging](https://unformedideas.com/staging-chess-rpg/).
 The original game at `/chess-rpg/` remains separate until an explicit production release.
 
-Next: implement [Region 3](design/regions/region-03-shadow-cult.md), following the [remaining syllabus](design/syllabus.md).
-Then expand through the Iron Legion, Bone Wardens, and a Lich King capstone.
+Next: integrate the Iron Legion, Bone Wardens, and Lich King capstone, following the [syllabus](design/syllabus.md).
+Release checks and staging evidence are recorded in [progress](progress.md).
 Faction-specific art can improve each chapter without blocking its teaching content.
 
 ## Detailed design

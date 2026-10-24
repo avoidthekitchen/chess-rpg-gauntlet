@@ -124,7 +124,7 @@ export class CoursePlayScene extends BaseScene {
     if (!this.valid) return;
     // Transient moments are discarded when a deferred resize rebuilds the board.
     this.cue = null;
-    coverImage(this, this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
+    coverImage(this, courseRegion(this.lesson.regionId)?.mapArt ? `bg-${courseRegion(this.lesson.regionId)!.mapArt}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
       faction: 'bog', style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
@@ -406,7 +406,7 @@ export class CoursePlayScene extends BaseScene {
   private home() {
     this.session++; this.holds.clear(); this.cueHolds.clear(); this.cue = null; this.speech.clear(); this.busy = false;
     settleJourney(this.save, true); persistJourney(this.save);
-    goTo(this.game, 'journey', { page: this.exampleOnly ? 'journal' : 'map' });
+    goTo(this.game, 'journey', { page: this.exampleOnly ? 'journal' : this.phase === 'won' && this.lesson.review ? 'story' : 'map', storyRegion: this.lesson.regionId });
   }
 
   private leave() {

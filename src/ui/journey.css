@@ -97,11 +97,11 @@
 .journey-paper.journey-settings { max-width:680px; }
 .journey-settings hr { border:0; border-top:1px solid #78623c; margin:30px 0; }
 .journey-hud.journey-journal,.journey-hud.journey-settings { background:#15121a50; }
-/* Keep all six stops on the tall trail until the landscape is wide enough for them. */
+/* Keep every stop on a tall trail until the landscape is wide enough. */
 @media(max-width:839px) {
   .journey-map-heading { display:block; padding-bottom:14px; }
   .journey-map-navigation { width:100%; margin-top:12px; }
-  .journey-content > .journey-map { height:880px; }
+  .journey-content > .journey-map { height:var(--phone-map-height,880px); }
   .journey-trail { bottom:44px; }
   .journey-trail li { left:var(--phone-x); top:var(--phone-y); width:168px; }
   .journey-route { height:calc(100% - 44px); }
@@ -150,3 +150,15 @@
   .journey-content > .journey-map { height:480px; }
 }
 @media(prefers-reduced-motion:reduce) { .journey-hud * { scroll-behavior:auto!important; transition:none!important; } }
+
+.journey-region-picker { display:flex; flex-direction:column; gap:5px; font:13px/1.4 system-ui,sans-serif; color:#d5c49e; text-shadow:none; }
+.journey-region-picker select { width:100%; min-height:44px; padding:10px 12px; border:1px solid #8b7040; border-radius:7px; background:#211b24; color:#f0e7d4; font:600 14px/1.4 system-ui,sans-serif; }
+.journey-region-picker select:focus-visible { outline:3px solid #ffe4a2; outline-offset:3px; }
+
+.journey-story { max-width:760px; }
+.journey-story-lead { font-size:21px; }
+.journey-story-lines { margin:28px 0; }
+.journey-story blockquote { margin:0 0 20px; padding:0 0 0 18px; border-left:2px solid #b59047; }
+.journey-story blockquote p { font-size:22px; margin-bottom:5px; }
+.journey-story cite { font:13px/1.4 system-ui,sans-serif; color:#d5c49e; }
+.journey-story .journey-actions { margin-top:28px; }

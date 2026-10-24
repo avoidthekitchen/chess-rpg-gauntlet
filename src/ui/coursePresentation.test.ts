@@ -68,6 +68,18 @@ describe('lesson speakers and story', () => {
     expect(companionSpeaker('b', 'Look again.')).toMatchObject({ name: 'Sage Ollie · Owl Bishop', type: 'b' });
   });
 
+  it('names each review host and uses chapter identity for reused enemy art', () => {
+    for (const lesson of COURSE_LESSONS.filter(lesson => lesson.regionId === 'r3')) {
+      const intro = courseIntro(lesson, 'b');
+      expect(intro[0].name).toBe(lesson.review ? 'The Cult Leader' : 'Shadow Cult · pawn');
+      const chess = new Chess(lesson.show.fen);
+      const move = chess.move(uciMove(lesson.show.moves[0]));
+      const foe = courseMoveSpeaker(move, chess.turn(), [], 'r3');
+      expect(foe.name).toMatch(/^Shadow Cult · /);
+      expect(foe.line).not.toMatch(/toll|road|squelch/i);
+    }
+  });
+
   it('uses the promoted piece portrait and keeps the chosen companion separate', () => {
     const chess = new Chess('7k/P7/6K1/8/8/8/8/8 w - - 0 1');
     const move = chess.move('a8=Q#');

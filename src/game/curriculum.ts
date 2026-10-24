@@ -1,4 +1,7 @@
-import puzzles from './curriculumPuzzles.json';
+import originalPuzzles from './curriculumPuzzles.json';
+import region3Puzzles from './course/region3Puzzles.json';
+import { region3Seeds, region3Region } from './course/region3';
+const puzzles = { ...originalPuzzles, ...region3Puzzles };
 import type { AmbushDef, AmbushPuzzle } from './ambush';
 
 export interface CourseLesson extends AmbushDef {
@@ -9,6 +12,8 @@ export interface CourseLesson extends AmbushDef {
 }
 
 export interface CourseRegion {
+  kind?: 'finale';
+  mapArt?: string;
   id: string;
   title: string;
   subtitle: string;
@@ -19,7 +24,7 @@ export interface CourseRegion {
   lessons: string[];
 }
 
-type LessonSeed = Pick<CourseLesson, 'id' | 'title' | 'theme' | 'tag' | 'objective' | 'takeaway'> & {
+export type LessonSeed = Pick<CourseLesson, 'id' | 'title' | 'theme' | 'tag' | 'objective' | 'takeaway'> & {
   before: string;
   after: string;
   coaching: string;
@@ -27,7 +32,7 @@ type LessonSeed = Pick<CourseLesson, 'id' | 'title' | 'theme' | 'tag' | 'objecti
   review?: boolean;
 };
 
-const seeds: LessonSeed[] = [
+const originalSeeds: LessonSeed[] = [
   {
     id: 'r1-loose-pieces', title: 'Loose at the ferry', theme: 'Loose pieces', tag: 'hangingPiece',
     objective: 'Find pieces you can capture safely. Check their reply before your next move.',
@@ -138,6 +143,8 @@ const seeds: LessonSeed[] = [
   },
 ];
 
+const seeds = [...originalSeeds, ...region3Seeds];
+
 /** Source positions and published lines are unchanged. Difficulty changes assistance, not the chess. */
 export const COURSE_LESSONS: CourseLesson[] = seeds.map(seed => {
   const selected: AmbushPuzzle[] = puzzles[seed.id as keyof typeof puzzles];
@@ -164,9 +171,10 @@ export const COURSE_REGIONS: CourseRegion[] = [
     id: 'r2', title: 'The Kingsroad', subtitle: 'Find two threats. Think one move further.', town: 'Waymeet',
     bossName: 'Ashfang, the Bandit Lord',
     intro: 'Bandit Riders demand tolls at every crossing. Recover the banners by seeing more than one threat.',
-    outro: 'The banners are safe. Tadwell joins the journey. The paymaster’s crystal points toward the Shadow Cult; that chapter is still ahead.',
+    outro: 'The banners are safe. Tadwell joins the journey. The paymaster’s crystal points toward the Shadow Cult; follow it to the bound villages.',
     lessons: seeds.filter(s => s.id.startsWith('r2-')).map(s => s.id),
   },
+  region3Region,
 ];
 
 export const courseLesson = (id: string): CourseLesson | undefined => COURSE_LESSONS.find(lesson => lesson.id === id);

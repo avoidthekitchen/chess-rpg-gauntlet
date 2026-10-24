@@ -13,7 +13,8 @@
 ## 2026-10-24 — Region 3: Shadow Cult (#39)
 
 - Six focused lessons and a seven-wave mixed review add 57 unchanged Lichess sources.
-- Independent Astra review matched every source field and checked every teaching mechanism, including backups.
+- The initial source-field review missed teaching errors. Later review corrected c2Bgp’s pin explanation and replaced the misleading NYamc and E4Paq discovery positions.
+- Follow-up review corrected Kp2Gw: Qxe5 removes the queen defending e6; the d6 pawn never defended that bishop.
 - Pin escape covers capturing the pinning attacker. Wider escape methods remain unclaimed.
 - Maps and progress totals now follow registered chapters. Old version-1 saves retain completion and stars.
 - Added a compact chapter picker, replayable chapter endings, Cult dialogue, and an illustrated Cult landscape.

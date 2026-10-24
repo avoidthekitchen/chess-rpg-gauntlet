@@ -123,3 +123,6 @@ The built-in image-generation tool created `public/backgrounds/map-region3.webp`
 Prompt: a full-bleed elevated storybook valley, ink contours and muted watercolour, purple woods, crystals, cottages, bridges, and a sealed library.
 No text, interface, chessboards, photorealism, or 3D. Open central ground leaves room for route labels.
 The source PNG remains local under Codex generated images; the compressed WebP is the shipped asset.
+
+`map-region4.webp` uses the same built-in tool and ink/watercolour direction: an elevated fortress valley, red-and-gold banners, bridges, orchards, and open courtyards.
+No text or interface was generated. Compressed WebP is shipped; source PNG stays local.

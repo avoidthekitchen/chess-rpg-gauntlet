@@ -49,6 +49,7 @@ export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly Cour
     const voices: Record<string, Record<string, string>> = {
       r1: { p: 'Squelch, squelch!', n: 'Sploosh! Gills first!', b: 'Peering through the reeds…', r: 'Mud shell coming through!', q: 'Out of the mist I come!', k: 'Guards! Guards!' },
       r2: { p: 'A little farther down the road.', n: 'Over the wall I go!', b: 'A long road from here.', r: 'Make way. Heavy luggage.', q: 'The toll keeper is watching.', k: 'My chair stays right here.' },
+      r4: { p: 'Orders received.', n: 'Forward, in good order.', b: 'Watching the far flank.', r: 'The old walls still stand.', q: 'Keep the banners raised.', k: 'Discipline will carry the day.' },
       r3: { p: 'Stay close. Nothing need be lost.', n: 'A quiet step through the shadows.', b: 'The crystal remembers.', r: 'These walls hold our promises.', q: 'Every promise has its price.', k: 'Leave the ledger closed.' },
     };
     line = (voices[regionId] ?? voices.r2)[type];
@@ -94,7 +95,7 @@ export function courseStoryBefore(lesson: CourseLesson, starter: StarterType) {
 }
 export function courseIntro(lesson: CourseLesson, starter: StarterType): SpeakerInfo[] {
   const region = courseRegion(lesson.regionId);
-  const opening = lesson.regionId === 'r3' ? lesson.review ? 'Leave the ledger closed. Keep your crown.' : 'Stay where you are. Nothing need be lost.' : 'Your turn, traveller.';
+  const opening = lesson.regionId === 'r4' ? lesson.review ? 'Six boards. Let us see who should carry these banners.' : 'Hold your post. Keep your eyes open.' : lesson.regionId === 'r3' ? lesson.review ? 'Leave the ledger closed. Keep your crown.' : 'Stay where you are. Nothing need be lost.' : 'Your turn, traveller.';
   return [{ side: 'foe', type: lesson.review ? 'k' : 'p', name: lesson.review ? region?.bossName ?? 'The challenger' : lesson.regionId === 'r1' ? 'Bog Rat Pawn' : `${region?.title ?? 'Challenger'} · pawn`, line: OPENING[lesson.id] ?? opening },
     companionSpeaker(starter, lesson.review ? 'Your turn. Read each board and choose your plan.' : INTRO[starter])];
 }

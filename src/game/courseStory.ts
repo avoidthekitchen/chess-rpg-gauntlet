@@ -21,6 +21,12 @@ export function chapterStory(regionId: string, starter: StarterType): StoryLine[
       { speaker: 'The Lich King', line: 'A crown may change hands. A game need not end.' },
       { speaker: companion, line: 'The crystal points toward the Shadow Cult. We follow it together.' },
     ],
+    r4: [
+      { speaker: 'General Flint', line: 'I mistook pride for duty. These banners belong to Pawnshire.' },
+      { speaker: 'Tadwell, the Frog Captain', line: 'Then let us carry them together, General.' },
+      { speaker: 'The Lich King', line: 'Living soldiers tire. Mine have no such weakness.' },
+      { speaker: companion, line: 'The scouts found Bone Wardens at the border. We know the next road.' },
+    ],
     r3: [
       { speaker: 'The Cult Leader', line: 'We promised they would lose nothing. We left them unable to move.' },
       { speaker: companion, line: 'The ledger names him. A Lion King who refused to accept checkmate.' },

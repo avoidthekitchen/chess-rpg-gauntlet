@@ -1,0 +1,1727 @@
+{
+  "r4-develop": [
+    {
+      "id": "RhFcH",
+      "fen": "rnbq1b1r/pp1npkpp/2p5/7Q/8/2N5/PPPP1PPP/R1B1KB1R b KQ - 1 7",
+      "moves": [
+        "f7g8",
+        "f1c4",
+        "e7e6",
+        "c4e6"
+      ],
+      "rating": 909,
+      "themes": [
+        "kingsideAttack",
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 86,
+        "plays": 337
+      },
+      "source": "https://lichess.org/training/RhFcH",
+      "san": [
+        "Kg8",
+        "Bc4+",
+        "e6",
+        "Bxe6#"
+      ],
+      "reason": "The bishop develops from f1 to c4 with Bc4+. The reply e6 allows Bxe6#."
+    },
+    {
+      "id": "OgFmF",
+      "fen": "r1b1kb1r/ppQ1pppp/5n2/8/3Pq3/4B3/PP3PPP/R3KBNR b KQkq - 0 10",
+      "moves": [
+        "f6d5",
+        "f1b5",
+        "c8d7",
+        "b5d7"
+      ],
+      "rating": 933,
+      "themes": [
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 85,
+        "popularity": 91,
+        "plays": 1125
+      },
+      "source": "https://lichess.org/training/OgFmF",
+      "san": [
+        "Nd5",
+        "Bb5+",
+        "Bd7",
+        "Bxd7#"
+      ],
+      "reason": "The bishop develops from f1 to b5 with Bb5+. The reply Bd7 allows Bxd7#."
+    },
+    {
+      "id": "jACYs",
+      "fen": "rnb1k2r/ppqp1Qpp/3b4/8/nPB5/8/P1P2PPP/R1B1K1NR b KQ - 5 15",
+      "moves": [
+        "e8d8",
+        "c1g5",
+        "d6e7",
+        "f7e7"
+      ],
+      "rating": 945,
+      "themes": [
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 632
+      },
+      "source": "https://lichess.org/training/jACYs",
+      "san": [
+        "Kd8",
+        "Bg5+",
+        "Be7",
+        "Qxe7#"
+      ],
+      "reason": "The bishop develops from c1 to g5 with Bg5+. The reply Be7 allows Qxe7#."
+    },
+    {
+      "id": "LmMyq",
+      "fen": "r1b1kbnr/pp3ppp/4p3/2Pp4/q2N4/2P2Q2/P4PPP/R3KB1R b KQkq - 2 12",
+      "moves": [
+        "f8c5",
+        "f1b5",
+        "c8d7",
+        "b5a4"
+      ],
+      "rating": 948,
+      "themes": [
+        "advantage",
+        "fork",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 89,
+        "popularity": 91,
+        "plays": 361
+      },
+      "source": "https://lichess.org/training/LmMyq",
+      "san": [
+        "Bxc5",
+        "Bb5+",
+        "Bd7",
+        "Bxa4"
+      ],
+      "reason": "The bishop develops from f1 to b5 with Bb5+. The reply Bd7 allows Bxa4."
+    },
+    {
+      "id": "XPVsm",
+      "fen": "1rb1k2r/2p1bppp/8/p2p4/1nBP4/4B2P/PP1N1PP1/1K1R2NR w k - 0 19",
+      "moves": [
+        "c4e2",
+        "c8f5",
+        "b1a1",
+        "b4c2"
+      ],
+      "rating": 943,
+      "themes": [
+        "advantage",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 88,
+        "popularity": 95,
+        "plays": 2848
+      },
+      "source": "https://lichess.org/training/XPVsm",
+      "san": [
+        "Be2",
+        "Bf5+",
+        "Ka1",
+        "Nc2+"
+      ],
+      "reason": "The bishop develops from c8 to f5 with Bf5+. The reply Ka1 allows Nc2+."
+    },
+    {
+      "id": "yl1Zp",
+      "fen": "r3kbnr/pp3ppp/1q2p3/3pPbB1/3N4/2N5/PP3PPP/R1Q1KB1R b KQkq - 0 10",
+      "moves": [
+        "b6d4",
+        "f1b5"
+      ],
+      "rating": 918,
+      "themes": [
+        "bodenMate",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "opening"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 98,
+        "plays": 668
+      },
+      "source": "https://lichess.org/training/yl1Zp",
+      "san": [
+        "Qxd4",
+        "Bb5#"
+      ],
+      "reason": "The bishop develops from f1 to b5 with Bb5#. The line ends at checkmate."
+    },
+    {
+      "id": "XyPoE",
+      "fen": "r1b1k1nr/ppB2ppp/3p4/8/1bNqP3/3P4/P1P1K1PP/R2Q1B1R w kq - 0 11",
+      "moves": [
+        "a1b1",
+        "c8g4"
+      ],
+      "rating": 924,
+      "themes": [
+        "balestraMate",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "opening"
+      ],
+      "quality": {
+        "rd": 89,
+        "popularity": 88,
+        "plays": 360
+      },
+      "source": "https://lichess.org/training/XyPoE",
+      "san": [
+        "Rb1",
+        "Bg4#"
+      ],
+      "reason": "The bishop develops from c8 to g4 with Bg4#. The line ends at checkmate."
+    }
+  ],
+  "r4-file": [
+    {
+      "id": "sYZgM",
+      "fen": "r2b2k1/pp3pnp/1nB4q/8/2Pp2Q1/P2P2P1/1P1N1P2/R3R1K1 b - - 0 27",
+      "moves": [
+        "b7c6",
+        "e1e8"
+      ],
+      "rating": 803,
+      "themes": [
+        "master",
+        "mate",
+        "mateIn1",
+        "middlegame",
+        "oneMove",
+        "pin"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 97,
+        "plays": 808
+      },
+      "source": "https://lichess.org/training/sYZgM",
+      "san": [
+        "bxc6",
+        "Re8#"
+      ],
+      "reason": "The rook travels from e1 to e8 along the clear e-file with check. The guard on g7 is pinned to the king on g8. The published line ends in Re8#."
+    },
+    {
+      "id": "IVjmt",
+      "fen": "r1k1R3/pnpb3p/Bpp2B2/5p2/8/5P2/PPP3rP/2KR4 b - - 5 18",
+      "moves": [
+        "d7e8",
+        "d1d8"
+      ],
+      "rating": 610,
+      "themes": [
+        "mate",
+        "mateIn1",
+        "middlegame",
+        "oneMove",
+        "pin"
+      ],
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 371
+      },
+      "source": "https://lichess.org/training/IVjmt",
+      "san": [
+        "Bxe8",
+        "Rd8#"
+      ],
+      "reason": "The rook travels from d1 to d8 along the clear d-file with check. The guard on b7 is pinned to the king on c8. The published line ends in Rd8#."
+    },
+    {
+      "id": "OZPY8",
+      "fen": "r1bk1Q1r/ppppb2p/2n3p1/6B1/8/8/Pp4PP/RN3R1K b - - 4 20",
+      "moves": [
+        "h8f8",
+        "f1f8"
+      ],
+      "rating": 737,
+      "themes": [
+        "mate",
+        "mateIn1",
+        "middlegame",
+        "oneMove",
+        "pin"
+      ],
+      "quality": {
+        "rd": 85,
+        "popularity": 100,
+        "plays": 950
+      },
+      "source": "https://lichess.org/training/OZPY8",
+      "san": [
+        "Rxf8",
+        "Rxf8#"
+      ],
+      "reason": "The rook travels from f1 to f8 along the clear f-file with check. The guard on e7 is pinned to the king on d8. The published line ends in Rxf8#."
+    },
+    {
+      "id": "IySvM",
+      "fen": "3rr1k1/1p3ppn/1p5p/3q4/PPp5/2P2R2/2Q3PP/3R3K w - - 0 28",
+      "moves": [
+        "d1d5",
+        "e8e1",
+        "f3f1",
+        "e1f1"
+      ],
+      "rating": 900,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 513
+      },
+      "source": "https://lichess.org/training/IySvM",
+      "san": [
+        "Rxd5",
+        "Re1+",
+        "Rf1",
+        "Rxf1#"
+      ],
+      "reason": "The rook travels from e8 to e1 along the clear e-file with check. The published line ends in Rxf1#."
+    },
+    {
+      "id": "p8glC",
+      "fen": "3k4/7p/4p1bP/pp1p2qB/3p4/3P3R/PPP2R2/1K6 w - - 0 32",
+      "moves": [
+        "h5g6",
+        "g5g1",
+        "f2f1",
+        "g1f1"
+      ],
+      "rating": 900,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "fork",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "quality": {
+        "rd": 80,
+        "popularity": 85,
+        "plays": 580
+      },
+      "source": "https://lichess.org/training/p8glC",
+      "san": [
+        "Bxg6",
+        "Qg1+",
+        "Rf1",
+        "Qxf1#"
+      ],
+      "reason": "The queen travels from g5 to g1 along the clear g-file with check. The published line ends in Qxf1#."
+    },
+    {
+      "id": "jqNgK",
+      "fen": "5k1r/2r1q3/p2p1p2/5Q1p/1p3p2/8/PP3PPP/4R1K1 w - - 2 31",
+      "moves": [
+        "e1e7",
+        "c7c1",
+        "e7e1",
+        "c1e1"
+      ],
+      "rating": 901,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "queenRookEndgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 364
+      },
+      "source": "https://lichess.org/training/jqNgK",
+      "san": [
+        "Rxe7",
+        "Rc1+",
+        "Re1",
+        "Rxe1#"
+      ],
+      "reason": "The rook travels from c7 to c1 along the clear c-file with check. The published line ends in Rxe1#."
+    },
+    {
+      "id": "gnoUd",
+      "fen": "6k1/1p3ppp/2b1p3/1P6/2B1P3/4K3/1r3r2/R7 b - - 0 31",
+      "moves": [
+        "c6b5",
+        "a1a8",
+        "b5e8",
+        "a8e8"
+      ],
+      "rating": 903,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "quality": {
+        "rd": 76,
+        "popularity": 100,
+        "plays": 737
+      },
+      "source": "https://lichess.org/training/gnoUd",
+      "san": [
+        "Bxb5",
+        "Ra8+",
+        "Be8",
+        "Rxe8#"
+      ],
+      "reason": "The rook travels from a1 to a8 along the clear a-file with check. The published line ends in Rxe8#."
+    }
+  ],
+  "r4-exposed": [
+    {
+      "id": "RDXPl",
+      "fen": "4r1k1/5R2/4Q1p1/ppp1p2q/7P/3P4/1P6/1K3R2 b - - 0 34",
+      "moves": [
+        "e8e6",
+        "f7f8",
+        "g8h7",
+        "f1f7",
+        "h7h6",
+        "f8h8"
+      ],
+      "rating": 821,
+      "themes": [
+        "endgame",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3",
+        "queenRookEndgame"
+      ],
+      "quality": {
+        "rd": 82,
+        "popularity": 99,
+        "plays": 883
+      },
+      "source": "https://lichess.org/training/RDXPl",
+      "san": [
+        "Rxe6",
+        "Rf8+",
+        "Kh7",
+        "R1f7+",
+        "Kh6",
+        "Rh8#"
+      ],
+      "reason": "Against the king on g8, Rf8+ starts 3 consecutive checks: Rf8+, R1f7+, Rh8#. The source replies are Kh7, Kh6; the last check leaves no legal escape."
+    },
+    {
+      "id": "IE5yQ",
+      "fen": "7r/2R5/p3R3/1p1p1p1r/3k4/1B4p1/PP3P2/6K1 w - - 4 36",
+      "moves": [
+        "f2g3",
+        "h5h1",
+        "g1g2",
+        "h8h2",
+        "g2f3",
+        "h1f1"
+      ],
+      "rating": 835,
+      "themes": [
+        "endgame",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3"
+      ],
+      "quality": {
+        "rd": 87,
+        "popularity": 91,
+        "plays": 373
+      },
+      "source": "https://lichess.org/training/IE5yQ",
+      "san": [
+        "fxg3",
+        "Rh1+",
+        "Kg2",
+        "R8h2+",
+        "Kf3",
+        "Rf1#"
+      ],
+      "reason": "Against the king on g1, Rh1+ starts 3 consecutive checks: Rh1+, R8h2+, Rf1#. The source replies are Kg2, Kf3; the last check leaves no legal escape."
+    },
+    {
+      "id": "7BbVn",
+      "fen": "3r1k2/R5Rp/8/2pr1p2/8/4P1P1/8/6K1 w - - 2 31",
+      "moves": [
+        "g7h7",
+        "d5d1",
+        "g1h2",
+        "d8d2",
+        "h2h3",
+        "d1h1"
+      ],
+      "rating": 859,
+      "themes": [
+        "endgame",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3",
+        "rookEndgame"
+      ],
+      "quality": {
+        "rd": 84,
+        "popularity": 97,
+        "plays": 1597
+      },
+      "source": "https://lichess.org/training/7BbVn",
+      "san": [
+        "Rxh7",
+        "Rd1+",
+        "Kh2",
+        "R8d2+",
+        "Kh3",
+        "Rh1#"
+      ],
+      "reason": "Against the king on g1, Rd1+ starts 3 consecutive checks: Rd1+, R8d2+, Rh1#. The source replies are Kh2, Kh3; the last check leaves no legal escape."
+    },
+    {
+      "id": "1xMAc",
+      "fen": "1R6/4r2k/R6P/1p2r1n1/6P1/P1Pb4/2P5/1K6 w - - 0 35",
+      "moves": [
+        "c2d3",
+        "e5e1",
+        "b1c2",
+        "e7e2",
+        "c2b3",
+        "e1b1"
+      ],
+      "rating": 871,
+      "themes": [
+        "endgame",
+        "epauletteMate",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 98,
+        "plays": 459
+      },
+      "source": "https://lichess.org/training/1xMAc",
+      "san": [
+        "cxd3",
+        "Re1+",
+        "Kc2",
+        "R7e2+",
+        "Kb3",
+        "Rb1#"
+      ],
+      "reason": "Against the king on b1, Re1+ starts 3 consecutive checks: Re1+, R7e2+, Rb1#. The source replies are Kc2, Kb3; the last check leaves no legal escape."
+    },
+    {
+      "id": "Fd6ge",
+      "fen": "6k1/p3R3/1p1p1pqp/3P2b1/2P3P1/8/PP4P1/K3R3 b - - 2 36",
+      "moves": [
+        "g6d3",
+        "e7e8",
+        "g8f7",
+        "e1e7",
+        "f7g6",
+        "e8g8"
+      ],
+      "rating": 875,
+      "themes": [
+        "endgame",
+        "epauletteMate",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 99,
+        "plays": 1007
+      },
+      "source": "https://lichess.org/training/Fd6ge",
+      "san": [
+        "Qd3",
+        "Re8+",
+        "Kf7",
+        "R1e7+",
+        "Kg6",
+        "Rg8#"
+      ],
+      "reason": "Against the king on g8, Re8+ starts 3 consecutive checks: Re8+, R1e7+, Rg8#. The source replies are Kf7, Kg6; the last check leaves no legal escape."
+    },
+    {
+      "id": "72vLw",
+      "fen": "7k/3q2rp/p4Q2/3p4/1PpP4/P1P3b1/7P/5R1K w - - 0 37",
+      "moves": [
+        "h2g3",
+        "d7h3",
+        "h1g1",
+        "h3g3",
+        "g1h1",
+        "g3h3"
+      ],
+      "rating": 845,
+      "themes": [
+        "endgame",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3"
+      ],
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 737
+      },
+      "source": "https://lichess.org/training/72vLw",
+      "san": [
+        "hxg3",
+        "Qh3+",
+        "Kg1",
+        "Qxg3+",
+        "Kh1",
+        "Qh3#"
+      ],
+      "reason": "Against the king on h1, Qh3+ starts 3 consecutive checks: Qh3+, Qxg3+, Qh3#. The source replies are Kg1, Kh1; the last check leaves no legal escape."
+    },
+    {
+      "id": "RJegm",
+      "fen": "r1bq1rkR/pp2ppb1/6P1/3pn1p1/8/8/PPP1QPP1/RNB1K3 b Q - 1 15",
+      "moves": [
+        "g8h8",
+        "e2h5",
+        "g7h6",
+        "h5h6",
+        "h8g8",
+        "h6h7"
+      ],
+      "rating": 852,
+      "themes": [
+        "exposedKing",
+        "kingsideAttack",
+        "long",
+        "mate",
+        "mateIn3",
+        "middlegame"
+      ],
+      "quality": {
+        "rd": 89,
+        "popularity": 96,
+        "plays": 531
+      },
+      "source": "https://lichess.org/training/RJegm",
+      "san": [
+        "Kxh8",
+        "Qh5+",
+        "Bh6",
+        "Qxh6+",
+        "Kg8",
+        "Qh7#"
+      ],
+      "reason": "Against the king on h8, Qh5+ starts 3 consecutive checks: Qh5+, Qxh6+, Qh7#. The source replies are Bh6, Kg8; the last check leaves no legal escape."
+    }
+  ],
+  "r4-deflect": [
+    {
+      "id": "4bU3U",
+      "fen": "3r1k2/pp1q1ppp/8/2p4P/4R1P1/2P5/PP2QK2/8 b - - 7 34",
+      "moves": [
+        "d7d2",
+        "e4e8",
+        "d8e8",
+        "e2d2"
+      ],
+      "rating": 902,
+      "themes": [
+        "advantage",
+        "deflection",
+        "endgame",
+        "master",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 98,
+        "plays": 1044
+      },
+      "source": "https://lichess.org/training/4bU3U",
+      "san": [
+        "Qd2",
+        "Re8+",
+        "Rxe8",
+        "Qxd2"
+      ],
+      "reason": "The defender on d8 guards d2. Re8+ draws it to e8 with Rxe8; Qxd2 then takes its former charge. The published exchange gains 4 material points."
+    },
+    {
+      "id": "Cm0pb",
+      "fen": "4q2k/p1p3p1/1p2r2p/3Q4/8/2N5/PP3PPP/3R2K1 w - - 3 29",
+      "moves": [
+        "d5d8",
+        "e6e1",
+        "d1e1",
+        "e8d8"
+      ],
+      "rating": 904,
+      "themes": [
+        "advantage",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 79,
+        "popularity": 98,
+        "plays": 847
+      },
+      "source": "https://lichess.org/training/Cm0pb",
+      "san": [
+        "Qd8",
+        "Re1+",
+        "Rxe1",
+        "Qxd8"
+      ],
+      "reason": "The defender on d1 guards d8. Re1+ draws it to e1 with Rxe1; Qxd8 then takes its former charge. The published exchange gains 4 material points."
+    },
+    {
+      "id": "U55OX",
+      "fen": "8/p3qk1p/1p2r1p1/3Q1p2/8/P1P4P/1P3PP1/3R1K2 w - - 2 28",
+      "moves": [
+        "d5d7",
+        "e6e1",
+        "d1e1",
+        "e7d7"
+      ],
+      "rating": 907,
+      "themes": [
+        "advantage",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 83,
+        "popularity": 97,
+        "plays": 1135
+      },
+      "source": "https://lichess.org/training/U55OX",
+      "san": [
+        "Qd7",
+        "Re1+",
+        "Rxe1",
+        "Qxd7"
+      ],
+      "reason": "The defender on d1 guards d7. Re1+ draws it to e1 with Rxe1; Qxd7 then takes its former charge. The published exchange gains 4 material points."
+    },
+    {
+      "id": "mjTwj",
+      "fen": "3r1rk1/pQp1q2p/6p1/8/2Pb1p2/P4B2/1P3PPP/R4RK1 w - - 0 18",
+      "moves": [
+        "a1e1",
+        "d4f2",
+        "f1f2",
+        "e7e1"
+      ],
+      "rating": 906,
+      "themes": [
+        "advantage",
+        "deflection",
+        "kingsideAttack",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 96,
+        "plays": 438
+      },
+      "source": "https://lichess.org/training/mjTwj",
+      "san": [
+        "Rae1",
+        "Bxf2+",
+        "Rxf2",
+        "Qxe1+"
+      ],
+      "reason": "The defender on f1 guards e1. Bxf2+ draws it to f2 with Rxf2; Qxe1+ then takes its former charge. The published exchange gains 3 material points."
+    },
+    {
+      "id": "gn5eK",
+      "fen": "6k1/pp4pp/2pb1r2/8/3Pp3/P3P2P/1P2N1P1/2R3K1 w - - 0 23",
+      "moves": [
+        "c1f1",
+        "d6h2",
+        "g1h2",
+        "f6f1"
+      ],
+      "rating": 907,
+      "themes": [
+        "crushing",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 82,
+        "popularity": 94,
+        "plays": 1103
+      },
+      "source": "https://lichess.org/training/gn5eK",
+      "san": [
+        "Rf1",
+        "Bh2+",
+        "Kxh2",
+        "Rxf1"
+      ],
+      "reason": "The defender on g1 guards f1. Bh2+ draws it to h2 with Kxh2; Rxf1 then takes its former charge. The published exchange gains 2 material points."
+    },
+    {
+      "id": "LXf27",
+      "fen": "2r1r1k1/5pp1/1pN1p2p/pP1pP3/3PnP1q/8/2Q3PP/2R2RK1 b - - 0 25",
+      "moves": [
+        "h4h5",
+        "c6e7",
+        "e8e7",
+        "c2c8"
+      ],
+      "rating": 908,
+      "themes": [
+        "advantage",
+        "deflection",
+        "discoveredAttack",
+        "master",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 97,
+        "plays": 1176
+      },
+      "source": "https://lichess.org/training/LXf27",
+      "san": [
+        "Qh5",
+        "Ne7+",
+        "Rxe7",
+        "Qxc8+"
+      ],
+      "reason": "The defender on e8 guards c8. Ne7+ draws it to e7 with Rxe7; Qxc8+ then takes its former charge. The published exchange gains 2 material points."
+    },
+    {
+      "id": "pBsbP",
+      "fen": "2q1r1k1/rp4pp/3b4/2p1np2/2Pp4/PR1P2PB/5P1P/2BQR1K1 w - - 2 21",
+      "moves": [
+        "c1f4",
+        "e5f3",
+        "d1f3",
+        "e8e1"
+      ],
+      "rating": 908,
+      "themes": [
+        "advantage",
+        "deflection",
+        "discoveredAttack",
+        "kingsideAttack",
+        "master",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 79,
+        "popularity": 93,
+        "plays": 846
+      },
+      "source": "https://lichess.org/training/pBsbP",
+      "san": [
+        "Bf4",
+        "Nf3+",
+        "Qxf3",
+        "Rxe1+"
+      ],
+      "reason": "The defender on d1 guards e1. Nf3+ draws it to f3 with Qxf3; Rxe1+ then takes its former charge. The published exchange gains 2 material points."
+    }
+  ],
+  "r4-between": [
+    {
+      "id": "4KxnK",
+      "fen": "r3kb1r/pp3ppp/2n1p3/3q4/3P4/P4B1P/1P3PP1/R1BQK2R b KQkq - 0 12",
+      "moves": [
+        "d5d4",
+        "f3c6",
+        "b7c6",
+        "d1d4"
+      ],
+      "rating": 747,
+      "themes": [
+        "crushing",
+        "intermezzo",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 86,
+        "popularity": 96,
+        "plays": 807
+      },
+      "source": "https://lichess.org/training/4KxnK",
+      "san": [
+        "Qxd4",
+        "Bxc6+",
+        "bxc6",
+        "Qxd4"
+      ],
+      "reason": "After Qxd4, Qxd4 is legal. First play Bxc6+ to remove the knight on c6 guarding that recapture. After bxc6, Qxd4 captures the original attacker. This line gains 9 material points from the displayed position."
+    },
+    {
+      "id": "yeOLz",
+      "fen": "8/p4pkp/4b1p1/2N1P3/r1P5/4P3/5KPP/2R5 b - - 0 32",
+      "moves": [
+        "a4c4",
+        "c5e6",
+        "f7e6",
+        "c1c4"
+      ],
+      "rating": 806,
+      "themes": [
+        "crushing",
+        "endgame",
+        "intermezzo",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 87,
+        "plays": 493
+      },
+      "source": "https://lichess.org/training/yeOLz",
+      "san": [
+        "Rxc4",
+        "Nxe6+",
+        "fxe6",
+        "Rxc4"
+      ],
+      "reason": "After Rxc4, Rxc4 is legal. First play Nxe6+ to remove the bishop on e6 guarding that recapture. After fxe6, Rxc4 captures the original attacker. This line gains 5 material points from the displayed position."
+    },
+    {
+      "id": "4OvXv",
+      "fen": "r1q2n1k/p5pp/1p2P3/3p2B1/2pP2Q1/2P4P/PP6/5RK1 b - - 0 29",
+      "moves": [
+        "c8e6",
+        "f1f8",
+        "a8f8",
+        "g4e6"
+      ],
+      "rating": 861,
+      "themes": [
+        "crushing",
+        "endgame",
+        "intermezzo",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 87,
+        "plays": 419
+      },
+      "source": "https://lichess.org/training/4OvXv",
+      "san": [
+        "Qxe6",
+        "Rxf8+",
+        "Rxf8",
+        "Qxe6"
+      ],
+      "reason": "After Qxe6, Qxe6 is legal. First play Rxf8+ to remove the knight on f8 guarding that recapture. After Rxf8, Qxe6 captures the original attacker. This line gains 7 material points from the displayed position."
+    },
+    {
+      "id": "syBnk",
+      "fen": "5r2/3b1pk1/4p1p1/3pPnP1/3P3N/4P3/4BQK1/2q5 b - - 1 29",
+      "moves": [
+        "c1e3",
+        "h4f5",
+        "e6f5",
+        "f2e3"
+      ],
+      "rating": 916,
+      "themes": [
+        "advantage",
+        "intermezzo",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 85,
+        "popularity": 93,
+        "plays": 903
+      },
+      "source": "https://lichess.org/training/syBnk",
+      "san": [
+        "Qxe3",
+        "Nxf5+",
+        "exf5",
+        "Qxe3"
+      ],
+      "reason": "After Qxe3, Qxe3 is legal. First play Nxf5+ to remove the knight on f5 guarding that recapture. After exf5, Qxe3 captures the original attacker. This line gains 9 material points from the displayed position."
+    },
+    {
+      "id": "pK2b2",
+      "fen": "r3r1k1/p1pN1ppp/1pn2q2/8/2pPQ3/2P4P/P4PP1/R3R1K1 b - - 0 19",
+      "moves": [
+        "e8e4",
+        "d7f6",
+        "g7f6",
+        "e1e4"
+      ],
+      "rating": 906,
+      "themes": [
+        "advantage",
+        "intermezzo",
+        "kingsideAttack",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 81,
+        "popularity": 91,
+        "plays": 493
+      },
+      "source": "https://lichess.org/training/pK2b2",
+      "san": [
+        "Rxe4",
+        "Nxf6+",
+        "gxf6",
+        "Rxe4"
+      ],
+      "reason": "After Rxe4, Rxe4 is legal. First play Nxf6+ to take the queen on f6 with check. After gxf6, Rxe4 captures the original attacker. This line gains 11 material points from the displayed position."
+    },
+    {
+      "id": "FOtOo",
+      "fen": "3r2k1/1b3p2/p3p1pp/1p2b3/1P2N3/P7/3R1PPP/1B4K1 b - - 6 26",
+      "moves": [
+        "b7e4",
+        "d2d8",
+        "g8g7",
+        "b1e4"
+      ],
+      "rating": 871,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "intermezzo",
+        "short"
+      ],
+      "quality": {
+        "rd": 87,
+        "popularity": 90,
+        "plays": 1364
+      },
+      "source": "https://lichess.org/training/FOtOo",
+      "san": [
+        "Bxe4",
+        "Rxd8+",
+        "Kg7",
+        "Bxe4"
+      ],
+      "reason": "After Bxe4, Bxe4 is legal. First play Rxd8+ to take the rook on d8 with check. After Kg7, Bxe4 captures the original attacker. This line gains 8 material points from the displayed position."
+    },
+    {
+      "id": "1Yycx",
+      "fen": "r7/1b2k3/2p1p3/3pP3/R7/P4N2/2r2PP1/2R3K1 w - - 0 38",
+      "moves": [
+        "a4a8",
+        "c2c1",
+        "g1h2",
+        "b7a8"
+      ],
+      "rating": 912,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "intermezzo",
+        "short"
+      ],
+      "quality": {
+        "rd": 80,
+        "popularity": 99,
+        "plays": 778
+      },
+      "source": "https://lichess.org/training/1Yycx",
+      "san": [
+        "Rxa8",
+        "Rxc1+",
+        "Kh2",
+        "Bxa8"
+      ],
+      "reason": "After Rxa8, Bxa8 is legal. First play Rxc1+ to take the rook on c1 with check. After Kh2, Bxa8 captures the original attacker. This line gains 10 material points from the displayed position."
+    }
+  ],
+  "r4-defend": [
+    {
+      "id": "dRoKV",
+      "fen": "4R1k1/pp3rp1/3b4/7p/8/PQPq2P1/1P5P/7K b - - 1 26",
+      "moves": [
+        "g8h7",
+        "b3f7",
+        "d3d1",
+        "h1g2"
+      ],
+      "rating": 949,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 396
+      },
+      "source": "https://lichess.org/training/dRoKV",
+      "san": [
+        "Kh7",
+        "Qxf7",
+        "Qd1+",
+        "Kg2"
+      ],
+      "reason": "The displayed position threatens Qf1# if the opponent moves next. Qxf7 removes every immediate mating move without giving check. Then Qd1+ is answered by Kg2; stop at that source endpoint."
+    },
+    {
+      "id": "mmo0r",
+      "fen": "4rr1k/p5p1/7p/2p4Q/2Pp1pP1/1P3Pq1/P3P3/R3R2K b - - 7 36",
+      "moves": [
+        "e8e2",
+        "e1e2",
+        "g3f3",
+        "e2g2"
+      ],
+      "rating": 984,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 96,
+        "plays": 2506
+      },
+      "source": "https://lichess.org/training/mmo0r",
+      "san": [
+        "Rxe2",
+        "Rxe2",
+        "Qxf3+",
+        "Rg2"
+      ],
+      "reason": "The displayed position threatens Qg2# if the opponent moves next. Rxe2 removes every immediate mating move without giving check. Then Qxf3+ is answered by Rg2; stop at that source endpoint."
+    },
+    {
+      "id": "7VNVN",
+      "fen": "3r4/8/1Qpq1pk1/6p1/7p/4B2P/P4PP1/6K1 b - - 5 39",
+      "moves": [
+        "d6e5",
+        "b6d8",
+        "e5a1",
+        "g1h2"
+      ],
+      "rating": 1008,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "masterVsMaster",
+        "short"
+      ],
+      "quality": {
+        "rd": 88,
+        "popularity": 93,
+        "plays": 720
+      },
+      "source": "https://lichess.org/training/7VNVN",
+      "san": [
+        "Qe5",
+        "Qxd8",
+        "Qa1+",
+        "Kh2"
+      ],
+      "reason": "The displayed position threatens Rd1# if the opponent moves next. Qxd8 removes every immediate mating move without giving check. Then Qa1+ is answered by Kh2; stop at that source endpoint."
+    },
+    {
+      "id": "I1Zr0",
+      "fen": "8/7P/4k3/7K/8/8/2p3r1/7R b - - 3 62",
+      "moves": [
+        "c2c1q",
+        "h1c1",
+        "g2h2",
+        "h5g6"
+      ],
+      "rating": 1036,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "quality": {
+        "rd": 78,
+        "popularity": 86,
+        "plays": 311
+      },
+      "source": "https://lichess.org/training/I1Zr0",
+      "san": [
+        "c1=Q",
+        "Rxc1",
+        "Rh2+",
+        "Kg6"
+      ],
+      "reason": "The displayed position threatens Qg5# or Qxh1# if the opponent moves next. Rxc1 removes every immediate mating move without giving check. Then Rh2+ is answered by Kg6; stop at that source endpoint."
+    },
+    {
+      "id": "OhR2Q",
+      "fen": "4r1k1/p3rppp/5q2/2PQ4/2R5/P3P3/6PP/4R1K1 b - - 0 29",
+      "moves": [
+        "e7e3",
+        "e1e3",
+        "f6a1",
+        "g1f2"
+      ],
+      "rating": 1064,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 79,
+        "popularity": 91,
+        "plays": 1304
+      },
+      "source": "https://lichess.org/training/OhR2Q",
+      "san": [
+        "Rxe3",
+        "Rxe3",
+        "Qa1+",
+        "Kf2"
+      ],
+      "reason": "The displayed position threatens Rxe1# if the opponent moves next. Rxe3 removes every immediate mating move without giving check. Then Qa1+ is answered by Kf2; stop at that source endpoint."
+    },
+    {
+      "id": "y7n8E",
+      "fen": "1kbR4/1p1n1P2/r6p/3p4/3B4/p6P/6PK/8 w - - 0 42",
+      "moves": [
+        "f7f8q",
+        "d7f8",
+        "d4e5",
+        "b8a7"
+      ],
+      "rating": 1088,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 81,
+        "popularity": 90,
+        "plays": 457
+      },
+      "source": "https://lichess.org/training/y7n8E",
+      "san": [
+        "f8=Q",
+        "Nxf8",
+        "Be5+",
+        "Ka7"
+      ],
+      "reason": "The displayed position threatens Rxc8# if the opponent moves next. Nxf8 removes every immediate mating move without giving check. Then Be5+ is answered by Ka7; stop at that source endpoint."
+    },
+    {
+      "id": "a325i",
+      "fen": "4rk1r/Q4pp1/2N1p3/2pp3p/5b2/1P2q3/P5PP/R4R1K w - - 0 24",
+      "moves": [
+        "f1f4",
+        "e3f4",
+        "a7c5",
+        "f8g8"
+      ],
+      "rating": 1179,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 79,
+        "popularity": 93,
+        "plays": 1222
+      },
+      "source": "https://lichess.org/training/a325i",
+      "san": [
+        "Rxf4",
+        "Qxf4",
+        "Qxc5+",
+        "Kg8"
+      ],
+      "reason": "The displayed position threatens Qxf7# if the opponent moves next. Qxf4 removes every immediate mating move without giving check. Then Qxc5+ is answered by Kg8; stop at that source endpoint."
+    }
+  ],
+  "r4-legion-review": [
+    {
+      "id": "R3q4o",
+      "fen": "r1bq3r/ppp2kpp/2nb4/8/4P1n1/5Q2/PPP2PPP/RNB1KB1R b KQ - 1 8",
+      "moves": [
+        "f7g8",
+        "f1c4",
+        "c8e6",
+        "c4e6"
+      ],
+      "rating": 890,
+      "themes": [
+        "kingsideAttack",
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 524
+      },
+      "source": "https://lichess.org/training/R3q4o",
+      "san": [
+        "Kg8",
+        "Bc4+",
+        "Be6",
+        "Bxe6#"
+      ],
+      "reason": "The bishop develops from f1 to c4 with Bc4+. The reply Be6 allows Bxe6#."
+    },
+    {
+      "id": "31XQ9",
+      "fen": "3rqk1r/pp2Rpp1/2p4p/2Q5/8/2N2P2/PPP2P1P/3R2K1 b - - 0 18",
+      "moves": [
+        "e8e7",
+        "d1d8"
+      ],
+      "rating": 901,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "pin"
+      ],
+      "quality": {
+        "rd": 82,
+        "popularity": 95,
+        "plays": 1287
+      },
+      "source": "https://lichess.org/training/31XQ9",
+      "san": [
+        "Qxe7",
+        "Rxd8#"
+      ],
+      "reason": "The rook travels from d1 to d8 along the clear d-file with check. The guard on e7 is pinned to the king on f8. The published line ends in Rxd8#."
+    },
+    {
+      "id": "0lrXr",
+      "fen": "4r1k1/p1p2R1p/3p2n1/1P1P4/3q4/8/PP3QPP/R3r1K1 w - - 1 24",
+      "moves": [
+        "a1e1",
+        "e8e1"
+      ],
+      "rating": 921,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "pin"
+      ],
+      "quality": {
+        "rd": 83,
+        "popularity": 96,
+        "plays": 327
+      },
+      "source": "https://lichess.org/training/0lrXr",
+      "san": [
+        "Rxe1",
+        "Rxe1#"
+      ],
+      "reason": "The rook travels from e8 to e1 along the clear e-file with check. The guard on f2 is pinned to the king on g1. The published line ends in Rxe1#."
+    },
+    {
+      "id": "IXyqT",
+      "fen": "8/p1p1kp2/5q2/2b5/P3b3/1P5P/3P2QP/5R1K w - - 0 32",
+      "moves": [
+        "f1f6",
+        "e4g2",
+        "h1g2",
+        "e7f6"
+      ],
+      "rating": 814,
+      "themes": [
+        "advantage",
+        "endgame",
+        "intermezzo",
+        "short"
+      ],
+      "quality": {
+        "rd": 89,
+        "popularity": 96,
+        "plays": 3054
+      },
+      "source": "https://lichess.org/training/IXyqT",
+      "san": [
+        "Rxf6",
+        "Bxg2+",
+        "Kxg2",
+        "Kxf6"
+      ],
+      "reason": "After Rxf6, Kxf6 is legal. First play Bxg2+ to take the queen on g2 with check. After Kxg2, Kxf6 captures the original attacker. This line gains 11 material points from the displayed position."
+    },
+    {
+      "id": "sxdTZ",
+      "fen": "4b2k/p5p1/5n2/3B4/2P5/r5P1/5P1P/4R1K1 b - - 4 43",
+      "moves": [
+        "f6d5",
+        "e1e8",
+        "h8h7",
+        "c4d5"
+      ],
+      "rating": 913,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "intermezzo",
+        "master",
+        "short"
+      ],
+      "quality": {
+        "rd": 84,
+        "popularity": 90,
+        "plays": 412
+      },
+      "source": "https://lichess.org/training/sxdTZ",
+      "san": [
+        "Nxd5",
+        "Rxe8+",
+        "Kh7",
+        "cxd5"
+      ],
+      "reason": "After Nxd5, cxd5 is legal. First play Rxe8+ to take the bishop on e8 with check. After Kh7, cxd5 captures the original attacker. This line gains 6 material points from the displayed position."
+    },
+    {
+      "id": "aY6xO",
+      "fen": "r3kbnr/pn3ppp/4p3/3P4/3Pb2B/4P3/PP3PPP/R3KBNR b KQkq - 0 11",
+      "moves": [
+        "e4d5",
+        "f1b5",
+        "d5c6",
+        "b5c6"
+      ],
+      "rating": 683,
+      "themes": [
+        "bodenMate",
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 88,
+        "popularity": 85,
+        "plays": 321
+      },
+      "source": "https://lichess.org/training/aY6xO",
+      "san": [
+        "Bxd5",
+        "Bb5+",
+        "Bc6",
+        "Bxc6#"
+      ],
+      "reason": "The bishop develops from f1 to b5 with Bb5+. The reply Bc6 allows Bxc6#."
+    },
+    {
+      "id": "d9mXL",
+      "fen": "rnb1k1nr/ppp2ppp/8/3p4/4pP1b/4P3/PPPP3P/RNBQKBNR w KQkq - 0 7",
+      "moves": [
+        "e1e2",
+        "c8g4",
+        "g1f3",
+        "g4f3"
+      ],
+      "rating": 832,
+      "themes": [
+        "mate",
+        "mateIn2",
+        "opening",
+        "short"
+      ],
+      "quality": {
+        "rd": 84,
+        "popularity": 85,
+        "plays": 317
+      },
+      "source": "https://lichess.org/training/d9mXL",
+      "san": [
+        "Ke2",
+        "Bg4+",
+        "Nf3",
+        "Bxf3#"
+      ],
+      "reason": "The bishop develops from c8 to g4 with Bg4+. The reply Nf3 allows Bxf3#."
+    },
+    {
+      "id": "CeqlU",
+      "fen": "2r3k1/p5pp/3qp3/3pNp2/3P4/2n1P3/P2Q1PPP/5RK1 w - - 2 22",
+      "moves": [
+        "f1c1",
+        "c3e2",
+        "d2e2",
+        "c8c1"
+      ],
+      "rating": 915,
+      "themes": [
+        "advantage",
+        "deflection",
+        "discoveredAttack",
+        "endgame",
+        "short"
+      ],
+      "quality": {
+        "rd": 81,
+        "popularity": 92,
+        "plays": 662
+      },
+      "source": "https://lichess.org/training/CeqlU",
+      "san": [
+        "Rc1",
+        "Ne2+",
+        "Qxe2",
+        "Rxc1+"
+      ],
+      "reason": "The defender on d2 guards c1. Ne2+ draws it to e2 with Qxe2; Rxc1+ then takes its former charge. The published exchange gains 2 material points."
+    },
+    {
+      "id": "ascNK",
+      "fen": "1k1r3r/ppp3p1/2n2p1p/3Np2q/1PB1P1n1/3P1R2/P1PQ2PP/3R3K w - - 1 18",
+      "moves": [
+        "f3h3",
+        "g4f2",
+        "d2f2",
+        "h5d1"
+      ],
+      "rating": 917,
+      "themes": [
+        "advantage",
+        "deflection",
+        "discoveredAttack",
+        "kingsideAttack",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 87,
+        "popularity": 95,
+        "plays": 411
+      },
+      "source": "https://lichess.org/training/ascNK",
+      "san": [
+        "Rh3",
+        "Nf2+",
+        "Qxf2",
+        "Qxd1+"
+      ],
+      "reason": "The defender on d2 guards d1. Nf2+ draws it to f2 with Qxf2; Qxd1+ then takes its former charge. The published exchange gains 2 material points."
+    },
+    {
+      "id": "skBmI",
+      "fen": "8/1Q2k1p1/pP1p2B1/P2Pb3/b1P1p3/6qP/8/7K b - - 0 37",
+      "moves": [
+        "e7f6",
+        "b7f7",
+        "f6g5",
+        "f7f5",
+        "g5h6",
+        "f5h5"
+      ],
+      "rating": 918,
+      "themes": [
+        "endgame",
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3"
+      ],
+      "quality": {
+        "rd": 76,
+        "popularity": 88,
+        "plays": 499
+      },
+      "source": "https://lichess.org/training/skBmI",
+      "san": [
+        "Kf6",
+        "Qf7+",
+        "Kg5",
+        "Qf5+",
+        "Kh6",
+        "Qh5#"
+      ],
+      "reason": "Against the king on f6, Qf7+ starts 3 consecutive checks: Qf7+, Qf5+, Qh5#. The source replies are Kg5, Kh6; the last check leaves no legal escape."
+    },
+    {
+      "id": "d2U43",
+      "fen": "3r1r2/pp6/1q3p1k/4nBb1/6P1/2PP4/PP3PQP/R5K1 b - - 4 27",
+      "moves": [
+        "b6c6",
+        "g2h3",
+        "g5h4",
+        "h3h4",
+        "h6g7",
+        "h4h7"
+      ],
+      "rating": 909,
+      "themes": [
+        "exposedKing",
+        "long",
+        "mate",
+        "mateIn3",
+        "middlegame",
+        "swallowstailMate"
+      ],
+      "quality": {
+        "rd": 85,
+        "popularity": 94,
+        "plays": 519
+      },
+      "source": "https://lichess.org/training/d2U43",
+      "san": [
+        "Qc6",
+        "Qh3+",
+        "Bh4",
+        "Qxh4+",
+        "Kg7",
+        "Qh7#"
+      ],
+      "reason": "Against the king on h6, Qh3+ starts 3 consecutive checks: Qh3+, Qxh4+, Qh7#. The source replies are Bh4, Kg7; the last check leaves no legal escape."
+    },
+    {
+      "id": "x4f2j",
+      "fen": "5q1k/pp5p/2p2b1R/2P2p2/P2Pp1p1/4P3/1P3QK1/8 w - - 0 37",
+      "moves": [
+        "f2f5",
+        "f8h6",
+        "f5c8",
+        "h8g7"
+      ],
+      "rating": 1028,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "quality": {
+        "rd": 76,
+        "popularity": 94,
+        "plays": 2962
+      },
+      "source": "https://lichess.org/training/x4f2j",
+      "san": [
+        "Qxf5",
+        "Qxh6",
+        "Qc8+",
+        "Kg7"
+      ],
+      "reason": "The displayed position threatens Qxh7# if the opponent moves next. Qxh6 captures material and removes every immediate mating move without check. Answer Qc8+ with Kg7; the source line gains 5 material points."
+    },
+    {
+      "id": "fdj22",
+      "fen": "r2q3r/pp1nbpk1/2p2n1R/3pN3/3P4/2N4Q/PPP2PPP/R5K1 w - - 3 17",
+      "moves": [
+        "h6h8",
+        "d8h8",
+        "h3g3",
+        "g7f8"
+      ],
+      "rating": 1093,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 93,
+        "plays": 464
+      },
+      "source": "https://lichess.org/training/fdj22",
+      "san": [
+        "Rxh8",
+        "Qxh8",
+        "Qg3+",
+        "Kf8"
+      ],
+      "reason": "Qxh8 captures the rook supporting Qh6# and removes the mating threat without check. Answer Qg3+ with Kf8. The queen cannot be recaptured at the published endpoint; the gain stays positive even after White\u2019s largest immediate capture, Nxd7+."
+    }
+  ]
+}

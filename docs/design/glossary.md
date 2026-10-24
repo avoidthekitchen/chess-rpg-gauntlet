@@ -4,9 +4,17 @@
 
 One place for the names the game shows, so every screen, line of dialogue and document uses the same words.
 
+## Current and historical terms
+
+The current journey uses lessons, worked examples, practice positions, mixed chapter reviews, stars, and the journal.
+A companion is the player's coach. A story ally need not be a piece on the current published board.
+Boss names still identify chapter leaders; their current challenges are mixed reviews rather than live army games.
+Army, tavern, bounty-pay, powers, and faction-habit entries below preserve legacy vocabulary, not required core-game systems.
+See [campaign](campaign.md) and [systems](systems.md) for current behavior.
+
 ## Pieces
 
-Our army. Each enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md).
+Ally pieces. Each enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md).
 
 | Chess piece | Species name (portraits, tavern, starter screen) | Short name (status text, banners, advice) |
 | --- | --- | --- |
@@ -27,10 +35,10 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 
 | Shown as | Code id | What it means |
 | --- | --- | --- |
-| Gentle | `squire` | Relaxed: clumsier enemies, Threat Sight on, 3 rewinds, and your companion reads shouts for you |
-| Brave | `knight` | A fair fight: sharper enemies, 2 rewinds |
-| Champion | `champion` | Not built yet |
-| Grandmaster | `grandmaster` | Not built yet |
+| Gentle | `squire` | Unlimited misses, hints, and coaching throughout |
+| Brave | `knight` | 3 misses per attempt, hints, and coaching on the first position |
+| Champion | `champion` | 2 misses per attempt; no in-attempt hints or coaching |
+| Grandmaster | `grandmaster` | Same puzzle assistance as Champion; disclosed in the UI |
 
 - Difficulty names never use a chess piece's name, so "Knight" always means the piece. The code ids stay as they are, so old saves still load.
 
@@ -63,23 +71,39 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 | Waymeet | Region 2's town |
 | The Broken Wheel | Region 2's tavern |
 
-## Game terms
+## Current journey terms
+
+| Term | Meaning |
+| --- | --- |
+| Companion | The chosen coach: Sir Hob, Sage Ollie, or Old Brick |
+| Story ally | A named character in the travelling cast; not a roster upgrade |
+| Lesson | Introduction, optional worked example, then published practice positions |
+| Mixed review | Fresh positions on taught ideas, without theme prompts |
+| Journal | Revisit learned ideas and worked examples |
+| Star | Saved completion, no-miss, or no-hint achievement; not currency |
+| Refresher | Planned return to an earlier skill, independent of gold or bounties |
+| Technique lesson | Planned goal-based practice for endgame techniques; not yet supported by the fixed-line runner |
+
+## Legacy and deferred terms
+
+The following names describe the retained original game or later ideas, not current journey requirements.
+
 
 | Term | Meaning |
 | --- | --- |
 | Companion | Your starter character (Sir Hob, Sage Ollie or Old Brick) |
 | Hero | A named character who joins at the end of a Region |
 | Militia | Unnamed pieces in a battle's set lineup |
-| Shout | A Bog Goblin announcing the move it would play if you passed ([details](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Shout | A Bog Goblin announcing the move it would play if you passed ([details](regions/legacy-region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
 | Foiled! | The banner when your move makes a shouted move illegal |
-| Wanted poster | The Bandit Riders' mark on the piece they're hunting ([details](regions/region-02-bandit-riders.md#ai-habit-wanted-poster)) |
+| Wanted poster | The Bandit Riders' mark on the piece they're hunting ([details](regions/legacy-region-02-bandit-riders.md#ai-habit-wanted-poster)) |
 | Scrying Orb | A power bought in town: shows the move the enemy would play if you passed |
 | Threat Sight | Highlights for squares the enemy attacks and your pieces that can be won |
 | Rewind | Undo your last move and the enemy's reply; limited charges in battles |
 | Bounty | A real Lichess puzzle on the town's bounty board that pays gold |
 | Ambush | A fight made of published puzzle waves; each wave ends at its published solution |
 | Bonus goal | An optional goal in a battle that pays extra gold once (shown as a star on the map) |
-| Warm-up | The short lesson that opens a battle node: your companion shows one position, then you try one ([Guided path](campaign.md#guided-path)) |
+| Warm-up | The short lesson that opens a battle node: your companion shows one position, then you try one ([Legacy guided path](legacy-campaign.md#guided-path)) |
 | Main path | A Region's required battles, the headline themes in teaching order |
 | Branch | A battle off the main path that you choose: a revisit, a mate or an endgame |
 | Library | The town building where you replay warm-ups and read tip cards (replaces the academy) |

@@ -2,6 +2,46 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## Reconciled foundation and Region 3 handoff
+
+Built on 2026-10-24 after the owner approved the curriculum, presentation, story preservation, and backlog cleanup.
+
+- Merged main `661bf0a` into the feature branch at `33a842b`, preserving its legacy shout, AI, and battle changes.
+- Replaced contradictory active design, systems, campaign, playbook, and Region documents. Historical plans remain in labeled archives.
+- Preserved companions, faction voices, the Lich King arc, and story allies without recruitment or power dependencies.
+- Added a prerequisite-based syllabus and a concrete Shadow Cult brief. Source selection and implementation remain future work.
+- Independent review identified the six-node map limit and hidden review examples. The Region 3 brief now handles both explicitly.
+- Roadmap #36 now follows the accepted journey. #39 is Region 3, #40 is technique support, and #41 is spaced/repeated practice.
+- Optional faction art stays in #10. Wanted AI (#12) and Scrying Orb (#13) are deferred and unblocking.
+- Delivery issues close after merge as completed or superseded; old requirements are not falsely marked implemented.
+
+**Integration evidence**
+
+- TypeScript, production build, and all 272 tests across 24 files passed on the combined source at `33a842b`.
+- WebKit iPhone emulation rechecked all ten guided lessons at 375×553 and 393×696, including wrong moves and replies. No runtime errors.
+- An independent reviewer found no code integration blocker. The reconciled Markdown links and anchors resolve.
+- `diff -qr dist dist-staging` found no differences. The merged production build matches the already deployed staging artifact.
+- Staging remains version `d05d9914-c852-4e37-bba9-19039c4bbc93`; production was not deployed.
+
+**Legacy verification exception — explicit owner direction**
+
+`npm run ci -- --full` started at the merged source. The legacy battle suite reported one failed assertion:
+Swap Meet on Gentle won 21/24 competent games (87.5%), below its unchanged 90% bar. The other nine battle tests passed.
+The owner then explicitly approved skipping the remaining legacy boss verification because the new journey replaces those encounters.
+The runner was stopped with exit 143. This full-CI command did not pass, and the boss result is not claimed.
+
+One enlarged diagnostic ran before that waiver:
+`VERIFY_BATTLE=r1-trades VERIFY_GAMES=96 VERIFY_ENGINES=4 VERIFY_SHOW=1 npx vitest run --config vitest.verify.config.ts scripts/verify/battles.verify.test.ts`.
+It passed unchanged assertions: competent 91/96 Gentle and 89/96 Brave; careless 12/96 and 2/96.
+Quick bonuses were 81/91 and 73/89, and no-rewind bonuses were 100%.
+
+The battle definition, AI, and simulator match main. The reachable branch difference avoids formatting history just to count plies.
+A deterministic comparison found identical behavior across 6,858 operations, 1,702 rewinds, and 13,729 state checks.
+All 12 diagnostic loss traces also replayed identically under both implementations, across 233 plies.
+These results support sampling variability rather than an integration regression; they do not prove the true win rate.
+[Issue #42](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42) tracks reproducible RNG and failure diagnostics.
+No battle content, thresholds, or CI selection were weakened. The boss waiver applies to this merge; retained checks remain available.
+
 ## Phone teaching space corrected (#34)
 
 The owner’s iPhone screenshot exposed clipped portraits and teaching advice below the scroll area.

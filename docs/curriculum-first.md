@@ -1,10 +1,14 @@
-# Curriculum first: Regions 1 and 2
+# Curriculum first: accepted Regions 1 and 2 baseline
+
+This document records the delivered baseline. The active [design overview](design.md), [campaign](design/campaign.md),
+[syllabus](design/syllabus.md), and [Region 3 brief](design/regions/region-03-shadow-cult.md) govern the next expansion.
+The owner approved extending this direction through the remaining Regions and reconciling earlier plans on 2026-10-24.
 
 ## Approved direction
 
 The owner approved this direction on 2026-10-23 after completing the Region 2 pilot.
 They found it fun, guided, and useful for learning skills that transfer to real chess.
-Further human pilot playtests are not a release gate. Wanted presentation can wait.
+Further human pilot playtests are not a release gate. Wanted presentation belonged to the pilot; it is not a dependency of the current journey.
 
 Build the basic teaching game first. Use published Lichess puzzles throughout its lessons and chapter reviews.
 Keep Pawnshire's storybook art, board interaction, companions, and responsive layout.
@@ -45,7 +49,7 @@ Chess movement rules, source licensing, truthful teaching, and technical validat
 ## Checkpoint and reuse
 
 - [Issue #34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) records the pilot decisions, feedback, and handoff.
-- [Draft PR #35](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/35) preserves the accepted standalone pilot.
+- [Historical PR #35](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/35) preserves the accepted standalone pilot; PR #37 supersedes it.
 - Remote branch `codex/checkpoint-approved-ambush` preserves commit `051ad26` before this campaign expansion.
 - Continue on `codex/regions1-2-curriculum`, preserved in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37).
 - Preview the completed basic campaign at <https://unformedideas.com/staging-chess-rpg/>.

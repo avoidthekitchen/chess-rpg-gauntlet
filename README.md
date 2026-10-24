@@ -1,6 +1,6 @@
 # Pawnshire
 
-A storybook chess tactics journey. **The rules of chess never change on the board.** Learn from published Lichess positions with a companion, then put each idea into practice. See [the current curriculum](docs/curriculum-first.md), [design overview](docs/design.md), [playbook](docs/playbook.md), [AGENTS.md](AGENTS.md), and [build progress](docs/progress.md).
+A storybook chess tactics journey. **The rules of chess never change on the board.** Learn from published Lichess positions with a companion, then put each idea into practice. See [the accepted baseline](docs/curriculum-first.md), [remaining syllabus](docs/design/syllabus.md), [Region 3 handoff](docs/design/regions/region-03-shadow-cult.md), [design overview](docs/design.md), [playbook](docs/playbook.md), [AGENTS.md](AGENTS.md), and [build progress](docs/progress.md).
 
 Play it: https://unformedideas.com/chess-rpg/
 

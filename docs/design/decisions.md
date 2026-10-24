@@ -1,62 +1,49 @@
-# Decisions and open questions
+# Decisions and open work
 
-[Design overview](../design.md) · [Game systems](systems.md) · [Campaign and curriculum](campaign.md)
+[Design overview](../design.md) · [Campaign](campaign.md) · [Syllabus](syllabus.md)
 
 ## Current scope
 
-The [curriculum-first plan](../curriculum-first.md) supersedes conflicting older decisions for the new basic campaign.
-The owner approved completing Regions 1 and 2 with published puzzle lessons and mixed chapter reviews on 2026-10-23.
-Army progression, faction move rules, powers, economy, and live bosses are deferred.
-Their TODOs below remain historical backlog, not dependencies of this release.
-The owner authorizes routine curriculum and implementation decisions without another design-approval gate.
+The accepted two-chapter journey is the foundation for all remaining Regions.
+The owner authorizes routine curriculum and implementation choices with best judgment; no repeated design approval is required.
+Independent review, source verification, applicable CI, and browser checks remain required.
 
 ## Open TODOs
 
-The one place to track unfinished design work. When one is resolved, move the answer to the document it belongs in and tick it off here.
-
-**Design**
-
-- [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
-- [ ] **Recurring characters:** Region 2's are named (Ashfang, Tadwell). Name the Region 3–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
-- [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
-- [ ] **Region 2 detailed design:** the [brief](regions/region-02-bandit-riders.md) is approved; the battles, warm-ups and dialogue are designed by the builder and approved by the owner.
-- [ ] **Regions 3–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
-- [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
-- [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
-- [ ] **Region 1 guided path:** revise Region 1 to the [guided path](campaign.md#guided-path): a warm-up in each battle node, the map rewired to a main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), the rook and queen mates as Grubnak's boss warm-up, the academy turned into the library, and refresher bounties. The in-battle lesson panel becomes a one-line reminder. Spec as a GitHub issue once this design is approved ([Region 1](regions/region-01-bog-goblins.md#planned-guided-path)).
-- [ ] **Placement check:** an optional set of 5 or 6 puzzles at the start that marks warm-ups the player already knows, so they start ready to skip, and seeds the hidden adaptive rating. Design it with the adaptive rating.
-- [x] **Siege raider:** built 2026-10-23: the raider tilts instead of overriding the engine. Re-verifying the sieges is part of the battle re-verification ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
-- [x] **Shout rule:** decided 2026-10-23: goblins keep announcing, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), under the [tell or tilt](systems.md#ai-habits-by-faction) rule.
-- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
-- [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
-- [x] **Region 2 numbers:** set in the [brief](regions/region-02-bandit-riders.md): 5 battles, 4 wins open the boss, Region 1's rewards and pay, and the Orb at 3 charges for 30g.
-
-**Code**
-
-- [ ] **Region registry:** much of the game assumes Region 1. Before building Region 2, add a registry of Regions and a current-region field in the save, so Region 2 isn't a copy of half the game. What assumes Region 1 today:
-    - the map, the boss and the hero (`src/game/region1*.ts`, `src/scenes/Map.ts`, `src/scenes/Muster.ts`, `src/flow.ts`);
-    - the puzzle files (`src/puzzles.ts`, and the config in `scripts/build-puzzles.mjs`);
-    - goblin wording in battle ("Told you I would!", the switch lines such as "Oi! You’ve guarded it!", "They changed their plan.", "The goblins shout their plan" and "Foiled! The goblins couldn't…" in `src/scenes/Battle.ts`; the shout lines in `src/ai/shout.ts`; "One less goblin." in `src/ui/speaker.ts`). Enemy piece names already come per faction from `FACTION_SPECIES` (with the art pipeline in PR #6).
-- [ ] **Tests and verification for every Region:** the battle content tests and `npm run verify:battles` only cover Region 1. Run them over every registered Region ([playbook](../playbook.md#battle-content-rules)). Each new faction habit also needs a simulated player that understands it.
-- [ ] **Region 1 boss results:** the no-shout boss's AI values are in the [tuning values](systems.md#tuning-values); on the next `npm run verify:battles`, record the boss rows in [Region 1](regions/region-01-bog-goblins.md#verification). The boss check is the slow part of that run (384 full games).
-- [ ] **Hero on a full roster:** Saffron joins with no cap check (`addCharacter` in `src/game/campaign.ts`), so a player who hired a queen ends with two. Apply the replace-and-refund rule ([Your army](systems.md#your-army)) to every hero, with tests.
-- [x] **Tortoise name:** renamed "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
+- [ ] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
+- [ ] Deliver the remaining [syllabus](syllabus.md), preserving prerequisites and revisits across chapters.
+- [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
+- [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
+- [ ] Add missing story transitions and ally scenes; distinguish planned scenes from built ones.
+- [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
+- [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
 
 ## Open questions
 
-- [ ] Ambush tuning: keep the approved pilot settings for now. Revisit them if campaign integration exposes a problem; further pilot playtests are not required.
-- [x] Ambush adoption (D9): the owner approved wider adoption after evaluating the staging pilot. The three-playtester gate is waived; Wanted polish is deferred.
+- Which published Practice chapters and goal checks are suitable for technique training? Verify sources and supported continuations during that task.
+- What amount of repeated practice helps without becoming tedious? Start small; no mandatory timer or mastery claim.
+- Champion and Grandmaster currently share assistance rules. Retain that disclosure until their behavior differs.
 
-- [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
-- [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
-- [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
-- [ ] Warm-up pay of 5g on the first solve, and whether refresher bounties pay like other bounties: first guesses, tune in playtests.
-- [ ] Warm-up bands (400–800 in Region 1, up to 1100–1500 in Region 5): check in playtests that the try position is easy for players who know the idea.
+## Deferred systems
+
+Recruitment, shops, economy, powers, faction move habits, live army bosses, XP, and Gauntlet are outside the basic-game dependency graph.
+Earlier implementation TODOs and tuning questions are preserved in [legacy decisions](legacy-decisions.md), not silently marked completed.
+
+## How to read the history
+
+Rows below preserve the sequence of decisions. Newer approved scope replaces conflicting older army, warm-up, economy, and live-boss decisions.
+The active overview, campaign, systems, and syllabus are the implementation contract.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | Owner waived the remaining legacy boss verification for the reconciliation merge after the new journey replaced Region 1 battles and boss. Record the interrupted full run and legacy sampling finding; do not change thresholds or CI selection. Issue #42 tracks reproducibility. |
+| 2026-10-24 | Owner approved reconciling docs and issues before Region 3. Merge #37 after integration checks; close completed or superseded work accurately. Keep staging separate from production release. |
+| 2026-10-24 | Story, companions, faction voices, painted maps, and readable dialogue are core. Allies can join the cast without recruitment or powers. Published boards never depend on a persistent roster. |
+| 2026-10-24 | Use Steps, Bain, Heisman, Silman, Duolingo's path, and Woodpecker principles to shape prerequisites, revisits, and assessment. Select unchanged Lichess material to fit the syllabus. |
+| 2026-10-24 | Build Regions 3–5 and a mixed Lich King capstone. Custom puzzles, live army bosses, gold, faction AI, and powers are deferred, superseding #36's earlier roadmap. |
+| 2026-10-24 | Track Lichess Practice technique support and refresher scheduling separately. Tactical examples do not establish technique mastery; repeated sets need fresh assessments. |
 | 2026-10-23 | Restore the earlier presentation around the published curriculum: Continue/New splash, illustrated sequential map, portrait introductions, talking pieces and history, and accurate move banners. Add portrait-led victory cards, a brief star reveal, and distinct companion reactions. These are core presentation; armies, powers, custom puzzles, and removed faction mechanics remain deferred. |
 | 2026-10-23 | Curriculum-first checkpoint: preserve the accepted pilot in draft PR #35 and remote `codex/checkpoint-approved-ambush` at `051ad26`. Continue the basic campaign on `codex/regions1-2-curriculum`. |
 | 2026-10-23 | Finish Regions 1 and 2 using published Lichess lessons. Each has five three-wave lessons and a four-wave mixed chapter review. Grubnak and Ashfang frame reviews; live army bosses are deferred. |
@@ -75,7 +62,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-23 | Ambush D9: the owner approved published-puzzle ambushes for most new teaching encounters after evaluating the staging pilot. Further pilot playtesting is waived. Wanted polish is deferred. Custom battles and live bosses remain where useful. Region 1 conversion and Practice technique nodes remain separate planning choices. |
 | 2026-10-23 | Pilot storage is separate, seeded with 100g and a small roster. Reset affects only pilot data. An interrupted active attempt settles once as a retreat on reload. Leaving teaching is free. The owner approved a separate staging deployment for phone testing. Normal production builds exclude the pilot. |
 | 2026-10-23 | Ambush and warm-up flows share puzzle mechanics, not necessarily a state machine. Rewards share the existing payout ledger through a small economy helper; battle stats and bonus kinds stay unchanged. |
-| 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |
+| 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/legacy-region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |
 | 2026-10-23 | Region 2's mating battle opens with a 2 or 3 move setup before a mate in 2 or 3, so it meets the 4 to 7 move bar with no exception. The short mate stays in its warm-up, and the battle position is our own |
 | 2026-10-23 | Scrying Orb charges are spent once, when a reveal succeeds; the answer is kept for that position within the attempt, shown again free on rewind, and never refunded. Failed or abandoned reveals cost nothing ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)) |
 | 2026-10-23 | Each Region keeps its own completion record. Players can return to earlier Regions to play skipped branches and missed bonus goals. The bounty board uses the newest Region's pack ([#9](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/9)) |

@@ -1,13 +1,13 @@
 # Pawnshire: notes for agents and contributors
 
-Pawnshire is a storybook chess tactics RPG (Phaser 4 + TypeScript + Vite, chess.js, Stockfish in a Web Worker), live at https://unformedideas.com/chess-rpg/. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
+Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is at https://unformedideas.com/staging-chess-rpg/; the original game remains live at https://unformedideas.com/chess-rpg/. Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
 
 ## Rules that never bend
 
-- **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Faction habits change what the enemy chooses or tells you, never how pieces move.
-- **`src/game` has no screen code.** Rules, campaign, economy and content live there with unit tests; scenes talk to them through small interfaces.
+- **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Published positions and replies stay unchanged. Faction voices do not imply new board rules.
+- **`src/game` has no screen code.** Rules, journey progress and content live there with unit tests; scenes talk to them through small interfaces.
 - **Every new rule gets a test, and every battle is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). `npm run ci` before each PR reruns the engine playtests whenever a change can reach them; `npm run ci -- --full` reruns all of them before a Region ships.
-- **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), numbers from [Tuning values](docs/design/systems.md#tuning-values).
+- **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), current help and progression numbers from [Tuning values](docs/design/systems.md#tuning-values).
 - **Design calls the docs don't settle** go in [decisions](docs/design/decisions.md): a decision-log row, or an open TODO when it needs the owner.
 
 ## Commands
@@ -21,18 +21,20 @@ npm run ci               # check, plus only the engine playtests your branch can
 npm run ci -- --full     # check, plus every engine playtest (before a Region ships)
 npm run verify:battles   # engine playtests of every battle and the boss (15 minutes or more)
 npm run puzzles          # rebuild bounty puzzles from the Lichess database (download goes to data/raw/)
-npm run deploy           # build, stage and deploy to Cloudflare
+npm run deploy:staging   # preview deployment for review
+npm run deploy           # production deployment; separate release decision
 ```
 
-Never commit `data/raw/`, `art/raw/`, `dist/` or `dist-worker/`. The raw puzzle download and raw art stay local.
+Never commit `data/raw/`, `art/raw/`, `dist/`, `dist-staging/`, `dist-worker/` or `dist-worker-staging/`. The raw puzzle download and raw art stay local.
 
 ## Where things are
 
 The [README layout](README.md#layout) lists the folders. The ones you'll touch most:
 
-- `src/game/region1*.ts`: Region 1 content. New Regions follow the [Region template](docs/design/regions/region-template.md).
+- `src/game/curriculum.ts` and `curriculumPuzzles.json`: current chapter content and source positions. New Regions follow the [syllabus](docs/design/syllabus.md) and [Region template](docs/design/regions/region-template.md).
+- `src/game/journey.ts` and `ambush.ts`: progression and published-line rules. `region1*.ts` retains legacy content.
 - `src/scenes/`: one Phaser scene per screen.
-- `src/flow.ts`: navigation between them.
+- `src/scenes/Journey.ts` and `CoursePlay.ts`: current map, journal, settings, and lessons. `src/flow.ts` retains legacy navigation.
 - `src/ui/phaserBoard.ts`: the board and its animations.
 
 ## Phaser 4 pitfalls we hit
@@ -48,3 +50,10 @@ The [README layout](README.md#layout) lists the folders. The ones you'll touch m
 ## Writing style for docs and in-game text
 
 Short, specific and plain: lead with the point, use numbers and names, keep sentences under 25 words, and use no jargon the reader would have to look up. In-game lines follow the [voice guide](docs/design/story.md#voice-and-dialogue).
+
+## Current scope
+
+Build the basic curriculum through the Lich King before adding armies, powers, economy, faction AI, or custom puzzles.
+Preserve story, cast, voice, art direction, and responsive presentation. These belong to the core experience.
+Use independent subagents for code review and teaching critique before delivering each Region.
+User-approved model preference: GPT-6.1 Sol for implementation; GPT-6 Astra for adversarial review and critique.

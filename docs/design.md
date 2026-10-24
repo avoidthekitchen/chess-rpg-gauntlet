@@ -1,68 +1,69 @@
 # Pawnshire — Game Design Doc
 
-## Current direction: curriculum first
-
-**Approved 2026-10-23:** finish Regions 1 and 2 as a connected journey of published Lichess puzzle lessons and mixed chapter reviews.
-Keep the storybook art and UX. Defer recruitment, faction move rules, powers, shops, and live army bosses.
-The [curriculum-first plan](curriculum-first.md) is authoritative for this new basic campaign, including progression, difficulty, saves, and acceptance checks.
-The owner accepted the pilot and waived further human pilot testing as a gate.
-
-The sections below describe the earlier RPG design. Their conflicting army, economy, warm-up, and boss requirements are historical, not prerequisites.
-Chess rules, teaching clarity, licensing, established names, and the art direction still apply.
-
 ## Vision and pillars
 
-A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces with gold won in battle, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.
+Pawnshire is a storybook chess learning adventure. Travel with an animal companion, learn from published chess positions, and free the kingdom chapter by chapter.
+The Lich King cannot accept losing. The player progresses by learning from mistakes.
 
-**Audience:** players who know how the pieces move and want to get better. The game opens by asking "Do you know how the pieces move?"; answering no starts the optional "Teach me the moves" tutorial.
+**Audience:** players who know how chess pieces move. The current entry provides a movement reminder and links to Lichess Learn.
+An integrated beginner course is not built.
 
-**Pillars**
+1. **Real chess.** Board rules never change. Use published Lichess positions and replies without rewriting them for the story.
+2. **Clear teaching.** Show an idea, practise it, then recognise it without a theme label. Coaching must describe the actual position.
+3. **Progress through learning.** Complete lessons and revisit earlier skills. Gold, recruitment, powers, and live army bosses are not prerequisites.
+4. **Mistakes are recoverable.** Attempts can always be retried. No permanent lockout, lost save, or payment blocks learning.
+5. **A story worth following.** Keep named companions, faction personalities, painted maps, introductions, dialogue history, and accurate celebrations.
+6. **Readable on a phone.** Teaching advice has priority. Temporary speech never occupies its scroll area or covers its controls.
 
-1. **The rules of chess are sacred on the board.** No terrain that changes movement, no extra moves, no rule-bending powers. The RPG lives around the board, so every skill carries over to real chess.
-2. **Short, sharp battles.** Most battles last 5 to 10 moves and have a clear goal. Full games are saved for bosses.
-3. **Every reward teaches.** Prices, boss budgets and bonus goals all reinforce a chess idea, like piece values, tactical patterns or safe-move habits.
-4. **Mistakes are cheap, lessons are clear.** Losing a battle or a piece never ruins a run. A review after each battle always shows what went wrong.
-5. **Help that fades.** Assists like threat highlights scale down with difficulty and skill, so players build the habit instead of leaning on the hint.
-
-**Goals:** a commercial product, sold as an iOS app and also playable on the web. The code is open source (GPL-3), and that's fine: the product is the polished game, art and ongoing content, not secret code. Anything we ship, whether code, art or data, needs a license that allows commercial use.
+**Product goal:** a polished web game and eventual commercial iOS app. The source is GPL-3; shipped content needs suitable reuse rights.
+Published sources support content reliability, but do not prove our syllabus produces measured learning gains.
 
 ## Core loop
 
-Pick a battle on the region map, learn its idea in a short warm-up, win it for gold and XP, then spend in town before the next battle.
-
 ```mermaid
 flowchart LR
-    Map["Region map<br/>Pick the next battle"] --> Warmup["Warm-up<br/>Show one, try one"]
-    Warmup --> Battle["Battle<br/>5 to 10 moves, one goal"]
-    Battle --> Rewards["Rewards<br/>Gold, XP, bonus goals"]
-    Rewards -->|to town| Town
-    subgraph Town
-        Library["Library<br/>Replay warm-ups, read tip cards"]
-        Bounty["Bounty board<br/>Puzzles pay gold"] --> Tavern["Tavern<br/>Hire pieces with gold"]
-    end
-    Town -->|next battle| Map
+    Map[Painted chapter path] --> Intro[Short story introduction]
+    Intro --> Show[Show me: worked example]
+    Show --> Practice[Practice: published puzzles]
+    Intro --> Practice
+    Practice --> Progress[Completion and optional stars]
+    Progress --> Map
+    Map --> Review[Mixed chapter review]
+    Review --> Next[Story turn and next chapter]
+    Map --> Journal[Journal: revisit examples and lessons]
+    Journal --> Map
 ```
 
-Each step has one job. The **warm-up** teaches a battle's idea right before the battle, with nothing at stake. The **battle** tests it under pressure (goals, move limits, scarce rewinds, gold at stake). **Bounties** repeat it with real puzzles until it sticks, and bring back the ideas you got wrong. The map leads you through the ideas every player needs and lets you choose the rest ([Guided path](design/campaign.md#guided-path)). Four wins in the right places open the boss duel ([the rule](design/campaign.md#guided-path)), which leads to the next region.
+The shown example is optional. Practice gives help according to the selected difficulty.
+Chapter reviews use fresh positions and neutral prompts, so the player must recognise the idea.
+Completion opens the next encounter; clean and no-hint stars reward optional replay.
+Scheduled refreshers and dedicated technique exercises are planned, not part of the current release.
+
+## Built and next
+
+The Bog and The Kingsroad are built: five guided lessons and a mixed review each, using 88 distinct published positions.
+The accepted build is available on [staging](https://unformedideas.com/staging-chess-rpg/).
+The original game at `/chess-rpg/` remains separate until an explicit production release.
+
+Next: implement [Region 3](design/regions/region-03-shadow-cult.md), following the [remaining syllabus](design/syllabus.md).
+Then expand through the Iron Legion, Bone Wardens, and a Lich King capstone.
+Faction-specific art can improve each chapter without blocking its teaching content.
 
 ## Detailed design
 
-| Document | Contents |
+| Document | Authority |
 | --- | --- |
-| [Game systems](design/systems.md) | Battles, army, gold, enemies, AI habits by faction, powers and rewind, tuning values |
-| [Campaign and curriculum](design/campaign.md) | Campaign structure, factions, teaching progression and Gauntlet |
-| [Story and recurring characters](design/story.md) | Setting, main arc, recurring cast and voice guide |
-| [Names and terms](design/glossary.md) | Piece, faction, place and game-term names used everywhere |
-| [Art direction](design/art.md) | Board tokens, portraits, asset pipeline and deferred 3D exploration |
-| [Technical design and licensing](design/technical.md) | Tech stack, deployment and licenses |
-| [Decisions and open questions](design/decisions.md) | Open TODOs, tuning questions and decision log |
+| [Campaign](design/campaign.md) | Path, chapter progression, source types, built scope |
+| [Syllabus](design/syllabus.md) | Skills, prerequisites, revisits, assessments, and coverage gaps |
+| [Systems](design/systems.md) | Current attempts, help, saves, stars, and tuning |
+| [Story and voice](design/story.md) | Setting, cast, chapter arc, and dialogue |
+| [Names](design/glossary.md) | Established names and terminology |
+| [Art](design/art.md) | Token readability, portraits, and storybook direction |
+| [Technical design](design/technical.md) | Architecture, deployment, and licensing |
+| [Decisions](design/decisions.md) | Current decisions, open work, and historical record |
+| [Playbook](playbook.md) | Content selection, verification, review, and release |
+| [Region template](design/regions/region-template.md) | Checklist for adding a chapter |
 
-## Regions
-
-- [Region 1: Bog Goblins](design/regions/region-01-bog-goblins.md) — built and deployed; the worked example for every Region.
-- [Region template](design/regions/region-template.md) — copy it to start a new Region.
-- [Regions 2–5 and the Lich King](design/campaign.md#regions-and-factions) — existing faction and curriculum summaries; detailed Region documents are still [open TODOs](design/decisions.md#open-todos).
-
-Shared rules live in the topic documents above; Region documents hold local content and link to those rules. The [story document](design/story.md) holds the overall arc and recurring cast; Region documents hold their local stories and characters. Each detailed document links back here.
-
-[Region 1 build progress](progress.md) records implementation history separately from the design. The [playbook](playbook.md) describes how to build and check a Region.
+The [accepted two-chapter scope](curriculum-first.md) records the delivered baseline. New chapter plans must distinguish proposed content from implemented features.
+The [legacy overview](legacy-design.md) preserves the original RPG plan. Its custom battles, economy, powers, and army bosses are deferred.
+Implementation and verification history lives in [build progress](progress.md).

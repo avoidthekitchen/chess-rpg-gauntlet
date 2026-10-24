@@ -24,9 +24,9 @@ const WINNING_LINES: Record<string, string[]> = {
   'r1-reeds': ['d5e7', 'g8f8', 'e7c8', 'h5g4', 'c8d6', 'a7a5', 'd6b7', 'f7f6', 'b7a5', 'g4c8'],
   // The goblins promised Nxb2, so Bxg7 is safe: the knight lands on b2 and is taken back.
   'r1-guard': ['b2g7', 'a4b2', 'g7b2', 'e4e3', 'd2f3', 'e3e2', 'd1b1', 'e2e1q', 'b1e1', 'c5c4', 'e1e5', 'c4c3', 'b2c3', 'f7f6'],
-  // Na4 keeps c3 guarded, so the shouted Rc3 drops the rook; then f4 chases the knight
-  // and the cheapest attacker, a pawn, takes it.
-  'r1-trades': ['c3a4', 'c8c3', 'a4c3', 'a7a6', 'f2f4', 'd6d5', 'f4e5', 'g8h8'],
+  // e4 adds a third attacker to the pinned knight; exd5 cxd5, then d5 is attacked twice and
+  // defended once: Bxd5 Bxd5 Nxd5, and Nxb6 takes the loose pawn.
+  'r1-trades': ['e3e4', 'h7h6', 'e4d5', 'c6d5', 'b3d5', 'b7d5', 'c3d5', 'h6h5', 'd5b6', 'h5h4'],
   // Re8+ forces Rd8 (now pinned); Bh3+ makes them block twice, the bishop takes each blocker with check, and Rxd8 mates.
   'r1-backrank': ['e1e8', 'd7d8', 'g2h3', 'd1g4', 'h3g4', 'f6f5', 'g4f5', 'c8b8', 'e8d8'],
   // b6 breaks the wall: axb6 cxb6, and the knight can't cover b8. Kh1 steps out of the knight check, then b8=Q.

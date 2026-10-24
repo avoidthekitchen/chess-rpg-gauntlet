@@ -91,32 +91,33 @@ export const REGION1_BATTLES: BattleDef[] = [
     shouts: true,
   },
   {
-    // First wave: the shout Rc8xc3 grabs the loose knight. Move it somewhere that still
-    // guards c3 (Na4, Ne2, Nd1, Nb5), so the promised Rc3 walks into Nxc3. Or, when they
-    // shout something else, Bxe6 is safe (they're too busy to play fxe6) and hits the rook.
-    // The goal is 8, so then comes the real swap meet: a knight and a stall of guarded pawns.
-    // Count before each capture. White has no rook here, so no grab can give a rook for a
-    // knight, and once their rook is won only the knight is worth enough to finish the job.
+    // The d5 knight is pinned to the king by the b3 bishop. It is attacked twice (bishop and
+    // knight) and defended twice (the c6 pawn and the b7 bishop), so Bxd5 or Nxd5 only loses
+    // material. The shout is usually the king stepping out of the pin (Kf8), which frees the
+    // knight. Strike first with a third attacker, the cheapest one: e4 wins the knight for a
+    // pawn at most. Then count again. After exd5 cxd5, d5 has two attackers and one defender,
+    // and the a6 pawn leaves b6 loose. The goal is 4, more than any single Black piece.
+    // White has no rook here, so no grab can give a rook for a knight.
     id: 'r1-trades',
     kind: 'skirmish',
     theme: 'Safe trades',
     title: 'The Swap Meet',
     region: 'The Bog',
     enemy: { name: 'Goblin Hagglers', personality: 'standard' },
-    intro: 'The goblin hagglers set out their wares: pawns everywhere, a knight in the middle, and a rook that wants your knight. Some of the bargains are real.',
+    intro: 'The goblin hagglers set out their wares: a stall of pawns, a bishop, and a knight right in the middle. Some of the bargains are real.',
     lesson:
-      'Before you capture, count: how many of your pieces hit the square, how many of theirs defend it, and what each one is worth. A capture is safe when nothing can take back, or when you get at least as much as you give. A rook for a knight is a bad deal, whichever side makes it.',
-    fen: '2r3k1/p4pp1/3pp2p/4n3/8/1BN5/P4PPP/6K1 w - - 0 1',
-    objective: { kind: 'winMaterial', gain: 8, maxMoves: 9 },
+      'Before you capture, count: how many of your pieces hit the square, how many of theirs defend it, and what each one is worth. Two against two is not a bargain. Add another attacker, the cheapest you have, and then the capture is safe. Count again after every trade.',
+    fen: '6k1/1b4pp/ppp2p2/3n4/8/1BN1P3/PP3PPP/6K1 w - - 0 1',
+    objective: { kind: 'winMaterial', gain: 4, maxMoves: 10 },
     reward: 20,
     bonuses: [
       { kind: 'quick', moves: 6, gold: 5 },
       { kind: 'noRewind', gold: 5 },
     ],
-    tip: 'Count attackers and defenders before every capture.',
+    tip: 'Count attackers and defenders. Not enough? Bring one more, the cheapest.',
     before: [
       { who: 'enemy', text: 'Bargains! Lovely bargains! Take one, go on!' },
-      { who: 'companion', text: 'Some of these are bait. Before we grab anything, let’s count who can take back.' },
+      { who: 'companion', text: 'Their knight is stuck in front of their king. Two of ours hit it, but two of theirs guard it. Let’s bring one more.' },
     ],
     after: [
       { who: 'enemy', text: 'No fair! You counted!' },

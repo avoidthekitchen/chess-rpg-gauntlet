@@ -54,9 +54,14 @@ export interface Payout {
  */
 export function battlePayout(s: SaveState, def: BattleDef, stats: BattleStats, tacticGold: number): Payout {
   if (!stats.won) return { reward: 0, bonuses: [], tactics: 0, total: 0 };
+  return encounterPayout(s, def, def.bonuses.filter(b => bonusMet(b, stats)), tacticGold);
+}
+
+/** Shared once-only rewards; each encounter evaluates its own bonus rules. */
+export function encounterPayout(s: SaveState, def: { id: string; reward: number }, earned: { kind: string; gold: number }[], tacticGold = 0): Payout {
   const reward = s.cleared.includes(def.id) ? 0 : def.reward;
-  const bonuses = def.bonuses
-    .filter((b) => bonusMet(b, stats) && !s.bonusesEarned.includes(`${def.id}:${b.kind}`))
+  const bonuses = earned
+    .filter((b) => !s.bonusesEarned.includes(`${def.id}:${b.kind}`))
     .map((b) => ({ kind: b.kind, gold: b.gold }));
   const already = s.tacticGold[def.id] ?? 0;
   const tactics = Math.max(0, Math.min(tacticGold, TACTIC_GOLD_CAP - already));
@@ -66,10 +71,15 @@ export function battlePayout(s: SaveState, def: BattleDef, stats: BattleStats, t
 /** Records a win: pays out, marks the battle cleared and counts it for the bounty board. */
 export function recordWin(s: SaveState, def: BattleDef, stats: BattleStats, tacticGold: number): Payout {
   const pay = battlePayout(s, def, stats, tacticGold);
+  return recordEncounterWin(s, def.id, pay);
+}
+
+/** Called once per accepted attempt by battle and ambush controllers. */
+export function recordEncounterWin(s: SaveState, id: string, pay: Payout): Payout {
   s.gold += pay.total;
-  if (!s.cleared.includes(def.id)) s.cleared.push(def.id);
-  for (const b of pay.bonuses) s.bonusesEarned.push(`${def.id}:${b.kind}`);
-  s.tacticGold[def.id] = (s.tacticGold[def.id] ?? 0) + pay.tactics;
+  if (!s.cleared.includes(id)) s.cleared.push(id);
+  for (const b of pay.bonuses) s.bonusesEarned.push(`${id}:${b.kind}`);
+  s.tacticGold[id] = (s.tacticGold[id] ?? 0) + pay.tactics;
   s.battlesFought++;
   return pay;
 }

@@ -1,0 +1,74 @@
+.ambush-hud { position: fixed; inset: 0; z-index: 5; pointer-events: none; color: #f0e7d4; font: 17px Alegreya, Georgia, serif; }
+.ambush-hud button, .ambush-launcher, .ambush-panel { pointer-events: auto; }
+.ambush-hud button { min-height: 44px; padding: 10px 16px; border: 1px solid #66543a; border-radius: 7px; color: #eee0c2; background: #29212b; font: 600 14px system-ui, sans-serif; cursor: pointer; }
+.ambush-hud button:hover { background: #3a3039; border-color: #e0ab45; }
+.ambush-hud button:focus-visible { outline: 3px solid #ffe4a2; outline-offset: 3px; }
+.ambush-hud button.primary { background: #e0ab45; color: #241805; border-color: #f1c970; }
+.ambush-hud button:disabled { opacity: .45; cursor: default; }
+.ambush-hud button[aria-pressed="true"] { border-color: #e0ab45; background: #54432a; color: #ffe2a0; }
+.ambush-poster { position:absolute; transform:translateX(-50%) rotate(-5deg); padding:2px 4px; border:1px solid #7f3e21; background:#efd29a; color:#71331b; box-shadow:0 2px 3px #0006; font:bold 9px Georgia,serif; letter-spacing:.03em; }
+.ambush-launcher { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; display: grid; place-items: center; padding: 24px 16px; box-sizing: border-box; background: linear-gradient(90deg,#15121af5,#15121ac9); }
+.ambush-card { width: min(620px,100%); box-sizing: border-box; padding: 30px 36px; border: 1px solid #897047; border-radius: 12px; background: #201b23f2; box-shadow: 0 18px 70px #0008; }
+.ambush-eyebrow { display: block; font: 600 10px system-ui,sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #c8b58d; margin: 0; }
+.ambush-card h1 { margin: 7px 0 0; color: #f4dca6; font-size: 54px; line-height: 1; }
+.ambush-deck { margin: 10px 0 20px; font-style: italic; color: #c9b893; font-size: 20px; }
+.ambush-story { padding-left: 16px; border-left: 2px solid #8b7040; }
+.ambush-story p { margin: 8px 0; line-height: 1.35; }
+.ambush-pills { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0; }
+.ambush-pills span { border-bottom: 1px solid #67543a; padding: 4px 0; margin-right:10px; color: #e5be70; font-size: 14px; }
+.ambush-hud fieldset { border:0; padding:0; margin:15px 0 5px; }
+.ambush-hud legend { color:#c8b58d; font: 12px system-ui,sans-serif; margin-bottom:8px; }
+.ambush-options { display:flex; flex-wrap:wrap; gap:6px; }
+.ambush-options button { flex:1; white-space:nowrap; padding:9px; }
+.ambush-rules { color:#cabd9f; font-size:15px; line-height:1.35; margin:8px 0 16px; }
+.ambush-progress { padding-top: 18px; margin-top:18px; border-top:1px solid #514232; font-size:16px; }
+.ambush-progress strong, .ambush-result strong { color:#f1c76a; }
+.ambush-actions { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 0; }
+.ambush-footnote { font: 12px/1.5 system-ui,sans-serif; color:#ad9e86; margin:12px 0 0; }
+.ambush-notice { padding:10px 12px; border-left:2px solid #e0ab45; background:#e0ab4510; color:#e6c386; }
+.ambush-top { position:absolute; left:0; right:0; top:0; padding:10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); display:flex; align-items:center; gap:16px; background:linear-gradient(#18131ff2,#18131fbd); border-bottom:1px solid #645032; }
+.ambush-top > div { flex:1; }
+.ambush-top strong { display:block; font-size:22px; line-height:1.1; }
+.ambush-top button { font-size:12px; padding:8px 12px; }
+.ambush-panel { position:absolute; display:flex; flex-direction:column; box-sizing:border-box; padding:20px; border:1px solid #76603e; border-radius:9px; background:linear-gradient(135deg,#2c2533f7,#19171ef7); box-shadow:0 10px 35px #0005; }
+.ambush-panel-scroll { min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:#8b7040 transparent; }
+.ambush-panel > .ambush-actions { flex-shrink:0; padding-top:8px; border-top:1px solid #645032; }
+.ambush-panel-scroll:focus-visible { outline:1px solid #e0ab45; outline-offset:3px; }
+.ambush-panel-top { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; }
+.ambush-side { color:#eee0bb; font:12px system-ui,sans-serif; }
+.ambush-panel h2 { font-size:32px; line-height:1.1; color:#f1d59a; margin:12px 0; }
+.ambush-waves { display:flex; gap:7px; margin:10px 0; }
+.ambush-waves span { border:1px solid #645539; width:26px; height:26px; display:grid; place-items:center; border-radius:50%; color:#b09e7e; font:12px system-ui,sans-serif; }
+.ambush-waves .current { color:#ffe5ac; border-color:#e0ab45; box-shadow:0 0 10px #e0ab4525; }
+.ambush-waves .done { background:#587240; color:#f2eacc; border-color:#9fb078; }
+.ambush-status { font-size:20px; line-height:1.25; margin:14px 0; color:#f8e6bb; min-height:50px; }
+.ambush-coach { color:#c9bca1; line-height:1.35; margin:14px 0; font-size:16px; }
+.ambush-coach strong { color:#e2cd9d; }
+.ambush-name { color:#b9ce9b; font-size:14px; margin:0; }
+.ambush-result { margin:12px 0; font-size:17px; line-height:1.35; }
+.ambush-bonuses { font-size:14px; color:#d8c396; margin:12px 0 0; }
+.ambush-source { font:10px system-ui,sans-serif; color:#a69780; margin:12px 0 0; }
+.ambush-nohelp { color:#bdac8e; font-size:14px; padding:10px 0; }
+.compact .ambush-panel { padding:12px; }
+.compact .ambush-panel h2 { font-size:24px; margin:7px 0; }
+.compact .ambush-status { font-size:16px; margin:8px 0; min-height:0; }
+.compact .ambush-coach { font-size:14px; margin:7px 0; }
+.compact .ambush-actions { margin-top:8px; }
+.compact .ambush-source { margin-top:7px; }
+.compact .ambush-bonuses { font-size:12px; margin-top:7px; }
+.compact .ambush-result { font-size:14px; margin:8px 0; }
+@media(max-width:639px) {
+  .ambush-card { padding:23px 20px; }
+  .ambush-card h1 { font-size:44px; }
+  .ambush-top { padding-left:10px; padding-right:10px; gap:10px; }
+  .ambush-top strong { font-size:19px; }
+  .ambush-top .ambush-eyebrow { font-size:8px; }
+  .ambush-panel { padding:12px 14px; }
+  .ambush-panel h2 { font-size:26px; margin:8px 0; }
+  .ambush-waves { position:absolute; top:35px; right:14px; gap:4px; }
+  .ambush-waves span { width:20px; height:20px; font-size:10px; }
+  .ambush-status { font-size:17px; min-height:0; margin:10px 0; }
+  .ambush-coach { font-size:14px; margin:8px 0; }
+  .ambush-actions button { flex:1; padding:9px; }
+  .compact .ambush-source { display:none; }
+}

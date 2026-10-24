@@ -1,6 +1,253 @@
-# Region 1 build progress
+# Build progress
 
-Following "First implementation: Region 1" in `docs/design.md`. One entry per build step.
+One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
+
+## Reconciled foundation and Region 3 handoff
+
+Built on 2026-10-24 after the owner approved the curriculum, presentation, story preservation, and backlog cleanup.
+
+- Merged main `661bf0a` into the feature branch at `33a842b`, preserving its legacy shout, AI, and battle changes.
+- Replaced contradictory active design, systems, campaign, playbook, and Region documents. Historical plans remain in labeled archives.
+- Preserved companions, faction voices, the Lich King arc, and story allies without recruitment or power dependencies.
+- Added a prerequisite-based syllabus and a concrete Shadow Cult brief. Source selection and implementation remain future work.
+- Independent review identified the six-node map limit and hidden review examples. The Region 3 brief now handles both explicitly.
+- Roadmap #36 now follows the accepted journey. #39 is Region 3, #40 is technique support, and #41 is spaced/repeated practice.
+- Optional faction art stays in #10. Wanted AI (#12) and Scrying Orb (#13) are deferred and unblocking.
+- Delivery issues close after merge as completed or superseded; old requirements are not falsely marked implemented.
+
+**Integration evidence**
+
+- TypeScript, production build, and all 272 tests across 24 files passed on the combined source at `33a842b`.
+- WebKit iPhone emulation rechecked all ten guided lessons at 375×553 and 393×696, including wrong moves and replies. No runtime errors.
+- An independent reviewer found no code integration blocker. The reconciled Markdown links and anchors resolve.
+- `diff -qr dist dist-staging` found no differences. The merged production build matches the already deployed staging artifact.
+- Staging remains version `d05d9914-c852-4e37-bba9-19039c4bbc93`; production was not deployed.
+
+**Legacy verification exception — explicit owner direction**
+
+`npm run ci -- --full` started at the merged source. The legacy battle suite reported one failed assertion:
+Swap Meet on Gentle won 21/24 competent games (87.5%), below its unchanged 90% bar. The other nine battle tests passed.
+The owner then explicitly approved skipping the remaining legacy boss verification because the new journey replaces those encounters.
+The runner was stopped with exit 143. This full-CI command did not pass, and the boss result is not claimed.
+
+One enlarged diagnostic ran before that waiver:
+`VERIFY_BATTLE=r1-trades VERIFY_GAMES=96 VERIFY_ENGINES=4 VERIFY_SHOW=1 npx vitest run --config vitest.verify.config.ts scripts/verify/battles.verify.test.ts`.
+It passed unchanged assertions: competent 91/96 Gentle and 89/96 Brave; careless 12/96 and 2/96.
+Quick bonuses were 81/91 and 73/89, and no-rewind bonuses were 100%.
+
+The battle definition, AI, and simulator match main. The reachable branch difference avoids formatting history just to count plies.
+A deterministic comparison found identical behavior across 6,858 operations, 1,702 rewinds, and 13,729 state checks.
+All 12 diagnostic loss traces also replayed identically under both implementations, across 233 plies.
+These results support sampling variability rather than an integration regression; they do not prove the true win rate.
+[Issue #42](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42) tracks reproducible RNG and failure diagnostics.
+No battle content, thresholds, or CI selection were weakened. The boss waiver applies to this merge; retained checks remain available.
+
+## Phone teaching space corrected (#34)
+
+The owner’s iPhone screenshot exposed clipped portraits and teaching advice below the scroll area.
+Earlier viewport checks missed this regression. The lesson now gives teaching text priority.
+
+- Removed full speaker portraits from the lesson scroll area. Current advice precedes feedback, hints, and controls.
+- Phones show temporary speech over the board, with a dismiss button and a compact portrait button for history.
+- Roomy desktop layouts keep a separate speaker panel. Short landscape screens use temporary speech.
+- Speech timing survives ordinary HUD updates. Leaving a lesson cancels the timer and removes its layer.
+- No puzzle content, chess rules, progression, or help budgets changed.
+
+**Validation**
+
+- TypeScript, production build, and all 225 tests pass. Five new tests cover speech timing and guidance selection.
+- WebKit with iPhone 15 touch emulation checked all ten guided lessons at 375×553 and 393×696.
+- The complete advice fit without scrolling. Wrong moves, replies, hints, demonstrations, expiry, history, and exit also passed.
+- An independent reviewer checked desktop, landscape, and phone layouts, focus, dismissal, resize, and cleanup. No blockers remain.
+- Public staging passed the same lesson’s touch move, reply, hint, expiry, and history checks at both phone sizes.
+- The final public run had no runtime errors, failed requests, or HTTP errors. WebKit logged report-only CSP diagnostics.
+- These are browser emulation checks, not tests on a physical iPhone.
+- The CI dependency planner found no engine-suite dependencies changed since the full run at `4624cdf`.
+
+**Deployment**
+
+[Play staging](https://unformedideas.com/staging-chess-rpg/). Deployment version: `d05d9914-c852-4e37-bba9-19039c4bbc93`.
+The fix is included in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37).
+
+## Storybook presentation restored (#34)
+
+Built on 2026-10-23 after the owner approved restoring the earlier game's personality around the published curriculum.
+
+- Restored Continue/New journey, the painted sequential route, portrait introductions, talking pieces, conversation history, and accurate move banners.
+- Added companion victory portraits, new-star reveals, and distinct reactions. Existing art and board animations are reused.
+- Capture, check, double check, promotion, mate, and reviewed forks celebrate accepted moves only. Incorrect attempts receive encouragement.
+- Fork cues require a curated published move and actual targets. Both solver colors use the correct ally and opponent identities.
+- Piece dialogue remains visible beside permitted advice. Mixed reviews keep neutral introductions and their direct challenge entry.
+- History labels distinguish examples, attempts, and positions. Its close button stays visible while the conversation scrolls.
+- Short phones receive more advice space and an expanded result card. Tablet maps use the tall route so outer labels fit.
+- New journey confirms before clearing the curriculum save. Earlier campaign and pilot saves remain separate.
+- No puzzle lines, game rules, difficulty budgets, progression, or rewards changed. No army, power, shout, Wanted, or Foiled mechanics returned.
+
+**Validation**
+
+- Separate adversarial code review cleared the final changes after fixes to accessible star state and tablet map clipping.
+- Separate visual review exercised a complete lesson on phone, landscape, and desktop layouts. Its final recheck cleared map, history, results, and visible short-phone dialogue.
+- A full browser run completed all 12 encounters and 10 demonstrations through actual board clicks at four viewport sizes.
+- That run included a hint and miss, earned the expected 34 stars, and preserved progress after reload without runtime errors.
+- A focused final pass checked skipped demonstrations, capture banners, resize cancellation, history controls, replay stars, and short-phone results.
+- Title Continue, reset cancellation, confirmed reset, and legacy/pilot save isolation passed. Retreat and reload settled only once.
+- TypeScript, production build, and all 220 tests across 23 files pass. Nine new tests cover cues, identities, history, and cancelled delays.
+- The previous full engine run remains valid: the CI dependency planner finds no engine-suite dependency changed since tested commit `4624cdf`.
+- Public staging completed the first lesson and its demonstration, history, stars, and reload through actual phone-sized board clicks.
+- Replayed Region 2 fork and double-check positions using progress earned in the full local playthrough. Reduced-motion demonstration playback completed.
+- Public checks caught a relative CSS map-image path. The corrected absolute URL loads in both regions at phone, tablet, and desktop sizes.
+- Final public checks reported no console errors, failed requests, or HTTP errors. The journey made no engine requests; development hooks were absent.
+
+**Deployment**
+
+[PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37) contains this presentation pass.
+[Play staging](https://unformedideas.com/staging-chess-rpg/) with the normal URL; existing journey saves still work.
+Deployment version: `cd11ee9a-098e-4316-b3a8-6d4b5ed9b60d`. Only staging routes were deployed; live-site JavaScript and CSS URLs stayed unchanged.
+
+## Basic journey — complete Regions 1 and 2 (#34)
+
+Built on 2026-10-23 in `codex/regions1-2-curriculum` after the owner approved the curriculum-first direction.
+The accepted pilot is preserved in draft PR #35 and remote branch `codex/checkpoint-approved-ambush` at `051ad26`.
+This entry supersedes the older handoff below that kept Region 1 unchanged and required live army bosses.
+
+**Playable scope**
+
+- The Bog and The Kingsroad each contain five guided lessons and a mixed chapter review.
+- Normal lessons have three practice positions, a full demonstration, and backups. Reviews have four positions without theme-revealing prompts.
+- All 88 source puzzles are distinct. The nine approved pilot positions are reused across Region 2 lessons and its review.
+- Each source records its Lichess ID, URL, rating, quality fields, published line, and teaching rationale.
+- Ratings range from 407 to 1163. Backups remain within 200 points of their main position.
+- Six content tests check legal lines, real tactical meaning, quality, source uniqueness, mixed reviews, and completion through every backup.
+- A seventh content test checks every capture in the loose-pieces lesson, including final moves and backups, for legal recaptures.
+- `node scripts/select-curriculum.mjs --verify-shipped` confirmed all 88 FENs, lines, ratings, themes, and quality values against the local database.
+- Bounty regeneration reserves the curriculum IDs. Raw database files stay uncommitted.
+
+**Flow and progression**
+
+- The default entry now opens the journey. Players choose a companion and help level, then follow the map through both chapters.
+- Completion opens the next encounter. Grubnak's mixed review opens The Kingsroad; Ashfang's review completes this two-chapter journey.
+- The journal records learned ideas and offers free demonstration revisits. Settings change help and companion without losing progress.
+- Every difficulty permits retries. Completion, no-miss, and no-hint stars persist once; replays can fill missed stars.
+- There is no shop, gold penalty, hired-army gate, power requirement, or live-engine boss on this path.
+- The separate `pawnshire-journey-v1` save leaves earlier campaign and pilot data intact.
+- Development entries retain the earlier campaign (`?legacy=1`) and standalone pilot (`?ambush=r2-two-at-once`).
+- Production drops those development scenes. The new journey does not start Stockfish.
+
+**Independent review and browser validation**
+
+- The separate code reviewer cleared the final implementation after correcting stale positional advice during reply animations and completed waves.
+- A separate curriculum critic found that backup `Gb8He` ended with a capturable bishop, contradicting the safe-capture lesson.
+- It was replaced by unchanged source `YgiAw`. The new endpoint test failed on the old puzzle and passes on the replacement.
+- The critic replayed the replacement and cleared all remaining teaching claims and mixed-review prompts.
+- The separate UX/art critic checked all four required viewports and played the first lesson through actual board clicks.
+- Phone onboarding now resets map scroll position. The sticky navigation header is opaque so scrolled text cannot bleed through.
+- The painted backgrounds, piece animation, and classic-piece option remain. Region 2 currently reuses existing background and enemy art.
+- A full local playthrough completed all 12 encounters and 10 demonstrations through board clicks, rotating among all four viewport sizes.
+- That run exercised promotion, hints, a miss, chapter unlocks, and reload after completion. It earned the expected 34 stars with no runtime errors.
+- A separate browser pass checked all four miss budgets, retries, failed-wave backups, repeated reloads, replay stars, journal exits, and isolated reset.
+- Those edge checks passed with no console errors or warnings. Legacy and pilot sentinel saves remained unchanged.
+- Exiting during the accepted winning animation preserved the win and newly earned stars. Exiting during a reply settled one retreat.
+- Reloading after either animation exit added no extra attempt. No stale-callback runtime errors appeared.
+- The final quick check passed TypeScript, the production build, and all 211 tests across 22 files.
+- The deployed phone-sized build completed all 12 encounters through board clicks, earned 36 stars, and retained completion after reload.
+- That deployed run reported no runtime errors, failed requests, or engine requests. Development hooks were absent.
+- After the content correction, a deployed replay failed wave two, reached `YgiAw`, and completed the lesson through board clicks.
+- The corrected backup's win survived reload, with no duplicate completion or runtime errors.
+- The plain staging URL also played a full journal demonstration with normal animation timing and no query parameters.
+- `npm run ci -- --full` passed, including all 11 legacy engine tests across 960 short-battle and 384 boss games.
+- The engine suite took 1,644 seconds. Its 210-test quick pass preceded the backup correction; the final quick pass contains 211 tests.
+- The correction changed only curriculum data and its tests. The engine code remained unchanged throughout the full regression run.
+
+**Deployment and limits**
+
+Staging: <https://unformedideas.com/staging-chess-rpg/>. No query string is needed.
+Review: [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37), branch `codex/regions1-2-curriculum`.
+Only the `chess-rpg-staging` Worker and its staging routes were deployed. Existing live-site JavaScript and CSS references remained unchanged.
+The final deployment version is `c85cd7c3-4d26-4d41-9158-990f293f87e3`.
+
+This is a basic tactics journey for players who know how pieces move. It includes a movement reminder and links to Lichess Learn.
+Champion and Grandmaster currently share the same help and miss rules; the selection screen says so.
+Lichess Practice technique lessons, Regions 3–5, faction-specific art, armies, powers, and live boss games remain later work.
+The owner's positive pilot feedback supports this direction. Learning gains and authoring-time savings have not been measured.
+
+## Region 2 ambush pilot — Two at once (#34)
+
+Built on 2026-10-23 in `codex/region2-ambush-pilot`, after the owner approved the revised issue.
+This is one standalone encounter. It does not ship Region 2. The owner subsequently approved wider adoption under D9.
+
+**Try it locally**
+
+Run `npm run dev`, then open `http://localhost:5173/?ambush=r2-two-at-once`.
+The launcher offers all four difficulties and three companions. Brave is the default.
+Each fresh pilot starts with 100g and a seeded roster.
+Reset Pilot clears only `pawnshire-ambush-pilot-v1`; the campaign save stays separate.
+The normal production bundle excludes the pilot. The owner also requested a separate staging deployment for phone testing.
+`npm run deploy:staging` builds the pilot and publishes only the `staging-chess-rpg` routes.
+Phone preview: https://unformedideas.com/staging-chess-rpg/.
+The staging Worker is `chess-rpg-staging`; the live game's routes remain unchanged.
+The separate reviewer checked deployment isolation. Production contains no pilot assets; staging uses its own build and upload directories.
+The public preview passed all four waves, saved 130g after reload, and left campaign storage unchanged.
+Phone checks at 375×812, 375×553 and 844×390 passed with no runtime errors or failed game assets.
+
+**Content and authoring**
+
+- Nine unchanged Lichess puzzles: one demonstration, four main positions and four backups.
+- Rebuild the shortlist with `npm run puzzles -- --candidates doubleCheck --min 600 --max 1250`. Raw data remains uncommitted.
+- The candidate command found 4,281 qualifying solutions and retained a shortlist of 166, favouring smaller boards within rating bands.
+- Nine positions were selected, replayed and reviewed on the board. Each records its source, quality data and selection reason.
+- The content uses rook/bishop, rook/knight and queen/knight double checks. Wave 3 finishes by winning material, not mating.
+- Some shortlisted puzzles gave double check only at the end. They were rejected because the opening instruction would be misleading.
+- Content work comprised those selections, three teaching lines, four coaching lines, briefing and victory text.
+- Selection and writing were not timed separately from implementation. The count of discarded positions inspected was also not recorded.
+- The shortlist size is measured; it is not a claim that all 166 positions received manual review.
+- Authoring-time savings were not measured. The owner waived further pilot evaluation; timing work is not a delivery gate.
+
+**Implementation choices**
+
+- Published move validation reuses the bounty helpers. Ambush retry, loss and completion rules have their own pure state machine.
+- Battles and ambushes share payout and win-recording helpers. Their different bonus rules keep separate types and statistics.
+- The opening poster describes only the setup move. It disappears before the player starts solving.
+- Accepted moves and settlement persist before animations. Reloading an unfinished attempt records one retreat.
+- Region 1 art stands in for Bandit Riders. Campaign map integration and the Region 2 boss remain separate work.
+
+**Review and validation**
+
+- A separate review agent found three issues: clipped phone actions, hidden compact coaching, and misleading follow-up feedback.
+- All three were fixed. The reviewer checked the fixes and found no further actionable code issues.
+- The short phone panel scrolls while its action buttons stay visible. Coaching remains available at every size.
+- Follow-up misses ask for the finish, rather than another double check. A regression test covers the material-winning continuation.
+- Browser runs cover the demonstration, four waves, hints, misses, losses, retries, wins and once-only replay bonuses.
+- All four backup branches were completed through board clicks, including the final backup that starts with the player's king in check.
+- All four difficulty limits, Grandmaster relaunch blocking, cancelled retreats and repeated reloads passed browser checks.
+- Exiting during a move animation settles one loss. Exiting during the accepted winning move preserves the win and its payout.
+- The WANTED label appears before setup and clears before input. Its position was checked after canvas rendering on desktop and phone.
+- Desktop checks at 1280×800, portrait checks at 375×553 and 375×812, and landscape checks at 844×390 passed without runtime errors.
+- Action buttons remain within the viewport on the three phone layouts. Short panels scroll to expose coaching and result details.
+- Type checking, the production build and all 196 unit tests passed after the final polish and history-count fix.
+- All three companion demonstrations, piece-style switches and free teaching exits passed browser checks.
+- The first CI run was stopped after roughly 55 minutes, still in the first boss batch.
+- Profiling found repeated SAN history reconstruction in `Battle.snapshot` and `rewind`, called heavily by the existing simulated player.
+- Those methods now count committed player and enemy moves. They retain the same chess.js undo operations and repetition history.
+- A new test covers pending turns, completed turns, branching and a later starting move number. Existing repetition tests still pass.
+- The independent reviewer also checked this optimization and found no issues. All 26 battle unit tests pass.
+- A normal Region 1 browser run confirmed that Rewind restores a full move pair and spends one charge.
+- `npm run ci` passed: 196 unit tests and all 11 engine tests across both suites.
+- The engine run completed 960 short-battle games and 384 boss games in 1,653 seconds, about 28 minutes. Counts and pass criteria were unchanged.
+- Short-battle competent win rates were 96–100%. Full-budget boss armies met their separate win and loss bars; the unexpanded starting army remains report-only.
+- This validates the shared-code changes. Future ambush-only content still uses legal-line and rule checks, rather than engine tournaments.
+
+**Owner evaluation and handoff**
+
+The owner found the pilot fun, guided, and useful for learning real chess skills.
+They evaluated learning, guidance, fairness, pacing, battle feel and phone usability, and approved D9 in #34.
+No additional pilot playtesting is required. Wanted presentation polish is deferred. Normal implementation checks and code review still apply.
+Keep the four difficulties and shared puzzle positions. Separate difficulty pools remain deferred.
+Reuse the rules, content, tests, candidate tooling and board presentation. Adapt the scene to accept encounter data and campaign state.
+The standalone launcher, seeded purse and separate pilot save are development tools, not the future campaign flow.
+Preserve this feature branch in a draft PR while the Region 2 spec and dependency list are revised.
+Next, integrate the pilot through the Region registry, real saves, map unlocks and rewards, then expand Region 2's curriculum and boss.
+Existing Region 1 encounters stay for now. A wholesale conversion is not implied; its correctness fixes remain relevant.
+The owner feedback is qualitative. Human completion times, learning gains and authoring-time savings were not measured.
 
 ## Step 1: Phaser game with the battle screen ported
 

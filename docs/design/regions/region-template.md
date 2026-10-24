@@ -1,78 +1,123 @@
 # Region template
 
-[Design overview](../../design.md) · [Region 1 (worked example)](region-01-bog-goblins.md) · [Playbook](../../playbook.md)
+[Design overview](../../design.md) · [Syllabus](../syllabus.md) · [Region 1](region-01-bog-goblins.md) · [Playbook](../../playbook.md)
 
-Copy this file to `region-NN-<faction>.md` for each new Region. Fill every section before building; a section you can't fill yet becomes an [open TODO](../decisions.md#open-todos). [Region 1](region-01-bog-goblins.md) shows each section filled in. Shared rules live in the topic documents; link to them instead of restating them here.
+Copy this file to `region-NN-<faction>.md` for a new curriculum chapter.
+Describe the learning sequence before selecting boards. Link shared rules instead of repeating them.
+Record an unresolved design call in [decisions](../decisions.md) rather than inventing a mechanic to fill the template.
+
+The built Regions 1 and 2 each use five guided lessons and a mixed review.
+Future Region length follows prerequisites and coverage, not a mandatory five-lesson quota.
+Armies, gold, powers, faction move selection, and live boss duels are deferred; they are not chapter prerequisites.
+The [legacy playbook](../../legacy-playbook.md) preserves that earlier authoring model.
 
 ## Design status
 
-One line: designing / approved / built / playtested, with the date and a link to the live build or branch.
+State planning / approved / built / verified / playtested, with a date and evidence link.
+Separate a proposed syllabus from shipped content. Name the next dependency when a chapter cannot yet be implemented.
 
-Then a summary table with these rows:
-
-| | |
+| Field | Chapter decision |
 | --- | --- |
-| Faction | Name, its own species for each piece and its outfit (see [Art](../art.md) for how a faction is designed) |
-| Headline theme | From the [curriculum](../campaign.md#curriculum) row, plus what it revisits |
-| AI habit | The faction's readable habit ([AI habits](../systems.md#ai-habits-by-faction)) |
-| Battles | How many (usually 5), split into main path and branches, and which wins open the boss |
-| Warm-ups | One per battle, named; plus a boss warm-up if needed |
-| Bounty tags | The Lichess puzzle tags from the curriculum row |
-| Tip cards | The Region's puzzle-only themes, or none |
-| Boss | Name, points budget and piece caps, and whether the habit applies |
-| Hero | Name, species and piece |
-| Places | Region, town and tavern names |
+| Region and faction | Established names and story identity; link the glossary |
+| Learning prerequisites | Skills from earlier chapters that the player must already understand |
+| New skills | Precise ideas the chapter teaches; link the syllabus |
+| Revisited skills | Earlier ideas deliberately mixed into practice and review |
+| Lesson sequence | Ordered encounters; explain why each prerequisite comes first |
+| Chapter review | Previously taught skills sampled, without revealing the tactic |
+| Exercise capability | Existing published-line runner, or a future technique dependency |
+| Companion and characters | Voices and story roles; no recruitment mechanic implied |
+| Places | Region, town, and other established locations |
+| Completion | Current sequential unlock and revisit behavior; link systems |
+| Not built | Content or capability still planned |
 
-## AI habit
+## Teaching scope and prerequisites
 
-What the faction does every turn, why it teaches this Region's theme, and where it sits on the ladder in [Powers and rewind](../systems.md#powers-and-rewind). Say what the companion's Gentle-only advice adds. Habits are behavior layered over the engine; they never change how pieces move.
+State what players can do on entry and what they should learn by the end.
+Use specific chess claims that the selected boards can demonstrate.
+Separate recognizing a tactic from practicing a general method.
+Do not promise a full defence, endgame, or beginner curriculum from a few narrow examples.
 
-## Map
+## Map and sequence
 
-A mermaid diagram of nodes and paths, following the [map rules](../../playbook.md#map-rules): the main path of headline battles in teaching order, the branches, and the wins that open the boss. Say for each branch whether it's a revisit, a mate or an endgame.
+Show the ordered route, chapter review, and transition to the next chapter.
+Use a Mermaid diagram when it makes dependencies easier to see.
+Follow [map rules](../../playbook.md#map-rules): completion unlocks the next encounter, earned stars remain optional, and completed lessons remain available.
+Mark future Regions as planning until they exist in the journey.
+The painted route and short story encounters are core presentation.
 
-## Battles
+## Guided lessons
 
-One row per battle:
+| Order | Encounter | Precise teaching claim | Prerequisites | Demonstration purpose | Practice and backups | Takeaway |
+| --- | --- | --- | --- | --- | --- | --- |
 
-| # | Path | Battle (enemy squad) | Kind · theme | Goal | The idea | Moves (strong player) | Reward · bonus goals |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+The current pattern is one optional demonstration, three waves, and a backup for each wave.
+Use the [lesson content rules](../../playbook.md#lesson-content-rules) and [tuning values](../systems.md#tuning-values).
+If a future chapter needs a different structure, record the reason and the required runner changes rather than assuming support.
 
-"The idea" is the puzzle in one or two sentences: what the habit and the position set up, and the second decision after the first. Every battle must meet the [content rules and verification bars](../../playbook.md#battle-content-rules).
+## Published sources and teaching fit
 
-## Warm-ups
-
-One row per battle, meeting the [warm-up rules](../../playbook.md#warm-up-content-rules). Your starter companion coaches every warm-up.
-
-| Battle | Warm-up idea (one line) | Lichess tag and Practice outline | Shown position | Try position | Backup position and hint |
+| Encounter / role | Source id and URL | Rating and quality | Theme tags | Setup and published solution | Why the actual board teaches it |
 | --- | --- | --- | --- | --- | --- |
 
-Positions are Lichess puzzle IDs, a Lichess Practice study and chapter, or a FEN for a position of our own. Add a boss warm-up or boss practice row only if the boss tests something the battles didn't.
+Include examples, main waves, and every backup.
+Preserve source FENs, setup moves, solution moves, and replies; stop at the endpoint.
+Record quality fields and check duplicates against existing selections and bounty content.
+A source tag alone is not proof of teaching fit. Record the move and board evidence supporting each claim.
+Write demonstrations, prompts, and feedback in our own voice.
 
-## Bounty board
+## Mixed chapter review
 
-The puzzle tags, the rating range, and which earlier Regions' tags are mixed in (one or two bounties, as the spiral does). List the tip cards: each puzzle-only theme, its one-line idea and its example puzzle.
+| Review wave | Previously taught idea | Main source | Backup source | Why recognition is required |
+| --- | --- | --- | --- | --- |
 
-## Boss
+Current reviews use four waves and a stored example; the interface enters the challenge directly.
+Keep titles and pre-answer prompts neutral. Withhold theme-specific coaching until the move demonstrates the idea.
+Check backups for taught coverage and accidental answer leakage too.
+A named chief can host the review through story and portraits without a live engine duel.
 
-Setup (budget, caps, the boss army), goal, rewards and bonus goals, whether the faction habit applies, any per-difficulty AI adjustment, and the chess lesson the duel tests.
+## Technique practice dependencies
 
-## Hero
+Use this section only when the syllabus calls for a method beyond a short published tactical line.
+Name the Lichess Practice study and chapter, intended goal, useful feedback, and multiple-valid-move needs.
+Mark the dedicated technique capability as future work until implemented and tested.
+Do not present the tactical runner or retained legacy academy as a completed general technique system.
+Link capability decisions and define validation before making the chapter depend on them.
 
-Who they are, how they're found, their piece type, their voice (see the [cast](../story.md#recurring-characters)), and when they first matter, for example when a later boss budget allows them.
+## Story beats and voices
 
-## Story beats
+Describe arrival, encounter introductions, moving-piece reactions, the chief’s review, and the next story hook.
+Follow the [main arc](../story.md#main-story-arc), [voice guide](../story.md#voice-and-dialogue), and established names.
+The chosen companion coaches; generic pieces keep their own identities and follow the puzzle’s player color.
+Teaching text takes priority over flavor dialogue.
 
-Arrival, the per-battle exchanges, the boss confrontation, and the hook into the next Region. They must fit the [main arc](../story.md#main-story-arc) and the [voice guide](../story.md#voice-and-dialogue).
+## Art and presentation
 
-## Art
-
-The new art this Region needs: the faction token and portrait set, backgrounds, and any hero portrait. How to make it is in [Art direction](../art.md).
+List faction tokens, portraits, illustrated routes, backgrounds, and celebration needs.
+Follow [Art direction](../art.md) and test assets on the actual phone board.
+Keep full current advice visible without scrolling.
+Temporary speech stays outside lesson scroll content; the portrait history target is at least 44×44 CSS pixels.
+Roomy desktops use a separate last-speaker panel. Respect reduced motion and cancel work after exit.
 
 ## Verification
 
-The `npm run verify:battles` table: strong and careless win rates at each difficulty, and the average moves.
+Record commands, dates, outcomes, and remaining issues. Follow the [verification bars](../../playbook.md#verification-bars).
 
-## Playtest
+- Legal source replays, metadata, quality, uniqueness, exact teaching fit, and all backup waves.
+- Correct and unexpected moves, alternate mates, hints, misses, retries, promotions, and exactly-once settlement.
+- Unlocks, stars, revisits, reloads, exit races, reset confirmation, and separate legacy and pilot saves.
+- Independent code and teaching review; a fresh reviewer subagent is allowed.
+- `npm run ci` before the PR, with all selected legacy engine regressions intact.
+- `npm run ci -- --full` before the Region ships; published puzzles do not waive this requirement.
+- Desktop, phone portrait, short phone, and landscape checks, including Gentle and the longest advice.
+- Deployed navigation, asset loading, browser errors, and saved completion.
 
-Who played, how long it took, where they got stuck or bored, and what changed as a result.
+Published tactical lessons need no new engine tournaments. Retained custom battles keep their regression checks.
+Report whether mobile evidence came from a resized viewport, WebKit device emulation, or a physical iPhone.
+Do not describe emulation as a physical Safari playthrough.
+
+## Playtest and handoff
+
+Record who actually played, the build, time, observations, and changes made.
+Keep owner feedback distinct from automated evidence; do not invent educational validation.
+Further human pilot tests are not a gate for the approved basic curriculum.
+Link the review PR, staging destination, progress entry, remaining work, and any later production release separately.

@@ -127,7 +127,9 @@ export class Battle {
     if (!this.canRewind()) return false;
     const s = this.history.pop()!;
     // Undo rather than reload a FEN: a reload would forget earlier positions, so a threefold repetition could be missed.
-    while (this.chess.history().length > s.plies) this.chess.undo();
+    // history() formats every earlier move as SAN. Counting our committed moves avoids
+    // replaying the whole game just to undo one turn, especially in engine simulations.
+    for (let plies = this.playerMoves + this.enemyMoves; plies > s.plies; plies--) this.chess.undo();
     this.playerMoves = s.playerMoves;
     this.enemyMoves = s.enemyMoves;
     this.piecesLost = s.piecesLost;
@@ -141,7 +143,7 @@ export class Battle {
 
   private snapshot(): Snapshot {
     return {
-      plies: this.chess.history().length,
+      plies: this.playerMoves + this.enemyMoves,
       playerMoves: this.playerMoves,
       enemyMoves: this.enemyMoves,
       piecesLost: this.piecesLost,

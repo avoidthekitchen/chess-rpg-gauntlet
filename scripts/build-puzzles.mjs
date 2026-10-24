@@ -1,11 +1,12 @@
 // Build-time script: turns the Lichess puzzle database into small per-theme JSON files.
 // Usage: npm run puzzles   (downloads ~300 MB to data/raw on first run; cached afterwards)
-import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, writeFileSync, statSync } from 'node:fs';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, writeFileSync, statSync, readFileSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
+import { candidates } from './puzzle-candidates.mjs';
 
 const URL_ = 'https://database.lichess.org/lichess_db_puzzle.csv.zst';
 const RAW = 'data/raw/lichess_db_puzzle.csv.zst';
@@ -58,6 +59,7 @@ function hash(s) {
 
 async function main() {
   await download();
+  if (process.argv.includes('--candidates')) return candidates(RAW, QUALITY, process.argv.slice(2));
   const cands = {};
   for (const r of Object.values(REGIONS)) for (const t of r.themes) cands[t] = [];
 
@@ -87,7 +89,10 @@ async function main() {
 
   const index = {};
   // A puzzle tagged with two themes goes in only the first pack that picks it, so bounty IDs stay unique.
-  const used = new Set();
+  // Campaign ambush positions are reserved even when they also match a bounty theme.
+  const used = new Set(JSON.parse(readFileSync(new URL('../src/game/region2AmbushPuzzles.json', import.meta.url), 'utf8')).map(p => p.id));
+  const curriculum = JSON.parse(readFileSync(new URL('../src/game/curriculumPuzzles.json', import.meta.url), 'utf8'));
+  for (const p of Object.values(curriculum).flat()) used.add(p.id);
   for (const [region, r] of Object.entries(REGIONS)) {
     mkdirSync(`${OUT_DIR}/${region}`, { recursive: true });
     index[region] = {};

@@ -1,112 +1,186 @@
 # Playbook: building a Region
 
-[Design overview](design.md) · [Region template](design/regions/region-template.md) · [Region 1 (worked example)](design/regions/region-01-bog-goblins.md) · [Build progress](progress.md)
+[Design overview](design.md) · [Region template](design/regions/region-template.md) · [Syllabus](design/syllabus.md) · [Build progress](progress.md)
 
-How Region 1 was built and checked, written as the steps and quality bars every Region should meet. The design documents say *what* the game is; this says *how* to add to it without drift. Where a rule can be a test, it should be one; the commands are in the [README](../README.md#run-it).
+Build a clear learning path from unchanged published Lichess puzzles, with Pawnshire’s storybook presentation.
+Regions 1 and 2 provide the built examples: five guided lessons followed by a mixed review in each.
+Future chapters follow teaching prerequisites; they need not repeat that exact lesson count.
+
+The [curriculum-first direction](curriculum-first.md) records the approved scope.
+Armies, gold, recruitment, faction AI, paid powers, and live bosses are deferred.
+The [legacy playbook](legacy-playbook.md) preserves their earlier content workflow.
+Retained engine battles still meet the regression bars below.
 
 ## Order of work
 
-1. **Design first.** Copy the [Region template](design/regions/region-template.md) and fill it in: faction and AI habit, curriculum mapping, the map's main path and branches, battles and their warm-ups, boss, hero and story beats. Start from the Region's row in the [battle outline](design/campaign.md#battle-outline-by-region). Check it against the [pillars](design.md#vision-and-pillars), the [main arc](design/story.md#main-story-arc) and the [names](design/glossary.md). Get the design approved by the owner before building content; for Region 2 onward, through the Region's spec issue on GitHub. Design questions you can't settle go to [open TODOs](design/decisions.md#open-todos).
-2. **Rules before content.** New rules (a faction habit, a new objective kind, a power) go in `src/game` or `src/ai` with unit tests, before any battle uses them. `src/game` has no screen code. Every habit must follow [tell or tilt, never force](design/systems.md#ai-habits-by-faction). A new habit also needs the simulator to model it in the enemy's reply (`scripts/verify/simulate.ts` passes the shout to the same weighted pick as the game); the strong simulated player doesn't rely on it, or the verification bars below mean nothing.
-3. **Art.** Make the faction's token and portrait set, and any backgrounds, as [Art direction](design/art.md) describes. Then check the tokens on the real board at phone size (below).
-4. **Battles.** Write each battle as a `BattleDef`, meeting the [content rules](#battle-content-rules), and verify it with the engine until it meets the [bars](#verification-bars).
-5. **Warm-ups, bounties, boss, hero.** One warm-up per battle, meeting the [warm-up rules](#warm-up-content-rules); tip cards for the Region's puzzle-only themes, each with at least one bounty in the pack; bounty puzzles built from the curriculum's tags, tip-card tags included (`npm run puzzles`); the boss duel verified like a battle, with a boss warm-up only if it tests something the battles didn't.
-6. **Play it.** Play every battle yourself on Gentle and Brave, at desktop and phone sizes, and fix what feels flat or confusing.
-7. **Review, deploy, record.** A fresh-eyes review, a deploy and a live check, then the records (below).
+1. Fill the [Region template](design/regions/region-template.md) with prerequisites, teaching claims, lessons, review coverage, sources, story, and validation.
+2. Check the sequence against the [syllabus](design/syllabus.md), [names](design/glossary.md), and [voice guide](design/story.md#voice-and-dialogue).
+3. Curate source positions and replays. Record source identity, quality fields, and the board evidence behind each teaching claim.
+4. Put new rules in `src/game` with unit tests before content uses them. Keep screen code outside `src/game`.
+5. Write demonstrations, prompts, feedback, and chapter review text. Preserve the painted route, portraits, and companion voices.
+6. Test rules, source lines, progression, save isolation, and presentation. Have a fresh reviewer inspect code and teaching claims.
+7. Complete browser checks and CI, open a review PR, deploy staging, and check the deployed journey. Record actual results.
 
-Work in small steps, each one tested, checked in the browser, committed, and logged in [build progress](progress.md).
+The owner approved proceeding with judgment on the basic curriculum; another design approval or human pilot is not a release gate.
+Record unsettled design calls in [decisions](design/decisions.md), with an open TODO when the owner must decide.
+Work in small, reviewable steps and log material changes in [build progress](progress.md).
 
-## Battle content rules
+## Lesson content rules
 
-The battle content tests (`src/game/region1Battles.test.ts`) check these. Today the tests are written for Region 1 (they expect the region "The Bog" and shouting enemies); making them run for every Region is an [open TODO](design/decisions.md#open-todos).
+`src/game/curriculum.ts` defines lessons. `src/game/curriculumPuzzles.json` stores their published positions and metadata.
+Use the shared runner in `src/game/ambush.ts` for tactical lines.
 
-- A legal start with White to move, the enemy not already in check, and villages empty.
-- 4 to 10 pieces per side, so the board reads at 45 px squares.
-- Across a Region's battles, White has a knight, a bishop and a rook in at least three battles each, so every starter companion usually appears as a named character.
-- A move limit of 5 to 10. A siege lasts 5 to 10 enemy turns, has villages, and uses the `raider` AI.
-- A reward of 15–25g, and exactly two different bonus goals at 5g each. A `quick` goal, if a battle has one, sits below the move limit. Pick goals that teach a habit: flawless for protection battles, quick for mates.
-- Not winnable on the first move, and a win-material goal bigger than any single enemy piece, so a battle needs a plan, not a grab.
-- One scripted winning line per battle that the test plays through.
-- 2 to 4 dialogue lines before the battle, 1 or 2 after, and a tip. Their length follows the [voice guide](design/story.md#voice-and-dialogue), which the tests don't check.
+- Preserve each published FEN, setup move, solution, and reply. Stop at the source endpoint.
+- Each current guided lesson has one optional example, three waves, and one backup per wave.
+- Each current chapter review has four waves drawn from taught ideas, its own example in content, and backups.
+- A source contains 1–3 solver moves after setup. Choose positions that show the exact lesson, not just its tag.
+- Preserve source id, URL, rating, themes, rating deviation, popularity, plays, and the reason it belongs.
+- Apply the [current quality and rating checks](design/systems.md#tuning-values). Do not copy the standalone pilot’s tighter rating limits.
+- Reserve unique ids across examples, main waves, and backups, and exclude existing bounty overlaps.
+- Write coaching in our own voice using real chess terms. Give both a move and its purpose in demonstrations.
+- Narrow broad claims to the source boards. “Answer a check” currently teaches safe captures of checking pieces, not every check defence.
+- Show useful feedback for an unexpected legal move without implying that the move is illegal chess.
+- Accept another immediate checkmate when the expected move mates.
+- Credit Lichess. A published quality score does not establish the educational effectiveness of our sequence.
+
+`src/game/curriculum.test.ts` checks legality, solution replays, metadata, uniqueness, teaching fit, and completion through main and backup waves.
+`node scripts/select-curriculum.mjs --verify-shipped` can compare shipped puzzle fields with the local source download.
+That source check requires `data/raw/lichess_db_puzzle.csv.zst`; never commit raw downloads.
 
 ## Map rules
 
-The [guided path](design/campaign.md#guided-path) sets the shape:
+Each lesson opens after every earlier lesson is complete. Completed encounters remain available for practice and missed stars.
+Each Region ends with a mixed review of taught skills. Finishing that review opens the next built Region.
+Stars mark completion, no misses, and no hints; only completion gates the route.
 
-- A main path of the headline battles in teaching order, usually 3, each opening the next.
-- Branches open after the main path: revisits of earlier Regions, mates and endgames.
-- The boss opens after 4 wins: the whole main path, plus 1 branch when it has 3. Elsewhere, link to this rule rather than restating it.
-- Every theme in the Region's curriculum row is either a battle (with a warm-up) or a tip card. No separate lessons.
+The current journey ends after Ashfang’s review. Later Regions must be marked as planning until implemented.
+The [Region 3 brief](design/regions/region-03-shadow-cult.md) plans the next chapter; it is not a playable destination.
 
-## Warm-up content rules
+Keep the winding painted route and short story encounters.
+A chief may host a review without becoming a live engine duel or requiring an army budget.
 
-Every battle has a warm-up: one position your companion shows, one you try, and one backup with a hint.
+## Mixed reviews
 
-- Positions are Lichess puzzles from the low end of the Region's warm-up band ([curriculum](design/campaign.md#curriculum)), tagged with the battle's theme, that pass the bounty quality filter.
-- Or positions from the matching Lichess Practice study (cleared for use; see [licensing](design/technical.md#licensing)). Prefer these for endgame technique, where puzzles rarely show the textbook position. Record the study and chapter.
-- 1 or 2 moves for the solver, so a player who knows the idea solves it in under a minute.
-- The try and backup positions show the same idea as the battle, not just the same tag. Pick them by hand and check them on the board.
-- Not used as a bounty in the same Region.
-- Our own words, in the companion's voice ([voice guide](design/story.md#voice-and-dialogue)): one or two sentences for the shown position. The backup's hint lights up the piece that moves, using the board's existing hint highlight.
-- Where Lichess has no tag or study for the theme (threat awareness, counting trades, development, open files), use the nearest tag or a position of our own, checked with the engine.
-- A warm-up never blocks the battle and has no move limit, rewinds or loss cost.
-- The one exception is a **boss practice** ([guided path](design/campaign.md#guided-path)): a technique played out against the engine, such as rook and queen mates. It has unlimited undo, is offered before the boss, and can always be skipped. It isn't held to the 1–2 move rule.
+A review checks recognition of previously taught ideas.
+Do not name the tactic in the title, prompt, companion coaching, or another answer-revealing label before the move.
+Keep generic checks, captures, and threats guidance truthful.
+Show a tactic banner only after an accepted move demonstrates it.
+The current review interface enters the challenge directly; its stored example is not a prerequisite.
 
-Warm-ups are puzzles, not battles, so they don't need `npm run verify:battles`. A content test checks each one: the position is legal, the solution plays through, and its tag matches the battle's theme.
+Check the full review set, including backups, for coverage of taught ideas and misleading hints.
+A theme tag is useful selection metadata, not proof that the solver performs that tactic.
+
+## Future technique practice
+
+The [syllabus](design/syllabus.md) may call for Lichess Practice techniques that cannot fit a short published tactical line.
+Plan those exercises separately: source study and chapter, technique goal, accepted continuations, feedback, and completion checks.
+The required technique capability is future work, distinct from the current tactical runner.
+Retained academy exercises are reference code, not proof that the future curriculum capability is complete.
+Do not force a technique into a single answer line or substitute custom tactical positions without an approved design change.
 
 ## Verification bars
 
-`npm run verify:battles` plays every battle and the boss many times with the real enemy AI, the faction habit included, using simulated players (`scripts/verify/`). The battles take about 8 minutes and the boss longer, so `npm run ci` runs each only when a change can affect it. A battle passes when:
+Every new rule gets a test. Published lessons need legal replays, teaching-fit checks, and journey integration checks.
+They do not need new simulated-player engine tournaments.
 
-- A **strong** player (Stockfish, aware of the habit) wins at least 90% on Gentle and on Brave, and earns each bonus goal in at least half its wins.
-- A **careless** player (a random pick from a shallow search's top five) wins at most 40%.
-- A strong player needs **4 to 7 moves** on average (pillar 2: short, sharp battles). Fewer means the first trick ends it; more means it drags. The test reports this but doesn't enforce it, so read the average-moves column.
-- Every win ends for a reason that fits the goal (for example, a material battle isn't won by a draw).
+Verify these current behaviors:
 
-The boss passes when, with each starter's typical army at the budget, a strong player loses (checkmate or draw) at most 15% of games and wins at least 60%. A boss is a full game, so it gets a looser bar than a battle; games that hit the simulator's 80-move cap count as unfinished, not lost (`scripts/verify/boss.verify.test.ts`). Report the "greedy" player's rate too: when it's high, a battle may reward grabbing over thinking.
+- Demonstration, setup, correct solver moves, published replies, wrong moves, hints, promotions, and alternate immediate mates.
+- Miss limits and unlimited retries on every difficulty, including Grandmaster.
+- Retry begins at position 1 and changes the failed wave to its backup.
+- Sequential unlocks, both chapter reviews, completion, later star improvements, and repeated completion without duplicate credit.
+- Continue, revisit, reset confirmation, invalid saves, reload, and exits during setup, replies, celebrations, and victory animations.
+- Exactly-once attempt settlement before animations; an accepted victory survives interruption.
+- Journey reset and play leave legacy campaign and pilot saves unchanged.
+- Truthful banners, player-color speaking identity, companion identity, reduced motion, and cancellation after exit.
 
-When a new rule changes how battles end (as material goals once did), re-run verification for every Region, not just the new one (`npm run ci -- --full`).
+### Legacy engine regressions
 
-## Checks before each commit
+Keep the existing selector and all retained engine checks intact.
+`npm run verify:battles` exercises custom battles and the legacy boss with real enemy AI and simulated players in `scripts/verify/`.
+These checks can take 15 minutes or more; `npm run ci` selects them by changed dependencies.
 
-- `npm run ci` passes. It always runs the quick checks (`npm run check`: type-check, build and unit tests, under a minute). Then it runs only the engine checks your branch can affect: it follows each check's imports, so a change to a battle, a rule, the AI or anything they import reruns it, and a screen, art or docs change skips it. `npm run ci -- --plan` shows what would run, and why.
-- `npm run ci -- --full` runs every engine check. Use it before a Region ships, and when a new rule changes how battles end.
-- Browser check of what changed, at these sizes:
+For a retained custom battle:
 
-| Size | Why |
+- A strong player wins at least 90% on Gentle and Brave, earning each bonus in at least half its wins.
+- A careless player, choosing randomly from a shallow search’s top five, wins at most 40%.
+- Read the average-move report: the design target is 4–7 moves. The test reports this without enforcing it.
+- Every win ends for a reason that fits the goal; a material battle must not award a win for a draw.
+
+For the legacy boss, test each starter’s typical army at the budget.
+A strong player loses, including draws, at most 15% and wins at least 60%.
+Games reaching the simulator’s 80-move cap count as unfinished. Report the greedy player’s rate too.
+Faction habits must be modeled in the simulated enemy’s replies; the strong player must not depend on a forced reply.
+The [legacy playbook](legacy-playbook.md) preserves custom battle and warm-up authoring rules.
+
+## CI before a PR and release
+
+Run `npm run ci` before each PR. Keep the existing checks before each commit too.
+It runs type-check, build, and unit tests through `npm run check`, then selected engine regressions.
+The selector follows each check’s imports and includes changed dependencies across the branch.
+A screen or documentation change may skip engine work; a shared dependency change may select it.
+`npm run ci -- --plan` reports what would run and why. Do not weaken selection to avoid legacy checks.
+
+Run `npm run ci -- --full` before a Region ships, and when a rule changes how battles end.
+Published lesson content does not remove this full-suite release requirement.
+Record the command and actual outcome; a planned check is not a pass.
+
+## Browser and mobile checks
+
+Check the affected flow at all four viewports, including Gentle and the longest current advice.
+
+| Viewport | Check |
 | --- | --- |
-| 1280×800 | Desktop: board beside the panel |
-| 375×812 | Typical phone: 44–45 px squares, floating portrait card |
-| 375×553 | Short phone (iPhone SE with browser bars): nothing important off-screen |
-| 844×390 | Phone on its side: controls still visible |
+| 1280×800 | Board beside lesson controls; last speaker in a separate panel |
+| 375×812 | Full current advice visible without scrolling; temporary speech and 44px history button |
+| 375×553 | Full advice and main controls fit the short phone viewport |
+| 844×390 | Landscape layout keeps the board, advice, and controls usable; temporary speech |
 
-- In dev, `?loop=timeout` keeps the game loop running in a background tab, for automated checks.
-- No console errors, and no screen left running underneath another (navigate with `goTo()`).
+Temporary speech must be outside lesson scroll content and must not cover teaching text or actions.
+Do not put a large portrait ahead of the advice, hide text behind a tap, or truncate current advice.
+The history button needs a 44×44 CSS pixel target and an accessible name.
+Keep long history scrollable while its heading and close control remain visible.
+Check keyboard access, classic pieces, reduced motion, rotations, and repeated entry and exit.
+
+Use `?loop=timeout` in development when automated checks need a background game loop.
+Use `goTo()` for navigation and check for console errors or scenes left running underneath another.
+Exercise normal UI navigation as well as any automated fixture or direct scene launch.
+
+Report browser evidence accurately. A resized desktop viewport is a layout check, not an iPhone Safari test.
+WebKit with iPhone-style viewport, touch, and device settings is emulation, not a physical-device run.
+Name the browser, settings, and limitations in the record; claim a real iPhone check only when one happened.
 
 ## Review
 
-After a Region's content and code are in, have someone (or a fresh agent) review it who didn't write it. Focus on:
-
-- turn-flow races: leaving or rewinding during the enemy's turn or an animation;
-- gold exploits and rewards paid twice;
-- wrong teaching: a banner, advice or review that's untrue in that position;
-- phone layouts.
-
-Fix critical issues, and list the rest in the Region's progress entry.
+After content and code are ready, use an independent reviewer who did not write them.
+A fresh reviewer subagent is allowed for this check.
+Focus on stale async work, duplicate progress, save isolation, false teaching claims, answer leakage, and phone layouts.
+Fix critical findings and record remaining issues in the Region’s progress entry.
+Keep the owner’s pilot feedback separate from automated evidence and do not invent further playtests.
 
 ## Deploy and live check
 
-`npm run deploy` builds, stages the build under `dist-worker/chess-rpg/` and deploys the assets-only Cloudflare Worker (see [Technical design](design/technical.md)). Then check the live site at https://unformedideas.com/chess-rpg/:
+`npm run deploy:staging` builds and deploys the journey at https://unformedideas.com/staging-chess-rpg/.
+`npm run deploy` targets production at https://unformedideas.com/chess-rpg/; use the destination authorized for the work.
+See [Technical design](design/technical.md#tech-stack-and-deployment) for staging paths and deployment details.
 
-- `/chess-rpg` redirects to `/chess-rpg/`;
-- the engine `.wasm` and the puzzle JSON load;
-- Stockfish answers (an enemy moves);
-- a battle plays at desktop and phone sizes.
+On the deployed destination:
+
+- Confirm the path without its trailing slash redirects to the path with it.
+- Confirm art, fonts, and published lesson data load without browser errors.
+- Start or continue a journey, solve lessons and reviews, and check progress after reload.
+- Check desktop, portrait phone, short phone, and landscape layouts.
+- Confirm build-only pilot and legacy entry modes are absent from the production build.
+
+For work that affects retained engine modes, also verify the `.wasm` loads and Stockfish answers in the development legacy mode.
+The current journey’s published reply does not prove that Stockfish works.
 
 ## Records
 
-- **Region document:** fill in Design status, Verification and, after playtests, Playtest.
-- **Build progress:** what's done, what was simplified, and what's worth a look, per step.
-- **Decisions:** a decision-log row for every design call made while building, and resolved TODOs ticked off.
-- **Tuning values:** new numbers go in the [table](design/systems.md#tuning-values).
-- **Names:** new characters, places and faction terms go in the [cast](design/story.md#recurring-characters) and [Names and terms](design/glossary.md).
+- **Region document:** status, prerequisites, source coverage, verification evidence, and actual playtest feedback.
+- **Build progress:** what changed, what passed, what was simplified, and remaining issues.
+- **Decisions:** settled design calls and unresolved owner questions.
+- **Tuning values:** current values and source locations in the [systems table](design/systems.md#tuning-values).
+- **Names and voice:** new terms in the [glossary](design/glossary.md) and character guidance in [story](design/story.md).
+
+Never commit `data/raw/`, `art/raw/`, `dist/`, or `dist-worker/`. Keep generated staging outputs local too.

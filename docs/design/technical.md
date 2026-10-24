@@ -1,46 +1,99 @@
 # Technical design and licensing
 
-[Design overview](../design.md) · [Art direction](art.md)
+[Design overview](../design.md) · [Systems](systems.md) · [Art direction](art.md)
 
 ## Tech stack and deployment
 
-Use a web stack built on TypeScript, not Godot, because the chess tools (rules, engine, puzzle data) are all JavaScript-friendly.
+Pawnshire is a TypeScript web game using Phaser 4, Vite, chess.js, and a retained Stockfish Web Worker integration.
+The default build opens the curriculum journey. Its published puzzle replies do not use live engine move selection.
 
-| Layer | Choice | Notes |
+| Layer | Current implementation | Location or scope |
 | --- | --- | --- |
-| Build | Vite + TypeScript | Static output, instant reloads |
-| Game screens | Phaser 4 | Region map, town and board all drawn on the canvas |
-| Long text and settings | HTML overlay | Settings, dialogue logs and accessibility text sit on top of the canvas |
-| Chess rules | chess.js (BSD) | Legal moves, FEN, game state |
-| AI | Stockfish lite WASM, single-threaded | Runs in a Web Worker; the prototype's engine file is 1.8 MB |
-| Enemy personalities | Choice among Stockfish's candidate moves | Picks within a centipawn window, so weak enemies make human-looking mistakes |
-| Puzzles | Lichess puzzle database (CC0) | Pre-filter to tens of thousands, split into small JSON files at build time |
-| Hosting | Cloudflare static assets, free tier | 25 MiB per-file limit |
-| iOS | Capacitor | Wraps the same web build |
-| Saves | Local storage first | Cloud sync later if needed |
+| Build | Vite + TypeScript | `package.json`; Phaser dependency `^4.2.1` |
+| Screens | Phaser scenes with HTML overlays | `Journey.ts`, `CoursePlay.ts`; painted navigation, board, teaching, settings, and history |
+| Chess legality | chess.js | `src/game`; FEN, legal moves, check, promotion, and checkmate |
+| Tactical lessons | Published Lichess lines | `src/game/curriculum.ts`, `curriculumPuzzles.json`, `ambush.ts` |
+| Progression | Pure journey rules | `src/game/journey.ts` |
+| Persistence | Local storage through `store` | `src/journeySave.ts`; separate `pawnshire-journey-v1` key |
+| Presentation | Shared board and course presentation helpers | `src/ui/phaserBoard.ts`, `coursePresentation.ts`, related CSS |
+| Retained engine | Stockfish lite, single-threaded WASM in a Web Worker | `src/ai`; legacy battles and engine verification |
+| Hosting | Cloudflare static assets | `wrangler.jsonc`; separate production and staging routes |
 
-**Why Phaser.** The region map and town are drawn on the canvas, not just the board, so a full game framework pays off: scenes for map, town and battle, asset loading, input, tweens, particles, camera shake and zoom, and sound. Phaser 4 is the current version (4.2.1 as of October 2026).
+`src/main.ts` registers the curriculum scenes by default.
+Development builds can load the standalone pilot with `?ambush=r2-two-at-once` or the earlier campaign with `?legacy=1`.
+The build-time guards beside their imports exclude those entry scenes from production.
+Their rules, source files, saves, and engine regressions remain available for development and future reuse.
 
-**Board scene behind one interface.** The game rules (`src/game`) contain no screen code. The battle scene talks to them through a small interface: show a position, animate a move, highlight squares, play a capture. If 3D is wanted later, only the battle scene's board is rebuilt.
+`npm run build` type-checks and builds the production output in `dist/`.
+`npm run deploy` stages it under `dist-worker/chess-rpg/` and deploys https://unformedideas.com/chess-rpg/.
+`npm run deploy:staging` builds `dist-staging/`, stages `dist-worker-staging/staging-chess-rpg/`, and deploys https://unformedideas.com/staging-chess-rpg/.
+Cloudflare’s configured HTML handling supplies the trailing-slash redirect.
+Use the deployment destination authorized for the work, and keep generated output out of commits.
 
-**Three.js later, if 3D is worth it.** Deferred: the game is 2D for now (see [3D exploration](art.md#3d-exploration-deferred)). A 3D look could be "HD-2D" (the same 2D figurines in a lit 3D diorama with a moving camera) or full 3D models. Phaser keeps running the map and town; the battle board would be drawn by Three.js on a second canvas layered with Phaser's. Rules, menus and art carry over. Because the pieces are statues on bases, they need no skeletons or character animation; AI image-to-3D services can make the models.
+Build and dev commands run `scripts/copy-engine.mjs` first.
+It copies Stockfish’s lite-single JavaScript, WASM, and license notice into `public/engine/`.
+A source puzzle embedded in the built curriculum is separate from the retained bounty JSON under `public/puzzles/`.
+Do not infer engine health from the current journey’s scripted reply.
 
-**Why not Godot.** A slow export step, bridging to Stockfish yourself, a bigger web download, and every menu built in Godot's UI system.
+## Rules, content, screens, and saves
+
+`src/game` contains rules and content without screen code.
+The curriculum defines `CourseLesson` and `CourseRegion`; each lesson uses the published-line runner’s `AmbushDef` shape.
+Current lessons set gold rewards to zero and use journey stars instead.
+`src/flow.ts` still coordinates the legacy campaign; it is not the current journey’s progression authority.
+
+`src/game/ambush.ts` checks legal moves and the expected line, advances waves, counts misses, and supplies permitted hints.
+It commits solver/reply pairs before screen animation. `src/game/journey.ts` settles the attempt once and updates completion and stars.
+`src/journeySave.ts` validates loaded progress and rebuilds the active position from the published source line.
+An unfinished load becomes an interrupted attempt; an already accepted victory remains complete.
+Journey, legacy, and pilot save keys stay isolated, including resets.
+
+`src/scenes/Journey.ts` owns the title, setup, map, and settings flow.
+`src/scenes/CoursePlay.ts` owns teaching and play presentation, calling rules through small interfaces.
+The shared board draws positions, animates moves, highlights squares, and reports input.
+Async scene work checks the active session after each await. Exit cancels holds, speech, celebrations, and pending presentation.
+
+Teaching advice stays in the lesson panel. Speech uses a separate surface so portraits cannot displace current advice.
+Phone and short landscape screens show temporary cards and a 44px history button.
+Roomy desktops reserve a separate last-speaker panel.
+The [playbook](../playbook.md#browser-and-mobile-checks) defines viewport and browser evidence requirements.
+
+## Future technique capability
+
+The [syllabus](syllabus.md) and [Region 3 brief](regions/region-03-shadow-cult.md) describe planning beyond the built two chapters.
+Lichess Practice techniques need a dedicated exercise capability when a method has several valid continuations or a procedural goal.
+The tactical runner follows one published line and stops at its endpoint; it does not implement general technique assessment.
+
+Before a future chapter relies on technique practice, define its content contract, legal continuations, success checks, assistance, and persistence.
+Add rules and tests independently of its screen. Identify each study and chapter and write our own teaching text.
+The legacy academy and engine interfaces can inform implementation, but do not establish that this capability is shipped.
+
+## Retained architecture decisions
+
+Phaser supplies scenes, loading, input, animation, and the board within a single web stack.
+The earlier campaign also uses canvas town and battle screens.
+TypeScript keeps chess tools and the game in the same language; the earlier design rejected Godot’s export and bridging overhead.
+
+The game remains 2D. Earlier [3D exploration](art.md#3d-exploration-deferred) proposed a second Three.js canvas for a diorama or model board.
+It would preserve rules, menus, and art while replacing board rendering; this remains deferred.
+The figurines could remain rigid pieces without skeletal animation.
+Capacitor wrapping for iOS and cloud save sync are also proposals, not shipped features.
+Historical engine file-size estimates and hosting limits were implementation notes, not current release budgets.
 
 ## Licensing
 
-Decided: the game is open source under GPL-3, so Stockfish ships with it.
+The project’s recorded license decision is GPL-3, with Stockfish distributed alongside it.
+Keep required notices and source obligations intact when changing dependencies or deployment.
 
-| Asset | License | What it means for us |
+| Source or dependency | Recorded license or clearance | Project handling |
 | --- | --- | --- |
-| Lichess puzzle database | CC0 (public domain) | Free to use and ship |
-| chess.js | BSD-2 | Free to use, keep the notice |
-| Stockfish | GPL-3 | Game source must be published under GPL-3 if we ship it |
-| chessground (Lichess board UI) | GPL-3 | Same as Stockfish; or write our own board |
-| Lichess site code (lila) | AGPL-3 | Don't copy code unless the game is AGPL too |
-| Lichess Practice studies | Cleared for use (confirmed by the owner, 2026-10-22) | Their positions can be used in warm-ups, tip cards and the library. Lesson text is still our own, in the companion's voice, for consistency rather than licensing. Credit Lichess in the game's credits |
-| Published courses (Steps Method, Bain, Silman, Polgar, Yusupov) | Copyrighted | Borrow the order of topics only, never their exercises or text |
+| Lichess puzzle database | CC0 | Preserve source identity and credit Lichess; keep published data unchanged |
+| chess.js | BSD-2 | Keep its notice |
+| Stockfish | GPL-3 | Keep the license file and published source obligations; build copies `COPYING-stockfish.txt` |
+| Lichess Practice studies | Owner confirmed clearance on 2026-10-22 | Record study and chapter; write teaching text in our voice; credit Lichess |
+| Published courses, including Steps Method, Bain, Silman, Polgar, and Yusupov | Copyrighted | Use topic order as inspiration; do not copy their exercises or text |
 
-- GPL apps can ship on the App Store: the official Lichess mobile app is GPL-3 and on the App Store.
-- Every build ships Stockfish's license file; the prototype already does.
-- Keep "Lichess" out of the game's name and branding. The canonical code repo is lichess-org/lila; the alexbarrett/lichess link looks like an old copy.
+The earlier design considered chessground, recorded as GPL-3, as a board alternative. Pawnshire uses its own board.
+It recorded Lichess site code, `lichess-org/lila`, as AGPL-3; do not copy that code without resolving compatibility.
+The earlier App Store proposal cited Lichess’s GPL mobile app as precedent; iOS distribution remains separate future work.
+Keep Lichess out of Pawnshire’s product name and branding.

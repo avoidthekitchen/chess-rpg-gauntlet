@@ -145,6 +145,26 @@ describe('Battle', () => {
     expect(b.reason).toMatch(/draw/);
   });
 
+  it('rewinds pending and completed turns after branching from a later starting move number', () => {
+    const fen = new Chess().fen().replace(' 0 1', ' 0 40');
+    const b = new Battle(custom(fen, { kind: 'checkmate' }), 3);
+    b.playerMove({ from: 'e2', to: 'e4' });
+    expect(b.rewind()).toBe(true);
+    expect(b.fen).toBe(fen);
+    b.playerMove({ from: 'd2', to: 'd4' });
+    b.enemyMove('d7d5');
+    const afterPair = b.fen;
+    b.playerMove({ from: 'c2', to: 'c4' });
+    expect(b.rewind()).toBe(true);
+    expect(b.fen).toBe(afterPair);
+    expect(b.chess.history()).toEqual(['d4', 'd5']);
+    expect([b.playerMoves, b.enemyMoves]).toEqual([1, 1]);
+    expect(b.rewind()).toBe(true);
+    expect(b.fen).toBe(fen);
+    expect(b.chess.history()).toEqual([]);
+    expect([b.playerMoves, b.enemyMoves]).toEqual([0, 0]);
+  });
+
   it('can rewind out of a defeat', () => {
     const b = new Battle(custom('3k4/3P4/2K5/8/8/8/8/8 w - - 0 1', { kind: 'promote', maxMoves: 5 }), 1);
     b.playerMove({ from: 'c6', to: 'd6' });

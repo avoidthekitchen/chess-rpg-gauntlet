@@ -1,9 +1,11 @@
 node_modules
 dist
+dist-staging
 public/engine
 .DS_Store
 art/raw
 art/3d/raw
 data/raw
 dist-worker
+dist-worker-staging
 .wrangler

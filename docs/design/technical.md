@@ -47,8 +47,8 @@ It commits solver/reply pairs before screen animation. `src/game/journey.ts` set
 `src/journeySave.ts` validates loaded progress and rebuilds the active position from the published source line.
 An unfinished load becomes an interrupted attempt; an already accepted victory remains complete.
 Journey, legacy, and pilot save keys stay isolated, including resets.
-Version-1 saves without `finaleComplete` load as unfinished. Actual final checkmate sets the flag before presentation.
-Earlier replay attempts cannot unset it. The ending checks this flag; the first finale encounter only unlocks the interlude.
+Version-1 saves derive `finaleComplete` from their final completed encounter; a missing or stale flag is repaired. Actual final checkmate sets the flag before presentation.
+Earlier replay attempts cannot unset it. Continue shows an unseen ending once; `endingSeen` is stored after rendering it. The first finale encounter only unlocks the interlude.
 See the [release record](../complete-journey-release.md) for shared-origin staging saves and future rollback behavior.
 
 `src/scenes/Journey.ts` owns the title, setup, map, journal, settings, interludes, and ending.

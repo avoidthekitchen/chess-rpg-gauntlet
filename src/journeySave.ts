@@ -6,7 +6,20 @@ import { lessonUnlocked, newJourney, regionUnlocked, settleJourney, type Journey
 import { store } from './store';
 import { preparePreviewSave, previewRegion } from './journeyPreview';
 
-export const JOURNEY_KEY = previewRegion ? `pawnshire-preview-v1:${previewRegion}` : 'pawnshire-journey-v1';
+const productionKey = 'pawnshire-journey-v1';
+const staging = import.meta.env.MODE === 'staging';
+export const JOURNEY_KEY = previewRegion ? `pawnshire-preview-v1:${previewRegion}` : staging ? 'pawnshire-staging-journey-v1' : productionKey;
+const importedKey = `${JOURNEY_KEY}:imported`;
+
+function savedJourney() {
+  if (staging && !previewRegion && !store.get(importedKey)) {
+    // Copy once for continuity; staging never writes or removes production progress.
+    const previous = store.get(productionKey);
+    if (!store.get(JOURNEY_KEY) && previous) store.set(JOURNEY_KEY, previous);
+    store.set(importedKey, 'true');
+  }
+  return store.get(JOURNEY_KEY);
+}
 export function persistJourney(save: JourneySave) { store.set(JOURNEY_KEY, JSON.stringify(save)); }
 export function clearJourney() { store.remove(JOURNEY_KEY); }
 
@@ -59,47 +72,63 @@ function restoreRun(lessonId: string, value: unknown): AmbushRun | null {
 
 /** A separate curriculum: older army campaigns and pilot progress stay untouched. */
 export function loadJourney(): JourneySave | null {
+  const raw = savedJourney();
+  if (!raw) return null;
+  const reject = () => {
+    const recoveryKey = `${JOURNEY_KEY}:recovery`;
+    if (!store.get(recoveryKey)) store.set(recoveryKey, raw);
+    return null;
+  };
   try {
-    const raw = store.get(JOURNEY_KEY);
-    if (!raw) return null;
     const value: unknown = JSON.parse(raw);
     if (!object(value) || value.version !== 1 || !Object.hasOwn(DIFFICULTIES, String(value.difficulty)) ||
       !['n', 'b', 'r'].includes(String(value.starter)) || typeof value.currentRegion !== 'string' ||
       !Array.isArray(value.completed) || !value.completed.every(id => typeof id === 'string' && knownLesson(id)) ||
       new Set(value.completed).size !== value.completed.length || !natural(value.attempts) ||
       !object(value.stars) || !object(value.retryWaves) ||
-      (Object.hasOwn(value, 'finaleComplete') && typeof value.finaleComplete !== 'boolean')) return null;
+      (Object.hasOwn(value, 'finaleComplete') && typeof value.finaleComplete !== 'boolean')) return reject();
     const save = value as unknown as JourneySave;
     save.finaleComplete ??= false;
     save.endingSeen = value.endingSeen === true;
-    if (!save.completed.every(id => lessonUnlocked(save, id)) || !regionUnlocked(save, save.currentRegion)) return null;
+    if (!save.completed.every(id => lessonUnlocked(save, id)) || !regionUnlocked(save, save.currentRegion)) return reject();
     for (const [id, stars] of Object.entries(value.stars)) {
-      if (!save.completed.includes(id) || !object(stars) || typeof stars.clean !== 'boolean' || typeof stars.noHint !== 'boolean') return null;
+      if (!save.completed.includes(id) || !object(stars) || typeof stars.clean !== 'boolean' || typeof stars.noHint !== 'boolean') return reject();
     }
     for (const [id, wave] of Object.entries(value.retryWaves)) {
-      if (!lessonUnlocked(save, id) || !natural(wave) || wave >= courseLesson(id)!.waves.length) return null;
+      if (!lessonUnlocked(save, id) || !natural(wave) || wave >= courseLesson(id)!.waves.length) return reject();
     }
     if (save.lastResult !== null) {
       const result = value.lastResult;
       if (!object(result) || typeof result.lessonId !== 'string' || !lessonUnlocked(save, result.lessonId) ||
         !['won', 'clean', 'noHint', 'interrupted'].every(key => typeof result[key] === 'boolean') ||
         (result.won && (!save.completed.includes(result.lessonId) || result.interrupted)) ||
-        (!result.won && (result.clean || result.noHint))) return null;
+        (!result.won && (result.clean || result.noHint))) return reject();
     }
     if (value.active !== null) {
-      if (!object(value.active) || typeof value.active.lessonId !== 'string' || !lessonUnlocked(save, value.active.lessonId)) return null;
+      if (!object(value.active) || typeof value.active.lessonId !== 'string' || !lessonUnlocked(save, value.active.lessonId)) return reject();
       const run = restoreRun(value.active.lessonId, value.active.run);
-      if (!run) return null;
-      if (!run.settled && run.difficulty !== save.difficulty) return null;
-      save.active = { lessonId: value.active.lessonId, run };
-      if (run.settled) {
-        if (!save.lastResult || save.lastResult.lessonId !== save.active.lessonId || save.lastResult.won !== (run.status === 'won')) return null;
-      } else settleJourney(save, true, true);
+      if (!run) {
+        // A corrected/reordered source can invalidate an old in-flight step. Keep earned progress.
+        const lessonId = value.active.lessonId;
+        const wasSettled = object(value.active.run) && value.active.run.settled === true;
+        save.active = null;
+        if (!wasSettled) {
+          save.attempts++;
+          save.retryWaves[lessonId] = 0;
+          save.lastResult = { lessonId, won: false, clean: false, noHint: false, interrupted: true };
+        }
+      } else {
+        if (!run.settled && run.difficulty !== save.difficulty) return reject();
+        save.active = { lessonId: value.active.lessonId, run };
+        if (run.settled) {
+          if (!save.lastResult || save.lastResult.lessonId !== save.active.lessonId || save.lastResult.won !== (run.status === 'won')) return reject();
+        } else settleJourney(save, true, true);
+      }
     }
     const finalLesson = COURSE_REGIONS.find(region => region.kind === 'finale')?.lessons.at(-1);
     save.finaleComplete = !!(finalLesson && save.completed.includes(finalLesson));
     if (!save.finaleComplete) save.endingSeen = false;
     persistJourney(save);
     return save;
-  } catch { return null; }
+  } catch { return reject(); }
 }

@@ -143,7 +143,8 @@ Check the affected flow at all four viewports, including Gentle and the longest 
 
 Temporary speech stays outside lesson scroll content. On compact screens it may cover advice; board squares and action buttons must stay clear.
 Capture and check banners follow the same bounds. Verify those bounds while moves animate, not only after speech disappears.
-Do not put a large portrait ahead of the advice, hide text behind a tap, or truncate current advice.
+Setup-move flavour clears before solving. During move feedback, a temporary card may cover advice for 3.2–9 seconds or until dismissed.
+Advice returns automatically. Keep it untruncated, and do not require a tap to reveal it outside this temporary overlay.
 The history button needs a 44×44 CSS pixel target and an accessible name.
 Keep long history scrollable while its heading and close control remain visible.
 Check keyboard access, classic pieces, reduced motion, rotations, and repeated entry and exit.

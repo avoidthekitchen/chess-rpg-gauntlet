@@ -40,6 +40,19 @@ describe('published curriculum', () => {
     for (const p of allPuzzles) expect(bountyIds.has(p.id), p.id).toBe(false);
   });
 
+  it('excludes actual legacy packs and bounty sources from every new chapter', () => {
+    const legacy = import.meta.glob('./{region1*,region2Ambush*,ambushPilot,academy}.{ts,json}', { eager: true, query: '?raw', import: 'default' });
+    const bounty = import.meta.glob('../../public/puzzles/**/*.json', { eager: true, import: 'default' });
+    expect(Object.keys(legacy).length).toBeGreaterThan(0);
+    expect(Object.keys(legacy).some(path => path.includes('region2AmbushPuzzles'))).toBe(true);
+    expect(Object.keys(legacy).some(path => path.endsWith('/academy.ts'))).toBe(true);
+    const reserved = Object.values(legacy).join(' ') + JSON.stringify(bounty);
+    for (const lesson of COURSE_LESSONS.filter(l => !['r1', 'r2'].includes(l.regionId))) {
+      for (const p of [lesson.show, ...lesson.waves.flatMap(w => [w.main, w.backup])])
+        expect(reserved, p.id).not.toContain(p.id);
+    }
+  });
+
   it('keeps backups near their main puzzle and regional reviews genuinely mixed', () => {
     const meanRating = (regionId: string) => {
       const ps = COURSE_LESSONS.filter(l => l.regionId === regionId).flatMap(l => l.waves.map(w => w.main));

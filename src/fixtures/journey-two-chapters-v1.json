@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "difficulty": "squire",
+  "starter": "r",
+  "currentRegion": "r2",
+  "completed": [
+    "r1-loose-pieces",
+    "r1-safe-captures",
+    "r1-answer-check",
+    "r1-back-rank",
+    "r1-promotion",
+    "r1-bog-review",
+    "r2-knight-forks",
+    "r2-double-attacks",
+    "r2-two-at-once",
+    "r2-remove-defender",
+    "r2-mate-in-two",
+    "r2-road-review"
+  ],
+  "stars": {
+    "r1-loose-pieces": {
+      "clean": false,
+      "noHint": true
+    }
+  },
+  "attempts": 12,
+  "retryWaves": {},
+  "active": null,
+  "lastResult": null
+}

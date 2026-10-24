@@ -70,7 +70,7 @@ Write demonstrations, prompts, and feedback in our own voice.
 | Review wave | Previously taught idea | Main source | Backup source | Why recognition is required |
 | --- | --- | --- | --- | --- |
 
-Current reviews use four waves and a stored example; the interface enters the challenge directly.
+Reviews use four to seven waves according to skill coverage, plus a stored example; the interface enters the challenge directly.
 Keep titles and pre-answer prompts neutral. Withhold theme-specific coaching until the move demonstrates the idea.
 Check backups for taught coverage and accidental answer leakage too.
 A named chief can host the review through story and portraits without a live engine duel.

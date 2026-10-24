@@ -14,6 +14,22 @@ vi.mock('./store', () => ({ store: {
 
 /** Retained from the independent review: enumerate actual boards, not invented run states. */
 it('recovers every playable solver state and alternate immediate mate across all help settings', () => {
+  let roundTrips = 0, alternates = 0;
+  const expectedRoundTrips = COURSE_LESSONS.reduce((total, lesson) => total + lesson.waves.reduce((n, wave) => n + (wave.main.moves.length + wave.backup.moves.length) / 2 * 4, 0), 0);
+  let expectedAlternates = 0;
+  for (const lesson of COURSE_LESSONS) for (const wave of lesson.waves) for (const puzzle of [wave.main, wave.backup]) {
+    const board = new Chess(puzzle.fen);
+    puzzle.moves.forEach((uci, index) => {
+      if (index % 2) {
+        const expected = new Chess(board.fen()); expected.move(uciMove(uci));
+        if (expected.isCheckmate()) for (const move of board.moves({ verbose: true })) {
+          const other = new Chess(board.fen()); other.move(move);
+          if (move.lan !== uci && other.isCheckmate()) expectedAlternates += 8;
+        }
+      }
+      board.move(uciMove(uci));
+    });
+  }
   for (const [index, lesson] of COURSE_LESSONS.entries()) {
     for (const [wave, pair] of lesson.waves.entries()) {
       for (const backup of [false, true]) {
@@ -30,6 +46,7 @@ it('recovers every playable solver state and alternate immediate mate across all
             save.active = { lessonId: lesson.id, run };
             persistJourney(save);
             const restored = loadJourney();
+            roundTrips++;
             expect(restored, `${puzzle.id} ${difficulty} step ${step}`).not.toBeNull();
             expect(restored!.active!.run.fen).toBe(run.fen);
             expect(restored!.active!.run.status).toBe('lost');
@@ -52,6 +69,7 @@ it('recovers every playable solver state and alternate immediate mate across all
                   if (settled) settleJourney(candidate);
                   persistJourney(candidate);
                   const recovered = loadJourney();
+                  alternates++;
                   expect(recovered, `alternate ${puzzle.id} ${move.lan}`).not.toBeNull();
                   expect(recovered!.completed.includes(lesson.id)).toBe(wave === lesson.waves.length - 1);
                   expect(recovered!.attempts).toBe(1);
@@ -70,4 +88,7 @@ it('recovers every playable solver state and alternate immediate mate across all
       }
     }
   }
+  expect(roundTrips).toBe(expectedRoundTrips);
+  expect(alternates).toBe(expectedAlternates);
+  expect(alternates).toBeGreaterThan(0);
 }, 30_000);

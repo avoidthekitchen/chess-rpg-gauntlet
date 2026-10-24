@@ -1,7 +1,8 @@
+import oldJourneyFixture from './fixtures/journey-two-chapters-v1.json';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { moveAmbush, nextAmbushWave, wavePuzzle, type AmbushRun } from './game/ambush';
 import { COURSE_REGIONS, courseLesson } from './game/curriculum';
-import { beginJourneyLesson, journeyComplete, newJourney, regionUnlocked, settleJourney } from './game/journey';
+import { beginJourneyLesson, journeyComplete, newJourney, lessonUnlocked, regionUnlocked, settleJourney } from './game/journey';
 import { clearJourney, JOURNEY_KEY, loadJourney, persistJourney } from './journeySave';
 
 const data = vi.hoisted(() => new Map<string, string>());
@@ -58,24 +59,8 @@ describe('journey storage', () => {
     expect(loadJourney()!.attempts).toBe(1);
   });
   it('loads the accepted two-chapter save with earned stars and opens the appended chapter', () => {
-    const save = newJourney('squire', 'r');
-    for (const region of COURSE_REGIONS.slice(0, 2)) for (const id of region.lessons) {
-      expect(beginJourneyLesson(save, id)).toBe(true);
-      const def = courseLesson(id)!;
-      while (save.active!.run.status !== 'won') {
-        const run = save.active!.run;
-        save.active!.run = run.status === 'waveWon' ? nextAmbushWave(def, run)
-          : moveAmbush(def, run, wavePuzzle(def, run).moves[1 + 2 * run.step]).run;
-      }
-      settleJourney(save);
-    }
-    // Old version-1 saves end on the Kingsroad and have no finale flag.
-    save.currentRegion = 'r2';
-    save.stars[COURSE_REGIONS[0].lessons[0]] = { clean: false, noHint: true };
-    const before = JSON.parse(JSON.stringify(save));
-    const { finaleComplete: omitted, ...oldSave } = save;
-    expect(omitted).toBe(false);
-    data.set(JOURNEY_KEY, JSON.stringify(oldSave));
+    const before = oldJourneyFixture;
+    data.set(JOURNEY_KEY, JSON.stringify(before));
     const loaded = loadJourney()!;
     expect(loaded.finaleComplete).toBe(false);
     expect(loaded.completed).toEqual(before.completed);
@@ -83,12 +68,28 @@ describe('journey storage', () => {
     expect(loaded.attempts).toBe(12);
     expect(loaded.currentRegion).toBe('r2');
     expect(regionUnlocked(loaded, 'r3')).toBe(true);
-    expect(regionUnlocked(loaded, 'r4')).toBe(false);
+    expect(lessonUnlocked(loaded, 'r3-escape-pins')).toBe(false);
     expect(data.get('gauntlet-save-v1')).toBe('old campaign');
     expect(data.get('pawnshire-ambush-pilot-v1')).toBe('old pilot');
   });
 
-  it('rejects corrupt, unknown, skipped and impossible saves without touching other saves', () => {
+  it('retires an obsolete in-flight source without losing earlier chapters or counting twice', () => {
+    data.set(JOURNEY_KEY, JSON.stringify(oldJourneyFixture));
+    const save = loadJourney()!;
+    expect(beginJourneyLesson(save, 'r3-pins')).toBe(true);
+    save.active!.run.step = 999;
+    persistJourney(save);
+    const restored = loadJourney()!;
+    expect(restored.active).toBeNull();
+    expect(restored.completed).toEqual(oldJourneyFixture.completed);
+    expect(restored.stars).toEqual(oldJourneyFixture.stars);
+    expect(restored.attempts).toBe(13);
+    expect(restored.lastResult).toMatchObject({ won: false, interrupted: true });
+    expect(loadJourney()!.attempts).toBe(13);
+    expect(loadJourney()!.stars).toEqual(oldJourneyFixture.stars);
+  });
+
+  it('rejects corrupt progress but retires impossible attempts without losing earned progress', () => {
     const corrupt = [null, [], { ...newJourney(), difficulty: 'toString' },
       { ...newJourney(), completed: [COURSE_REGIONS[1].lessons[0]] },
       { ...newJourney(), completed: ['unknown'] }, { ...newJourney(), currentRegion: 'unknown' }];
@@ -101,7 +102,11 @@ describe('journey storage', () => {
     for (const patch of [{ wave: 99 }, { step: 100000 }, { backupWave: -1 }, { status: 'won' },
       { status: 'solving', settled: true }, { misses: 3 }, { hintsUsed: -1 }]) {
       persistJourney({ ...save, active: { ...save.active!, run: { ...save.active!.run, ...patch } as AmbushRun } });
-      expect(loadJourney()).toBe(null);
+      const loaded = loadJourney()!;
+      expect(loaded).not.toBeNull();
+      expect(loaded.active).toBeNull();
+      expect(loaded.completed).toEqual(save.completed);
+      expect(beginJourneyLesson(loaded, first)).toBe(true);
     }
     expect(data.get('gauntlet-save-v1')).toBe('old campaign');
   });

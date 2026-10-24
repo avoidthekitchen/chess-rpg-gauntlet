@@ -1,5 +1,18 @@
 # Build progress
 
+One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
+
+## 2026-10-24 — Address the five PR reviews
+
+- Corrected teaching sources, narrowed unsupported claims and strengthened tests around the actual chess decisions.
+- Mixed review order, added missing file coverage and retained Region 5's saved unlock order.
+- Repaired derived completion and obsolete attempts. Staging now has a separate save key, with one-time copying and rejected-save recovery.
+- Moved faction presentation content into `src/game`, documented species, and removed repeated story reveals.
+- Fixed demonstration rotation, setup-dialogue timing, victory text clipping, chapter-picker focus and journal navigation.
+- Type-check, build and 492 tests passed. All 273 published puzzle records matched the local source database.
+- Fresh normal-control preview runs completed Region 3 and the finale in phone WebKit, and Region 4 in desktop Chromium.
+- The release record distinguishes these runs from earlier full journeys. Legacy failures remain unwaived; PRs remain draft.
+
 ## 2026-10-24 — Finale review follow-up
 
 - Repair the derived finale flag without discarding completed lessons or stars. Invalid terminal wins settle without credit or lockout.
@@ -45,7 +58,7 @@ See the [release record](complete-journey-release.md) for stacked PRs, validatio
 - Corrected a misleading retry promise: repeated failure uses the same backup, rather than promising a fresh board every time.
 - A real browser check found the completed-example takeaway clipped at 375×553. It now replaces the redundant demonstration advice.
 - The existing demonstration remains in conversation history. Main practice advice and the fixed 44px controls are preserved.
-- Final `npm run check` passed type-check, build, and 470 tests across 32 files.
+- At integration revision `1859ee8`, `npm run check` passed type-check, build, and 470 tests across 32 files.
 - Full `npm run ci -- --full` completed: boss passed; battles passed ten of eleven tests, including repeatability. Its engine stage took 1,833.49 seconds.
 - The full command exited 1 for trades Brave wins: 21/24 (87.5%), below 90%. No other final engine test failed; this gate remains unwaived.
 - The original full baseline finished: boss passed, battles passed nine of ten tests, with guard Brave flawless 11/23 below 50%.
@@ -103,14 +116,13 @@ See the [release record](complete-journey-release.md) for stacked PRs, validatio
 - Pin escape covers capturing the pinning attacker. Wider escape methods remain unclaimed.
 - Maps and progress totals now follow registered chapters. Old version-1 saves retain completion and stars.
 - Added a compact chapter picker, replayable chapter endings, Cult dialogue, and an illustrated Cult landscape.
-- `npm run ci` passed: type-check, build, and 405 tests at that checkpoint, including concurrently prepared content tests.
+- The isolated Region 3 snapshot passed type-check, build, and 395 tests. The earlier workspace total of 405 included concurrent content tests.
 - Independent Chromium checks at 375×553 and 844×390 showed complete current advice and 44×44 history targets.
 - Full baseline regression was started before implementation. Legacy `r1-guard` failed its Brave flawless bonus: 11/23 wins, below 50%.
 - Boss checks were still running at this checkpoint. No threshold was lowered and no legacy waiver was assumed.
 - Complete normal-UI desktop/WebKit runs and public staging verification continue in the integration record.
 
 
-One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
 ## Reconciled foundation and Region 3 handoff
 

@@ -2,7 +2,7 @@ import { Chess, type Move, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
-import { journeyMilestone, beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
+import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
@@ -131,7 +131,8 @@ export class CoursePlayScene extends BaseScene {
     this.feedbackLayoutPending = false;
     // Transient moments are discarded when a deferred resize rebuilds the board.
     this.cue = null;
-    coverImage(this, courseRegion(this.lesson.regionId)?.mapArt ? `bg-${courseRegion(this.lesson.regionId)!.mapArt}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
+    const art = courseRegion(this.lesson.regionId)?.mapArt;
+    coverImage(this, art ? `bg-${art}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
       faction: 'bog', style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
@@ -186,9 +187,9 @@ export class CoursePlayScene extends BaseScene {
     else if (this.phase === 'taught') actions = this.btn(this.exampleOnly ? 'home' : 'begin', this.exampleOnly ? 'Back to journal' : 'Try it yourself', true) + this.btn('watch', 'Watch again');
     else if (['solving', 'replying', 'setup'].includes(this.phase)) actions = help.hints ? this.btn('hint', 'Hint: show a piece', false, this.phase !== 'solving' || this.busy) : '<span class="ambush-nohelp">No hints on this difficulty</span>';
     else if (this.phase === 'waveWon') actions = this.btn('next', 'Next position', true);
-    else if (this.phase === 'won') actions = this.btn('home', def.id === 'finale-last-board' ? 'See the ending' : def.id === 'finale-threshold' ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
+    else if (this.phase === 'won') actions = this.btn('home', def.id === finalEncounter() ? 'See the ending' : def.regionId === finaleChapter()?.id && def.id !== finalEncounter() ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
     else if (this.phase === 'lost') actions = this.btn('begin', 'Try again', true) + this.btn('home', 'Back to map');
-    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.id === 'finale-threshold' ? 'First table complete' : def.id === 'finale-last-board' ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
+    const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.regionId === finaleChapter()?.id && def.id !== finalEncounter() ? 'First table complete' : def.id === finalEncounter() ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
     const coach = this.phase === 'taught' ? def.takeaway : teaching ? def.showLines[this.save.starter]
       : this.phase === 'solving' && run && !def.review && (help.coaching === 'all' || help.coaching === 'first' && run.wave === 0)
         ? run.step === 0 ? def.waves[run.wave].line
@@ -208,7 +209,7 @@ export class CoursePlayScene extends BaseScene {
     const result = this.phase === 'won' ? `<div class="ambush-result course-victory">${courseDialogueRow(companionReaction(this.save.starter, 'win'), 'course-victory-voice')}
       <div class="course-stars" aria-label="Lesson stars">${[['Finished', this.save.completed.includes(def.id)], ['No misses', stars?.clean], ['No hints', stars?.noHint]].map(([label, earned]) => `<span role="img" aria-label="${label}: ${earned ? 'earned' : 'not earned'}${this.earnedStars.includes(String(label)) ? ', new star' : ''}" class="${earned ? 'earned' : ''} ${this.earnedStars.includes(String(label)) ? 'new-star' : ''}"><b aria-hidden="true">${earned ? '★' : '☆'}</b>${label}${this.earnedStars.includes(String(label)) ? '<small>New star</small>' : ''}</span>`).join('')}</div>
       <p>${esc(def.takeaway)}</p>${def.after.map(s => `<p>${esc(s)}</p>`).join('')}</div>`
-      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1. The missed position uses its backup.</p></div>` : '';
+      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1. A similar position replaces the one you first missed.</p></div>` : '';
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);
@@ -283,7 +284,9 @@ export class CoursePlayScene extends BaseScene {
     await this.holds.wait(650); if (token !== this.session) return;
     await this.play(this.puzzle.moves[0], token); if (token !== this.session) return;
     this.phase = 'solving';
-    this.message = this.chess.isCheck() ? 'Your king is in check. Find the best reply.' : this.lesson.review ? 'Your move. Look for checks, captures and threats.' : this.lesson.objective;
+    // Setup flavour stays in history; the learner sees the objective before choosing.
+    this.speech.dismiss();
+    this.message = this.chess.isCheck() ? 'Your king is in check. Find the best reply.' : this.lesson.objective;
     this.refresh(); this.flushLayout();
   }
 
@@ -313,6 +316,8 @@ export class CoursePlayScene extends BaseScene {
     this.busy = true;
     const animation = this.board?.animateMove(move); this.refresh();
     await animation; if (token !== this.session) return;
+    // Rebuild at the first idle point, before the next cue or dialogue begins.
+    this.busy = false; this.flushLayout(); this.busy = true;
     if (!silent) {
       const cues = courseMoveCues(this.chess, move, accepted, this.puzzle.id, publishedIndex);
       const info = courseMoveSpeaker(move, this.solver, cues, this.lesson.regionId);
@@ -322,7 +327,7 @@ export class CoursePlayScene extends BaseScene {
       }
       this.speech.show(info);
     }
-    this.busy = false; this.refresh();
+    this.busy = false; this.flushLayout(); this.refresh();
   }
 
   private async moveMoment(move: Move, info: SpeakerInfo, labels: CourseCue[], token: number) {
@@ -402,7 +407,7 @@ export class CoursePlayScene extends BaseScene {
     }
     this.phase = 'replying'; this.hintSquare = null;
     this.speech.clear();
-    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : 'Your move…';
+    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : 'Good move. Watch their reply…';
     for (let i = 0; i < outcome.moves.length; i++) {
       await this.play(outcome.moves[i], token, outcome.verdict !== 'miss' && i === 0, 1 + run.step * 2 + i, outcome.verdict === 'miss'); if (token !== this.session) return;
       if (i < outcome.moves.length - 1) {

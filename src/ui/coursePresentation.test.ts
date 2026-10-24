@@ -70,14 +70,15 @@ describe('lesson speakers and story', () => {
 
   it('names each review host and uses chapter identity for reused enemy art', () => {
     const hosts: Record<string, string> = { r3: 'The Cult Leader', r4: 'General Flint', r5: 'The Bone Wardens' };
-    const titles: Record<string, string> = { r3: 'Shadow Cult', r4: 'The Iron March', r5: 'The Bone Wardens' };
+    const names: Record<string, string> = { r3: 'Cult Mouse Pawn', r4: 'Legion Mouse Pawn', r5: 'Skeleton Mouse Pawn' };
+    const prefixes: Record<string, string> = { r3: 'Cult ', r4: 'Legion ', r5: 'Skeleton ' };
     for (const lesson of COURSE_LESSONS.filter(lesson => lesson.regionId in hosts)) {
       const intro = courseIntro(lesson, 'b');
-      expect(intro[0].name).toBe(lesson.review ? hosts[lesson.regionId] : `${titles[lesson.regionId]} · pawn`);
+      expect(intro[0].name).toBe(lesson.review ? hosts[lesson.regionId] : names[lesson.regionId]);
       const chess = new Chess(lesson.show.fen);
       const move = chess.move(uciMove(lesson.show.moves[0]));
       const foe = courseMoveSpeaker(move, chess.turn(), [], lesson.regionId);
-      expect(foe.name).toContain(`${titles[lesson.regionId]} · `);
+      expect(foe.name).toContain(prefixes[lesson.regionId]);
       expect(foe.line).not.toMatch(/toll|road|squelch/i);
     }
   });

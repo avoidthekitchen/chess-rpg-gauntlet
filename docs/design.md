@@ -42,7 +42,7 @@ Scheduled refreshers and dedicated technique exercises are planned, not part of 
 ## Built and next
 
 Regions 1–5 and the Lich King finale are implemented, using 273 distinct published positions.
-The first two chapters have five lessons each; the Cult adds six lessons and a seven-wave mixed review.
+The first two chapters have five lessons each. Regions 3–5 have six lessons each, with seven-, six-, and six-wave reviews.
 The review build is published on [staging](https://unformedideas.com/staging-chess-rpg/).
 The original game at `/chess-rpg/` remains separate until an explicit production release.
 

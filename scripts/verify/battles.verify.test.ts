@@ -106,7 +106,9 @@ it('repeats a seeded game across reused and fresh engines', async () => {
   const play = (engine: NodeEngine) => playGame(def, DIFFICULTIES.knight.ai, 'competent', engine, seededRng(seed));
   const first = await play(engines[0]);
   expect(await play(engines[0])).toEqual(first);
-  if (engines.length > 1) expect(await play(engines[1])).toEqual(first);
+  const fresh = new NodeEngine();
+  try { await fresh.ready; expect(await play(fresh)).toEqual(first); }
+  finally { fresh.quit(); }
 });
 
 describe.each(battles.map((b) => [b.id, b] as const))('%s', (_id, def) => {

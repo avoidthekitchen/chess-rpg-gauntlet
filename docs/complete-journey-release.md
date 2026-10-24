@@ -18,7 +18,26 @@ The complete curriculum has 28 guided lessons, five regional reviews, and two fi
 All earlier source positions and completion IDs remain unchanged. Stars and help settings never gate the story.
 Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Dedicated faction portraits remain future work.
 
-## Validation record
+## Review follow-up (2026-10-24)
+
+The review candidate uses staging bundle `index-DhffRnHC.js`. Publication details follow in the staging record.
+
+- Type-check, build, and 492 tests in 37 files passed. All 273 published records match the local Lichess download.
+- Regional fixes correct pin, discovery, defence and underpromotion claims. Mechanism tests check the stated chess decisions.
+- Reviews mix their taught skills; Region 4 now assesses file tactics. Region 5 retains its existing lesson unlock order.
+- Independent reviewers checked corrected teaching evidence, save recovery, navigation and mobile presentation.
+- Current coverage is 529 solver states and ten alternative mates including examples; practice recovery covers 1,860 round trips and 64 alternative-mate cases.
+- WebKit at 393×852 completed all seven Region 3 encounters (25 waves, 48 solver moves) and both finale encounters (eight waves, 17 moves).
+- Desktop Chromium at 1280×800 completed all seven Region 4 encounters, including its revised review.
+- These runs used the explicit region-preview links. Earlier prerequisites were marked complete by preview mode; they were not replayed.
+- Published solutions supplied the move oracle, with real board input. App errors and failed requests were absent.
+- The harness initially checked for chapter stories before queued navigation finished. Recovery used earned browser storage; no gameplay state was injected.
+- WebKit rotation during the first demonstration move showed later dialogue before the demonstration ended. Phone victory text fit without clipping.
+- Additional layouts covered 375×812, 375×553 and 844×390, plus history, classic pieces and reduced motion.
+- Four existing landscapes were recompressed at unchanged dimensions: 2,124,970 bytes became 1,663,962 bytes.
+- The full legacy engine rerun is recorded separately below; its trades failure remains an unwaived release gate.
+
+## Original integration validation (`1859ee8`)
 
 - Applicable chapter CI passed at each review boundary.
 - Each exact committed PR snapshot also passed type-check, build, and tests independently: R3 395, R4 398, R5 407, finale 456.
@@ -27,7 +46,7 @@ Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Ded
 - Independent reviews inspected each new teaching mechanism and prerequisite. The pawn-race exception was moved into required practice before review.
 - An independent finale harness passed 175 state scenarios across every difficulty and every final-encounter backup configuration.
 - A fresh integrated review independently found 273 unique post-setup boards and checked 529 solver states, including 11 alternative immediate mates.
-- Final type-check, production build, and 470 tests across 32 files passed.
+- At integration revision `1859ee8`, type-check, production build, and 470 tests across 32 files passed.
 - Retained tests cover 1,860 playable save round trips and 72 alternative-mate recovery cases across all four help settings.
 - Desktop Chromium on Brave difficulty completed all 35 encounters and 119 main positions through normal controls: 105 stars, 37 attempts.
 - Touch WebKit Gentle completed the same route at 393×852: 105 stars, 35 attempts, and 231 move inputs.
@@ -53,7 +72,7 @@ The simulated player's short planning horizon does not establish a chess-rule de
 The final `npm run ci -- --full` completed its engine stage in 1,833.49 seconds: 11 tests passed and one failed.
 The Goblin Chief suite passed. Battle checks passed ten of eleven tests, including the new repeatability test.
 The only final failure was the same trades Brave cell: 21/24 wins, below 90%.
-The command exited 1. Its quick stage passed 465 tests; later UI/test changes passed the separate final 470-test check.
+The command exited 1. Its quick stage passed 465 tests; integration revision `1859ee8` passed the separate 470-test check.
 The final UI patch did not change engine inputs or behavior. No full engine result is claimed for a different engine implementation.
 These failures are not waived by earlier release decisions. All five PRs remain draft pending review and resolution of the release bar.
 
@@ -79,7 +98,7 @@ The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gau
 
 ### Board visibility follow-up
 
-Current application revision: `a70192ef8bcf69981dbc9b50ebfc3b7b790231c9`.
+Previously deployed application revision: `a70192ef8bcf69981dbc9b50ebfc3b7b790231c9`.
 Cloudflare version: `994caac9-a981-49c5-9aa1-baa51d6b5efd`.
 Compact dialogue and capture/check/mate cards cover advice, leaving the board and action buttons clear.
 Desktop layouts keep their dedicated dialogue space. Opaque cards prevent text from blending with underlying advice.
@@ -130,11 +149,14 @@ Production at `/chess-rpg/` is outside this task.
 6. For rollback, prefer a known-good build that understands all 35 completion IDs and the finale flag. Recheck its save reader before restoring it.
 
 Staging and production share an origin. Browser storage is shared across their URL paths.
-The chosen behavior carries `pawnshire-journey-v1` progress from preview into the complete production journey.
+Staging now writes `pawnshire-staging-journey-v1`; production keeps `pawnshire-journey-v1`.
+On the first normal staging visit, existing shared progress is copied once if no staging save exists.
+Staging play and reset never write or remove production progress. Region shortcuts keep separate `pawnshire-preview-v1:<id>` entries.
 The existing legacy campaign uses `gauntlet-save-v1`; the pilot uses `pawnshire-ambush-pilot-v1`. Neither is migrated or erased.
-An older two-chapter journey reader rejects saves containing later lesson IDs. It leaves the raw entry intact until a new journey overwrites it.
+An older two-chapter production reader rejects later lesson IDs. The new staging key prevents future staging visits from causing this mismatch.
+The current reader preserves the first rejected raw save under `<journey-key>:recovery`. It repairs derived finale flags and retires obsolete active attempts.
 Do not start a new journey after such a rollback if that progress must be recovered. Restore a compatible build or the saved backup first.
-New Journey keeps its confirmation when a valid journey exists and resets only the journey key.
+New Journey keeps its confirmation when a valid journey exists and resets only its current journey key. Recovery backups and the one-time import marker survive reset.
 
 ## What this release does not establish
 

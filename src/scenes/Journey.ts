@@ -1,3 +1,4 @@
+import { courseCast } from '../game/courseCast';
 import { STARTERS, type StarterType } from '../game/campaign';
 import { COURSE_LESSONS, COURSE_REGIONS, courseLesson, courseRegion } from '../game/curriculum';
 import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
@@ -101,13 +102,13 @@ export class JourneyScene extends BaseScene {
       const chapter = courseRegion(this.storyRegion)!;
       const nextChapter = COURSE_REGIONS[COURSE_REGIONS.indexOf(chapter) + 1];
       const lines = chapterStory(chapter.id, save.starter);
-      const heading = ({ r3: 'The bindings are broken.', r4: 'The banners come home.', r5: 'The gate is open.' } as Record<string, string>)[chapter.id] ?? `${chapter.title} is free.`;
+      const heading = courseCast(chapter.id).endingTitle;
       body = `<section class="journey-paper journey-story"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p><h1>${esc(heading)}</h1><p class="journey-story-lead">${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => `<blockquote><p>${esc(line.line)}</p><cite>${esc(line.speaker)}</cite></blockquote>`).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
     } else if (this.page === 'settings') {
       body = `<section class="journey-paper journey-settings"><h1>Make yourself at home</h1><p>Adjust the help and choose your companion. Your lessons and stars stay earned.</p>${this.options()}<div class="journey-actions">${this.btn('page:map', 'Back to the journey', 'primary')}${this.btn('moves', 'Piece movement guide')}${this.btn('page:title', 'Title screen')}</div><hr><h2>A fresh start</h2><p>Reset all lessons and stars in this journey.</p>${this.btn('reset', 'Reset journey', 'quiet')}</section>`;
     } else if (this.page === 'journal') {
       const learned = COURSE_LESSONS.filter(l => save.completed.includes(l.id) && !l.review);
-      body = `<section class="journey-paper"><p class="journey-kicker">${esc(STARTERS[save.starter].name)}’s field notes</p><h1>Your chess journal</h1><p>Keep the ideas you have learned close at hand. Examples are free to revisit.</p><div class="journey-notes">${learned.length ? learned.map(l => `<article><p class="journey-kicker">${esc(courseRegion(l.regionId)!.title)}</p><h2>${esc(l.theme)}</h2><p>${esc(l.takeaway)}</p>${this.btn(`example:${l.id}`, 'Watch the example')}</article>`).join('') : `<p class="journey-empty">Finish your first lesson to add its idea here.</p>${this.btn('page:map', 'Find your first lesson', 'primary')}`}</div><footer class="journey-credits"><h2>From real games to your board</h2><p>Positions and solution lines come from the <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a> (CC0). The stories and companion notes are ours. Source links appear after each position.</p><p>Need the basics? <a href="https://lichess.org/learn" target="_blank" rel="noopener">Learn how the pieces move on Lichess</a>.</p></footer></section>`;
+      body = `<section class="journey-paper"><p class="journey-kicker">${esc(STARTERS[save.starter].name)}’s field notes</p><h1>Your chess journal</h1><p>Keep the ideas you have learned close at hand. Examples are free to revisit.</p><nav class="journey-journal-jump" aria-label="Journal chapters">${COURSE_REGIONS.filter(r => learned.some(l => l.regionId === r.id)).map(r => this.btn(`journal:${r.id}`, r.title)).join('')}</nav><div class="journey-notes">${learned.length ? learned.map(l => `<article data-journal-region="${l.regionId}"><p class="journey-kicker">${esc(courseRegion(l.regionId)!.title)}</p><h2>${esc(l.theme)}</h2><p>${esc(l.takeaway)}</p>${this.btn(`example:${l.id}`, 'Watch the example')}</article>`).join('') : `<p class="journey-empty">Finish your first lesson to add its idea here.</p>${this.btn('page:map', 'Find your first lesson', 'primary')}`}</div><footer class="journey-credits"><h2>From real games to your board</h2><p>Positions and solution lines come from the <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a> (CC0). The stories and companion notes are ours. Source links appear after each position.</p><p>Need the basics? <a href="https://lichess.org/learn" target="_blank" rel="noopener">Learn how the pieces move on Lichess</a>.</p></footer></section>`;
     } else {
       const finished = journeyComplete(save);
       const next = COURSE_LESSONS.find(l => !save.completed.includes(l.id) && lessonUnlocked(save, l.id));
@@ -193,6 +194,9 @@ export class JourneyScene extends BaseScene {
     if (action.startsWith('region:')) {
       const id = action.split(':')[1]; if (!regionUnlocked(this.save, id)) return;
       this.save.currentRegion = id; persistJourney(this.save); this.rebuild(); this.hud.querySelector<HTMLSelectElement>('[data-region-picker]')?.focus(); this.hud.scrollTop = 0; return;
+    }
+    if (action.startsWith('journal:')) {
+      this.hud.querySelector(`[data-journal-region="${action.slice(8)}"]`)?.scrollIntoView({ block: 'start' }); return;
     }
     if (action.startsWith('lesson:') || action.startsWith('example:')) {
       const id = action.split(':')[1]; if (!lessonUnlocked(this.save, id)) return;

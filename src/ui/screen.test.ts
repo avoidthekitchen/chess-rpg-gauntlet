@@ -78,6 +78,14 @@ function legacyGoTo(game: Phaser.Game, key: string, data?: object) {
 }
 
 describe('screen transitions', () => {
+  it('leaves the current screen alone when a mode has no requested destination', () => {
+    const stop = vi.fn(), warning = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const game = { scene: { getScene: () => undefined, getScenes: () => [{ scene: { key: 'current', stop } }] } } as unknown as Phaser.Game;
+    goTo(game, 'unregistered');
+    expect(stop).not.toHaveBeenCalled();
+    expect(warning).toHaveBeenCalledWith('Unknown scene unregistered');
+    warning.mockRestore();
+  });
   it('initializes the destination only after outgoing HUD and save cleanup', () => {
     const exercise = (navigate: typeof goTo) => {
       const engine = new TransitionHarness();

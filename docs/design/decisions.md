@@ -10,13 +10,15 @@ Independent review, source verification, applicable CI, and browser checks remai
 
 ## Open TODOs
 
-- [ ] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
-- [ ] Deliver the remaining [syllabus](syllabus.md), preserving prerequisites and revisits across chapters.
+- [x] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
+- [x] Deliver the basic five-Region journey and finale, preserving prerequisites and revisits. Technique and refresher extensions remain below.
 - [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
 - [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
-- [ ] Add missing story transitions and ally scenes; distinguish planned scenes from built ones.
+- [x] Add chapter transitions, named ally appearances, the finale interlude, and a saved ending.
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
 - [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
+
+- [ ] Resolve the unwaived legacy trades Brave 21/24 failure before merge or production release ([#42](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42)). The earlier unseeded guard 11/23 failure is retained as history. Only the owner may waive a release bar.
 
 ## Open questions
 
@@ -38,6 +40,9 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | Review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
+| 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |
+| 2026-10-24 | Faction species labels are canonical even while art is reused. `src/game/courseCast.ts` owns chapter voices, openings, species, and ending headings. Dedicated faction portraits remain follow-up work. |
 | 2026-10-24 | Owner prioritizes seeing piece movement. Compact dialogue and move banners overlay lesson advice, never board squares or action buttons. Desktop uses the dialogue space beside the board. |
 | 2026-10-24 | Staging and development accept `?region=1`–`5` or `finale`. Each region preview uses separate test storage and marks only earlier chapters complete. Production ignores the shortcut. |
 | 2026-10-24 | The finale has two four-wave reviews and a separate interlude. Actual final checkmate sets an explicit saved completion flag before animation. Ending and earlier lessons remain replayable. |

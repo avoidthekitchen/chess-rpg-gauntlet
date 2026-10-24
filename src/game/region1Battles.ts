@@ -56,11 +56,11 @@ export const REGION1_BATTLES: BattleDef[] = [
     shouts: true,
   },
   {
-    // Villages c3 (guarded by the b2 bishop) and f3 (knight and pawn). Shout: Na4xb2, taking
-    // the c3 guard, so Bxg7 is safe and the raider lands where the bishop takes it back.
-    // Second wave: the e-pawn races for e1 (Nf3 and Rb1 meet it), then the c-pawn and the
-    // g5 knight come for c3 and f3. Keep both villages guarded at least as often as they're
-    // attacked, and capture every raider that lands.
+    // Villages c4 (guarded by the d2 knight) and e3 (the e1 rook). Shout: Na4xb2. The bishop
+    // isn't a village guard, but if it falls the b2 knight joins the attack on c4 and Nd2 is
+    // outnumbered. So step it away first (Be5 or Ba1). Then the pawns walk onto the villages,
+    // c5-c4 and e4-e3, and each one must be taken at once. Don't lure Nd2 or Re1 off their
+    // posts: count each village's guards against its attackers after every enemy move.
     id: 'r1-guard',
     kind: 'siege',
     theme: 'Protection',
@@ -70,9 +70,9 @@ export const REGION1_BATTLES: BattleDef[] = [
     intro: 'Mudfoot raiders want to stomp through the two villages by the bridge. Hold them off until the lanterns are lit.',
     lesson:
       'A square is safe when you guard it at least as many times as the enemy attacks it. When a guard is attacked, move it to a square where it still guards, or protect it, before doing anything else. Count again after every enemy move.',
-    fen: '6k1/5pp1/7p/2p3n1/n3p3/8/1B1N2PP/3R2K1 w - - 0 1',
+    fen: '6k1/5pp1/7p/2p3n1/n3p3/8/1B1N2PP/4R1K1 w - - 0 1',
     objective: { kind: 'survive', turns: 7 },
-    villages: ['c3', 'f3'],
+    villages: ['c4', 'e3'],
     reward: 20,
     bonuses: [
       { kind: 'flawless', gold: 5 },

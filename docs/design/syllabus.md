@@ -42,21 +42,21 @@ Borrow sequencing ideas only. Do not copy these authors' exercises, explanations
 | Region 1 · The Bog | Loose pieces; safe captures; answering check by capturing the checker; back-rank mate; promotion to checkmate; Grubnak's mixed review. | Piece movement, inspecting replies, material counting, basic mate and promotion. | Answering check covers selected captures, not every escape. Promotion examples do not teach pawn-ending technique. |
 | Region 2 · The Kingsroad | Knight forks; queen double attacks; double check; removing defenders; mate in two; Ashfang's mixed review. | Two targets, forcing checks, removing a guard, planning a reply and finish. | Fork examples use checks. This does not establish general fork prevention or quiet double attacks. |
 
-Each existing Region has five three-wave lessons and a four-wave review. Preserve their content and saved completion.
+Each of these first two Regions has five three-wave lessons and a four-wave review. Preserve their content and saved completion.
 Double check stays in Region 2. Later discoveries explain and revisit its mechanism; they do not relocate the lesson.
 
-## Remaining core path
+## Completed core path
 
 All rows use unchanged [Lichess database puzzles](https://database.lichess.org/#puzzles), with original coaching.
 Tags below are candidate searches, not proof of teaching fit. Verify the actual board and complete published line.
-Region 3 has 57 verified sources; Regions 4 and 5 each have 55. Later counts are planning targets. Split an overloaded lesson when needed; do not force every chapter into five lessons.
+Region 3 has 57 verified sources; Regions 4 and 5 each have 55. The finale adds 18. All 273 source positions are distinct. Split an overloaded lesson when needed; do not force every chapter into five lessons.
 
 | Stage and order | Skill sequence | Prerequisites | Published source candidates | Spaced revisits and mixed assessment |
 | --- | --- | --- | --- | --- |
 | Region 3 · Shadow Cult | Six lessons: exploit pins; capture the pinning attacker; checking skewers; x-ray exchanges; checking discoveries; double-check revisit. | R1 reply checking and king safety; R2 two targets and defender removal. | `pin`; `pin` plus `defensiveMove`; `skewer`; `xRayAttack`; `discoveredAttack`; `doubleCheck`. See the detailed brief. | Return to safe captures in pins, defender removal in x-rays, and R2 double check after discoveries. Seven fresh review waves cover five new mechanisms and two earlier strands. |
 | Region 4 · Iron Legion | Six lessons: bishop development with check; file tactics; exposed-king checking sequences; deflection; intermediate checking captures; captures that stop a mating threat. | R1 safe exchanges; R2 mate in two and defender removal; R3 line tactics and defensive calculation. | `opening` with a verified developing move; `backRankMate` or `rookEndgame` on a decisive file; `exposedKing`; `deflection`, `capturingDefender`; `intermezzo`; `defensiveMove`. | Revisit pins before deflection and safe trades before intermediate moves. Six fresh review waves mix coordination, combinations, defence, and earlier line tactics. |
 | Region 5 · Bone Wardens | Six lessons: advance a passed pawn; calculate a pawn race; use a safe king route to capture pawns; rook checks supporting promotion; rook skewers; choose the only promotion that mates immediately. | R1 promotion; R2 forcing replies; R3 skewers; R4 intermediate moves and deflection. | `advancedPawn`, `promotion`, `pawnEndgame`; `rookEndgame` with verified rook support; `skewer`, `deflection`; `underPromotion`. | Revisit promotion early, then return to skewers after pawn work. Six fresh review waves mix pawn and rook decisions with earlier tactics. |
-| Finale · The Lich King | Two four-wave mixed encounters, separated by a short story beat. No new required motif. | Completed chapter reviews and every skill actually used in the selected lines. | Fresh puzzles drawn from the taught source families. Include attack, defence, a mating finish, and a short endgame decision. | First set spans earlier Regions; second combines familiar mechanisms and ends with a taught mating finish. Keep both unlabeled. No full live game is required. |
+| Finale · The Lich King | Two four-wave mixed encounters, separated by a short story beat. No new required motif. | Completed chapter reviews and every skill actually used in the selected lines. | Fresh puzzles drawn from the taught source families. Include attack, defence, a mating finish, and a short endgame decision. | First set assesses Regions 2, 4, and 5; second also draws on Regions 1 and 3 and combines familiar mechanisms and ends with a taught mating finish. Keep both unlabeled. No full live game is required. |
 
 The finale ends with the Lich King accepting the actual checkmate on its final board. His refusal to lose is the story's conflict.
 The player succeeds by learning and retrying. Gauntlet work remains separate from completing this core journey.

@@ -129,3 +129,6 @@ No text or interface was generated. Compressed WebP is shipped; source PNG stays
 
 `map-region5.webp` continues the ink-and-watercolour direction: a moonlit keep, rocky paths, rivers, animal statues and skeleton sentries.
 The painted scene contains no text or interface. Existing piece portraits retain honest Bone Wardens identity text until dedicated skeleton portraits are available.
+
+`map-finale.webp` depicts a quiet ruined keep in violet shadow, warm light at its gate, winding bridges and open central ground.
+The same built-in image model generated the ink-and-watercolour landscape without interface text. It also backs the final story and credits.

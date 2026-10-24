@@ -1,0 +1,460 @@
+{
+  "database": "https://database.lichess.org/#puzzles",
+  "license": "CC0",
+  "scope": "Two mixed capstone encounters; no new motif. All prerequisite IDs name delivered lessons. Last main and backup both end in legal checkmate.",
+  "positions": [
+    {
+      "id": "ERa4T",
+      "lesson": "finale-threshold",
+      "slot": "example",
+      "kind": "skewer",
+      "prerequisites": [
+        "r3-skewers"
+      ],
+      "attacker": "d4",
+      "front": "f6",
+      "rear": "",
+      "target": "h8",
+      "threats": [],
+      "san": [
+        "Kxf6",
+        "Bd4+",
+        "Kf5",
+        "Bxh8"
+      ],
+      "explanation": "The bishop checks from d4; the king on f6 moves away and the bishop takes the rook behind it on h8.",
+      "sourceGame": "https://lichess.org/rXsjqndZ#89",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "565ef59da4892612de425512a45b522562ed35fbc59a13fe52cbf5151b6442c9"
+    },
+    {
+      "id": "3E96a",
+      "lesson": "finale-threshold",
+      "slot": "main-1",
+      "kind": "fork",
+      "prerequisites": [
+        "r2-knight-forks"
+      ],
+      "attacker": "c4",
+      "front": "",
+      "rear": "",
+      "target": "b2",
+      "threats": [],
+      "san": [
+        "Kxd6",
+        "Nc4+",
+        "Ke7",
+        "Nxb2"
+      ],
+      "explanation": "The knight checks from c4 and attacks the rook on b2. The published king reply allows the knight to capture that rook.",
+      "sourceGame": "https://lichess.org/Fwn5ITeh/black#102",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "81076a968952c246d0412f9bedc41d6c90af07c55e6af4bb8f91c3664cfa7fa8"
+    },
+    {
+      "id": "62A3N",
+      "lesson": "finale-threshold",
+      "slot": "backup-1",
+      "kind": "fork",
+      "prerequisites": [
+        "r2-knight-forks"
+      ],
+      "attacker": "e4",
+      "front": "",
+      "rear": "",
+      "target": "d2",
+      "threats": [],
+      "san": [
+        "Kf6",
+        "Ne4+",
+        "Kf7",
+        "Nxd2"
+      ],
+      "explanation": "The knight checks from e4 and attacks the rook on d2. The published king reply allows the knight to capture that rook.",
+      "sourceGame": "https://lichess.org/053wpIix/black#116",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "7bee5e3e1ab069a1e710fb669f114c78a7cae20f95b85672703f066ee9a3fb0f"
+    },
+    {
+      "id": "CBjXF",
+      "lesson": "finale-threshold",
+      "slot": "main-2",
+      "kind": "defend",
+      "prerequisites": [
+        "r4-defend"
+      ],
+      "attacker": "",
+      "front": "",
+      "rear": "",
+      "target": "",
+      "threats": [
+        "f8d8",
+        "d1d8"
+      ],
+      "san": [
+        "Rf8",
+        "Rxf8",
+        "Qg4+",
+        "Kb8"
+      ],
+      "explanation": "Without a response, the opponent has immediate mate with f8d8 or d1d8. Rxf8 removes every immediate mate; after Qg4+, Kb8 keeps the king safe.",
+      "sourceGame": "https://lichess.org/kj4QsiLz#53",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "7f9aa0ab5fda15e8ac4967a9193dbe57164f6a69b74cba5f7b20abedbe6908df"
+    },
+    {
+      "id": "IdUNF",
+      "lesson": "finale-threshold",
+      "slot": "backup-2",
+      "kind": "defend",
+      "prerequisites": [
+        "r4-defend"
+      ],
+      "attacker": "",
+      "front": "",
+      "rear": "",
+      "target": "",
+      "threats": [
+        "c3g7"
+      ],
+      "san": [
+        "Rxh7",
+        "Kxh7",
+        "Rh1+",
+        "Kg8"
+      ],
+      "explanation": "Without a response, the opponent has immediate mate with c3g7. Kxh7 removes every immediate mate; after Rh1+, Kg8 keeps the king safe.",
+      "sourceGame": "https://lichess.org/HExokNZa#47",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "7e26ca3504d60f21ad3eac1c5b55a2d67aa9996264ee14165c0587e19d584f8e"
+    },
+    {
+      "id": "JNKkg",
+      "lesson": "finale-threshold",
+      "slot": "main-3",
+      "kind": "passed",
+      "prerequisites": [
+        "r5-passed-pawns",
+        "r5-pawn-races"
+      ],
+      "attacker": "",
+      "front": "b5",
+      "rear": "",
+      "target": "b8",
+      "threats": [],
+      "san": [
+        "g4",
+        "b6",
+        "g3",
+        "b7",
+        "g2",
+        "b8=Q+"
+      ],
+      "explanation": "The pawn on b5 is passed: no enemy pawn ahead lies on its file or a neighbouring file. Three consecutive pushes promote on b8 with check, before the opposing pawn can promote.",
+      "sourceGame": "https://lichess.org/w0vWoyKc/black#76",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "c85f32cc0bac71db52f8604a89f753e6a82f6e95b4b03319de74a7c71be52ef6"
+    },
+    {
+      "id": "gI0hw",
+      "lesson": "finale-threshold",
+      "slot": "backup-3",
+      "kind": "passed",
+      "prerequisites": [
+        "r5-passed-pawns",
+        "r5-pawn-races"
+      ],
+      "attacker": "",
+      "front": "a4",
+      "rear": "",
+      "target": "a1",
+      "threats": [],
+      "san": [
+        "Kf6",
+        "a3",
+        "g6",
+        "a2",
+        "g7",
+        "a1=Q+"
+      ],
+      "explanation": "The pawn on a4 is passed: no enemy pawn ahead lies on its file or a neighbouring file. Three consecutive pushes promote on a1 with check, before the opposing pawn can promote.",
+      "sourceGame": "https://lichess.org/Ho5zAomp#87",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "342eb996ed76e1640c56ca93f1ba06d4267a0d0766d1f3263ca3cd3f12fa9a75"
+    },
+    {
+      "id": "0aWlo",
+      "lesson": "finale-threshold",
+      "slot": "main-4",
+      "kind": "queenMate",
+      "prerequisites": [
+        "r2-mate-in-two"
+      ],
+      "attacker": "",
+      "front": "",
+      "rear": "",
+      "target": "",
+      "threats": [],
+      "san": [
+        "Kb5",
+        "Qc6+",
+        "Ka5",
+        "Qa6#"
+      ],
+      "explanation": "The queen gives Qc6+; after the king replies Ka5, Qa6# delivers legal checkmate. This is the taught two-move calculation, not a general lone-king mating exercise.",
+      "sourceGame": "https://lichess.org/Z2eux0BX/black#98",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "949e3cc273e535e824c53e6dde2e6d5bb7494fa7f7cd8eceda5d0d42bd630ea2"
+    },
+    {
+      "id": "0RaDJ",
+      "lesson": "finale-threshold",
+      "slot": "backup-4",
+      "kind": "queenMate",
+      "prerequisites": [
+        "r2-mate-in-two"
+      ],
+      "attacker": "",
+      "front": "",
+      "rear": "",
+      "target": "",
+      "threats": [],
+      "san": [
+        "c7",
+        "Qa8+",
+        "Kd7",
+        "Qe8#"
+      ],
+      "explanation": "The queen gives Qa8+; after the king replies Kd7, Qe8# delivers legal checkmate. This is the taught two-move calculation, not a general lone-king mating exercise.",
+      "sourceGame": "https://lichess.org/P6qWKJuy#139",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "7090fde6c1e1563c0cd85477126928c67e046b04029b9e5bbacf6d1ee397e972"
+    },
+    {
+      "id": "idVEo",
+      "lesson": "finale-last-board",
+      "slot": "example",
+      "kind": "discovery",
+      "prerequisites": [
+        "r3-discoveries"
+      ],
+      "attacker": "h3",
+      "front": "f3",
+      "rear": "",
+      "target": "b3",
+      "threats": [],
+      "san": [
+        "Rb3",
+        "f4+",
+        "Kf5",
+        "Rxb3"
+      ],
+      "explanation": "The pawn moves from f3 with check, uncovering the rook on h3 against the rook on b3. After the king moves, the uncovered rook captures its target.",
+      "sourceGame": "https://lichess.org/nf9opGlA/black#108",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "073f4232d153eec401d19b857801fc2b72e0121fcd0fa10015ea3e87dfd7efe7"
+    },
+    {
+      "id": "1xVVV",
+      "lesson": "finale-last-board",
+      "slot": "main1",
+      "kind": "between",
+      "prerequisites": [
+        "r4-between",
+        "r2-remove-defender"
+      ],
+      "attacker": "",
+      "front": "c6",
+      "rear": "",
+      "target": "d4",
+      "threats": [],
+      "san": [
+        "Qxd4",
+        "Bxc6+",
+        "bxc6",
+        "Qxd4"
+      ],
+      "explanation": "The enemy queen has captured on d4. First capture its knight defender on c6 with check. After the pawn recaptures, take the queen on d4.",
+      "sourceGame": "https://lichess.org/IIoSr7Du/black#18",
+      "sourceOpeningTags": "Sicilian_Defense Sicilian_Defense_Alapin_Variation",
+      "sourceLineSha256": "efe2061592c547dffb58ab889a270de4735c0ab67c8c997ebd76ea6af6656b87"
+    },
+    {
+      "id": "LmJKq",
+      "lesson": "finale-last-board",
+      "slot": "backup1",
+      "kind": "between",
+      "prerequisites": [
+        "r4-between",
+        "r2-remove-defender"
+      ],
+      "attacker": "",
+      "front": "c6",
+      "rear": "",
+      "target": "a7",
+      "threats": [],
+      "san": [
+        "Qxa7",
+        "Bxc6+",
+        "bxc6",
+        "Qxa7"
+      ],
+      "explanation": "The enemy queen has captured on a7. First capture its knight defender on c6 with check. After the pawn recaptures, take the queen on a7.",
+      "sourceGame": "https://lichess.org/mPVkD2bf/black#30",
+      "sourceOpeningTags": "English_Opening English_Opening_Symmetrical_Variation",
+      "sourceLineSha256": "f79ce7daaa9783cf591ce3ac5cc2822a0207fb3d16b69bf9e3f85dd471f16c7a"
+    },
+    {
+      "id": "mqbS0",
+      "lesson": "finale-last-board",
+      "slot": "main2",
+      "kind": "support",
+      "prerequisites": [
+        "r5-rook-support",
+        "r4-deflect"
+      ],
+      "attacker": "",
+      "front": "a3",
+      "rear": "",
+      "target": "a8",
+      "threats": [],
+      "san": [
+        "Ra3",
+        "Rxg3+",
+        "Rxg3",
+        "a8=Q+"
+      ],
+      "explanation": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn\u2019s file to g3; the pawn then promotes.",
+      "sourceGame": "https://lichess.org/4fMYUlLq/black#110",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "e6ab4af96672a7953941ec308de71459406e2b8559f08faae34c0201dbb70aee"
+    },
+    {
+      "id": "ykqWD",
+      "lesson": "finale-last-board",
+      "slot": "backup2",
+      "kind": "support",
+      "prerequisites": [
+        "r5-rook-support",
+        "r4-deflect"
+      ],
+      "attacker": "",
+      "front": "b5",
+      "rear": "",
+      "target": "b8",
+      "threats": [],
+      "san": [
+        "Kg7",
+        "Rxg5+",
+        "Rxg5",
+        "b8=Q"
+      ],
+      "explanation": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn\u2019s file to g5; the pawn then promotes.",
+      "sourceGame": "https://lichess.org/wzKJUYmd/black#100",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "dc4bcab8c450ca9fb12aa1cedfad57c71c1b85ac6038a1361c75e91581ddf56d"
+    },
+    {
+      "id": "QWUnM",
+      "lesson": "finale-last-board",
+      "slot": "main3",
+      "kind": "escape",
+      "prerequisites": [
+        "r3-escape-pins",
+        "r1-safe-captures"
+      ],
+      "attacker": "c4",
+      "front": "d5",
+      "rear": "g8",
+      "target": "",
+      "threats": [],
+      "san": [
+        "Bd6",
+        "Bxc4",
+        "bxc4",
+        "Rxd6"
+      ],
+      "explanation": "The bishop on d5 is pinned to its king on g8. It captures the pinning bishop on c4, keeping its king safe. Then follow bxc4 with Rxd6.",
+      "sourceGame": "https://lichess.org/Pkzy6Omr#69",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "c2e0b35130a6eaaae1625ba95280b4b38a1b46e925ede3ad3ce46f4178b29bf6"
+    },
+    {
+      "id": "l0NYo",
+      "lesson": "finale-last-board",
+      "slot": "backup3",
+      "kind": "escape",
+      "prerequisites": [
+        "r3-escape-pins",
+        "r1-safe-captures"
+      ],
+      "attacker": "d4",
+      "front": "e5",
+      "rear": "g7",
+      "target": "",
+      "threats": [],
+      "san": [
+        "Qxd4",
+        "exd4",
+        "Rc5",
+        "Bxd3"
+      ],
+      "explanation": "The pawn on e5 is pinned to its king on g7. It captures the pinning queen on d4, keeping its king safe. Then follow Rc5 with Bxd3.",
+      "sourceGame": "https://lichess.org/KcgA5ODY#65",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "8aff24794d4cc667bc27cdfb5337b64227233102e4b5d924d9e923425b429273"
+    },
+    {
+      "id": "uFhSB",
+      "lesson": "finale-last-board",
+      "slot": "main4",
+      "kind": "xrayMate",
+      "prerequisites": [
+        "r3-xrays",
+        "r1-back-rank"
+      ],
+      "attacker": "f8",
+      "front": "f7",
+      "rear": "",
+      "target": "f1",
+      "threats": [],
+      "san": [
+        "Rxf7",
+        "Rxf1+",
+        "Rxf1",
+        "Rxf1#"
+      ],
+      "explanation": "The rook on f8 looks through the enemy rook on f7 toward f1. Rxf1+ forces that blocker to capture there; Rxf1# recaptures and gives checkmate.",
+      "sourceGame": "https://lichess.org/M1AEDwZ5#59",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "aa9f51cb957afceba5dce8ec68fb2a1152664da0b21c8095a9868c71dabb5d04"
+    },
+    {
+      "id": "oH2I9",
+      "lesson": "finale-last-board",
+      "slot": "backup4",
+      "kind": "xrayMate",
+      "prerequisites": [
+        "r3-xrays",
+        "r2-mate-in-two"
+      ],
+      "attacker": "b8",
+      "front": "e8",
+      "rear": "",
+      "target": "f8",
+      "threats": [],
+      "san": [
+        "e1=Q",
+        "Qf8+",
+        "Rxf8",
+        "Qxf8#"
+      ],
+      "explanation": "The queen on b8 looks through the enemy rook on e8 toward f8. Qf8+ forces that blocker to capture there; Qxf8# recaptures and gives checkmate.",
+      "sourceGame": "https://lichess.org/FDy5ww6O/black#80",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "f498e2b72e72049e6e4305953085743fbbfd6a7b7960d1c9eaae43f6ebdd30c9"
+    }
+  ],
+  "hashSerialization": "sourceLineSha256 is SHA-256 of the complete original UTF-8 CSV source line, with no newline; includes game URL and opening tags.",
+  "sourceVerification": "All 18 FENs, moves, ratings, themes, and quality values matched the local lichess_db_puzzle.csv.zst database on 2026-10-24."
+}

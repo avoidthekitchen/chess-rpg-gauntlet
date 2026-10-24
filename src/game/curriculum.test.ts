@@ -21,7 +21,7 @@ describe('published curriculum', () => {
       region.lessons.forEach((id, i) => {
         const lesson = courseLesson(id)!;
         expect(lesson.regionId).toBe(region.id);
-        expect(lesson.review).toBe(i === region.lessons.length - 1);
+        expect(lesson.review).toBe(region.kind === 'finale' || i === region.lessons.length - 1);
         if (original) expect(lesson.waves).toHaveLength(i === 5 ? 4 : 3);
         expect(lesson.objective.length).toBeGreaterThan(15);
         expect(lesson.takeaway.length).toBeGreaterThan(15);

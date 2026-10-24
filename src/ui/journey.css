@@ -162,3 +162,8 @@
 .journey-story blockquote p { font-size:22px; margin-bottom:5px; }
 .journey-story cite { font:13px/1.4 system-ui,sans-serif; color:#d5c49e; }
 .journey-story .journey-actions { margin-top:28px; }
+
+.journey-ending-companion { display:block; width:100px; height:100px; object-fit:contain; margin:14px auto; filter:drop-shadow(0 4px 12px #0006); }
+.journey-ending > h1,.journey-ending > .journey-kicker { text-align:center; }
+.journey-ending .journey-credits { font-size:17px; }
+.journey-finale button { margin-top:10px; }

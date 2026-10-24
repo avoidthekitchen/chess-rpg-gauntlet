@@ -1,5 +1,30 @@
 # Build progress
 
+## 2026-10-24 — Finale review follow-up
+
+- Repair the derived finale flag without discarding completed lessons or stars. Invalid terminal wins settle without credit or lockout.
+- Continue opens an unseen ending. The finale map offers one ending button; completion no longer dominates earlier maps.
+- Registered progression milestones replace scene-specific finale routing. Tests cover committed wins while animation is pending.
+- The runner test now exercises registered lessons. Story lines avoid repeated reveals and give each companion a chapter callback.
+- Reordered the last encounter before its mating finish and narrowed the subtitle to ideas from every chapter.
+- `npm run ci` passed: type-check, build, and 461 tests in 31 files. The dependency selector required no engine rerun.
+- Full legacy release failures remain unwaived; this is a draft staging review update.
+
+## 2026-10-24 — Lich King finale (#45)
+
+- Two direct four-wave mixed encounters use 18 fresh published sources. No new required technique enters through a backup.
+- Both final variants end in actual legal checkmate. A short interlude separates the two tables.
+- An explicit saved completion flag opens the ending and credits. Acceptance is saved before animation; reload cannot revoke a won finale.
+- Completion alone unlocks the ending. Earlier lessons, earned stars, the journal, and ending replay remain available.
+- The selected companion appears in the interlude and ending. Maps label this destination Finale, without a sixth teaching chapter or placeholder horizon.
+- All 273 journey sources match the local Lichess download exactly. Final source metadata, mechanisms, and prerequisites passed independent review.
+- `npm run ci`: type-check, build, and 456 tests passed across 29 files. The unchanged legacy dependency graph selected no engine checks.
+- A separate reviewer passed 175 state scenarios across all four difficulties and every finale backup configuration.
+- Full desktop Brave and WebKit phone Gentle runs continue on this complete build. Public deployment and final browser evidence follow in integration.
+- The full legacy baseline remains a separate failed release check: guard Brave flawless wins were 11/23, below 50%; boss results are pending.
+  No threshold was weakened. The prior boss waiver is not reused.
+
+
 ## 2026-10-24 — Region 5: Bone Wardens (#44)
 
 - Added six lessons and a six-wave review using 55 unchanged published sources; the registered journey now contains 255 distinct positions.

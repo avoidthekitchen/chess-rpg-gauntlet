@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { moveAmbush, nextAmbushWave, wavePuzzle, type AmbushRun } from './game/ambush';
 import { COURSE_REGIONS, courseLesson } from './game/curriculum';
-import { beginJourneyLesson, newJourney, regionUnlocked, settleJourney } from './game/journey';
+import { beginJourneyLesson, journeyComplete, newJourney, regionUnlocked, settleJourney } from './game/journey';
 import { clearJourney, JOURNEY_KEY, loadJourney, persistJourney } from './journeySave';
 
 const data = vi.hoisted(() => new Map<string, string>());
@@ -69,12 +69,15 @@ describe('journey storage', () => {
       }
       settleJourney(save);
     }
-    // Exactly the old version-1 shape, ending on the Kingsroad; no migration flag is required.
+    // Old version-1 saves end on the Kingsroad and have no finale flag.
     save.currentRegion = 'r2';
     save.stars[COURSE_REGIONS[0].lessons[0]] = { clean: false, noHint: true };
     const before = JSON.parse(JSON.stringify(save));
-    persistJourney(save);
+    const { finaleComplete: omitted, ...oldSave } = save;
+    expect(omitted).toBe(false);
+    data.set(JOURNEY_KEY, JSON.stringify(oldSave));
     const loaded = loadJourney()!;
+    expect(loaded.finaleComplete).toBe(false);
     expect(loaded.completed).toEqual(before.completed);
     expect(loaded.stars).toEqual(before.stars);
     expect(loaded.attempts).toBe(12);
@@ -101,5 +104,94 @@ describe('journey storage', () => {
       expect(loadJourney()).toBe(null);
     }
     expect(data.get('gauntlet-save-v1')).toBe('old campaign');
+  });
+});
+
+
+describe('finale save recovery', () => {
+  beforeEach(() => data.clear());
+  const ids = COURSE_REGIONS.flatMap(region => region.lessons);
+  const last = ids.at(-1)!;
+  function finalAttempt() {
+    const save = newJourney('squire');
+    save.completed = ids.slice(0, -1);
+    expect(beginJourneyLesson(save, last)).toBe(true);
+    return save;
+  }
+  function solveFinal(save: ReturnType<typeof newJourney>) {
+    const def = courseLesson(last)!;
+    while (save.active!.run.status !== 'won') {
+      const run = save.active!.run;
+      save.active!.run = run.status === 'waveWon' ? nextAmbushWave(def, run)
+        : moveAmbush(def, run, wavePuzzle(def, run).moves[1 + 2 * run.step]).run;
+    }
+  }
+  it('recovers an accepted final checkmate before settlement and persists completion exactly once', () => {
+    for (const partialCompletion of [false, true]) {
+      const save = finalAttempt();
+      solveFinal(save);
+      if (partialCompletion) save.completed.push(last);
+      expect(save.finaleComplete).toBe(false);
+      save.active!.run.fen = 'untrusted board';
+      persistJourney(save);
+      const loaded = loadJourney()!;
+      expect(loaded).not.toBeNull();
+      expect(loaded.finaleComplete).toBe(true);
+      expect(journeyComplete(loaded)).toBe(true);
+      expect(loaded.completed.filter(id => id === last)).toHaveLength(1);
+      expect(loaded.lastResult).toMatchObject({ won: true, interrupted: false });
+      expect(loaded.attempts).toBe(1);
+      expect(loadJourney()!.attempts).toBe(1);
+      expect(settleJourney(loaded)).toBe(false);
+    }
+  });
+
+  it('does not finish the journey when reload interrupts the last position before its accepted finish', () => {
+    const save = finalAttempt(), def = courseLesson(last)!;
+    while (!(save.active!.run.wave === def.waves.length - 1 && save.active!.run.status === 'solving' &&
+      save.active!.run.step === (wavePuzzle(def, save.active!.run).moves.length - 2) / 2)) {
+      const run = save.active!.run;
+      save.active!.run = run.status === 'waveWon' ? nextAmbushWave(def, run)
+        : moveAmbush(def, run, wavePuzzle(def, run).moves[1 + 2 * run.step]).run;
+    }
+    persistJourney(save);
+    const loaded = loadJourney()!;
+    expect(loaded.finaleComplete).toBe(false);
+    expect(journeyComplete(loaded)).toBe(false);
+    expect(loaded.completed).not.toContain(last);
+    expect(loaded.lastResult).toMatchObject({ won: false, interrupted: true });
+    expect(loaded.retryWaves[last]).toBe(def.waves.length - 1);
+  });
+
+  it('preserves finished progress and stars on reload after an earlier lesson is abandoned', () => {
+    const save = finalAttempt();
+    solveFinal(save);
+    settleJourney(save);
+    const stars = structuredClone(save.stars);
+    expect(beginJourneyLesson(save, first)).toBe(true);
+    persistJourney(save);
+    const loaded = loadJourney()!;
+    expect(loaded.finaleComplete).toBe(true);
+    expect(journeyComplete(loaded)).toBe(true);
+    expect(loaded.lastResult).toMatchObject({ lessonId: first, won: false });
+    expect(loaded.stars).toEqual(stars);
+    expect(loadJourney()!.attempts).toBe(2);
+  });
+
+  it('rejects malformed flags but repairs derived finale completion records', () => {
+    for (const flag of [null, 1, 'true', {}, []]) {
+      data.set(JOURNEY_KEY, JSON.stringify({ ...newJourney(), finaleComplete: flag }));
+      expect(loadJourney()).toBeNull();
+    }
+    persistJourney({ ...newJourney(), finaleComplete: true });
+    expect(loadJourney()!.finaleComplete).toBe(false);
+    const completed = newJourney();
+    completed.completed = ids;
+    persistJourney(completed);
+    expect(loadJourney()!.finaleComplete).toBe(true);
+    const { finaleComplete: _, ...missingFlag } = completed;
+    data.set(JOURNEY_KEY, JSON.stringify(missingFlag));
+    expect(loadJourney()!.completed).toEqual(ids);
+    expect(loadJourney()!.finaleComplete).toBe(true);
   });
 });

@@ -74,6 +74,7 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | The Iron March | Region 4, the Iron Legion’s fortress valley |
 | Flintwatch | The Iron March’s fortress town |
 | The Keep’s Gate | Region 5’s destination, guarded by the Bone Wardens |
+| The Keep | The Lich King’s final two encounters, after the five Regions |
 
 ## Current journey terms
 

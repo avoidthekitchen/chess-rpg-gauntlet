@@ -1,16 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { moveAmbush, nextAmbushWave, wavePuzzle } from './ambush';
+import { AMBUSH_HELP, moveAmbush, nextAmbushWave, wavePuzzle } from './ambush';
+import type { DifficultyId } from './difficulty';
 import { COURSE_REGIONS, courseLesson } from './curriculum';
 import { beginJourneyLesson, journeyComplete, lessonUnlocked, newJourney, regionUnlocked, settleJourney, type JourneySave } from './journey';
 
 const ids = COURSE_REGIONS.flatMap(region => region.lessons);
-function win(save: JourneySave, id: string) {
+function win(save: JourneySave, id: string, helped = false) {
   expect(beginJourneyLesson(save, id)).toBe(true);
   const def = courseLesson(id)!;
   const active = save.active!;
   while (active.run.status !== 'won') {
     if (active.run.status === 'waveWon') active.run = nextAmbushWave(def, active.run);
     else active.run = moveAmbush(def, active.run, wavePuzzle(def, active.run).moves[1 + 2 * active.run.step]).run;
+  }
+  if (helped) {
+    active.run.misses = 1;
+    active.run.hintsUsed = AMBUSH_HELP[save.difficulty].hints ? 1 : 0;
   }
   expect(settleJourney(save)).toBe(true);
 }
@@ -83,5 +88,57 @@ describe('curriculum journey', () => {
     expect(settleJourney(save, true)).toBe(false);
     expect(save.attempts).toBe(0);
     expect(save.completed).toEqual([]);
+  });
+});
+
+
+describe('finale completion', () => {
+  it.each<DifficultyId>(['squire', 'knight', 'champion', 'grandmaster'])('finishes the real route on %s without requiring clean stars', difficulty => {
+    const save = newJourney(difficulty);
+    expect(save.finaleComplete).toBe(false);
+    for (const id of ids.slice(0, -1)) win(save, id, true);
+    expect(save.completed).toHaveLength(ids.length - 1);
+    expect(journeyComplete(save)).toBe(false);
+    expect(save.finaleComplete).toBe(false);
+    win(save, ids.at(-1)!, true);
+    expect(save.finaleComplete).toBe(true);
+    expect(journeyComplete(save)).toBe(true);
+    expect(Object.values(save.stars).every(star => !star.clean)).toBe(true);
+    expect(save.attempts).toBe(ids.length);
+    expect(settleJourney(save)).toBe(false);
+  });
+
+  it('settles an invalid final win without credit or a permanent lockout', () => {
+    for (const fen of ['not a position', '7k/8/8/8/8/8/8/K7 w - - 0 1']) {
+      const save = newJourney();
+      save.completed = ids.slice(0, -1);
+      const last = ids.at(-1)!;
+      expect(beginJourneyLesson(save, last)).toBe(true);
+      const def = courseLesson(last)!;
+      Object.assign(save.active!.run, { status: 'won', wave: def.waves.length - 1, fen });
+      expect(settleJourney(save)).toBe(true);
+      expect(save.active!.run.settled).toBe(true);
+      expect(save.active!.run.status).toBe('lost');
+      expect(save.finaleComplete).toBe(false);
+      expect(save.attempts).toBe(1);
+      expect(beginJourneyLesson(save, ids[0])).toBe(true);
+      expect(save.completed).not.toContain(last);
+    }
+  });
+
+  it('keeps completion and earned stars through a weaker replay and an earlier retreat', () => {
+    const save = newJourney('squire');
+    for (const id of ids) win(save, id);
+    const stars = structuredClone(save.stars);
+    win(save, ids[0], true);
+    expect(save.stars).toEqual(stars);
+    expect(save.finaleComplete).toBe(true);
+    expect(beginJourneyLesson(save, ids[1])).toBe(true);
+    expect(settleJourney(save, true, true)).toBe(true);
+    expect(save.lastResult).toMatchObject({ won: false, interrupted: true });
+    expect(save.stars).toEqual(stars);
+    expect(journeyComplete(save)).toBe(true);
+    save.completed.pop();
+    expect(journeyComplete(save)).toBe(false);
   });
 });

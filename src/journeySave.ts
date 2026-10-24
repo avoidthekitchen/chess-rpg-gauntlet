@@ -51,8 +51,11 @@ export function loadJourney(): JourneySave | null {
       !['n', 'b', 'r'].includes(String(value.starter)) || typeof value.currentRegion !== 'string' ||
       !Array.isArray(value.completed) || !value.completed.every(id => typeof id === 'string' && knownLesson(id)) ||
       new Set(value.completed).size !== value.completed.length || !natural(value.attempts) ||
-      !object(value.stars) || !object(value.retryWaves)) return null;
+      !object(value.stars) || !object(value.retryWaves) ||
+      (Object.hasOwn(value, 'finaleComplete') && typeof value.finaleComplete !== 'boolean')) return null;
     const save = value as unknown as JourneySave;
+    save.finaleComplete ??= false;
+    save.endingSeen = value.endingSeen === true;
     if (!save.completed.every(id => lessonUnlocked(save, id)) || !regionUnlocked(save, save.currentRegion)) return null;
     for (const [id, stars] of Object.entries(value.stars)) {
       if (!save.completed.includes(id) || !object(stars) || typeof stars.clean !== 'boolean' || typeof stars.noHint !== 'boolean') return null;
@@ -77,6 +80,9 @@ export function loadJourney(): JourneySave | null {
         if (!save.lastResult || save.lastResult.lessonId !== save.active.lessonId || save.lastResult.won !== (run.status === 'won')) return null;
       } else settleJourney(save, true, true);
     }
+    const finalLesson = COURSE_REGIONS.find(region => region.kind === 'finale')?.lessons.at(-1);
+    save.finaleComplete = !!(finalLesson && save.completed.includes(finalLesson));
+    if (!save.finaleComplete) save.endingSeen = false;
     persistJourney(save);
     return save;
   } catch { return null; }

@@ -46,10 +46,12 @@ describe('Shadow Cult published positions', () => {
     expect([review.title, review.objective, review.before, review.coaching].join(' '))
       .not.toMatch(/\b(pin|skewer|x-ray|discovery|double check|fork|mate)\b/i);
     const reviewEvidence = evidence.positions.filter(p => p.lesson === review.id).slice(1);
-    expect(reviewEvidence.map(p => p.kind)).toEqual([
+    expect(reviewEvidence.map(p => p.kind).sort()).toEqual([
       'pin', 'pin', 'escape', 'escape', 'skewer', 'skewer', 'xray', 'xray',
       'discovery', 'double', 'fork', 'fork', 'mate', 'mate',
-    ]);
+    ].sort());
+    expect(reviewEvidence.filter((_, i) => i % 2 === 0).map(p => p.kind))
+      .not.toEqual(['pin', 'escape', 'skewer', 'xray', 'discovery', 'fork', 'mate']);
   });
 
   for (const p of puzzles) it(`${p.id}: preserves a legal short line, quality floor, and source identity`, () => {
@@ -72,7 +74,7 @@ describe('Shadow Cult published positions', () => {
   for (const e of evidence.positions) it(`${e.id}: demonstrates ${e.kind} on the actual board`, () => {
     const p = puzzles.find(p => p.id === e.id)!;
     const start = new Chess(p.fen);
-    start.move(uciMove(p.moves[0]));
+    const setup = start.move(uciMove(p.moves[0]));
     const solver = start.turn(), enemy = other(solver);
     const after = new Chess(start.fen()), first = after.move(uciMove(p.moves[1]));
     const completed = new Chess(after.fen());
@@ -87,25 +89,40 @@ describe('Shadow Cult published positions', () => {
       expect(rear.color).toBe(pinned.color);
       if (e.kind === 'escape') {
         expect(rear.type).toBe('k');
+        if (e.lesson === 'r3-cult-review') {
+          expect(setup.captured && setup.to === first.to).toBeFalsy();
+        }
         expect(pinned.color).toBe(solver);
         expect(first.from).toBe(e.front);
         expect(first.to).toBe(e.attacker);
         expect(first.captured).toBe(pinner.type);
         expect(after.isAttacked(square(e.rear), enemy)).toBe(false);
-      } else if (rear.type === 'k') {
+      } else {
+        expect(rear.type).toBe('k');
         expect(pinner.color).toBe(solver);
         expect(start.attackers(first.to, enemy)).toContain(e.front);
         expect(after.moves({ verbose: true }).some(m => m.from === e.front && m.to === first.to)).toBe(false);
-      } else {
-        // The material pin is legal to break: pressure forces the queen to abandon its rook.
-        expect(rear.type).toBe('q');
-        expect(pinned.type).toBe('r');
-        expect(after.attackers(square(e.front), solver)).toContain(first.to);
-        expect(reply?.from).toBe(e.rear);
-        expect(finish?.to).toBe(e.front);
-        expect(finish?.captured).toBe('r');
       }
     }
+    if (e.kind === 'create-pin') {
+      // The bishop creates an absolute pin; the queen still defends the rook.
+      blockedLine(after, e.attacker, e.front, e.rear);
+      expect(first.to).toBe(e.attacker);
+      expect(after.get(square(e.rear))?.type).toBe('k');
+      expect(after.moves({ square: square(e.front) })).toHaveLength(0);
+      expect(after.attackers(square(e.front), solver).sort()).toEqual(['e3', 'f8']);
+      const defended = new Chess(after.fen());
+      defended.move(uciMove(p.moves[2]));
+      expect(defended.attackers(square(e.front), enemy)).toContain('e2');
+      expect(finish?.to).toBe(e.front);
+      expect(finish?.captured).toBe('r');
+      // Verify the explanatory exchange without extending the published puzzle.
+      const exchange = new Chess(completed.fen());
+      expect(exchange.move('Qxf2').captured).toBe('b');
+      expect(exchange.move('Rxf2').captured).toBe('q');
+      expect(exchange.move('Kxf2').captured).toBe('r');
+    }
+
     if (e.kind === 'skewer') {
       expect(after.isCheck()).toBe(true);
       expect(start.get(square(e.front))?.type).toBe('k');
@@ -145,6 +162,7 @@ describe('Shadow Cult published positions', () => {
         expect(finish?.from).toBe(e.attacker);
         expect(finish?.to).toBe(e.target);
         expect(finish?.captured).toBeTruthy();
+        expect(completed.moves({ verbose: true }).some(m => m.to === finish!.to && m.captured)).toBe(false);
       }
     }
     if (e.kind === 'fork') {

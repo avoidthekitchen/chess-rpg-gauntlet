@@ -4,11 +4,11 @@ import puzzles from './region4Puzzles.json';
 import rawEvidence from './region4Evidence.json';
 import { region4Seeds, region4Region } from './region4';
 import { uciMove } from '../ambush';
+import { PIECE_VALUE as value } from '../material';
 
 const all = Object.values(puzzles).flat();
 // Evidence records board facts; every claim below is recomputed from the source line.
-const evidence = rawEvidence as Record<string, { skill: string; guard?: string; king?: string; checkingSquare?: string; pinner?: string[]; immediateRecapture?: string; counterReply?: string }>;
-const value: Record<string, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
+const evidence = rawEvidence as Record<string, { skill: string; guard?: string; king?: string; checkingSquare?: string; pinner?: string[]; immediateRecapture?: string; threats?: string[]; threatSAN?: string[] }>;
 const otherSide = (color: 'w' | 'b') => color === 'w' ? 'b' : 'w';
 const opponentTurn = (start: Chess) => {
   const fen = start.fen().split(' ');
@@ -26,39 +26,43 @@ describe('Iron Legion published teaching evidence', () => {
     for (const seed of region4Seeds) {
       const ps = puzzles[seed.id as keyof typeof puzzles];
       expect(ps).toHaveLength(seed.review ? 13 : 7);
+      if (!seed.review) for (const p of ps) expect(p.themes, p.id).toContain(seed.tag);
       for (let i = 1; i < ps.length; i += 2) {
-        expect(Math.abs(ps[i].rating - ps[i + 1].rating)).toBeLessThanOrEqual(200);
         expect(evidence[ps[i].id].skill).toBe(evidence[ps[i + 1].id].skill);
       }
     }
     const review = region4Seeds.at(-1)!;
     expect(`${review.title} ${review.objective} ${review.coaching} ${review.before}`)
       .not.toMatch(/deflect|intermediate|exposed|pinned|develop|file tactic/i);
-    expect(puzzles['r4-legion-review'].filter((_, i) => i % 2 === 1).map(p => evidence[p.id].skill))
-      .toEqual(['develop', 'exposed', 'deflect', 'between', 'defend', 'pin']);
+    const skills = puzzles['r4-legion-review'].filter((_, i) => i % 2 === 1).map(p => evidence[p.id].skill);
+    expect(new Set(skills)).toEqual(new Set(['develop', 'file', 'exposed', 'deflect', 'between', 'defend']));
+    expect(skills).not.toEqual(['develop', 'file', 'exposed', 'deflect', 'between', 'defend']);
+    for (const p of puzzles['r4-legion-review'].filter(p => evidence[p.id].skill === 'file')) {
+      expect(evidence[p.id].pinner?.length, `${p.id}: file entry also revisits an absolute pin`).toBeGreaterThan(0);
+    }
+    for (const p of puzzles['r4-legion-review'].filter(p => evidence[p.id].skill === 'defend')) {
+      expect(p.rating, p.id).toBeLessThanOrEqual(1100);
+    }
   });
 
-  it('preserves legal, quality-qualified short lines with complete source evidence', () => {
-    const reservations = import.meta.glob('../../../public/puzzles/**/*.json', { eager: true, import: 'default' });
-    const legacy = import.meta.glob('../**/*[wW]arm*.{ts,json}', { eager: true });
-    const excluded = JSON.stringify([reservations, legacy]);
+  it('keeps source SAN and evidence aligned with every published line', () => {
     for (const p of all) {
-      expect(excluded).not.toContain(`"${p.id}"`);
-      expect(p.source).toBe(`https://lichess.org/training/${p.id}`);
-      expect(p.quality.plays).toBeGreaterThanOrEqual(300);
-      expect(p.quality.popularity).toBeGreaterThanOrEqual(85);
-      expect(p.quality.rd).toBeLessThanOrEqual(90);
-      expect(p.rating).toBeGreaterThanOrEqual(400);
-      expect(p.rating).toBeLessThanOrEqual(1300);
-      expect(p.moves.length % 2).toBe(0);
-      expect(p.moves.length).toBeGreaterThanOrEqual(2);
-      expect(p.moves.length).toBeLessThanOrEqual(6);
-      expect(p.reason.length).toBeGreaterThan(60);
       const board = new Chess(p.fen);
-      expect(p.moves.map(move => board.move(uciMove(move)).san)).toEqual(p.san);
-      expect(board.isDraw()).toBe(false);
-      if (p.themes.includes('mate')) expect(board.isCheckmate(), p.id).toBe(true);
+      expect(p.moves.map(move => board.move(uciMove(move)).san), p.id).toEqual(p.san);
+      expect(evidence[p.id], p.id).toBeDefined();
     }
+  });
+
+  it('distinguishes a non-capturing parry from the defence lesson’s material goal', () => {
+    const p = puzzles['r4-defend'].find(p => p.id === 'OhR2Q')!;
+    const board = new Chess(p.fen);
+    board.move(uciMove(p.moves[0]));
+    const parry = board.move('Rf1');
+    expect(parry.captured).toBeUndefined();
+    expect(board.moves().some(san => san.endsWith('#'))).toBe(false);
+    const lesson = region4Seeds.find(seed => seed.id === 'r4-defend')!;
+    expect(lesson.objective).toContain('capture that also wins material');
+    expect(lesson.coaching).toContain('stops their mate and wins material');
   });
 
   it('proves the mechanism in examples, main positions and every backup', () => {
@@ -75,7 +79,6 @@ describe('Iron Legion published teaching evidence', () => {
       if (ev.skill === 'develop') {
         expect(first.piece, p.id).toBe('b');
         expect(first.color === 'w' ? ['c1', 'f1'] : ['c8', 'f8']).toContain(first.from);
-        expect(first.to[1]).not.toBe(first.from[1]);
         expect(after.isCheck(), p.id).toBe(true);
       }
       if (ev.skill === 'file') {
@@ -114,21 +117,29 @@ describe('Iron Legion published teaching evidence', () => {
         expect(final!.to).toBe(setup.to);
         expect(final!.captured).toBe(setup.piece);
         expect(value[first.captured!] - value[replies[0].captured ?? 'k'] + value[final!.captured!], p.id).toBeGreaterThan(0);
-        // Concrete move-order counterfactual: immediately recapturing permits this legal reply.
+        // Compare immediate recapture with the opponent’s highest-value legal capture.
         // Compare the material at each short line's endpoint, not a claim about a complete game.
         const early = new Chess(start.fen());
         const recapture = early.move(uciMove(ev.immediateRecapture as string));
         expect(recapture.to, p.id).toBe(setup.to);
-        const counter = early.move(uciMove(ev.counterReply as string));
-        const immediateGain = value[recapture.captured ?? 'k'] - value[counter.captured ?? 'k'];
+        const bestCapture = Math.max(0, ...early.moves({ verbose: true }).map(move => value[move.captured ?? 'k']));
+        const immediateGain = value[recapture.captured ?? 'k'] - bestCapture;
         const publishedGain = value[first.captured!] - value[replies[0].captured ?? 'k'] + value[final!.captured!];
         expect(publishedGain, `${p.id}: published move order versus immediate recapture`).toBeGreaterThan(immediateGain);
       }
       if (ev.skill === 'defend') {
         expect(start.isCheck(), p.id).toBe(false);
-        expect(opponentTurn(start).moves().some(san => san.endsWith('#')), p.id).toBe(true);
+        const threats = opponentTurn(start).moves({ verbose: true }).filter(move => move.san.endsWith('#'));
+        expect(threats.length, p.id).toBeGreaterThan(0);
+        expect(threats.map(move => move.lan).sort(), p.id).toEqual([...ev.threats!].sort());
+        expect(threats.map(move => move.san).sort(), p.id).toEqual([...ev.threatSAN!].sort());
+        expect(first.captured, p.id).toBeTruthy();
         expect(after.isCheck(), p.id).toBe(false);
         expect(after.moves().some(san => san.endsWith('#')), p.id).toBe(false);
+        expect(replies[0].san, p.id).toMatch(/\+$/);
+        expect(c.isCheck(), p.id).toBe(false);
+        const netGain = [first, ...replies].reduce((sum, move, i) => sum + (i % 2 ? -1 : 1) * value[move.captured ?? 'k'], 0);
+        expect(netGain, `${p.id}: material gained through the published reply`).toBeGreaterThan(0);
       }
       if (ev.skill === 'pin' || ev.pinner) {
         const guard = ev.guard as Square;

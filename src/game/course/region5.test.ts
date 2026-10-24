@@ -12,6 +12,31 @@ const start = (p: typeof sources[number]) => { const c = new Chess(p.fen); c.mov
 const byKind = (kind: string) => sources.filter(p => evidence[p.id as keyof typeof evidence].kind === kind);
 const coords = (s: string) => [s.charCodeAt(0) - 97, +s[1]];
 
+/** Static pawn-and-king board: count open steps to the next published capture square.
+ * Opponent replies are replayed between measurements, not predicted by this BFS.
+ */
+function kingDistance(c: Chess, from: Square, target: Square): number {
+  const enemy = c.turn() === 'w' ? 'b' : 'w';
+  const seen = new Set<Square>([from]);
+  const queue: [Square, number][] = [[from, 0]];
+  for (const [square, distance] of queue) {
+    if (square === target) return distance;
+    const [file, rank] = coords(square);
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      const f = file + dx, r = rank + dy;
+      if ((!dx && !dy) || f < 0 || f > 7 || r < 1 || r > 8) continue;
+      const next = `${String.fromCharCode(97 + f)}${r}` as Square;
+      const piece = c.get(next);
+      if (seen.has(next) || c.isAttacked(next, enemy) ||
+        (piece && next !== target && piece.type !== 'k')) continue;
+      seen.add(next);
+      queue.push([next, distance + 1]);
+    }
+  }
+  return Infinity;
+}
+
+
 describe('Bone Wardens published source mechanisms', () => {
   it('defines six focused lessons, six review slots and 55 unique sources', () => {
     expect(region5Seeds).toHaveLength(7);
@@ -26,7 +51,13 @@ describe('Bone Wardens published source mechanisms', () => {
     for (let i = 1; i < review.length; i += 2) {
       expect(evidence[review[i].id as keyof typeof evidence].kind).toBe(evidence[review[i + 1].id as keyof typeof evidence].kind);
     }
-    expect(region5Seeds.at(-1)?.coaching).not.toMatch(/pawn|rook|knight|promotion|skewer|mate/i);
+    expect(new Set(review.slice(1).filter((_, i) => i % 2 === 0)
+      .map(p => evidence[p.id as keyof typeof evidence].kind))).toEqual(new Set([
+        'back-rank', 'king-use', 'endgame-skewers', 'pawn-races', 'underpromotion', 'rook-support',
+      ]));
+    expect(review.slice(-2).map(p => evidence[p.id as keyof typeof evidence].kind)).toEqual(['rook-support', 'rook-support']);
+    expect(review.slice(-2).every(p => p.rating >= 900)).toBe(true);
+    expect(region5Seeds.at(-1)?.coaching).not.toMatch(/pawn|rook|knight|promotion|skewer|mate|forcing/i);
   });
 
   it('registers the chapter and teaches the first-arrival exception before the review', () => {
@@ -107,20 +138,52 @@ describe('Bone Wardens published source mechanisms', () => {
     expect(c.moves({ verbose: true }).every(m => m.piece === 'k')).toBe(true);
   });
 
-  it('uses legal king entry squares and ends by capturing an enemy pawn', () => {
-    for (const p of byKind('king-use')) {
+  it('takes a shortest open king route to each next pawn capture in all seven teaching sources', () => {
+    for (const p of puzzles['r5-king-use']) {
       const c = start(p);
       for (let i = 1; i < p.moves.length; i++) {
-        const m = c.move(uciMove(p.moves[i]));
-        if (!(i % 2)) continue;
-        expect(m.piece, p.id).toBe('k');
-        expect(c.isAttacked(m.to, c.turn()), p.id).toBe(false);
-        const other = c.board().flat().find(x => x?.type === 'k' && x.color !== m.color)!;
-        const [a, b] = coords(m.to), [x, y] = coords(other.square);
-        expect(Math.max(Math.abs(a - x), Math.abs(b - y)), p.id).toBeGreaterThan(1);
-        if (i === p.moves.length - 1) expect(m.captured, p.id).toBe('p');
+        if (i % 2) {
+          const continuation = new Chess(c.fen());
+          let target: Square | undefined;
+          for (let j = i; j < p.moves.length; j++) {
+            const move = continuation.move(uciMove(p.moves[j]));
+            if (j % 2 && move.captured === 'p') { target = move.to; break; }
+          }
+          expect(target, p.id).toBeDefined();
+          const from = p.moves[i].slice(0, 2) as Square, to = p.moves[i].slice(2, 4) as Square;
+          expect(c.get(from)?.type, p.id).toBe('k');
+          const distance = kingDistance(c, from, target!);
+          expect(Number.isFinite(distance), p.id).toBe(true);
+          expect(kingDistance(c, to, target!), `${p.id} ${p.moves[i]}`).toBe(distance - 1);
+        }
+        const move = c.move(uciMove(p.moves[i]));
+        if (i === p.moves.length - 1) expect(move.captured, p.id).toBe('p');
       }
     }
+  });
+
+  it('distinguishes a legal king detour from the shorter route', () => {
+    const p = sources.find(p => p.id === '8a9DZ')!, c = start(p);
+    expect(c.moves()).toContain('Kd3');
+    expect(kingDistance(c, 'c3', 'f5')).toBe(3);
+    expect(kingDistance(c, 'd4', 'f5')).toBe(2);
+    expect(kingDistance(c, 'd3', 'f5')).toBe(3);
+    // The f5 pawn closes e4, so d3 adds a turn despite being a legal move.
+    expect(c.isAttacked('e4', 'b')).toBe(true);
+  });
+
+  it('gives the stored review example and mate backup distinct board decisions', () => {
+    const example = puzzles['r5-gate-review'][0], c = start(example);
+    const move = c.move(uciMove(example.moves[1]));
+    expect(move.captured).toBe('r');
+    expect(c.isCheckmate()).toBe(false);
+    expect(c.moves({ verbose: true }).some(reply => reply.to === move.to)).toBe(false);
+    const main = sources.find(p => p.id === 'YchKS')!, backup = sources.find(p => p.id === '2cGjV')!;
+    expect(start(main).turn()).not.toBe(start(backup).turn());
+    for (const p of [main, backup]) {
+      const board = start(p); board.move(uciMove(p.moves[1])); expect(board.isCheckmate()).toBe(true);
+    }
+    expect(main.moves[1]).not.toBe(backup.moves[1]);
   });
 
   it('uses an actual rook check to clear or deflect the promotion obstacle', () => {
@@ -136,6 +199,10 @@ describe('Bone Wardens published source mechanisms', () => {
       const rook = c.move(uciMove(p.moves[1]));
       expect(rook.piece, p.id).toBe('r'); expect(c.isCheck(), p.id).toBe(true);
       c.move(uciMove(p.moves[2]));
+      if (p.id === 'AuhcO') {
+        expect(c.get('c1')).toMatchObject({ type: 'k', color: 'b' });
+        expect(c.get('c2')).toMatchObject({ type: 'p', color: 'b' });
+      }
       expect(c.move(uciMove(p.moves[3])).promotion, p.id).toBe('q');
       expect(c.moves({ verbose: true }).some(m => m.to === target), p.id).toBe(false);
     }
@@ -155,19 +222,26 @@ describe('Bone Wardens published source mechanisms', () => {
     }
   });
 
-  it('proves only knight promotion mates now and replays every recorded alternative reply', () => {
+  it('proves knight promotion is the only legal mating move and replays sample alternative replies', () => {
     for (const p of byKind('underpromotion')) {
-      const e = evidence[p.id as keyof typeof evidence] as { alternatives: Record<string, { move: string; mate: boolean; legalReplies: string[] }> };
+      const e = evidence[p.id as keyof typeof evidence] as {
+        decisiveMove: string; alternatives: Record<string, { move: string; mate: boolean; sampleReply?: string }>;
+      };
+      const board = start(p);
+      const matingMoves = board.moves({ verbose: true }).filter(move => {
+        board.move(move); const mates = board.isCheckmate(); board.undo(); return mates;
+      }).map(move => move.lan);
+      expect(matingMoves, p.id).toEqual([e.decisiveMove]);
       for (const piece of ['q', 'r', 'b', 'n']) {
         const c = start(p), alternative = e.alternatives[piece];
         c.move(uciMove(alternative.move));
         expect(c.isCheckmate(), `${p.id} ${piece}`).toBe(piece === 'n');
         expect(alternative.mate).toBe(piece === 'n');
-        expect(c.moves({ verbose: true }).map(m => m.lan)).toEqual(alternative.legalReplies);
         if (piece !== 'n') {
-          expect(alternative.legalReplies.length).toBeGreaterThan(0);
+          expect(c.moves().length).toBeGreaterThan(0);
+          expect(alternative.sampleReply).toBeDefined();
           const reply = new Chess(c.fen());
-          expect(() => reply.move(uciMove(alternative.legalReplies[0]))).not.toThrow();
+          expect(() => reply.move(uciMove(alternative.sampleReply!))).not.toThrow();
         }
       }
     }

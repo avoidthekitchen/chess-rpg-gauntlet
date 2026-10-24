@@ -5,7 +5,7 @@ export const region3Seeds: LessonSeed[] = [
   {
     id: 'r3-pins', title: 'Held in place', theme: 'Pins', tag: 'pin',
     objective: 'Find the attacker, the pinned piece, and the piece behind it. Use that line to win material or mate.',
-    takeaway: 'A king pin forbids moves that expose the king. A material pin threatens a valuable piece; moving is still legal.',
+    takeaway: 'A king pin forbids moves that expose the king. Use that restriction to attack a pinned piece or a square it cannot defend.',
     before: 'Ashfang’s crystal leads to silent villages. “Stay where you are,” whispers a hooded guard. “Nothing need be lost.”',
     after: 'The first gate opens. Your companion points along the line.',
     demo: 'Move the rook from f6 to h6 for mate. The rook on a7 pins the g7 pawn to its king, so it cannot capture.',
@@ -44,7 +44,7 @@ export const region3Seeds: LessonSeed[] = [
     takeaway: 'A discovery moves a blocker away from a bishop, rook, or queen. Check can buy time for the uncovered attack.',
     before: 'A curtain stirs beside the ledger room. “Nothing waits behind it,” says the guard.',
     after: 'The curtain falls. Your companion smiles at the newly opened line.',
-    demo: 'Push the pawn from f6 to f5 with check. It clears the rook on a6; after the king moves, capture the rook on h6.',
+    demo: 'Push the pawn from f3 to f4 with check. It clears the rook on h3; after the king moves, capture the rook on b3.',
     coaching: 'Look for two threats, as on the Kingsroad. Which checking move uncovers an attack from another piece?',
   },
   {
@@ -61,7 +61,7 @@ export const region3Seeds: LessonSeed[] = [
     objective: 'Read each fresh board and choose the idea it needs. These positions do not name the tactic.',
     takeaway: 'Check your king, inspect forcing moves, and calculate the reply. Follow the whole line before choosing.',
     before: 'The Cult Leader rests a hand on the ledger. “Leave it closed. Keep your crown.”',
-    after: 'The villages are free. The ledger names the former Lion King: the Lich King. It also names the Iron Legion’s traitor general.',
+    after: 'The last seal breaks. Your companion opens the ledger.',
     demo: 'Check your king’s safety. Compare checks, captures, and threats, then calculate the reply.',
     coaching: 'Read the whole board. What changes after the strongest reply?',
   },
@@ -71,6 +71,6 @@ export const region3Region: CourseRegion = {
   id: 'r3', title: 'Shadow Cult', subtitle: 'Follow the line. Break the binding.', town: 'Bound villages',
   bossName: 'The Cult Leader', mapArt: 'map-region3',
   intro: 'Ashfang’s crystal leads to villages held by the Shadow Cult. Their keepers promise nobody will ever lose again.',
-  outro: 'The records name the Lich King: a former Lion King who refused checkmate. The Iron Legion’s traitor general serves him.',
+  outro: 'The village doors open. A name in the ledger points toward the Iron Legion.',
   lessons: region3Seeds.map(lesson => lesson.id),
 };

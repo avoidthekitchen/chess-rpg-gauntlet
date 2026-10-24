@@ -1520,39 +1520,38 @@
       "reason": "The white king safely captures d4 and then d5. Neither target is protected by the distant black king. Published SAN: Kf4 Kxd4 Kf5 Kxd5."
     },
     {
-      "id": "kuWwt",
-      "fen": "8/8/8/3k4/6p1/3K1pP1/5P2/8 b - - 3 64",
+      "id": "VIy5h",
+      "fen": "8/3k4/6p1/3K2P1/8/8/8/8 w - - 3 60",
       "moves": [
-        "d5e5",
-        "d3e3",
-        "e5d5",
-        "e3f4",
-        "d5d4",
-        "f4g4"
+        "d5c5",
+        "d7e6",
+        "c5d4",
+        "e6f5",
+        "d4e3",
+        "f5g5"
       ],
-      "rating": 740,
+      "rating": 742,
       "themes": [
         "crushing",
         "endgame",
         "long",
-        "pawnEndgame",
-        "zugzwang"
+        "pawnEndgame"
       ],
-      "source": "https://lichess.org/training/kuWwt",
+      "source": "https://lichess.org/training/VIy5h",
       "quality": {
-        "rd": 86,
-        "popularity": 98,
-        "plays": 516
+        "rd": 82,
+        "popularity": 100,
+        "plays": 328
       },
       "san": [
-        "Ke5",
-        "Ke3",
-        "Kd5",
-        "Kf4",
+        "Kc5",
+        "Ke6",
         "Kd4",
-        "Kxg4"
+        "Kf5",
+        "Ke3",
+        "Kxg5"
       ],
-      "reason": "Ke3 waits for Kd5 to open f4. Kf4 then reaches g4 after Kd4. This tests the published replies, not a general zugzwang method. Published SAN: Ke5 Ke3 Kd5 Kf4 Kd4 Kxg4."
+      "reason": "Ke6 and Kf5 follow the shortest open route to g5. Each step is the only legal king move that shortens that route. Published SAN: Kc5 Ke6 Kd4 Kf5 Ke3 Kxg5."
     },
     {
       "id": "87kiD",

@@ -65,6 +65,23 @@ describe('Iron Legion published teaching evidence', () => {
     expect(lesson.coaching).toContain('stops their mate and wins material');
   });
 
+  it('has exactly one non-checking capture that removes immediate mate in every defence source', () => {
+    const defences = all.filter(p => evidence[p.id].skill === 'defend');
+    expect(defences).toHaveLength(9);
+    for (const p of defences) {
+      const start = new Chess(p.fen);
+      start.move(uciMove(p.moves[0]));
+      const qualifying = start.moves({ verbose: true }).filter(move => {
+        if (!move.captured) return false;
+        const after = new Chess(start.fen());
+        after.move(move.san);
+        return !after.isCheck() && !after.moves().some(san => san.endsWith('#'));
+      });
+      // This bounded claim checks every legal capture, not an engine evaluation of the whole game.
+      expect(qualifying.map(move => move.lan), p.id).toEqual([p.moves[1]]);
+    }
+  });
+
   it('proves the mechanism in examples, main positions and every backup', () => {
     for (const p of all) {
       const c = new Chess(p.fen);
@@ -140,6 +157,12 @@ describe('Iron Legion published teaching evidence', () => {
         expect(c.isCheck(), p.id).toBe(false);
         const netGain = [first, ...replies].reduce((sum, move, i) => sum + (i % 2 ? -1 : 1) * value[move.captured ?? 'k'], 0);
         expect(netGain, `${p.id}: material gained through the published reply`).toBeGreaterThan(0);
+        if (puzzles['r4-legion-review'].some(review => review.id === p.id)) {
+          const endpointCaptures = c.moves({ verbose: true }).filter(move => move.captured);
+          expect(endpointCaptures.some(move => move.to === first.to), `${p.id}: the capturing piece stays safe`).toBe(false);
+          const largestCapture = Math.max(0, ...endpointCaptures.map(move => value[move.captured!]));
+          expect(netGain - largestCapture, `${p.id}: gain survives the largest immediate endpoint capture`).toBeGreaterThan(0);
+        }
       }
       if (ev.skill === 'pin' || ev.pinner) {
         const guard = ev.guard as Square;

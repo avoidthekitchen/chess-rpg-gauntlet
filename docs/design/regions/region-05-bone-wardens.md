@@ -56,7 +56,7 @@ Retries use the same taught mechanism in each backup; retrying is practice rathe
 | Wave | Previously taught idea | Main | Backup | Evidence |
 | --- | --- | --- | --- | --- |
 | 1 | Earlier back-rank mate | YchKS | 2cGjV | Opposite colours and different mating pieces; own pawns close the king’s escape squares |
-| 2 | King route and pawn capture | GCVGr | kuWwt | Capture pawns; in kuWwt the defending king’s reply opens the route |
+| 2 | Shortest king route and pawn capture | GCVGr | VIy5h | Each move is the only legal king step that shortens the open route to the next capture |
 | 3 | Earlier rook skewers | 87kiD | D38Qx | King lies between the checking rook and the rear rook |
 | 4 | Passed-pawn racing and promotion checks | YyCbR | 8bbWP | Both promote with check; YyCbR ends with two queens and further play remaining |
 | 5 | Immediate knight-promotion mate | JB3YP | 2Qu17 | The only legal mating move is knight promotion; sample alternatives recorded |
@@ -132,7 +132,7 @@ Source popularity and rating are selection evidence, not evidence of educational
 | r5-gate-review / 1 main | [YchKS](https://lichess.org/training/YchKS) | 424 / 89 / 100 / 465 | backRankMate, endgame, mate, mateIn1, oneMove | Rxe6 Rd1# | Rd1 is immediate back-rank mate. White’s f2, g2 and h2 pawns block the king. |
 | r5-gate-review / 1 backup | [2cGjV](https://lichess.org/training/2cGjV) | 600 / 87 / 99 / 790 | backRankMate, endgame, mate, mateIn1, oneMove, queenEndgame | Qa4 Qb8# | Qb8# mates along the back rank. Black’s f7, g7 and h7 pawns close the king’s escape squares. |
 | r5-gate-review / 2 main | [GCVGr](https://lichess.org/training/GCVGr) | 707 / 82 / 100 / 375 | crushing, endgame, pawnEndgame, short | Kf4 Kxd4 Kf5 Kxd5 | The white king safely captures d4 and then d5. Neither target is protected by the distant black king. |
-| r5-gate-review / 2 backup | [kuWwt](https://lichess.org/training/kuWwt) | 740 / 86 / 98 / 516 | crushing, endgame, long, pawnEndgame, zugzwang | Ke5 Ke3 Kd5 Kf4 Kd4 Kxg4 | Ke3 waits for Kd5 to open f4. Kf4 then reaches g4 after Kd4. This tests the published replies, not a general zugzwang method. |
+| r5-gate-review / 2 backup | [VIy5h](https://lichess.org/training/VIy5h) | 742 / 82 / 100 / 328 | crushing, endgame, long, pawnEndgame | Kc5 Ke6 Kd4 Kf5 Ke3 Kxg5 | Ke6 and Kf5 follow the shortest open route to g5. Each step is the only legal king move that shortens that route. |
 | r5-gate-review / 3 main | [87kiD](https://lichess.org/training/87kiD) | 605 / 82 / 100 / 346 | crushing, endgame, rookEndgame, short, skewer | Rxc2 Rh2+ Kf3 Rxc2 | Rh2+ checks the king on f2 with the rook on c2 behind it. After Kf3, Rxc2 wins the rook. |
 | r5-gate-review / 3 backup | [D38Qx](https://lichess.org/training/D38Qx) | 608 / 87 / 98 / 1028 | crushing, endgame, rookEndgame, short, skewer | Rh8 Ra8+ Kb7 Rxh8 | Ra8+ checks the king on c8 with the rook on h8 behind it. After Kb7, Rxh8 wins the rook. |
 | r5-gate-review / 4 main | [YyCbR](https://lichess.org/training/YyCbR) | 802 / 82 / 98 / 485 | advancedPawn, advantage, endgame, pawnEndgame, promotion, short | b7 h2 b8=Q h1=Q+ | White needs one push and Black needs two. After h2 and b8=Q, h1=Q+ gives check. Both sides keep queens; conversion remains outside this line. |
@@ -157,13 +157,17 @@ The promotion lesson explains the immediate-mate goal before choice; the mixed r
 ## Technique dependencies
 
 Issue #40 remains separate. Opposition, key squares, Lucena and Philidor require branching defence and goal-based completion.
-The seven king teaching sources prove shortest open routes to each next published pawn capture, measured before each solver move.
+All seven king teaching sources and both review sources follow shortest open routes to each next published pawn capture.
 The measurement uses the current board, then replays the opponent’s published reply before measuring the next step.
-It does not prove every shortest route wins or assess general opposition. The kuWwt review separately depends on a reply opening f4.
-Even the zugzwang-tagged review source is assessed as its concrete king route, without claiming a general zugzwang method.
+It does not prove every shortest route wins or assess general opposition. Both review sources have one legal king step that shortens each route.
+VIy5h replaces kuWwt, whose waiting move required an untaught opposition decision.
 No source is extended, composed or substituted to imply a missing technique capability.
 
 ## Verification and handoff
+
+**Deploy with [PR #51](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/51), not independently.**
+Review-wave reordering changes which source an in-progress wave index identifies. Region 5 requires PR #51’s stale active-run recovery before deployment.
+Completed lesson prerequisite order remains unchanged.
 
 Content verification completed on 2026-10-24:
 
@@ -171,7 +175,8 @@ Content verification completed on 2026-10-24:
 - Twelve focused tests cover saved-progress compatibility, chapter integration, source quality, pawn races, king routes, rook purpose, skewers, promotion necessity and review variation.
 - The rook test checks that immediate promotion is blocked or can be captured before the rook check, then becomes safe after the published reply.
 - The skewer test checks king-between-rooks geometry and the actual rear-rook capture, rather than trusting tags.
-- The king-route test checks all seven teaching sources and rejects the legal Kd3 detour in 8a9DZ as one step slower.
+- The king-route test checks all nine teaching/review sources and rejects the legal Kd3 detour in 8a9DZ as one step slower.
+- Both review sources require a unique shortest step at every solver turn; the expanded test fails on the removed kuWwt source.
 - The underpromotion test enumerates every legal move in all nine lesson/review sources and requires the published knight promotion to be the only mate.
 - Alternative promotions retain one replayable sample reply; generated reply ordering is not an assertion.
 - An independent database scan matched all 55 FENs, complete move lists, ratings, themes and quality fields exactly.
@@ -198,4 +203,9 @@ Integration tests, full release regressions, browser evidence and staging checks
 This content record does not substitute for those checks or claim an owner playtest.
 Browser checks must cover desktop, portrait, short phone and landscape, with WebKit touch emulation identified accurately.
 Preserve readable advice, separate temporary speech, the 44px history control, classic pieces, reduced motion and cancellation on exit.
+After replacing kuWwt, all 12 focused tests and `npm run ci` passed: type-check, build and 411 tests across 28 files.
+All 55 sources matched the raw database exactly, with no overlap against the earlier chapters or finale.
+A depth-20 Stockfish MultiPV check covered every legal move at all five solver turns in GCVGr and VIy5h.
+Published moves scored +6.01 to +6.28 pawns; every alternative scored +0.13 or less. This is bounded engine evidence, not a proof.
+
 Production publication remains a separate decision from staging.

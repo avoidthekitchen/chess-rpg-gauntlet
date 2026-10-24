@@ -1662,36 +1662,6 @@
       "reason": "Against the king on h6, Qh3+ starts 3 consecutive checks: Qh3+, Qxh4+, Qh7#. The source replies are Bh4, Kg7; the last check leaves no legal escape."
     },
     {
-      "id": "ERCLb",
-      "fen": "5rk1/5p1p/p5p1/1P2q3/P7/5Q2/2r2PPP/1N2RK2 b - - 1 22",
-      "moves": [
-        "f8e8",
-        "e1e5",
-        "c2c1",
-        "f1e2"
-      ],
-      "rating": 1085,
-      "themes": [
-        "advantage",
-        "defensiveMove",
-        "endgame",
-        "short"
-      ],
-      "quality": {
-        "rd": 81,
-        "popularity": 88,
-        "plays": 671
-      },
-      "source": "https://lichess.org/training/ERCLb",
-      "san": [
-        "Re8",
-        "Rxe5",
-        "Rc1+",
-        "Ke2"
-      ],
-      "reason": "The displayed position threatens Qxe1# if the opponent moves next. Rxe5 captures material and removes every immediate mating move without check. Answer Rc1+ with Ke2; the source line gains 9 material points."
-    },
-    {
       "id": "x4f2j",
       "fen": "5q1k/pp5p/2p2b1R/2P2p2/P2Pp1p1/4P3/1P3QK1/8 w - - 0 37",
       "moves": [
@@ -1722,6 +1692,36 @@
         "Kg7"
       ],
       "reason": "The displayed position threatens Qxh7# if the opponent moves next. Qxh6 captures material and removes every immediate mating move without check. Answer Qc8+ with Kg7; the source line gains 5 material points."
+    },
+    {
+      "id": "fdj22",
+      "fen": "r2q3r/pp1nbpk1/2p2n1R/3pN3/3P4/2N4Q/PPP2PPP/R5K1 w - - 3 17",
+      "moves": [
+        "h6h8",
+        "d8h8",
+        "h3g3",
+        "g7f8"
+      ],
+      "rating": 1093,
+      "themes": [
+        "advantage",
+        "defensiveMove",
+        "middlegame",
+        "short"
+      ],
+      "quality": {
+        "rd": 77,
+        "popularity": 93,
+        "plays": 464
+      },
+      "source": "https://lichess.org/training/fdj22",
+      "san": [
+        "Rxh8",
+        "Qxh8",
+        "Qg3+",
+        "Kf8"
+      ],
+      "reason": "Qxh8 captures the rook supporting Qh6# and removes the mating threat without check. Answer Qg3+ with Kf8. The queen cannot be recaptured at the published endpoint; the gain stays positive even after White\u2019s largest immediate capture, Nxd7+."
     }
   ]
 }

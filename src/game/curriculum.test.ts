@@ -77,6 +77,20 @@ describe('published two-region curriculum', () => {
     }
   });
 
+  it('keeps every loose-piece capture safe through the final move, including backups', () => {
+    const lesson = courseLesson('r1-loose-pieces')!;
+    for (const p of [lesson.show, ...lesson.waves.flatMap(w => [w.main, w.backup])]) {
+      const c = new Chess(p.fen);
+      p.moves.forEach((move, i) => {
+        const played = c.move(uciMove(move));
+        if (i % 2 === 0) return;
+        expect(played.captured, `${p.id} solver move ${played.san}`).toBeTruthy();
+        expect(c.moves({ verbose: true }).some(reply => reply.to === played.to),
+          `${p.id} immediate recapture after ${played.san}`).toBe(false);
+      });
+    }
+  });
+
   it('keeps sources aligned with the actual teaching move, not only a theme tag', () => {
     for (const lesson of COURSE_LESSONS.filter(l => !l.review)) {
       for (const p of [lesson.show, ...lesson.waves.flatMap(w => [w.main, w.backup])]) {
@@ -86,10 +100,6 @@ describe('published two-region curriculum', () => {
         const last = p.moves.at(-1)!;
         const after = new Chess(start.fen());
         const played = after.move(uciMove(first));
-        if (lesson.id === 'r1-loose-pieces') {
-          expect(played.captured, p.id).toBeTruthy();
-          expect(after.moves({ verbose: true }).some(m => m.to === played.to), `${p.id} immediate recapture`).toBe(false);
-        }
         if (lesson.id === 'r1-safe-captures') {
           const reply = after.move(uciMove(p.moves[2]));
           const finish = after.move(uciMove(p.moves[3]));

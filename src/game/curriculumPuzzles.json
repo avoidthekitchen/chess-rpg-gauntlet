@@ -125,33 +125,35 @@
       ]
     },
     {
-      "id": "Gb8He",
-      "fen": "8/4K3/5P2/3b4/p5k1/6P1/3N4/8 w - - 18 63",
+      "id": "YgiAw",
+      "fen": "8/6b1/3kB1P1/1p3P2/2p5/8/P3K3/8 w - - 1 43",
       "moves": [
-        "d2c4",
-        "d5c4",
-        "f6f7",
-        "c4f7"
+        "e6c4",
+        "b5c4",
+        "f5f6",
+        "g7f6"
       ],
-      "rating": 772,
+      "rating": 788,
       "themes": [
+        "bishopEndgame",
         "crushing",
         "endgame",
         "hangingPiece",
+        "master",
         "short"
       ],
-      "source": "https://lichess.org/training/Gb8He",
+      "source": "https://lichess.org/training/YgiAw",
       "quality": {
-        "rd": 76,
-        "popularity": 98,
-        "plays": 544
+        "rd": 78,
+        "popularity": 100,
+        "plays": 831
       },
-      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Nc4 Bxc4 f7 Bxf7.",
+      "reason": "Capture the loose bishop with your pawn. After f6, your bishop safely takes the advancing pawn. Published SAN: Bxc4 bxc4 f6 Bxf6.",
       "san": [
-        "Nc4",
         "Bxc4",
-        "f7",
-        "Bxf7"
+        "bxc4",
+        "f6",
+        "Bxf6"
       ]
     },
     {

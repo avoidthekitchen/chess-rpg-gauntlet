@@ -18,12 +18,22 @@ export function planShout(battle: EnemyView, engine: Engine | null, profile: AiP
   return planIfPassed(battle, engine, profile, rng);
 }
 
-/** Whether an announced move is still legal in this position (with the enemy to move). If not, the shout is foiled. */
-export function shoutStands(fen: string, uci: string): boolean {
+/**
+ * Whether an announced move still stands in this position (with the enemy to move). If not,
+ * the shout is foiled. Given the position it was shouted in, a shouted capture also falls once
+ * its target has left the square: the same move would now be a different, usually losing, one.
+ */
+export function shoutStands(fen: string, uci: string, shoutFen?: string | null): boolean {
   const chess = new Chess(fen);
-  return chess
+  const legal = chess
     .moves({ verbose: true })
     .some((m) => m.from === uci.slice(0, 2) && m.to === uci.slice(2, 4) && (m.promotion ?? '') === (uci[4] ?? ''));
+  if (!legal || !shoutFen) return legal;
+  const to = uci.slice(2, 4) as Square;
+  const then = new Chess(shoutFen);
+  const wanted = then.get(to);
+  if (!wanted || wanted.color !== then.turn()) return true; // not a capture when shouted
+  return chess.get(to)?.color === wanted.color;
 }
 
 const NAME: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
@@ -53,8 +63,8 @@ export function shoutLine(fen: string, uci: string, villages: Square[] = []): st
  * bonus, and only while the shout is still legal; a plan shown any other way (the Scrying
  * Orb) never becomes a habit.
  */
-export function replyHabits(shouts: boolean, shout: string | null, fen: string): Habits {
-  return { shout: shouts && shout && shoutStands(fen, shout) ? shout : null };
+export function replyHabits(shouts: boolean, shout: string | null, fen: string, shoutFen?: string | null): Habits {
+  return { shout: shouts && shout && shoutStands(fen, shout, shoutFen) ? shout : null };
 }
 
 /** Shouts by position, so a rewind (or a replayed position) hears the same shout instead of a fresh pick. */

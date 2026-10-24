@@ -535,7 +535,7 @@ export class BattleScene extends BaseScene {
 
   /**
    * What a goblin says when it drops a shout that's still legal. If the shout was a capture
-   * and you moved or guarded the target, they say so, so a good defence feels earned; otherwise
+   * and you guarded the target, they say so, so a good defence feels earned; otherwise
    * (or when they hit that square some other way) a plain change of mind.
    */
   private switchLine(shoutFen: string, fen: string, shout: string, reply: string): string {
@@ -544,9 +544,8 @@ export class BattleScene extends BaseScene {
     const before = new Chess(shoutFen);
     const now = new Chess(fen);
     const wanted = before.get(to);
+    // A target that left the square foils the shout instead (`shoutStands`), so here it's still there.
     if (wanted && wanted.color === me && reply.slice(2, 4) !== to) {
-      const target = now.get(to);
-      if (!target || target.color !== me) return pickOne(['Oi! You moved it!', 'Where’d it go?!', 'Hey, come back with that!']);
       if (now.attackers(to, me).length > before.attackers(to, me).length)
         return pickOne(['Oi! You’ve guarded it!', 'Hey! That one’s guarded now!', 'Grr. You put a guard on it.']);
     }
@@ -889,11 +888,11 @@ export class BattleScene extends BaseScene {
     let uci: string;
     const shout = this.shout;
     // The shout is a preference, never a promise: they decide again after your move.
-    const stands = shout !== null && shoutStands(b.fen, shout);
     const shoutFen = this.shoutFen;
+    const stands = shout !== null && shoutStands(b.fen, shout, shoutFen);
     const playerFen = b.fen;
     try {
-      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai, Math.random, replyHabits(!!this.launch.shouts, shout, b.fen));
+      uci = await chooseEnemyMove(b, engineStatus === 'fallback' ? null : engine, this.ai, Math.random, replyHabits(!!this.launch.shouts, shout, b.fen, shoutFen));
     } catch (err) {
       console.warn('Enemy AI failed, using fallback', err);
       uci = fallbackMove(new Chess(b.fen));

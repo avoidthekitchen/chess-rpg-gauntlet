@@ -120,3 +120,29 @@ describe('ShoutBook', () => {
     expect(calls()).toBe(0);
   });
 });
+
+describe('shoutStands with the shout position', () => {
+  // Black knight on c6 shouted Nxd4 (White rook on d4).
+  const shoutFen = '4k3/8/2n5/8/3R4/8/8/4K3 w - - 0 1';
+
+  it('falls when the target of a shouted capture moved away, even though the move is still legal', () => {
+    const c = new Chess(shoutFen);
+    c.move('Rd1');
+    expect(shoutStands(c.fen(), 'c6d4')).toBe(true); // legal as a plain move
+    expect(shoutStands(c.fen(), 'c6d4', shoutFen)).toBe(false);
+    expect(replyHabits(true, 'c6d4', c.fen(), shoutFen).shout).toBeNull();
+  });
+
+  it('stands when the target stayed, guarded or not', () => {
+    const c = new Chess(shoutFen);
+    c.move('Ke2');
+    expect(shoutStands(c.fen(), 'c6d4', shoutFen)).toBe(true);
+  });
+
+  it('stands for a quiet shout whatever happens to the square', () => {
+    const quiet = '4k3/8/2n5/8/8/8/8/R3K3 w - - 0 1';
+    const c = new Chess(quiet);
+    c.move('Ra2');
+    expect(shoutStands(c.fen(), 'c6d4', quiet)).toBe(true);
+  });
+});

@@ -4,7 +4,7 @@
 import { cp, mkdir, rm, stat } from 'node:fs/promises';
 import { relative, sep } from 'node:path';
 
-const SUBPATH = 'chess-rpg';
+const SUBPATH = 'alpha-chess-rpg';
 const source = new URL('../dist/', import.meta.url);
 const root = new URL('../dist-worker/', import.meta.url);
 const target = new URL(`./${SUBPATH}/`, root);

@@ -1,20 +1,20 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   // Static assets only (no Worker script), so it stays in the free tier.
-  "name": "chess-rpg",
-  "compatibility_date": "2026-10-01",
+  "name": "chess-rpg-alpha",
+  "compatibility_date": "2026-10-24",
   "workers_dev": false,
   "preview_urls": false,
   // Zone routes, like the site's other prototypes. The site's own unformedideas.com/* Worker keeps everything else.
-  // Exact path plus everything under it, so e.g. /chess-rpg-devlog still reaches the main site.
+  // Exact path plus everything under it, so e.g. /alpha-chess-rpg-devlog still reaches the main site.
   "routes": [
-    { "pattern": "unformedideas.com/chess-rpg", "zone_name": "unformedideas.com" },
-    { "pattern": "unformedideas.com/chess-rpg/*", "zone_name": "unformedideas.com" },
-    { "pattern": "www.unformedideas.com/chess-rpg", "zone_name": "unformedideas.com" },
-    { "pattern": "www.unformedideas.com/chess-rpg/*", "zone_name": "unformedideas.com" }
+    { "pattern": "unformedideas.com/alpha-chess-rpg", "zone_name": "unformedideas.com" },
+    { "pattern": "unformedideas.com/alpha-chess-rpg/*", "zone_name": "unformedideas.com" },
+    { "pattern": "www.unformedideas.com/alpha-chess-rpg", "zone_name": "unformedideas.com" },
+    { "pattern": "www.unformedideas.com/alpha-chess-rpg/*", "zone_name": "unformedideas.com" }
   ],
-  // `npm run deploy` stages the build at dist-worker/chess-rpg/ so files mirror the route path.
-  // /chess-rpg redirects to /chess-rpg/ (auto-trailing-slash), which the relative asset paths need.
+  // `npm run deploy` stages the build at dist-worker/alpha-chess-rpg/ so files mirror the route path.
+  // /alpha-chess-rpg redirects to /alpha-chess-rpg/ (auto-trailing-slash), which the relative asset paths need.
   "assets": {
     "directory": "./dist-worker",
     "html_handling": "auto-trailing-slash",

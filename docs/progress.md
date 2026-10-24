@@ -9,14 +9,19 @@ See the [release record](complete-journey-release.md) for stacked PRs, validatio
 - Corrected a misleading retry promise: repeated failure uses the same backup, rather than promising a fresh board every time.
 - A real browser check found the completed-example takeaway clipped at 375×553. It now replaces the redundant demonstration advice.
 - The existing demonstration remains in conversation history. Main practice advice and the fixed 44px controls are preserved.
-- Final `npm run check` passed type-check, build, and 470 tests across 32 files. The full engine regression is still running.
+- Final `npm run check` passed type-check, build, and 470 tests across 32 files.
+- Full `npm run ci -- --full` completed: boss passed; battles passed ten of eleven tests, including repeatability. Its engine stage took 1,833.49 seconds.
+- The full command exited 1 for trades Brave wins: 21/24 (87.5%), below 90%. No other final engine test failed; this gate remains unwaived.
 - The original full baseline finished: boss passed, battles passed nine of ten tests, with guard Brave flawless 11/23 below 50%.
 - The regression harness now seeds both shout planning and enemy choices. Game identities survive pool/filter changes; failed cells print replay traces.
 - Thresholds, sample sizes, content, and simulator heuristics are unchanged. The first seeded battle run exposed trades Brave 21/24, below 90%.
-- Desktop Brave and iPhone-sized WebKit Gentle completed all 35 encounters and 119 main positions through normal UI controls, earning 105 stars each.
+- Desktop Chromium on Brave difficulty and iPhone-sized WebKit on Gentle completed all 35 encounters and 119 main positions through normal UI controls, earning 105 stars each.
 - All four help settings, five viewport sizes, keyboard controls, rotation, classic pieces, and reduced motion passed focused checks.
 - Fixed a brief transition flash by queuing outgoing cleanup before the next scene initializes. Four regression tests and independent browser checks passed.
-- Staging was published and passed public asset, font, save, reset, mobile, and companion checks. The transition patch awaits its final publication.
+- Initial staging revision `7238891` passed public font, lesson, save, reset, viewport, and WebKit touch checks.
+- Final staging revision `1859ee8` passed repeated artifact matching, fresh navigation cleanup, and Old Brick ending/persistence checks.
+- Full journeys preceded the final navigation fix. The final build received focused desktop, WebKit, and public rechecks.
+- Exact isolated PR snapshots also passed: R3 395 tests, R4 398, R5 407, finale 456. Earlier workspace totals included concurrently prepared tests.
 
 
 ## 2026-10-24 — Lich King finale (#45)

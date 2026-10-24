@@ -20,14 +20,16 @@ Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Ded
 
 ## Validation record
 
-- Chapter CI passed at each review boundary: R3, R4, R5, and finale. Finale CI passed 456 tests across 29 files.
+- Applicable chapter CI passed at each review boundary.
+- Each exact committed PR snapshot also passed type-check, build, and tests independently: R3 395, R4 398, R5 407, finale 456.
+- Those isolated snapshots used 26, 27, 28, and 29 test files respectively. Earlier workspace counts included concurrently prepared tests.
 - All 273 source FENs, move lists, themes, ratings, and quality values match the local Lichess download.
 - Independent reviews inspected each new teaching mechanism and prerequisite. The pawn-race exception was moved into required practice before review.
 - An independent finale harness passed 175 state scenarios across every difficulty and every final-encounter backup configuration.
 - A fresh integrated review independently found 273 unique post-setup boards and checked 529 solver states, including 11 alternative immediate mates.
 - Final type-check, production build, and 470 tests across 32 files passed.
 - Retained tests cover 1,860 playable save round trips and 72 alternative-mate recovery cases across all four help settings.
-- Desktop Chromium Brave completed all 35 encounters and 119 main positions through normal controls: 105 stars, 37 attempts.
+- Desktop Chromium on Brave difficulty completed all 35 encounters and 119 main positions through normal controls: 105 stars, 37 attempts.
 - Touch WebKit Gentle completed the same route at 393×852: 105 stars, 35 attempts, and 231 move inputs.
 - Both runs reached the ending, reloaded, replayed the ending, and revisited earlier lessons. Neither reported runtime or HTTP errors.
 - Champion and Grandmaster checks covered hidden hints, two-miss defeat, backup retry, and preserved final completion.
@@ -37,6 +39,8 @@ Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Ded
 - Four retained transition tests cover cleanup order, rapid requests, initialization redirects, and Boot cleanup.
 - Independent Chromium and WebKit checks found no overlap after the fix. Legacy and pilot navigation smoke checks also passed.
 
+The full journeys spanned preview builds `index-BDDovceW.js` through `index-DPfxueor.js`, before the final navigation-order fix.
+The final `index-BRYWs7pU.js` build received focused desktop, WebKit, and public transition/replay checks, not another full 35-encounter run.
 The desktop run includes a harness interruption and recovery replay. The phone run completed without those extra attempts.
 Browser playthroughs used published solutions as the move oracle. No save injection unlocked their full routes.
 Additional recovery, settings, and public migration checks used explicit copies or fixtures; they are not claimed as fresh full playthroughs.
@@ -46,12 +50,48 @@ The failing guard cell had 11 flawless wins among 23 Brave wins, below the 50% b
 The reproducible harness uses a fixed corpus chosen before its results. Its first battle run found Brave trades at 21/24 wins, below 90%.
 All three failed games replay legally and run out of moves with material gain three rather than the required four.
 The simulated player's short planning horizon does not establish a chess-rule defect. No content, thresholds, or seeds were changed to force a pass.
-The final full integration run is pending. These failures are not waived by earlier release decisions.
+The final `npm run ci -- --full` completed its engine stage in 1,833.49 seconds: 11 tests passed and one failed.
+The Goblin Chief suite passed. Battle checks passed ten of eleven tests, including the new repeatability test.
+The only final failure was the same trades Brave cell: 21/24 wins, below 90%.
+The command exited 1. Its quick stage passed 465 tests; later UI/test changes passed the separate final 470-test check.
+The final UI patch did not change engine inputs or behavior. No full engine result is claimed for a different engine implementation.
+These failures are not waived by earlier release decisions. All five PRs remain draft pending review and resolution of the release bar.
+
+### Reproduce the retained legacy failure
+
+The default corpus is `pawnshire-legacy-v1`, with 24 battle games per player and difficulty.
+Two seeded runs produced the same trades result. The three losing game indices and seeds are:
+
+| Game index | Seed | Result |
+| --- | --- | --- |
+| 4 | 3271233999 | Out of moves after 10 player moves |
+| 5 | 3338491570 | Out of moves after 10 player moves |
+| 9 | 3337800022 | Out of moves after 10 player moves |
+
+```sh
+VERIFY_BATTLE=r1-trades npx vitest run --config vitest.verify.config.ts scripts/verify/battles.verify.test.ts
+```
+
+The failed cell prints complete legal move traces for replay. `knight` is the internal ID for Brave difficulty.
+The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42) remains relevant; this release does not waive the failed bar.
 
 ## Staging
 
 Destination: https://unformedideas.com/staging-chess-rpg/.
-The complete integration revision and Cloudflare deployment version will be recorded after publication and public checks.
+Verified application revision: `1859ee8ba53913eaa826eb7366755c392563f463`.
+Cloudflare version: `b09d67fa-6f5c-4ab3-a9c3-5b49ecb7566b`.
+Later documentation-only commits do not change that deployed application.
+
+Public JavaScript `index-BRYWs7pU.js` matches the local staged artifact:
+`a8d8ef8054909bb8001d8685ae111570a3b467d2ac978a6e18b777f73d2bd3ec` (SHA-256).
+CSS and finale artwork also matched.
+The initial public verification used revision `7238891`. All 52 baseline requests succeeded, including three font files.
+A fresh public lesson covered example, hint, legal miss, interrupted reload, backup retry, victory, and persistent progress.
+Four viewport checks and WebKit touch smoke passed. Reset confirmation removed only the journey save; legacy and pilot sentinels survived.
+The final publication at `1859ee8` repeated artifact, fresh-navigation, and Old Brick persistence checks without stale lesson controls or console errors.
+An earned desktop save copied into the public profile retained all 35 completions, 105 stars, 37 attempts, and the finale flag.
+Changing its companion to Old Brick, replaying the ending, reloading, and replaying again preserved the resulting save bytes exactly.
+These were targeted public checks. The two complete normal-UI journeys ran against the local production preview.
 Production at `/chess-rpg/` is outside this task.
 
 ## Future promotion and rollback
@@ -74,4 +114,6 @@ New Journey keeps its confirmation when a valid journey exists and resets only t
 
 WebKit touch emulation is not a physical iPhone test. Published-puzzle completion is not evidence of measured rating gains or full-game proficiency.
 Opposition, key squares, Lucena, Philidor, sustained conversion, adaptive refreshers, and full games need separate teaching systems.
+Wrong-move feedback remains general. Longer review retries can repeat known positions without explaining each incorrect legal move.
+Position-specific remediation belongs with the follow-up teaching and refresher work in #40 and #41.
 Armies, powers, economy, faction AI, native iOS packaging, and the post-game gauntlet remain deferred.

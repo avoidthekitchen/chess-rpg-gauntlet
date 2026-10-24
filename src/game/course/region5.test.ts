@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Chess, type Square } from 'chess.js';
 import puzzles from './region5Puzzles.json';
 import evidence from './region5Evidence.json';
 import { region5Seeds, region5Region } from './region5';
 import { uciMove } from '../ambush';
-import { courseLesson, courseRegion } from '../curriculum';
+import { COURSE_REGIONS, courseLesson, courseRegion } from '../curriculum';
+import { newJourney } from '../journey';
+import { loadJourney } from '../../journeySave';
+import { store } from '../../store';
 import { chapterStory } from '../courseStory';
 
 const sources = Object.values(puzzles).flat();
@@ -58,6 +61,21 @@ describe('Bone Wardens published source mechanisms', () => {
     expect(review.slice(-2).map(p => evidence[p.id as keyof typeof evidence].kind)).toEqual(['rook-support', 'rook-support']);
     expect(review.slice(-2).every(p => p.rating >= 900)).toBe(true);
     expect(region5Seeds.at(-1)?.coaching).not.toMatch(/pawn|rook|knight|promotion|skewer|mate|forcing/i);
+  });
+
+  it('loads existing progress completed through rook support before the skewer lesson', () => {
+    const save = newJourney();
+    save.currentRegion = 'r5';
+    save.completed = [
+      ...COURSE_REGIONS.slice(0, COURSE_REGIONS.findIndex(region => region.id === 'r5')).flatMap(region => region.lessons),
+      'r5-passed-pawns', 'r5-pawn-races', 'r5-king-use', 'r5-rook-support',
+    ];
+    save.stars = Object.fromEntries(save.completed.map(id => [id, { clean: true, noHint: true }]));
+    save.attempts = save.completed.length;
+    const get = vi.spyOn(store, 'get').mockReturnValue(JSON.stringify(save));
+    const set = vi.spyOn(store, 'set').mockImplementation(() => {});
+    try { expect(loadJourney()).toEqual(save); }
+    finally { get.mockRestore(); set.mockRestore(); }
   });
 
   it('registers the chapter and teaches the first-arrival exception before the review', () => {

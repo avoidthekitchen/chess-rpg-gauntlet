@@ -26,7 +26,8 @@ This record does not claim those pending checks passed.
 
 The route teaches decisions that fit unchanged short published lines. It does not teach a complete endgame method.
 Players identify a passed pawn, then count turns in short, mostly equal-distance races.
-King routes follow. Rook skewers revisit the Shadow Cult before the harder rook-support lesson. Promotion choice comes last.
+King routes follow. Rook support comes before the skewer revisit; promotion choice comes last.
+The original lesson order is retained because saves validate completed lessons against their prerequisites. Reordering them would reject existing progress.
 The race lesson extends the same pawn-push action with counting; it does not teach a general choice between racing and stopping a pawn.
 
 | Order | Encounter | Precise claim | Demonstration | Practice and backups |
@@ -34,14 +35,14 @@ The race lesson extends the same pawn-push action with counting; it does not tea
 | 1 | A path through the bones | Advance a passed pawn to promotion in the published continuation | f5–f8 while the rival reaches b2 | Both colours and several files; every pawn is actually passed |
 | 2 | Two paths to the gate | Count promotion turns in the selected short races | Equal three-push routes; moving first promotes with check | Five equal-distance practice sources; wave 3 main starts with a checking capture and ends with two queens |
 | 3 | The crown takes a step | Follow a shortest open king route to the next pawn capture | Kf5, Kxf4, Kxg5 | Seven teaching sources; legal detours can give the defender time |
-| 4 | One line, two guards | Skewer a king and rook, then capture the rear rook | Ra4+ lines up Kd4 and Rg4 | Files and ranks, both colours; every rear target is a rook |
-| 5 | Make room at the gate | Check with a rook to clear a promotion square or deflect its guard | Rg8+ clears a8 before promotion | The king may capture, move aside, or block its own pawn; other lines deflect a rook |
+| 4 | Make room at the gate | Check with a rook to clear a promotion square or deflect its guard | Rg8+ clears a8 before promotion | The king may capture, move aside, or block its own pawn; other lines deflect a rook |
+| 5 | One line, two guards | Skewer a king and rook, then capture the rear rook | Ra4+ lines up Kd4 and Rg4 | Files and ranks, both colours; every rear target is a rook |
 | 6 | The smaller crown | Choose the only promotion that checkmates immediately | f1=N#; all three other promotions allow replies | Six fresh immediate knight-promotion mates |
 | Review | The keep’s threshold | Recognise the taught decision without a motif label | Neutral stored example; direct review entry remains | Six matched main/backup teaching slots |
 
 Three scope decisions keep the claims supported.
 Rook support means a forcing check clears the promotion square or draws its defender away; it does not teach sustained rook-ending technique.
-The fourth lesson focuses on rook skewers. It does not add a second defender-removal teaching strand.
+The fifth lesson focuses on rook skewers. It does not add a second defender-removal teaching strand.
 Required underpromotion means required for **checkmate now**. It does not claim that promoting to a queen necessarily loses the game.
 Every knight-promotion source has exactly one legal mating move. Queen, rook and bishop promotions all allow replies.
 The evidence records one legal reply to each alternative promotion. Tests replay those replies without depending on move-generation order.
@@ -167,7 +168,7 @@ No source is extended, composed or substituted to imply a missing technique capa
 Content verification completed on 2026-10-24:
 
 - Read every displayed board and complete line, including all examples and backups.
-- Eleven focused tests cover chapter integration, source quality, passed pawns, race endpoints, shortest king routes, rook purpose, skewers, promotion necessity and review variation.
+- Twelve focused tests cover saved-progress compatibility, chapter integration, source quality, pawn races, king routes, rook purpose, skewers, promotion necessity and review variation.
 - The rook test checks that immediate promotion is blocked or can be captured before the rook check, then becomes safe after the published reply.
 - The skewer test checks king-between-rooks geometry and the actual rear-rook capture, rather than trusting tags.
 - The king-route test checks all seven teaching sources and rejects the legal Kd3 detour in 8a9DZ as one step slower.
@@ -185,6 +186,9 @@ The opponent-promotes-first exception now appears before the review, with AojWU 
 PR #49 review fixes passed `npm run ci`: type-check, production build and 409 unit tests across 28 files.
 All 55 revised sources matched the raw database; none overlaps the finale or earlier packs.
 Fresh Astra code and teaching review found no actionable issue and independently passed all 11 focused tests.
+A later compatibility regression confirmed that swapping rook support and skewers rejected saves completed through rook support.
+The original lesson order is restored; the interleaved review remains. The regression now checks that those saves load with all progress intact.
+The compatibility follow-up passed all 12 focused tests and `npm run ci`: type-check, build and 411 tests across 28 files.
 
 At the original integration revision, CI passed type-check, build and 407 unit tests across 28 files. Normal CI skips both engine groups by dependency selection.
 The full release suite remains pending: the retained baseline reproduced a legacy r1-guard Brave bonus-rate failure, tracked in #42.

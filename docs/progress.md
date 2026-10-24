@@ -1,5 +1,15 @@
 # Build progress
 
+## 2026-10-24 — Region 4: Iron Legion (#43)
+
+- Added six lessons and General Flint’s six-wave review, using 55 unchanged sources.
+- Independent Astra review inspected every board, line, main/backup pair, and teaching statement. No false chess claim was found.
+- Added concrete immediate-recapture counterfactuals after review requested stronger intermediate-move regression evidence.
+- General Flint returns the Legion’s banners. Scouts point toward the Bone Wardens; the chosen companion remains the coach.
+- Added the Iron March landscape and chapter voices. Source-driven limits exclude overload and broad positional mastery.
+- Full normal-UI desktop and WebKit runs continue alongside integration. Legacy regression reliability remains tracked separately.
+
+
 ## 2026-10-24 — Region 3: Shadow Cult (#39)
 
 - Six focused lessons and a seven-wave mixed review add 57 unchanged Lichess sources.

@@ -1,0 +1,867 @@
+{
+  "RhFcH": {
+    "lesson": "r4-develop",
+    "role": "example",
+    "skill": "develop",
+    "from": "f1",
+    "to": "c4",
+    "check": "Bc4+"
+  },
+  "OgFmF": {
+    "lesson": "r4-develop",
+    "role": "main 1",
+    "skill": "develop",
+    "from": "f1",
+    "to": "b5",
+    "check": "Bb5+"
+  },
+  "jACYs": {
+    "lesson": "r4-develop",
+    "role": "backup 1",
+    "skill": "develop",
+    "from": "c1",
+    "to": "g5",
+    "check": "Bg5+"
+  },
+  "LmMyq": {
+    "lesson": "r4-develop",
+    "role": "main 2",
+    "skill": "develop",
+    "from": "f1",
+    "to": "b5",
+    "check": "Bb5+"
+  },
+  "XPVsm": {
+    "lesson": "r4-develop",
+    "role": "backup 2",
+    "skill": "develop",
+    "from": "c8",
+    "to": "f5",
+    "check": "Bf5+"
+  },
+  "yl1Zp": {
+    "lesson": "r4-develop",
+    "role": "main 3",
+    "skill": "develop",
+    "from": "f1",
+    "to": "b5",
+    "check": "Bb5#"
+  },
+  "XyPoE": {
+    "lesson": "r4-develop",
+    "role": "backup 3",
+    "skill": "develop",
+    "from": "c8",
+    "to": "g4",
+    "check": "Bg4#"
+  },
+  "sYZgM": {
+    "lesson": "r4-file",
+    "role": "example",
+    "skill": "file",
+    "guard": "g7",
+    "king": "g8",
+    "checkingSquare": "e8",
+    "pinner": [
+      "g4"
+    ],
+    "file": "e",
+    "from": "e1",
+    "to": "e8"
+  },
+  "IVjmt": {
+    "lesson": "r4-file",
+    "role": "main 1",
+    "skill": "file",
+    "guard": "b7",
+    "king": "c8",
+    "checkingSquare": "d8",
+    "pinner": [
+      "a6"
+    ],
+    "file": "d",
+    "from": "d1",
+    "to": "d8"
+  },
+  "OZPY8": {
+    "lesson": "r4-file",
+    "role": "backup 1",
+    "skill": "file",
+    "guard": "e7",
+    "king": "d8",
+    "checkingSquare": "f8",
+    "pinner": [
+      "g5"
+    ],
+    "file": "f",
+    "from": "f1",
+    "to": "f8"
+  },
+  "IySvM": {
+    "lesson": "r4-file",
+    "role": "main 2",
+    "skill": "file",
+    "file": "e",
+    "decisive": "Re1+",
+    "from": "e8",
+    "to": "e1"
+  },
+  "p8glC": {
+    "lesson": "r4-file",
+    "role": "backup 2",
+    "skill": "file",
+    "file": "g",
+    "decisive": "Qg1+",
+    "from": "g5",
+    "to": "g1"
+  },
+  "jqNgK": {
+    "lesson": "r4-file",
+    "role": "main 3",
+    "skill": "file",
+    "file": "c",
+    "decisive": "Rc1+",
+    "from": "c7",
+    "to": "c1"
+  },
+  "gnoUd": {
+    "lesson": "r4-file",
+    "role": "backup 3",
+    "skill": "file",
+    "file": "a",
+    "decisive": "Ra8+",
+    "from": "a1",
+    "to": "a8"
+  },
+  "RDXPl": {
+    "lesson": "r4-exposed",
+    "role": "example",
+    "skill": "exposed",
+    "king": "g8",
+    "checks": [
+      "Rf8+",
+      "R1f7+",
+      "Rh8#"
+    ],
+    "stages": [
+      {
+        "move": "Rf8+",
+        "king": "g8",
+        "replies": [
+          "Kh7",
+          "Kg7"
+        ]
+      },
+      {
+        "move": "R1f7+",
+        "king": "h7",
+        "replies": [
+          "Kh6"
+        ]
+      },
+      {
+        "move": "Rh8#",
+        "king": "h6",
+        "replies": []
+      }
+    ]
+  },
+  "IE5yQ": {
+    "lesson": "r4-exposed",
+    "role": "main 1",
+    "skill": "exposed",
+    "king": "g1",
+    "checks": [
+      "Rh1+",
+      "R8h2+",
+      "Rf1#"
+    ],
+    "stages": [
+      {
+        "move": "Rh1+",
+        "king": "g1",
+        "replies": [
+          "Kf2",
+          "Kg2"
+        ]
+      },
+      {
+        "move": "R8h2+",
+        "king": "g2",
+        "replies": [
+          "Kf3"
+        ]
+      },
+      {
+        "move": "Rf1#",
+        "king": "f3",
+        "replies": []
+      }
+    ]
+  },
+  "7BbVn": {
+    "lesson": "r4-exposed",
+    "role": "backup 1",
+    "skill": "exposed",
+    "king": "g1",
+    "checks": [
+      "Rd1+",
+      "R8d2+",
+      "Rh1#"
+    ],
+    "stages": [
+      {
+        "move": "Rd1+",
+        "king": "g1",
+        "replies": [
+          "Kf2",
+          "Kg2",
+          "Kh2"
+        ]
+      },
+      {
+        "move": "R8d2+",
+        "king": "h2",
+        "replies": [
+          "Kh3"
+        ]
+      },
+      {
+        "move": "Rh1#",
+        "king": "h3",
+        "replies": []
+      }
+    ]
+  },
+  "1xMAc": {
+    "lesson": "r4-exposed",
+    "role": "main 2",
+    "skill": "exposed",
+    "king": "b1",
+    "checks": [
+      "Re1+",
+      "R7e2+",
+      "Rb1#"
+    ],
+    "stages": [
+      {
+        "move": "Re1+",
+        "king": "b1",
+        "replies": [
+          "Ka2",
+          "Kb2",
+          "Kc2"
+        ]
+      },
+      {
+        "move": "R7e2+",
+        "king": "c2",
+        "replies": [
+          "Kb3"
+        ]
+      },
+      {
+        "move": "Rb1#",
+        "king": "b3",
+        "replies": []
+      }
+    ]
+  },
+  "Fd6ge": {
+    "lesson": "r4-exposed",
+    "role": "backup 2",
+    "skill": "exposed",
+    "king": "g8",
+    "checks": [
+      "Re8+",
+      "R1e7+",
+      "Rg8#"
+    ],
+    "stages": [
+      {
+        "move": "Re8+",
+        "king": "g8",
+        "replies": [
+          "Kh7",
+          "Kg7",
+          "Kf7"
+        ]
+      },
+      {
+        "move": "R1e7+",
+        "king": "f7",
+        "replies": [
+          "Kg6"
+        ]
+      },
+      {
+        "move": "Rg8#",
+        "king": "g6",
+        "replies": []
+      }
+    ]
+  },
+  "72vLw": {
+    "lesson": "r4-exposed",
+    "role": "main 3",
+    "skill": "exposed",
+    "king": "h1",
+    "checks": [
+      "Qh3+",
+      "Qxg3+",
+      "Qh3#"
+    ],
+    "stages": [
+      {
+        "move": "Qh3+",
+        "king": "h1",
+        "replies": [
+          "Kg1"
+        ]
+      },
+      {
+        "move": "Qxg3+",
+        "king": "g1",
+        "replies": [
+          "Kh1"
+        ]
+      },
+      {
+        "move": "Qh3#",
+        "king": "h1",
+        "replies": []
+      }
+    ]
+  },
+  "RJegm": {
+    "lesson": "r4-exposed",
+    "role": "backup 3",
+    "skill": "exposed",
+    "king": "h8",
+    "checks": [
+      "Qh5+",
+      "Qxh6+",
+      "Qh7#"
+    ],
+    "stages": [
+      {
+        "move": "Qh5+",
+        "king": "h8",
+        "replies": [
+          "Kg8",
+          "Bh6"
+        ]
+      },
+      {
+        "move": "Qxh6+",
+        "king": "h8",
+        "replies": [
+          "Kg8"
+        ]
+      },
+      {
+        "move": "Qh7#",
+        "king": "g8",
+        "replies": []
+      }
+    ]
+  },
+  "4bU3U": {
+    "lesson": "r4-deflect",
+    "role": "example",
+    "skill": "deflect",
+    "guard": "d8",
+    "target": "d2",
+    "lure": "e8",
+    "finish": "Qxd2",
+    "netMaterial": 4
+  },
+  "Cm0pb": {
+    "lesson": "r4-deflect",
+    "role": "main 1",
+    "skill": "deflect",
+    "guard": "d1",
+    "target": "d8",
+    "lure": "e1",
+    "finish": "Qxd8",
+    "netMaterial": 4
+  },
+  "U55OX": {
+    "lesson": "r4-deflect",
+    "role": "backup 1",
+    "skill": "deflect",
+    "guard": "d1",
+    "target": "d7",
+    "lure": "e1",
+    "finish": "Qxd7",
+    "netMaterial": 4
+  },
+  "mjTwj": {
+    "lesson": "r4-deflect",
+    "role": "main 2",
+    "skill": "deflect",
+    "guard": "f1",
+    "target": "e1",
+    "lure": "f2",
+    "finish": "Qxe1+",
+    "netMaterial": 3
+  },
+  "gn5eK": {
+    "lesson": "r4-deflect",
+    "role": "backup 2",
+    "skill": "deflect",
+    "guard": "g1",
+    "target": "f1",
+    "lure": "h2",
+    "finish": "Rxf1",
+    "netMaterial": 2
+  },
+  "LXf27": {
+    "lesson": "r4-deflect",
+    "role": "main 3",
+    "skill": "deflect",
+    "guard": "e8",
+    "target": "c8",
+    "lure": "e7",
+    "finish": "Qxc8+",
+    "netMaterial": 2
+  },
+  "pBsbP": {
+    "lesson": "r4-deflect",
+    "role": "backup 3",
+    "skill": "deflect",
+    "guard": "d1",
+    "target": "e1",
+    "lure": "f3",
+    "finish": "Rxe1+",
+    "netMaterial": 2
+  },
+  "4KxnK": {
+    "lesson": "r4-between",
+    "role": "example",
+    "skill": "between",
+    "recapture": "d4",
+    "first": "Bxc6+",
+    "reply": "bxc6",
+    "finish": "Qxd4",
+    "directRecapture": "Qxd4",
+    "afterDirectCaptures": [
+      "Bxa3",
+      "Nxd4"
+    ],
+    "removesRecaptureGuard": true,
+    "firstCaptured": "n",
+    "netMaterial": 9,
+    "immediateRecapture": "d1d4",
+    "counterReply": "c6d4"
+  },
+  "yeOLz": {
+    "lesson": "r4-between",
+    "role": "main 1",
+    "skill": "between",
+    "recapture": "c4",
+    "first": "Nxe6+",
+    "reply": "fxe6",
+    "finish": "Rxc4",
+    "directRecapture": "Rxc4",
+    "afterDirectCaptures": [
+      "Bxc4"
+    ],
+    "removesRecaptureGuard": true,
+    "firstCaptured": "b",
+    "netMaterial": 5,
+    "immediateRecapture": "c1c4",
+    "counterReply": "e6c4"
+  },
+  "4OvXv": {
+    "lesson": "r4-between",
+    "role": "backup 1",
+    "skill": "between",
+    "recapture": "e6",
+    "first": "Rxf8+",
+    "reply": "Rxf8",
+    "finish": "Qxe6",
+    "directRecapture": "Qxe6",
+    "afterDirectCaptures": [
+      "Nxe6"
+    ],
+    "removesRecaptureGuard": true,
+    "firstCaptured": "n",
+    "netMaterial": 7,
+    "immediateRecapture": "g4e6",
+    "counterReply": "f8e6"
+  },
+  "syBnk": {
+    "lesson": "r4-between",
+    "role": "main 2",
+    "skill": "between",
+    "recapture": "e3",
+    "first": "Nxf5+",
+    "reply": "exf5",
+    "finish": "Qxe3",
+    "directRecapture": "Qxe3",
+    "afterDirectCaptures": [
+      "Nxh4+",
+      "Nxe3+",
+      "Nxd4"
+    ],
+    "removesRecaptureGuard": true,
+    "firstCaptured": "n",
+    "netMaterial": 9,
+    "immediateRecapture": "f2e3",
+    "counterReply": "f5e3"
+  },
+  "pK2b2": {
+    "lesson": "r4-between",
+    "role": "backup 2",
+    "skill": "between",
+    "recapture": "e4",
+    "first": "Nxf6+",
+    "reply": "gxf6",
+    "finish": "Rxe4",
+    "directRecapture": "Rxe4",
+    "afterDirectCaptures": [
+      "Nxd4",
+      "Qxf2+",
+      "Qxd4"
+    ],
+    "removesRecaptureGuard": false,
+    "firstCaptured": "q",
+    "netMaterial": 11,
+    "immediateRecapture": "e1e4",
+    "counterReply": "f6f2"
+  },
+  "FOtOo": {
+    "lesson": "r4-between",
+    "role": "main 3",
+    "skill": "between",
+    "recapture": "e4",
+    "first": "Rxd8+",
+    "reply": "Kg7",
+    "finish": "Bxe4",
+    "directRecapture": "Bxe4",
+    "afterDirectCaptures": [
+      "Rxd2",
+      "Bxh2+"
+    ],
+    "removesRecaptureGuard": false,
+    "firstCaptured": "r",
+    "netMaterial": 8,
+    "immediateRecapture": "b1e4",
+    "counterReply": "d8d2"
+  },
+  "1Yycx": {
+    "lesson": "r4-between",
+    "role": "backup 3",
+    "skill": "between",
+    "recapture": "a8",
+    "first": "Rxc1+",
+    "reply": "Kh2",
+    "finish": "Bxa8",
+    "directRecapture": "Bxa8",
+    "afterDirectCaptures": [
+      "Rxc2"
+    ],
+    "removesRecaptureGuard": false,
+    "firstCaptured": "r",
+    "netMaterial": 10,
+    "immediateRecapture": "b7a8",
+    "counterReply": "c1c2"
+  },
+  "dRoKV": {
+    "lesson": "r4-defend",
+    "role": "example",
+    "skill": "defend",
+    "threats": [
+      "d3f1"
+    ],
+    "answer": "Qxf7",
+    "reply": "Qd1+",
+    "finish": "Kg2",
+    "threatSAN": [
+      "Qf1#"
+    ]
+  },
+  "mmo0r": {
+    "lesson": "r4-defend",
+    "role": "main 1",
+    "skill": "defend",
+    "threats": [
+      "g3g2"
+    ],
+    "answer": "Rxe2",
+    "reply": "Qxf3+",
+    "finish": "Rg2",
+    "threatSAN": [
+      "Qg2#"
+    ]
+  },
+  "7VNVN": {
+    "lesson": "r4-defend",
+    "role": "backup 1",
+    "skill": "defend",
+    "threats": [
+      "d8d1"
+    ],
+    "answer": "Qxd8",
+    "reply": "Qa1+",
+    "finish": "Kh2",
+    "threatSAN": [
+      "Rd1#"
+    ]
+  },
+  "I1Zr0": {
+    "lesson": "r4-defend",
+    "role": "main 2",
+    "skill": "defend",
+    "threats": [
+      "c1g5",
+      "c1h1"
+    ],
+    "answer": "Rxc1",
+    "reply": "Rh2+",
+    "finish": "Kg6",
+    "threatSAN": [
+      "Qg5#",
+      "Qxh1#"
+    ]
+  },
+  "OhR2Q": {
+    "lesson": "r4-defend",
+    "role": "backup 2",
+    "skill": "defend",
+    "threats": [
+      "e3e1"
+    ],
+    "answer": "Rxe3",
+    "reply": "Qa1+",
+    "finish": "Kf2",
+    "threatSAN": [
+      "Rxe1#"
+    ]
+  },
+  "y7n8E": {
+    "lesson": "r4-defend",
+    "role": "main 3",
+    "skill": "defend",
+    "threats": [
+      "d8c8"
+    ],
+    "answer": "Nxf8",
+    "reply": "Be5+",
+    "finish": "Ka7",
+    "threatSAN": [
+      "Rxc8#"
+    ]
+  },
+  "a325i": {
+    "lesson": "r4-defend",
+    "role": "backup 3",
+    "skill": "defend",
+    "threats": [
+      "a7f7"
+    ],
+    "answer": "Qxf4",
+    "reply": "Qxc5+",
+    "finish": "Kg8",
+    "threatSAN": [
+      "Qxf7#"
+    ]
+  },
+  "R3q4o": {
+    "lesson": "r4-legion-review",
+    "role": "example",
+    "skill": "develop",
+    "from": "f1",
+    "to": "c4",
+    "check": "Bc4+"
+  },
+  "aY6xO": {
+    "lesson": "r4-legion-review",
+    "role": "main 1",
+    "skill": "develop",
+    "from": "f1",
+    "to": "b5",
+    "check": "Bb5+"
+  },
+  "d9mXL": {
+    "lesson": "r4-legion-review",
+    "role": "backup 1",
+    "skill": "develop",
+    "from": "c8",
+    "to": "g4",
+    "check": "Bg4+"
+  },
+  "skBmI": {
+    "lesson": "r4-legion-review",
+    "role": "main 2",
+    "skill": "exposed",
+    "king": "f6",
+    "checks": [
+      "Qf7+",
+      "Qf5+",
+      "Qh5#"
+    ],
+    "stages": [
+      {
+        "move": "Qf7+",
+        "king": "f6",
+        "replies": [
+          "Kg5"
+        ]
+      },
+      {
+        "move": "Qf5+",
+        "king": "g5",
+        "replies": [
+          "Kh6",
+          "Kh4"
+        ]
+      },
+      {
+        "move": "Qh5#",
+        "king": "h6",
+        "replies": []
+      }
+    ]
+  },
+  "d2U43": {
+    "lesson": "r4-legion-review",
+    "role": "backup 2",
+    "skill": "exposed",
+    "king": "h6",
+    "checks": [
+      "Qh3+",
+      "Qxh4+",
+      "Qh7#"
+    ],
+    "stages": [
+      {
+        "move": "Qh3+",
+        "king": "h6",
+        "replies": [
+          "Kg7",
+          "Bh4"
+        ]
+      },
+      {
+        "move": "Qxh4+",
+        "king": "h6",
+        "replies": [
+          "Kg7"
+        ]
+      },
+      {
+        "move": "Qh7#",
+        "king": "g7",
+        "replies": []
+      }
+    ]
+  },
+  "CeqlU": {
+    "lesson": "r4-legion-review",
+    "role": "main 3",
+    "skill": "deflect",
+    "guard": "d2",
+    "target": "c1",
+    "lure": "e2",
+    "finish": "Rxc1+",
+    "netMaterial": 2
+  },
+  "ascNK": {
+    "lesson": "r4-legion-review",
+    "role": "backup 3",
+    "skill": "deflect",
+    "guard": "d2",
+    "target": "d1",
+    "lure": "f2",
+    "finish": "Qxd1+",
+    "netMaterial": 2
+  },
+  "IXyqT": {
+    "lesson": "r4-legion-review",
+    "role": "main 4",
+    "skill": "between",
+    "recapture": "f6",
+    "first": "Bxg2+",
+    "reply": "Kxg2",
+    "finish": "Kxf6",
+    "directRecapture": "Kxf6",
+    "afterDirectCaptures": [
+      "Qxe4"
+    ],
+    "removesRecaptureGuard": false,
+    "firstCaptured": "q",
+    "netMaterial": 11,
+    "immediateRecapture": "e7f6",
+    "counterReply": "g2e4"
+  },
+  "sxdTZ": {
+    "lesson": "r4-legion-review",
+    "role": "backup 4",
+    "skill": "between",
+    "recapture": "d5",
+    "first": "Rxe8+",
+    "reply": "Kh7",
+    "finish": "cxd5",
+    "directRecapture": "cxd5",
+    "afterDirectCaptures": [
+      "Rxg3+"
+    ],
+    "removesRecaptureGuard": false,
+    "firstCaptured": "b",
+    "netMaterial": 6,
+    "immediateRecapture": "c4d5",
+    "counterReply": "a3g3"
+  },
+  "vmFkF": {
+    "lesson": "r4-legion-review",
+    "role": "main 5",
+    "skill": "defend",
+    "threats": [
+      "f6f2"
+    ],
+    "answer": "Kxg2",
+    "reply": "Qg5+",
+    "finish": "Kf1",
+    "threatSAN": [
+      "Qxf2#"
+    ]
+  },
+  "jUB61": {
+    "lesson": "r4-legion-review",
+    "role": "backup 5",
+    "skill": "defend",
+    "threats": [
+      "a2h2"
+    ],
+    "answer": "Rxg3",
+    "reply": "Ra1+",
+    "finish": "Kg2",
+    "threatSAN": [
+      "Rxh2#"
+    ]
+  },
+  "jSgsg": {
+    "lesson": "r4-legion-review",
+    "role": "main 6",
+    "skill": "pin",
+    "guard": "h6",
+    "king": "h7",
+    "checkingSquare": "g5",
+    "pinner": [
+      "h5"
+    ]
+  },
+  "X7FgN": {
+    "lesson": "r4-legion-review",
+    "role": "backup 6",
+    "skill": "pin",
+    "guard": "g7",
+    "king": "g8",
+    "checkingSquare": "f6",
+    "pinner": [
+      "g1"
+    ]
+  }
+}

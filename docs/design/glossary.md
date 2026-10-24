@@ -70,6 +70,9 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | The Kingsroad | Region 2 |
 | Waymeet | Region 2's town |
 | The Broken Wheel | Region 2's tavern |
+| Shadow Cult | Region 3, the bound villages |
+| The Iron March | Region 4, the Iron Legion’s fortress valley |
+| Flintwatch | The Iron March’s fortress town |
 
 ## Current journey terms
 
@@ -111,3 +114,5 @@ The following names describe the retained original game or later ideas, not curr
 | Refresher | A bounty that brings back a theme you got wrong in a battle |
 | Boss budget | The most points of army you may bring to a boss duel |
 | Gauntlet | The replay mode that unlocks after the campaign |
+
+General Flint is the Iron Legion’s proud general and Region 4 review host. He returns to Pawnshire’s side after the review.

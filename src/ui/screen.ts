@@ -132,6 +132,8 @@ export abstract class BaseScene extends Phaser.Scene {
  * the one on screen.
  */
 export function goTo(game: Phaser.Game, key: string, data?: object) {
-  for (const s of game.scene.getScenes(true)) if (s.scene.key !== key) s.scene.stop();
-  game.scene.start(key, data);
+  // Include dormant scenes: another navigation may already have queued their start.
+  // Queue the destination too, so outgoing shutdown/save cleanup precedes its init.
+  for (const s of game.scene.getScenes(false)) if (s.scene.key !== key) s.scene.stop();
+  game.scene.getScene(key).scene.start(key, data);
 }

@@ -9,11 +9,14 @@ See the [release record](complete-journey-release.md) for stacked PRs, validatio
 - Corrected a misleading retry promise: repeated failure uses the same backup, rather than promising a fresh board every time.
 - A real browser check found the completed-example takeaway clipped at 375×553. It now replaces the redundant demonstration advice.
 - The existing demonstration remains in conversation history. Main practice advice and the fixed 44px controls are preserved.
-- The final full command, `npm run ci -- --full`, passed type-check/build and 465 tests across 30 files. Its engine stage is running.
+- Final `npm run check` passed type-check, build, and 470 tests across 32 files. The full engine regression is still running.
 - The original full baseline finished: boss passed, battles passed nine of ten tests, with guard Brave flawless 11/23 below 50%.
 - The regression harness now seeds both shout planning and enemy choices. Game identities survive pool/filter changes; failed cells print replay traces.
 - Thresholds, sample sizes, content, and simulator heuristics are unchanged. The first seeded battle run exposed trades Brave 21/24, below 90%.
-- Full desktop Brave and phone Gentle playthroughs, final viewport checks, and public staging verification are underway.
+- Desktop Brave and iPhone-sized WebKit Gentle completed all 35 encounters and 119 main positions through normal UI controls, earning 105 stars each.
+- All four help settings, five viewport sizes, keyboard controls, rotation, classic pieces, and reduced motion passed focused checks.
+- Fixed a brief transition flash by queuing outgoing cleanup before the next scene initializes. Four regression tests and independent browser checks passed.
+- Staging was published and passed public asset, font, save, reset, mobile, and companion checks. The transition patch awaits its final publication.
 
 
 ## 2026-10-24 — Lich King finale (#45)

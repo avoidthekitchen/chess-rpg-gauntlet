@@ -678,7 +678,7 @@
   },
   "aY6xO": {
     "lesson": "r4-legion-review",
-    "role": "main 1",
+    "role": "main 3",
     "skill": "develop",
     "from": "f1",
     "to": "b5",
@@ -686,7 +686,7 @@
   },
   "d9mXL": {
     "lesson": "r4-legion-review",
-    "role": "backup 1",
+    "role": "backup 3",
     "skill": "develop",
     "from": "c8",
     "to": "g4",
@@ -694,7 +694,7 @@
   },
   "skBmI": {
     "lesson": "r4-legion-review",
-    "role": "main 2",
+    "role": "main 5",
     "skill": "exposed",
     "king": "f6",
     "checks": [
@@ -727,7 +727,7 @@
   },
   "d2U43": {
     "lesson": "r4-legion-review",
-    "role": "backup 2",
+    "role": "backup 5",
     "skill": "exposed",
     "king": "h6",
     "checks": [
@@ -760,7 +760,7 @@
   },
   "CeqlU": {
     "lesson": "r4-legion-review",
-    "role": "main 3",
+    "role": "main 4",
     "skill": "deflect",
     "guard": "d2",
     "target": "c1",
@@ -770,7 +770,7 @@
   },
   "ascNK": {
     "lesson": "r4-legion-review",
-    "role": "backup 3",
+    "role": "backup 4",
     "skill": "deflect",
     "guard": "d2",
     "target": "d1",
@@ -780,7 +780,7 @@
   },
   "IXyqT": {
     "lesson": "r4-legion-review",
-    "role": "main 4",
+    "role": "main 2",
     "skill": "between",
     "recapture": "f6",
     "first": "Bxg2+",
@@ -798,7 +798,7 @@
   },
   "sxdTZ": {
     "lesson": "r4-legion-review",
-    "role": "backup 4",
+    "role": "backup 2",
     "skill": "between",
     "recapture": "d5",
     "first": "Rxe8+",
@@ -814,54 +814,64 @@
     "immediateRecapture": "c4d5",
     "counterReply": "a3g3"
   },
-  "vmFkF": {
+  "31XQ9": {
     "lesson": "r4-legion-review",
-    "role": "main 5",
-    "skill": "defend",
-    "threats": [
-      "f6f2"
-    ],
-    "answer": "Kxg2",
-    "reply": "Qg5+",
-    "finish": "Kf1",
-    "threatSAN": [
-      "Qxf2#"
-    ]
-  },
-  "jUB61": {
-    "lesson": "r4-legion-review",
-    "role": "backup 5",
-    "skill": "defend",
-    "threats": [
-      "a2h2"
-    ],
-    "answer": "Rxg3",
-    "reply": "Ra1+",
-    "finish": "Kg2",
-    "threatSAN": [
-      "Rxh2#"
-    ]
-  },
-  "jSgsg": {
-    "lesson": "r4-legion-review",
-    "role": "main 6",
-    "skill": "pin",
-    "guard": "h6",
-    "king": "h7",
+    "role": "main 1",
+    "skill": "file",
+    "guard": "e7",
+    "king": "f8",
     "checkingSquare": "g5",
     "pinner": [
-      "h5"
-    ]
+      "c5"
+    ],
+    "file": "d",
+    "decisive": "Rxd8#",
+    "from": "d1",
+    "to": "d8"
   },
-  "X7FgN": {
+  "0lrXr": {
     "lesson": "r4-legion-review",
-    "role": "backup 6",
-    "skill": "pin",
-    "guard": "g7",
-    "king": "g8",
+    "role": "backup 1",
+    "skill": "file",
+    "guard": "f2",
+    "king": "g1",
     "checkingSquare": "f6",
     "pinner": [
-      "g1"
-    ]
+      "d4"
+    ],
+    "file": "e",
+    "decisive": "Rxe1#",
+    "from": "e8",
+    "to": "e1"
+  },
+  "ERCLb": {
+    "lesson": "r4-legion-review",
+    "role": "main 6",
+    "skill": "defend",
+    "threats": [
+      "e5e1"
+    ],
+    "answer": "Rxe5",
+    "reply": "Rc1+",
+    "finish": "Ke2",
+    "threatSAN": [
+      "Qxe1#"
+    ],
+    "netMaterial": 9
+  },
+  "x4f2j": {
+    "lesson": "r4-legion-review",
+    "role": "backup 6",
+    "skill": "defend",
+    "threats": [
+      "f5h7"
+    ],
+    "answer": "Qxh6",
+    "reply": "Qc8+",
+    "finish": "Kg7",
+    "threatSAN": [
+      "Qxh7#"
+    ],
+    "netMaterial": 5
   }
 }

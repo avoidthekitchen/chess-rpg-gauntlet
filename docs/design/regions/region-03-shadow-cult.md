@@ -31,7 +31,7 @@ All 57 source IDs are distinct from each other and the earlier curriculum, bount
 
 | Lesson | Concrete teaching claim | Variation and prerequisite |
 | --- | --- | --- |
-| Held in place | A king-pinned defender cannot capture off the pin line. Pressure on a material-pinned rook wins it after its queen retreats. | Rook and bishop pins; mating moves, a checking knight fork, and pawn pressure. Reuses safe captures and reply checking. |
+| Held in place | A king-pinned defender cannot capture off the pin line. Creating a king pin and adding a second attacker can win material. | Rook and bishop pins; mating moves, a checking knight fork, and pawn pressure. Reuses safe captures and reply checking. |
 | Capture the pinning piece | The solver starts king-pinned and captures its pinning attacker along the same line. | Rook, bishop, and queen captures; each leaves the solver’s king safe. Follow-up exchanges remain part of the source. |
 | Behind the first target | Check a king in front of another piece, then capture that rear piece after the king moves. | Rook and bishop skewers; rear rooks, a queen, and a knight. Reuses forcing checks. |
 | Through the line | A rear slider sees an exchange square through an enemy blocker. That blocker recaptures, then the rear piece captures it. | Rook files, rook ranks, and bishop diagonals. Includes material gains and familiar back-rank mates. |
@@ -40,7 +40,9 @@ All 57 source IDs are distinct from each other and the earlier curriculum, bount
 | The sealed ledger | Recognize the needed idea without a tactic label or a revealing initial prompt. | Seven fresh pairs cover the chapter and two earlier strands. |
 
 A king pin only forbids moves that expose the king. A pinned piece can move along its line or capture its attacker.
-A material pin can legally be broken. The material-pin source `c2Bgp` shows queen retreat followed by capture of the abandoned rook.
+`c2Bgp` creates an absolute pin: Bxe3 pins the f2 rook to the g1 king and adds a second attacker.
+Qe2 still defends f2. After Bxf2+, Qxf2 allows Rxf2; the queen is exchanged for a rook.
+This chapter claims king-pin coverage only; relative pins remain outside its assessed scope.
 The other focused pin sources establish the specific forbidden capture that makes the solver’s move work.
 
 ## Pin-escape scope decision
@@ -49,6 +51,11 @@ The original plan searched for captures, rear-piece moves, and interpositions. T
 Every focused source begins with the solver’s own piece pinned to its king. That very piece captures the pinning attacker.
 The tests establish the initial line, attacker, pinned piece, king, capture, and king safety after the move.
 They do not infer defence from a `pin` or `defensiveMove` label.
+
+Guided waves `fUMrZ` and `xPgdI` are natural recaptures as well as legal escapes from pins.
+They practise the capture rule, but do not establish that the learner noticed the pin.
+The review instead uses `Kp2Gw` and `9ztkq`; neither first answer recaptures the setup move.
+Tests preserve that distinction. Their continuations also revisit removing a defender and taking a valuable piece.
 
 This is a deliberate narrow claim, not evidence that other escape methods lack published sources.
 The bounded selection found 523 eligible initial pin-attacker captures before manual selection; no rating or quality filter was relaxed.
@@ -65,23 +72,24 @@ The full FENs, source URLs, quality values, reasons, and unchanged moves live in
 | Capture the pinning piece | Wt8Fa | fUMrZ / oflAC | un3fn / 3Y0i6 | xPgdI / 6v7d9 |
 | Skewers | rXvX8 | BUkzB / EilYs | 3JWRi / u3dY2 | 6zDkm / irsYW |
 | X-rays | BCAna | i2R8M / QBWhJ | 6yvcu / 6rHtJ | ZelWm / BIy4S |
-| Discoveries | NYamc | E4Paq / K7icn | 9AjZo / llvLx | HqQGf / 3I8Uk |
+| Discoveries | TgvdT | 6bAqC / K7icn | 9AjZo / llvLx | HqQGf / 3I8Uk |
 | Double check | Hmyzf | xr0Kq / oZknu | uUWLR / uXx5w | cHM5O / 9pocB |
 
 The review example is `KDrse`. Its stored demonstration text is neutral and does not forecast a wave.
 
 | Review slot | Main / backup | Verified coverage |
 | --- | --- | --- |
-| 1 | 3iPpu / NWZHe | King-pinned pawn cannot capture the mating piece. |
-| 2 | 6HOpv / 9ztkq | Capture the pinning piece, then complete the source’s exchange. |
-| 3 | Q4BuY / 6wYzF | Bishop checks a king and takes the rook behind it. |
-| 4 | KUSTl / 9SvxP | Enemy rook blocks the rear slider before the exchange. |
-| 5 | lAFvE / WOWAY | Ordinary discovery / double check. Both expose a previously blocked line. |
+| 1 | Q4BuY / 6wYzF | Bishop checks a king and takes the rook behind it. |
+| 2 | i7TIO / KPo9X | Mate in two, using already taught double check or a pin. |
+| 3 | 3iPpu / NWZHe | King-pinned pawn cannot capture the mating piece. |
+| 4 | lAFvE / WOWAY | Ordinary discovery / double check. Both expose a previously blocked line. |
+| 5 | KUSTl / 9SvxP | Enemy rook blocks the rear slider before the exchange. |
 | 6 | ZvWIQ / HKkJ1 | Checking knight fork followed by a rook capture. A familiar pin prevents a pawn recapture. |
-| 7 | i7TIO / KPo9X | Mate in two, using already taught double check or a pin. |
+| 7 | Kp2Gw / 9ztkq | Capture the pinning queen without a setup recapture, then collect the exposed piece. |
 
 Review title, introduction, objective, and coaching do not name any tactic.
-Main and backup address the same slot; slot 5 deliberately spans ordinary discovery and double check.
+Main and backup address the same slot; slot 4 deliberately spans ordinary discovery and double check.
+The order interleaves ideas instead of repeating the lesson sequence. Tests assert coverage without fixing one order.
 Replaying these known positions remains practice, not a fresh assessment.
 
 ## Provenance and quality
@@ -120,7 +128,9 @@ The Cult Leader is a role label; no new species or personal name is introduced.
 
 `npx vitest run src/game/course/region3.test.ts` passes 115 tests for the content pack.
 They cover every legal replay, unchanged SAN record, quality floor, source identity, nearby backup, neutral review prompt, and claimed mechanism.
-The source comparison script also checks all stored fields against the local database; record its final result in shared build progress.
+The source comparison checks stored fields against the local database; record its final result in shared build progress.
+Discovery checks also reject any legal immediate recapture of the collected target.
+The replacement sources `TgvdT`, `6bAqC`, and `Kp2Gw` preserve their published lines and endpoints.
 Independent teaching review, integrated course completion, responsive layouts, and release CI remain separate checks.
 
 The chapter does not teach opposition, key squares, general pin defence, or sustained endgame conversion.

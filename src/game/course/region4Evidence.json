@@ -844,24 +844,9 @@
     "from": "e8",
     "to": "e1"
   },
-  "ERCLb": {
-    "lesson": "r4-legion-review",
-    "role": "main 6",
-    "skill": "defend",
-    "threats": [
-      "e5e1"
-    ],
-    "answer": "Rxe5",
-    "reply": "Rc1+",
-    "finish": "Ke2",
-    "threatSAN": [
-      "Qxe1#"
-    ],
-    "netMaterial": 9
-  },
   "x4f2j": {
     "lesson": "r4-legion-review",
-    "role": "backup 6",
+    "role": "main 6",
     "skill": "defend",
     "threats": [
       "f5h7"
@@ -872,6 +857,21 @@
     "threatSAN": [
       "Qxh7#"
     ],
+    "netMaterial": 5
+  },
+  "fdj22": {
+    "lesson": "r4-legion-review",
+    "role": "backup 6",
+    "skill": "defend",
+    "threats": [
+      "h3h6"
+    ],
+    "threatSAN": [
+      "Qh6#"
+    ],
+    "answer": "Qxh8",
+    "reply": "Qg3+",
+    "finish": "Kf8",
     "netMaterial": 5
   }
 }

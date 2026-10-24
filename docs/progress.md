@@ -12,6 +12,9 @@ One entry per build step. The latest entry follows the [curriculum-first scope](
 - Type-check, build and 492 tests passed. All 273 published puzzle records matched the local source database.
 - Fresh normal-control preview runs completed Region 3 and the finale in phone WebKit, and Region 4 in desktop Chromium.
 - The release record distinguishes these runs from earlier full journeys. Legacy failures remain unwaived; PRs remain draft.
+- Deployed `27a3a9c`; Cloudflare version `f0243edb-2b70-4a3a-872e-4bb8fb9537e9`. Public artifacts match the tested build.
+- Public phone WebKit passed setup advice, demo rotation and ending/reload checks. All 65 inline review comments received replies.
+- Fresh full `npm run verify:battles` finished in 1,799.52 seconds: boss passed; 11 tests passed and only trades Brave 21/24 failed.
 
 ## 2026-10-24 — Finale review follow-up
 

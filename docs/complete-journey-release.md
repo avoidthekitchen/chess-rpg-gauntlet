@@ -20,7 +20,7 @@ Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Ded
 
 ## Review follow-up (2026-10-24)
 
-The review candidate uses staging bundle `index-DhffRnHC.js`. Publication details follow in the staging record.
+Application revision `27a3a9c` uses staging bundle `index-DhffRnHC.js`. Publication details follow in the staging record.
 
 - Type-check, build, and 492 tests in 37 files passed. All 273 published records match the local Lichess download.
 - Regional fixes correct pin, discovery, defence and underpromotion claims. Mechanism tests check the stated chess decisions.
@@ -28,14 +28,17 @@ The review candidate uses staging bundle `index-DhffRnHC.js`. Publication detail
 - Independent reviewers checked corrected teaching evidence, save recovery, navigation and mobile presentation.
 - Current coverage is 529 solver states and ten alternative mates including examples; practice recovery covers 1,860 round trips and 64 alternative-mate cases.
 - WebKit at 393×852 completed all seven Region 3 encounters (25 waves, 48 solver moves) and both finale encounters (eight waves, 17 moves).
-- Desktop Chromium at 1280×800 completed all seven Region 4 encounters, including its revised review.
+- Desktop Chromium at 1280×800 completed all seven Region 4 encounters (49 solver moves), including its revised review.
 - These runs used the explicit region-preview links. Earlier prerequisites were marked complete by preview mode; they were not replayed.
 - Published solutions supplied the move oracle, with real board input. App errors and failed requests were absent.
 - The harness initially checked for chapter stories before queued navigation finished. Recovery used earned browser storage; no gameplay state was injected.
 - WebKit rotation during the first demonstration move showed later dialogue before the demonstration ended. Phone victory text fit without clipping.
 - Additional layouts covered 375×812, 375×553 and 844×390, plus history, classic pieces and reduced motion.
 - Four existing landscapes were recompressed at unchanged dimensions: 2,124,970 bytes became 1,663,962 bytes.
-- The full legacy engine rerun is recorded separately below; its trades failure remains an unwaived release gate.
+- The fresh full `npm run verify:battles` run finished in 1,799.52 seconds: 11 tests passed and one failed. The boss suite passed.
+- Its sole failure was trades Brave at 21/24 wins, below 90%. The dedicated fresh-engine repeatability test passed.
+- This full engine stage and the separate 492-test `npm run check` are recorded explicitly; no green full-CI result is claimed.
+- The legacy failure remains an unwaived release gate. No thresholds, corpus seeds or simulator heuristics were changed.
 
 ## Original integration validation (`1859ee8`)
 
@@ -95,6 +98,21 @@ The failed cell prints complete legal move traces for replay. `knight` is the in
 The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42) remains relevant; this release does not waive the failed bar.
 
 ## Staging
+
+### Five-PR review follow-up
+
+Current application revision: `27a3a9c36d456e9ac36abcfe77cb71527023fce5`.
+Cloudflare version: `f0243edb-2b70-4a3a-872e-4bb8fb9537e9`.
+Public JavaScript `index-DhffRnHC.js` matches the tested local artifact:
+`9eae19905f88d174d54ade9c19f68a2efe5537a11d86c8abc4d62c9eb1e93729` (SHA-256).
+CSS and all four recompressed landscapes also match byte for byte.
+
+Public WebKit confirmed visible setup advice and dialogue recovery during demonstration rotation, without covering board or actions.
+Ending replay and reload passed using a copied, locally earned finale-preview save. This was a focused public check, not a public full journey.
+Completed checks reported no application errors or failed requests. An earlier attempt emitted nonblocking report-only CSP notices.
+Chapter-picker focus survives selection changes. Native arrow-key selection remains unverified: headless synthetic keys also failed on a minimal static select.
+All 65 inline review comments received replies, with broader dispositions on each PR. The PRs remain draft; production was not deployed.
+Later documentation-only commits do not change this deployed application.
 
 ### Board visibility follow-up
 

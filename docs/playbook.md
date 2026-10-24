@@ -2,6 +2,28 @@
 
 [Design overview](design.md) · [Region template](design/regions/region-template.md) · [Region 1 (worked example)](design/regions/region-01-bog-goblins.md) · [Build progress](progress.md)
 
+## Current basic-campaign workflow
+
+The [curriculum-first plan](curriculum-first.md), approved 2026-10-23, takes precedence for the new Regions 1 and 2.
+Build five published-puzzle lessons and one mixed review per Region, using the shared lesson runner.
+Do not create custom positions or require live army bosses, faction AI, recruitment, powers, or economy work.
+The owner approved proceeding with best judgment; another design-approval or human-pilot-testing gate is unnecessary.
+
+1. Curate unchanged Lichess positions and published lines. Record sources, quality fields, and teaching fit.
+2. Write short, accurate coaching. Reviews must not announce the tactic before the player solves it.
+3. Test new rules, all solution replays, unlocks, retries, stars, and save isolation.
+4. Have an independent reviewer inspect code and teaching. Fix critical findings.
+5. Exercise both chapters, reloads, exits, and phone layouts. Record actual results in [build progress](progress.md).
+6. Run the applicable CI checks, open a review PR, deploy staging, and verify the deployed journey.
+
+Published puzzles do not need fresh engine tournaments. Existing custom battles keep their regression checks.
+Do not weaken `npm run ci` selection. Run `npm run ci -- --full` before shipping a Region, as required by AGENTS.md.
+No new rule allows gold loss or permanent Grandmaster lockout in the basic campaign.
+Retries stay available, and the separate journey save never clears legacy or pilot progress.
+
+The remainder records the earlier custom-battle workflow. Conflicting boss, army, paid-power, warm-up, and approval requirements are deferred.
+Its technical standards, chess legality, code separation, licensing, and viewport checks still apply.
+
 How Region 1 was built and checked, written as the steps and quality bars every Region should meet. The design documents say *what* the game is; this says *how* to add to it without drift. Where a rule can be a test, it should be one; the commands are in the [README](../README.md#run-it).
 
 ## Order of work

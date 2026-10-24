@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { FACTIONS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
-import { pilotEnabled } from '../pilotMode';
+import { pilotEnabled, legacyEnabled } from '../pilotMode';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 const SPRITE_SETS = ['ally', ...FACTIONS];
@@ -27,12 +27,12 @@ export class BootScene extends Phaser.Scene {
     this.load.on(Phaser.Loader.Events.FILE_LOAD_ERROR, (f: Phaser.Loader.File) => console.info(`Optional art missing: ${f.key}`));
     const note = document.getElementById('boot');
     this.load.on(Phaser.Loader.Events.PROGRESS, (v: number) => {
-      if (note) note.textContent = `Gathering the army… ${Math.round(v * 100)}%`;
+      if (note) note.textContent = `Opening your story… ${Math.round(v * 100)}%`;
     });
   }
 
   create() {
     document.getElementById('boot')?.remove();
-    goTo(this.game, pilotEnabled ? 'ambush' : 'title');
+    goTo(this.game, pilotEnabled ? 'ambush' : legacyEnabled ? 'title' : 'journey');
   }
 }

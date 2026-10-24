@@ -2,6 +2,14 @@
 
 [Design overview](../design.md) · [Game systems](systems.md) · [Campaign and curriculum](campaign.md)
 
+## Current scope
+
+The [curriculum-first plan](../curriculum-first.md) supersedes conflicting older decisions for the new basic campaign.
+The owner approved completing Regions 1 and 2 with published puzzle lessons and mixed chapter reviews on 2026-10-23.
+Army progression, faction move rules, powers, economy, and live bosses are deferred.
+Their TODOs below remain historical backlog, not dependencies of this release.
+The owner authorizes routine curriculum and implementation decisions without another design-approval gate.
+
 ## Open TODOs
 
 The one place to track unfinished design work. When one is resolved, move the answer to the document it belongs in and tick it off here.
@@ -49,6 +57,12 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-23 | Curriculum-first checkpoint: preserve the accepted pilot in draft PR #35 and remote `codex/checkpoint-approved-ambush` at `051ad26`. Continue the basic campaign on `codex/regions1-2-curriculum`. |
+| 2026-10-23 | Finish Regions 1 and 2 using published Lichess lessons. Each has five three-wave lessons and a four-wave mixed chapter review. Grubnak and Ashfang frame reviews; live army bosses are deferred. |
+| 2026-10-23 | Preserve art, companions, board UX, and chess rules. Defer hired-army purpose, faction move mechanics, shops, Scrying Orb, and other powers until the core learning game is complete. |
+| 2026-10-23 | Basic-campaign difficulty uses unlimited/3/2/2 misses and the pilot's help settings. Remove gold loss and permanent Grandmaster lockout. Clean and no-hint stars are once-only goals; retries and progression never require spending. Supersedes D4 and D7 for this campaign. |
+| 2026-10-23 | A separate journey save preserves legacy and pilot progress. All five lessons lead to the chapter review. Grubnak opens Region 2; cleared lessons remain replayable. |
+| 2026-10-23 | The owner accepted the pilot's teaching and UX, waived more human playtesting, and deferred Wanted polish. Independent code review, automated content checks, browser validation, and staging smoke checks remain required. |
 | 2026-10-23 | Ambush D1: Two at once is a standalone Region 2 pilot. Region 1 and #24 stay unchanged. Approved by the owner in chat; [revised #34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) records approval. |
 | 2026-10-23 | Ambush D2: four published puzzle waves replace play-out against the engine. Positions and replies stay unchanged; each wave ends with its published solution. |
 | 2026-10-23 | Ambush D3: all difficulties use the same puzzles. Assistance changes; later harder content must use different published puzzles. |

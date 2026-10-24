@@ -4,6 +4,17 @@
 
 ## Design status
 
+**Current scope, approved 2026-10-23:** rebuild The Bog's learning path around five published-puzzle lessons and Grubnak's mixed chapter review.
+The [curriculum-first plan](../../curriculum-first.md) controls content, progression, difficulty, and validation.
+Teach loose pieces, safe captures, answering a check, back-rank mate, and promotion to checkmate with unchanged Lichess positions.
+Keep the Bog's art, established names, companions, and storybook tone.
+Grubnak's review opens The Kingsroad. Replay cleared lessons freely to improve stars.
+
+The design below records the legacy Region. Its army budget, gold economy, live boss, shouting rules, siege rules, and guided-path revision are not prerequisites.
+Further human pilot testing is not required. Code review and automated/browser checks still are.
+
+### Legacy design status
+
 Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. A third is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |

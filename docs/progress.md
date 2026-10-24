@@ -1,6 +1,60 @@
 # Build progress
 
-Following "First implementation: Region 1" in `docs/design.md`. One entry per build step.
+One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
+
+## Basic journey — complete Regions 1 and 2 (#34)
+
+Built on 2026-10-23 in `codex/regions1-2-curriculum` after the owner approved the curriculum-first direction.
+The accepted pilot is preserved in draft PR #35 and remote branch `codex/checkpoint-approved-ambush` at `051ad26`.
+This entry supersedes the older handoff below that kept Region 1 unchanged and required live army bosses.
+
+**Playable scope**
+
+- The Bog and The Kingsroad each contain five guided lessons and a mixed chapter review.
+- Normal lessons have three practice positions, a full demonstration, and backups. Reviews have four positions without theme-revealing prompts.
+- All 88 source puzzles are distinct. The nine approved pilot positions are reused across Region 2 lessons and its review.
+- Each source records its Lichess ID, URL, rating, quality fields, published line, and teaching rationale.
+- Ratings range from 407 to 1163. Backups remain within 200 points of their main position.
+- Six content tests check legal lines, real tactical meaning, quality, source uniqueness, mixed reviews, and completion through every backup.
+- `node scripts/select-curriculum.mjs --verify-shipped` confirmed all 88 FENs, lines, ratings, themes, and quality values against the local database.
+- Bounty regeneration reserves the curriculum IDs. Raw database files stay uncommitted.
+
+**Flow and progression**
+
+- The default entry now opens the journey. Players choose a companion and help level, then follow the map through both chapters.
+- Completion opens the next encounter. Grubnak's mixed review opens The Kingsroad; Ashfang's review completes this two-chapter journey.
+- The journal records learned ideas and offers free demonstration revisits. Settings change help and companion without losing progress.
+- Every difficulty permits retries. Completion, no-miss, and no-hint stars persist once; replays can fill missed stars.
+- There is no shop, gold penalty, hired-army gate, power requirement, or live-engine boss on this path.
+- The separate `pawnshire-journey-v1` save leaves earlier campaign and pilot data intact.
+- Development entries retain the earlier campaign (`?legacy=1`) and standalone pilot (`?ambush=r2-two-at-once`).
+- Production drops those development scenes. The new journey does not start Stockfish.
+
+**Independent review and browser validation**
+
+- The separate code reviewer cleared the final implementation after correcting stale positional advice during reply animations and completed waves.
+- The separate UX/art critic checked all four required viewports and played the first lesson through actual board clicks.
+- Phone onboarding now resets map scroll position. The sticky navigation header is opaque so scrolled text cannot bleed through.
+- The painted backgrounds, piece animation, and classic-piece option remain. Region 2 currently reuses existing background and enemy art.
+- A full local playthrough completed all 12 encounters and 10 demonstrations through board clicks, rotating among all four viewport sizes.
+- That run exercised promotion, hints, a miss, chapter unlocks, and reload after completion. It earned the expected 34 stars with no runtime errors.
+- A separate browser pass checked all four miss budgets, retries, failed-wave backups, repeated reloads, replay stars, journal exits, and isolated reset.
+- Those edge checks passed with no console errors or warnings. Legacy and pilot sentinel saves remained unchanged.
+- The final quick check passed TypeScript, the production build, and all 210 tests across 22 files.
+- The deployed phone-sized build completed all 12 encounters through board clicks, earned 36 stars, and retained completion after reload.
+- That deployed run reported no runtime errors, failed requests, or engine requests. Development hooks were absent.
+- Full legacy engine regression is recorded below when complete.
+
+**Deployment and limits**
+
+Staging: <https://unformedideas.com/staging-chess-rpg/>. No query string is needed.
+Only the `chess-rpg-staging` Worker and its staging routes were deployed. Existing live-site JavaScript and CSS references remained unchanged.
+The final deployment version is `0e894b3b-201d-40d1-a061-4d9411a489b4`.
+
+This is a basic tactics journey for players who know how pieces move. It includes a movement reminder and links to Lichess Learn.
+Champion and Grandmaster currently share the same help and miss rules; the selection screen says so.
+Lichess Practice technique lessons, Regions 3–5, faction-specific art, armies, powers, and live boss games remain later work.
+The owner's positive pilot feedback supports this direction. Learning gains and authoring-time savings have not been measured.
 
 ## Region 2 ambush pilot — Two at once (#34)
 

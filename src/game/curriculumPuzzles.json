@@ -1,0 +1,2623 @@
+{
+  "r1-loose-pieces": [
+    {
+      "id": "XmSaf",
+      "fen": "8/1B6/8/4k3/3p1p2/2q2Pp1/2P5/2K5 b - - 3 57",
+      "moves": [
+        "c3f3",
+        "b7f3",
+        "g3g2",
+        "f3g2"
+      ],
+      "rating": 627,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/XmSaf",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 445
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Qxf3 Bxf3 g2 Bxg2.",
+      "san": [
+        "Qxf3",
+        "Bxf3",
+        "g2",
+        "Bxg2"
+      ]
+    },
+    {
+      "id": "r8LtZ",
+      "fen": "8/2p3k1/3p1p2/3P4/PK2P3/1p1P2b1/1N6/7q b - - 1 43",
+      "moves": [
+        "h1d1",
+        "b2d1",
+        "b3b2",
+        "d1b2"
+      ],
+      "rating": 638,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/r8LtZ",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 383
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Qd1 Nxd1 b2 Nxb2.",
+      "san": [
+        "Qd1",
+        "Nxd1",
+        "b2",
+        "Nxb2"
+      ]
+    },
+    {
+      "id": "LXA3K",
+      "fen": "8/6b1/6P1/1p4B1/8/1Pk5/6K1/8 w - - 3 66",
+      "moves": [
+        "g5h6",
+        "g7h6",
+        "g6g7",
+        "h6g7"
+      ],
+      "rating": 762,
+      "themes": [
+        "bishopEndgame",
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/LXA3K",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 475
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Bh6 Bxh6 g7 Bxg7.",
+      "san": [
+        "Bh6",
+        "Bxh6",
+        "g7",
+        "Bxg7"
+      ]
+    },
+    {
+      "id": "HBd0h",
+      "fen": "7k/6p1/4Bp1p/3P3P/8/2K5/6b1/8 b - - 0 50",
+      "moves": [
+        "g2d5",
+        "e6d5",
+        "g7g6",
+        "h5g6"
+      ],
+      "rating": 753,
+      "themes": [
+        "bishopEndgame",
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/HBd0h",
+      "quality": {
+        "rd": 80,
+        "popularity": 88,
+        "plays": 306
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Bxd5 Bxd5 g6 hxg6.",
+      "san": [
+        "Bxd5",
+        "Bxd5",
+        "g6",
+        "hxg6"
+      ]
+    },
+    {
+      "id": "Gb8He",
+      "fen": "8/4K3/5P2/3b4/p5k1/6P1/3N4/8 w - - 18 63",
+      "moves": [
+        "d2c4",
+        "d5c4",
+        "f6f7",
+        "c4f7"
+      ],
+      "rating": 772,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Gb8He",
+      "quality": {
+        "rd": 76,
+        "popularity": 98,
+        "plays": 544
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Nc4 Bxc4 f7 Bxf7.",
+      "san": [
+        "Nc4",
+        "Bxc4",
+        "f7",
+        "Bxf7"
+      ]
+    },
+    {
+      "id": "cvBKY",
+      "fen": "8/4k3/6p1/6P1/8/K7/Bp6/8 b - - 2 61",
+      "moves": [
+        "b2b1q",
+        "a2b1",
+        "e7d6",
+        "b1g6"
+      ],
+      "rating": 730,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/cvBKY",
+      "quality": {
+        "rd": 90,
+        "popularity": 90,
+        "plays": 668
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: b1=Q Bxb1 Kd6 Bxg6.",
+      "san": [
+        "b1=Q",
+        "Bxb1",
+        "Kd6",
+        "Bxg6"
+      ]
+    },
+    {
+      "id": "WAl2p",
+      "fen": "4q1k1/4br2/4Qp1p/2p5/5P2/4B3/PPP3PP/3R1RK1 w - - 0 23",
+      "moves": [
+        "e3c5",
+        "e7c5",
+        "g1h1",
+        "e8e6"
+      ],
+      "rating": 596,
+      "themes": [
+        "advantage",
+        "discoveredAttack",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/WAl2p",
+      "quality": {
+        "rd": 87,
+        "popularity": 85,
+        "plays": 431
+      },
+      "reason": "Take an exposed piece and answer the next threat with another safe capture. Published SAN: Bxc5 Bxc5+ Kh1 Qxe6.",
+      "san": [
+        "Bxc5",
+        "Bxc5+",
+        "Kh1",
+        "Qxe6"
+      ]
+    }
+  ],
+  "r1-safe-captures": [
+    {
+      "id": "40mS4",
+      "fen": "1k2r3/1p6/4p3/p3P2p/P7/5q2/1P1p2Q1/6RK b - - 3 45",
+      "moves": [
+        "e8g8",
+        "g2f3",
+        "g8g1",
+        "h1g1"
+      ],
+      "rating": 501,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/40mS4",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 613
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Rg8 Qxf3 Rxg1+ Kxg1.",
+      "san": [
+        "Rg8",
+        "Qxf3",
+        "Rxg1+",
+        "Kxg1"
+      ]
+    },
+    {
+      "id": "zJtdR",
+      "fen": "3r2k1/5ppp/1p2pn2/2b5/4P3/8/r1NN1PPP/2RR1K2 b - - 6 22",
+      "moves": [
+        "f6e4",
+        "d2e4",
+        "d8d1",
+        "c1d1"
+      ],
+      "rating": 624,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/zJtdR",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 423
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Nxe4 Nxe4 Rxd1+ Rxd1.",
+      "san": [
+        "Nxe4",
+        "Nxe4",
+        "Rxd1+",
+        "Rxd1"
+      ]
+    },
+    {
+      "id": "a4j2v",
+      "fen": "1r4k1/4bppp/4pn2/p7/2pP4/P1N5/1B3PPP/1R4K1 b - - 3 24",
+      "moves": [
+        "e7a3",
+        "b2a3",
+        "b8b1",
+        "c3b1"
+      ],
+      "rating": 641,
+      "themes": [
+        "advantage",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/a4j2v",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 412
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Bxa3 Bxa3 Rxb1+ Nxb1.",
+      "san": [
+        "Bxa3",
+        "Bxa3",
+        "Rxb1+",
+        "Nxb1"
+      ]
+    },
+    {
+      "id": "sNCPu",
+      "fen": "rn2r1k1/pp1bbppp/2pp4/8/1PPN1B2/3P1B1P/P4PP1/R3R1K1 w - - 0 19",
+      "moves": [
+        "f4d6",
+        "e7d6",
+        "e1e8",
+        "d7e8"
+      ],
+      "rating": 679,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/sNCPu",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 398
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Bxd6 Bxd6 Rxe8+ Bxe8.",
+      "san": [
+        "Bxd6",
+        "Bxd6",
+        "Rxe8+",
+        "Bxe8"
+      ]
+    },
+    {
+      "id": "MEyaB",
+      "fen": "r2r2k1/1p4pp/p3b3/8/1PnB2P1/P2RP3/5N2/R5K1 b - - 0 30",
+      "moves": [
+        "c4e5",
+        "d4e5",
+        "d8d3",
+        "f2d3"
+      ],
+      "rating": 699,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/MEyaB",
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 494
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Ne5 Bxe5 Rxd3 Nxd3.",
+      "san": [
+        "Ne5",
+        "Bxe5",
+        "Rxd3",
+        "Nxd3"
+      ]
+    },
+    {
+      "id": "axK0v",
+      "fen": "rq3rk1/1bp1Rppp/p7/3n1B2/Np3Q2/8/PPP2PPP/2KR4 w - - 2 19",
+      "moves": [
+        "d1d5",
+        "b7d5",
+        "f5h7",
+        "g8h7"
+      ],
+      "rating": 706,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/axK0v",
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 397
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Rxd5 Bxd5 Bxh7+ Kxh7.",
+      "san": [
+        "Rxd5",
+        "Bxd5",
+        "Bxh7+",
+        "Kxh7"
+      ]
+    },
+    {
+      "id": "QblZ3",
+      "fen": "6k1/p5b1/6p1/1B1r1p1p/2p2P2/3b3P/P5P1/3RR2K w - - 2 36",
+      "moves": [
+        "b5c4",
+        "d3c4",
+        "d1d5",
+        "c4d5"
+      ],
+      "rating": 742,
+      "themes": [
+        "advantage",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/QblZ3",
+      "quality": {
+        "rd": 78,
+        "popularity": 98,
+        "plays": 475
+      },
+      "reason": "Win material while accounting for the opponent’s capture and your recapture. Published SAN: Bxc4 Bxc4 Rxd5 Bxd5.",
+      "san": [
+        "Bxc4",
+        "Bxc4",
+        "Rxd5",
+        "Bxd5"
+      ]
+    }
+  ],
+  "r1-answer-check": [
+    {
+      "id": "DIOeo",
+      "fen": "6r1/3k1p2/ppbP2q1/8/1P3Q2/P3RP1P/6P1/6K1 w - - 3 40",
+      "moves": [
+        "f4f7",
+        "g6f7",
+        "e3e7",
+        "f7e7"
+      ],
+      "rating": 549,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/DIOeo",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 468
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Qxf7+ Qxf7 Re7+ Qxe7.",
+      "san": [
+        "Qxf7+",
+        "Qxf7",
+        "Re7+",
+        "Qxe7"
+      ]
+    },
+    {
+      "id": "YrB34",
+      "fen": "6k1/p4pp1/1p2p3/3q2pP/8/5QR1/P4PK1/2r5 b - - 5 36",
+      "moves": [
+        "c1g1",
+        "g2g1",
+        "d5f3",
+        "g3f3"
+      ],
+      "rating": 532,
+      "themes": [
+        "advantage",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/YrB34",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 407
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Rg1+ Kxg1 Qxf3 Rxf3.",
+      "san": [
+        "Rg1+",
+        "Kxg1",
+        "Qxf3",
+        "Rxf3"
+      ]
+    },
+    {
+      "id": "0CweW",
+      "fen": "4R3/pp5k/3p2p1/3P4/P1r2bP1/2r5/P1B5/1KR5 w - - 0 38",
+      "moves": [
+        "c2g6",
+        "h7g6",
+        "c1c3",
+        "c4c3"
+      ],
+      "rating": 545,
+      "themes": [
+        "advantage",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/0CweW",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 406
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Bxg6+ Kxg6 Rxc3 Rxc3.",
+      "san": [
+        "Bxg6+",
+        "Kxg6",
+        "Rxc3",
+        "Rxc3"
+      ]
+    },
+    {
+      "id": "cAhFJ",
+      "fen": "1k1r3r/p1p2p2/1p1b4/3Q3p/P1PP4/1P3PP1/1B2qRK1/R7 b - - 1 24",
+      "moves": [
+        "e2f2",
+        "g2f2",
+        "d6g3",
+        "f2g3"
+      ],
+      "rating": 546,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/cAhFJ",
+      "quality": {
+        "rd": 90,
+        "popularity": 97,
+        "plays": 701
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Qxf2+ Kxf2 Bxg3+ Kxg3.",
+      "san": [
+        "Qxf2+",
+        "Kxf2",
+        "Bxg3+",
+        "Kxg3"
+      ]
+    },
+    {
+      "id": "QL7GL",
+      "fen": "8/1p2nk1p/5pp1/3p4/5P2/1P2RBPP/Q4PK1/1rq5 w - - 26 45",
+      "moves": [
+        "e3e7",
+        "f7e7",
+        "a2b1",
+        "c1b1"
+      ],
+      "rating": 567,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/QL7GL",
+      "quality": {
+        "rd": 85,
+        "popularity": 100,
+        "plays": 357
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Rxe7+ Kxe7 Qxb1 Qxb1.",
+      "san": [
+        "Rxe7+",
+        "Kxe7",
+        "Qxb1",
+        "Qxb1"
+      ]
+    },
+    {
+      "id": "EhL5n",
+      "fen": "1B6/3k4/1p6/1bp5/4PQpP/6p1/6K1/1q6 b - - 6 48",
+      "moves": [
+        "b1e4",
+        "f4e4",
+        "b5c6",
+        "e4c6"
+      ],
+      "rating": 638,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/EhL5n",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 304
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Qxe4+ Qxe4 Bc6 Qxc6+.",
+      "san": [
+        "Qxe4+",
+        "Qxe4",
+        "Bc6",
+        "Qxc6+"
+      ]
+    },
+    {
+      "id": "cmnKE",
+      "fen": "rn2k1r1/1b3p1p/4p3/pPpp4/P1q1nB2/3QPP2/2N1K1PP/R4B1R b q - 4 19",
+      "moves": [
+        "g8g2",
+        "f1g2",
+        "c4d3",
+        "e2d3"
+      ],
+      "rating": 656,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/cmnKE",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 486
+      },
+      "reason": "The solver begins in check, captures safely, and answers the published reply. Published SAN: Rxg2+ Bxg2 Qxd3+ Kxd3.",
+      "san": [
+        "Rxg2+",
+        "Bxg2",
+        "Qxd3+",
+        "Kxd3"
+      ]
+    }
+  ],
+  "r1-back-rank": [
+    {
+      "id": "pgn0O",
+      "fen": "3k4/R7/4p3/8/p1rP4/B7/5PPP/6K1 w - - 4 45",
+      "moves": [
+        "a3c5",
+        "c4c1"
+      ],
+      "rating": 407,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/pgn0O",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 492
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Bc5 Rc1#.",
+      "san": [
+        "Bc5",
+        "Rc1#"
+      ]
+    },
+    {
+      "id": "3CMhk",
+      "fen": "3r1Q1k/6pp/8/1ppB4/8/1P6/P3q3/5R1K b - - 5 59",
+      "moves": [
+        "d8f8",
+        "f1f8"
+      ],
+      "rating": 446,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/3CMhk",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 358
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Rxf8 Rxf8#.",
+      "san": [
+        "Rxf8",
+        "Rxf8#"
+      ]
+    },
+    {
+      "id": "BttW5",
+      "fen": "6k1/1p4p1/p5R1/8/8/1P6/r4rPP/R6K w - - 0 29",
+      "moves": [
+        "a1a2",
+        "f2f1"
+      ],
+      "rating": 536,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "rookEndgame"
+      ],
+      "source": "https://lichess.org/training/BttW5",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 307
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Rxa2 Rf1#.",
+      "san": [
+        "Rxa2",
+        "Rf1#"
+      ]
+    },
+    {
+      "id": "bL3D5",
+      "fen": "7k/6p1/5p1p/8/8/2P5/2P1r1PP/R6K w - - 0 32",
+      "moves": [
+        "a1a2",
+        "e2e1"
+      ],
+      "rating": 462,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "rookEndgame"
+      ],
+      "source": "https://lichess.org/training/bL3D5",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 341
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Ra2 Re1#.",
+      "san": [
+        "Ra2",
+        "Re1#"
+      ]
+    },
+    {
+      "id": "NSwd2",
+      "fen": "7k/R7/4Bb1B/8/8/8/P4rPP/7K w - - 1 33",
+      "moves": [
+        "h6f4",
+        "f2f1"
+      ],
+      "rating": 463,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/NSwd2",
+      "quality": {
+        "rd": 87,
+        "popularity": 100,
+        "plays": 325
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Bf4 Rf1#.",
+      "san": [
+        "Bf4",
+        "Rf1#"
+      ]
+    },
+    {
+      "id": "i6BE1",
+      "fen": "6Rk/5ppp/1r2p3/8/3P4/8/5PPP/2R3K1 b - - 0 27",
+      "moves": [
+        "h8g8",
+        "c1c8"
+      ],
+      "rating": 556,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "rookEndgame"
+      ],
+      "source": "https://lichess.org/training/i6BE1",
+      "quality": {
+        "rd": 87,
+        "popularity": 100,
+        "plays": 358
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Kxg8 Rc8#.",
+      "san": [
+        "Kxg8",
+        "Rc8#"
+      ]
+    },
+    {
+      "id": "khpm4",
+      "fen": "8/8/Rn1rpk2/1P6/5pp1/8/6PP/2R4K w - - 0 38",
+      "moves": [
+        "c1c6",
+        "d6d1"
+      ],
+      "rating": 679,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/khpm4",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 343
+      },
+      "reason": "A rook reaches the back rank and mates a king with no escape. Published SAN: Rc6 Rd1#.",
+      "san": [
+        "Rc6",
+        "Rd1#"
+      ]
+    }
+  ],
+  "r1-promotion": [
+    {
+      "id": "beWOP",
+      "fen": "4k3/7P/5K1b/5P2/8/8/8/8 b - - 0 63",
+      "moves": [
+        "e8f8",
+        "h7h8q"
+      ],
+      "rating": 528,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/beWOP",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 540
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Kf8 h8=Q#.",
+      "san": [
+        "Kf8",
+        "h8=Q#"
+      ]
+    },
+    {
+      "id": "UqS36",
+      "fen": "8/8/8/8/8/4k2N/5pp1/4K3 w - - 0 63",
+      "moves": [
+        "h3f2",
+        "g2g1q"
+      ],
+      "rating": 520,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/UqS36",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 302
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Nxf2 g1=Q#.",
+      "san": [
+        "Nxf2",
+        "g1=Q#"
+      ]
+    },
+    {
+      "id": "wPYZA",
+      "fen": "8/8/8/5k2/8/R5b1/5pK1/7q w - - 0 74",
+      "moves": [
+        "g2h1",
+        "f2f1q"
+      ],
+      "rating": 646,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/wPYZA",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 338
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Kxh1 f1=Q#.",
+      "san": [
+        "Kxh1",
+        "f1=Q#"
+      ]
+    },
+    {
+      "id": "4Arl2",
+      "fen": "8/8/8/8/8/1pk5/3p4/1K4R1 w - - 0 62",
+      "moves": [
+        "g1g8",
+        "d2d1q"
+      ],
+      "rating": 669,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/4Arl2",
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 914
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Rg8 d1=Q#.",
+      "san": [
+        "Rg8",
+        "d1=Q#"
+      ]
+    },
+    {
+      "id": "2xFmT",
+      "fen": "7Q/5Pk1/1r6/5BK1/8/8/8/8 b - - 0 76",
+      "moves": [
+        "g7h8",
+        "f7f8q"
+      ],
+      "rating": 673,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/2xFmT",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 530
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Kxh8 f8=Q#.",
+      "san": [
+        "Kxh8",
+        "f8=Q#"
+      ]
+    },
+    {
+      "id": "6P6tO",
+      "fen": "Q7/8/8/4b3/8/8/4kpp1/6K1 w - - 0 58",
+      "moves": [
+        "g1g2",
+        "f2f1q"
+      ],
+      "rating": 691,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/6P6tO",
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 458
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: Kxg2 f1=Q#.",
+      "san": [
+        "Kxg2",
+        "f1=Q#"
+      ]
+    },
+    {
+      "id": "28RzL",
+      "fen": "8/6RP/8/4K3/8/4p2k/8/5r2 b - - 0 70",
+      "moves": [
+        "e3e2",
+        "h7h8q"
+      ],
+      "rating": 837,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/28RzL",
+      "quality": {
+        "rd": 80,
+        "popularity": 97,
+        "plays": 1383
+      },
+      "reason": "A pawn reaches the final rank and promotes to deliver checkmate. Published SAN: e2 h8=Q#.",
+      "san": [
+        "e2",
+        "h8=Q#"
+      ]
+    }
+  ],
+  "r1-bog-review": [
+    {
+      "id": "OEHKJ",
+      "fen": "Q2B1rk1/5p1p/3Qb1p1/8/4p3/8/5PPP/2q3K1 w - - 0 31",
+      "moves": [
+        "d6d1",
+        "c1d1"
+      ],
+      "rating": 422,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/OEHKJ",
+      "quality": {
+        "rd": 86,
+        "popularity": 100,
+        "plays": 775
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Qd1 Qxd1#.",
+      "san": [
+        "Qd1",
+        "Qxd1#"
+      ]
+    },
+    {
+      "id": "FgaRR",
+      "fen": "8/4k3/3bP3/3K4/8/pBp5/2P5/8 b - - 1 74",
+      "moves": [
+        "d6e5",
+        "d5e5",
+        "a3a2",
+        "b3a2"
+      ],
+      "rating": 637,
+      "themes": [
+        "bishopEndgame",
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/FgaRR",
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 312
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Be5 Kxe5 a2 Bxa2.",
+      "san": [
+        "Be5",
+        "Kxe5",
+        "a2",
+        "Bxa2"
+      ]
+    },
+    {
+      "id": "q3Wyu",
+      "fen": "r1bR4/1p3kpp/p7/4p3/2P5/1P4P1/P3N1BP/5K2 w - - 2 23",
+      "moves": [
+        "g2h3",
+        "c8h3",
+        "f1e1",
+        "a8d8"
+      ],
+      "rating": 750,
+      "themes": [
+        "crushing",
+        "discoveredAttack",
+        "endgame",
+        "hangingPiece",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/q3Wyu",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 1006
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Bh3 Bxh3+ Ke1 Rxd8.",
+      "san": [
+        "Bh3",
+        "Bxh3+",
+        "Ke1",
+        "Rxd8"
+      ]
+    },
+    {
+      "id": "shr0Y",
+      "fen": "8/p1r2kpp/n3p3/2N2p2/1P6/P5P1/5P1P/2RK4 b - - 3 30",
+      "moves": [
+        "f7e7",
+        "c5a6",
+        "c7c1",
+        "d1c1"
+      ],
+      "rating": 723,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "short"
+      ],
+      "source": "https://lichess.org/training/shr0Y",
+      "quality": {
+        "rd": 84,
+        "popularity": 96,
+        "plays": 1353
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Ke7 Nxa6 Rxc1+ Kxc1.",
+      "san": [
+        "Ke7",
+        "Nxa6",
+        "Rxc1+",
+        "Kxc1"
+      ]
+    },
+    {
+      "id": "dQYGz",
+      "fen": "Q6r/p1pbkppp/8/q3P3/1b6/2n2N2/PPPB1PPP/R3K2R w KQ - 1 14",
+      "moves": [
+        "a8e4",
+        "c3e4",
+        "d2b4",
+        "a5b4"
+      ],
+      "rating": 748,
+      "themes": [
+        "crushing",
+        "hangingPiece",
+        "middlegame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/dQYGz",
+      "quality": {
+        "rd": 84,
+        "popularity": 86,
+        "plays": 324
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Qe4 Nxe4 Bxb4+ Qxb4+.",
+      "san": [
+        "Qe4",
+        "Nxe4",
+        "Bxb4+",
+        "Qxb4+"
+      ]
+    },
+    {
+      "id": "AZ1V7",
+      "fen": "5k2/5p1p/b7/6R1/4p3/8/3R1PPP/r5K1 w - - 1 37",
+      "moves": [
+        "d2d1",
+        "a1d1"
+      ],
+      "rating": 496,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "hangingPiece",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/AZ1V7",
+      "quality": {
+        "rd": 84,
+        "popularity": 100,
+        "plays": 650
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Rd1 Rxd1#.",
+      "san": [
+        "Rd1",
+        "Rxd1#"
+      ]
+    },
+    {
+      "id": "MqvYx",
+      "fen": "3rk3/5p2/1p1R1P2/4pQ2/8/8/P5PP/2r4K w - - 1 42",
+      "moves": [
+        "f5f1",
+        "c1f1"
+      ],
+      "rating": 569,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "hangingPiece",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/MqvYx",
+      "quality": {
+        "rd": 85,
+        "popularity": 93,
+        "plays": 482
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Qf1 Rxf1#.",
+      "san": [
+        "Qf1",
+        "Rxf1#"
+      ]
+    },
+    {
+      "id": "vKF4r",
+      "fen": "1R1r2k1/P4ppp/8/8/3p4/8/6P1/6K1 b - - 1 39",
+      "moves": [
+        "d8b8",
+        "a7b8q"
+      ],
+      "rating": 556,
+      "themes": [
+        "advancedPawn",
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/vKF4r",
+      "quality": {
+        "rd": 82,
+        "popularity": 100,
+        "plays": 416
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Rxb8 axb8=Q#.",
+      "san": [
+        "Rxb8",
+        "axb8=Q#"
+      ]
+    },
+    {
+      "id": "GCGZC",
+      "fen": "2rQ3k/1qP3pp/8/8/8/7P/6P1/2R4K b - - 2 41",
+      "moves": [
+        "c8d8",
+        "c7d8q"
+      ],
+      "rating": 652,
+      "themes": [
+        "advancedPawn",
+        "backRankMate",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/GCGZC",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 518
+      },
+      "reason": "A fresh position revisits a Region 1 skill without announcing the tactic. Published SAN: Rxd8 cxd8=Q#.",
+      "san": [
+        "Rxd8",
+        "cxd8=Q#"
+      ]
+    }
+  ],
+  "r2-knight-forks": [
+    {
+      "id": "HGP8R",
+      "fen": "8/8/1R2n3/4kp2/8/5K2/8/8 w - - 4 89",
+      "moves": [
+        "b6c6",
+        "e6d4",
+        "f3f2",
+        "d4c6"
+      ],
+      "rating": 575,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/HGP8R",
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 370
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Rc6 Nd4+ Kf2 Nxc6.",
+      "san": [
+        "Rc6",
+        "Nd4+",
+        "Kf2",
+        "Nxc6"
+      ]
+    },
+    {
+      "id": "fV7qS",
+      "fen": "8/7p/1k4p1/1n6/1K6/6P1/4B2P/8 w - - 0 53",
+      "moves": [
+        "b4b3",
+        "b5d4",
+        "b3c4",
+        "d4e2"
+      ],
+      "rating": 556,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/fV7qS",
+      "quality": {
+        "rd": 87,
+        "popularity": 100,
+        "plays": 327
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Kb3 Nd4+ Kc4 Nxe2.",
+      "san": [
+        "Kb3",
+        "Nd4+",
+        "Kc4",
+        "Nxe2"
+      ]
+    },
+    {
+      "id": "HCLdy",
+      "fen": "8/8/8/1nk1K3/p7/8/Q7/8 w - - 2 58",
+      "moves": [
+        "e5e4",
+        "b5c3",
+        "e4d3",
+        "c3a2"
+      ],
+      "rating": 577,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/HCLdy",
+      "quality": {
+        "rd": 84,
+        "popularity": 100,
+        "plays": 373
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Ke4 Nc3+ Kd3 Nxa2.",
+      "san": [
+        "Ke4",
+        "Nc3+",
+        "Kd3",
+        "Nxa2"
+      ]
+    },
+    {
+      "id": "9h861",
+      "fen": "6k1/1q5p/3p4/3N2K1/2P5/6P1/8/8 b - - 0 39",
+      "moves": [
+        "b7c6",
+        "d5e7",
+        "g8f7",
+        "e7c6"
+      ],
+      "rating": 574,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/9h861",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 400
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Qc6 Ne7+ Kf7 Nxc6.",
+      "san": [
+        "Qc6",
+        "Ne7+",
+        "Kf7",
+        "Nxc6"
+      ]
+    },
+    {
+      "id": "f766G",
+      "fen": "8/8/8/1k1K4/pn6/Q7/8/8 w - - 4 58",
+      "moves": [
+        "d5d4",
+        "b4c2",
+        "d4c3",
+        "c2a3"
+      ],
+      "rating": 577,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/f766G",
+      "quality": {
+        "rd": 90,
+        "popularity": 98,
+        "plays": 612
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Kd4 Nc2+ Kc3 Nxa3.",
+      "san": [
+        "Kd4",
+        "Nc2+",
+        "Kc3",
+        "Nxa3"
+      ]
+    },
+    {
+      "id": "1FEC8",
+      "fen": "8/1kp5/ppn5/8/8/R7/P3K3/8 w - - 0 50",
+      "moves": [
+        "a3b3",
+        "c6d4",
+        "e2e3",
+        "d4b3"
+      ],
+      "rating": 625,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/1FEC8",
+      "quality": {
+        "rd": 86,
+        "popularity": 100,
+        "plays": 348
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Rb3 Nd4+ Ke3 Nxb3.",
+      "san": [
+        "Rb3",
+        "Nd4+",
+        "Ke3",
+        "Nxb3"
+      ]
+    },
+    {
+      "id": "8wC4T",
+      "fen": "1R6/8/8/3K4/n7/p1k5/8/8 w - - 0 57",
+      "moves": [
+        "b8a8",
+        "a4b6",
+        "d5e6",
+        "b6a8"
+      ],
+      "rating": 626,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/8wC4T",
+      "quality": {
+        "rd": 88,
+        "popularity": 94,
+        "plays": 1323
+      },
+      "reason": "A knight checks the king and attacks a second target, then collects that target. Published SAN: Ra8 Nb6+ Ke6 Nxa8.",
+      "san": [
+        "Ra8",
+        "Nb6+",
+        "Ke6",
+        "Nxa8"
+      ]
+    }
+  ],
+  "r2-double-attacks": [
+    {
+      "id": "93uiZ",
+      "fen": "7k/4r1p1/8/p3r2P/P4Q2/2P5/KP6/8 b - - 3 42",
+      "moves": [
+        "e5h5",
+        "f4f8",
+        "h8h7",
+        "f8e7"
+      ],
+      "rating": 771,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "queenRookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/93uiZ",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 453
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Rxh5 Qf8+ Kh7 Qxe7.",
+      "san": [
+        "Rxh5",
+        "Qf8+",
+        "Kh7",
+        "Qxe7"
+      ]
+    },
+    {
+      "id": "87P1s",
+      "fen": "5r2/3k4/3p4/4p3/3q1pP1/7Q/1P3R1P/6K1 b - - 2 41",
+      "moves": [
+        "f8g8",
+        "h3h7",
+        "d7e6",
+        "h7g8"
+      ],
+      "rating": 772,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/87P1s",
+      "quality": {
+        "rd": 82,
+        "popularity": 98,
+        "plays": 515
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Rg8 Qh7+ Ke6 Qxg8+.",
+      "san": [
+        "Rg8",
+        "Qh7+",
+        "Ke6",
+        "Qxg8+"
+      ]
+    },
+    {
+      "id": "Nj4H1",
+      "fen": "1k2r3/1q6/8/8/5Q2/7P/6P1/7K b - - 29 67",
+      "moves": [
+        "b8a8",
+        "f4a4",
+        "a8b8",
+        "a4e8"
+      ],
+      "rating": 777,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Nj4H1",
+      "quality": {
+        "rd": 80,
+        "popularity": 98,
+        "plays": 338
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Ka8 Qa4+ Kb8 Qxe8+.",
+      "san": [
+        "Ka8",
+        "Qa4+",
+        "Kb8",
+        "Qxe8+"
+      ]
+    },
+    {
+      "id": "XWGtt",
+      "fen": "8/kr6/2r5/p7/8/4Q3/P7/K7 b - - 9 70",
+      "moves": [
+        "a7a8",
+        "e3e8",
+        "a8a7",
+        "e8c6"
+      ],
+      "rating": 794,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "queenRookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/XWGtt",
+      "quality": {
+        "rd": 76,
+        "popularity": 100,
+        "plays": 370
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Ka8 Qe8+ Ka7 Qxc6.",
+      "san": [
+        "Ka8",
+        "Qe8+",
+        "Ka7",
+        "Qxc6"
+      ]
+    },
+    {
+      "id": "4a4pt",
+      "fen": "6k1/1p1r1pp1/1Q5p/P2b4/1Pq5/5P1P/6P1/5RK1 b - - 0 30",
+      "moves": [
+        "d7e7",
+        "b6d8",
+        "g8h7",
+        "d8e7"
+      ],
+      "rating": 795,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/4a4pt",
+      "quality": {
+        "rd": 88,
+        "popularity": 88,
+        "plays": 428
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Re7 Qd8+ Kh7 Qxe7.",
+      "san": [
+        "Re7",
+        "Qd8+",
+        "Kh7",
+        "Qxe7"
+      ]
+    },
+    {
+      "id": "QyMRm",
+      "fen": "8/p6p/6pk/5r2/8/1P4q1/P3Q1B1/6K1 b - - 2 46",
+      "moves": [
+        "g6g5",
+        "e2e6",
+        "h6g7",
+        "e6f5"
+      ],
+      "rating": 799,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/QyMRm",
+      "quality": {
+        "rd": 82,
+        "popularity": 88,
+        "plays": 363
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: g5 Qe6+ Kg7 Qxf5.",
+      "san": [
+        "g5",
+        "Qe6+",
+        "Kg7",
+        "Qxf5"
+      ]
+    },
+    {
+      "id": "6EHwR",
+      "fen": "6R1/8/5k2/3B4/3qP1p1/8/5P2/6K1 w - - 20 87",
+      "moves": [
+        "g8g4",
+        "d4d1",
+        "g1g2",
+        "d1g4"
+      ],
+      "rating": 802,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/6EHwR",
+      "quality": {
+        "rd": 84,
+        "popularity": 100,
+        "plays": 387
+      },
+      "reason": "A queen checks along one line while attacking a second target. Published SAN: Rxg4 Qd1+ Kg2 Qxg4+.",
+      "san": [
+        "Rxg4",
+        "Qd1+",
+        "Kg2",
+        "Qxg4+"
+      ]
+    }
+  ],
+  "r2-two-at-once": [
+    {
+      "id": "xhzWa",
+      "fen": "R3Nk2/6p1/2p1K2p/4p2n/p2p4/5P2/4r3/8 b - - 3 48",
+      "moves": [
+        "f8g8",
+        "e8f6"
+      ],
+      "rating": 747,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/xhzWa",
+      "quality": {
+        "rd": 81,
+        "popularity": 98,
+        "plays": 1520
+      },
+      "reason": "A knight moves off the rook line and gives mate with two checks. One move introduces the idea."
+    },
+    {
+      "id": "AsXcI",
+      "fen": "4r1k1/3Q2p1/5p1p/2B5/3Pb3/P3Pr1q/6P1/6RK w - - 0 40",
+      "moves": [
+        "g2h3",
+        "f3h3"
+      ],
+      "rating": 704,
+      "themes": [
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/AsXcI",
+      "quality": {
+        "rd": 80,
+        "popularity": 91,
+        "plays": 555
+      },
+      "reason": "The rook captures a pawn and opens the bishop line for double-check mate."
+    },
+    {
+      "id": "UW1AJ",
+      "fen": "6k1/6pp/p3R3/1p1B4/8/1P4PP/P6K/2r1b3 b - - 3 35",
+      "moves": [
+        "c1d1",
+        "e6e8"
+      ],
+      "rating": 773,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "pillsburysMate"
+      ],
+      "source": "https://lichess.org/training/UW1AJ",
+      "quality": {
+        "rd": 86,
+        "popularity": 88,
+        "plays": 1260
+      },
+      "reason": "The rook checks along the back rank while uncovering its bishop. A different board for the first-wave retry."
+    },
+    {
+      "id": "aamJS",
+      "fen": "8/1pr1rp2/6kp/1R1B4/4PK1P/8/8/8 b - - 0 43",
+      "moves": [
+        "g6h5",
+        "d5f7",
+        "h5h4",
+        "b5h5"
+      ],
+      "rating": 870,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "operaMate",
+        "short"
+      ],
+      "source": "https://lichess.org/training/aamJS",
+      "quality": {
+        "rd": 79,
+        "popularity": 96,
+        "plays": 2013
+      },
+      "reason": "Moving the bishop gives two checks, forces the king away, then a rook finishes mate."
+    },
+    {
+      "id": "6IaaQ",
+      "fen": "3R1N2/1p4pk/p6p/7P/6r1/5r2/2K5/8 b - - 5 58",
+      "moves": [
+        "h7h8",
+        "f8g6",
+        "h8h7",
+        "d8h8"
+      ],
+      "rating": 876,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "hookMate",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/6IaaQ",
+      "quality": {
+        "rd": 84,
+        "popularity": 90,
+        "plays": 1647
+      },
+      "reason": "A knight uncovers its rook, forces the king to move, and supports the final rook mate."
+    },
+    {
+      "id": "DYCLg",
+      "fen": "8/p3kp2/8/2b5/3n3R/1P3K2/P6P/8 w - - 2 47",
+      "moves": [
+        "f3e3",
+        "d4f5",
+        "e3f4",
+        "f5h4"
+      ],
+      "rating": 1021,
+      "themes": [
+        "crushing",
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/DYCLg",
+      "quality": {
+        "rd": 76,
+        "popularity": 99,
+        "plays": 1974
+      },
+      "reason": "A knight gives double check and forks the rook. The king must move, allowing the capture."
+    },
+    {
+      "id": "zFv3K",
+      "fen": "8/5k2/p7/3r1n1p/4R1K1/1PB5/P7/8 w - - 0 48",
+      "moves": [
+        "g4h5",
+        "f5g3",
+        "h5g4",
+        "g3e4"
+      ],
+      "rating": 997,
+      "themes": [
+        "crushing",
+        "doubleCheck",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/zFv3K",
+      "quality": {
+        "rd": 79,
+        "popularity": 98,
+        "plays": 836
+      },
+      "reason": "The knight uncovers a rook check while forking the enemy rook, which is won next."
+    }
+  ],
+  "r2-remove-defender": [
+    {
+      "id": "IcWgV",
+      "fen": "8/p4pk1/1p4p1/4p3/2q1n3/5BP1/PQ3PK1/8 b - - 1 37",
+      "moves": [
+        "c4d4",
+        "b2d4",
+        "e5d4",
+        "f3e4"
+      ],
+      "rating": 789,
+      "themes": [
+        "advantage",
+        "capturingDefender",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/IcWgV",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 885
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Qd4 Qxd4 exd4 Bxe4.",
+      "san": [
+        "Qd4",
+        "Qxd4",
+        "exd4",
+        "Bxe4"
+      ]
+    },
+    {
+      "id": "4pRaq",
+      "fen": "8/6pk/3p2p1/2pq2Pp/1n5P/2Q2P2/3B2K1/8 b - - 3 40",
+      "moves": [
+        "d5d4",
+        "c3d4",
+        "c5d4",
+        "d2b4"
+      ],
+      "rating": 795,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "discoveredAttack",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/4pRaq",
+      "quality": {
+        "rd": 89,
+        "popularity": 87,
+        "plays": 670
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Qd4 Qxd4 cxd4 Bxb4.",
+      "san": [
+        "Qd4",
+        "Qxd4",
+        "cxd4",
+        "Bxb4"
+      ]
+    },
+    {
+      "id": "H8eED",
+      "fen": "5n2/pp1r2kp/3P3R/2pP1P2/2P5/6PP/P6K/8 w - - 3 35",
+      "moves": [
+        "h6e6",
+        "f8e6",
+        "d5e6",
+        "d7d6"
+      ],
+      "rating": 799,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/H8eED",
+      "quality": {
+        "rd": 89,
+        "popularity": 86,
+        "plays": 594
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Re6 Nxe6 dxe6 Rxd6.",
+      "san": [
+        "Re6",
+        "Nxe6",
+        "dxe6",
+        "Rxd6"
+      ]
+    },
+    {
+      "id": "Nkp4v",
+      "fen": "k7/1b5p/p7/5p2/4p2P/2p1r1P1/P3BK2/2R5 b - - 7 45",
+      "moves": [
+        "e3d3",
+        "e2d3",
+        "e4d3",
+        "c1c3"
+      ],
+      "rating": 811,
+      "themes": [
+        "advantage",
+        "capturingDefender",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Nkp4v",
+      "quality": {
+        "rd": 86,
+        "popularity": 85,
+        "plays": 597
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Rd3 Bxd3 exd3 Rxc3.",
+      "san": [
+        "Rd3",
+        "Bxd3",
+        "exd3",
+        "Rxc3"
+      ]
+    },
+    {
+      "id": "UsKaN",
+      "fen": "5k2/1n3p2/p1br1p1p/1p3p2/1P6/8/P4PPP/2R1R1K1 b - - 0 30",
+      "moves": [
+        "d6e6",
+        "e1e6",
+        "f7e6",
+        "c1c6"
+      ],
+      "rating": 815,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/UsKaN",
+      "quality": {
+        "rd": 81,
+        "popularity": 96,
+        "plays": 4104
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Re6 Rxe6 fxe6 Rxc6.",
+      "san": [
+        "Re6",
+        "Rxe6",
+        "fxe6",
+        "Rxc6"
+      ]
+    },
+    {
+      "id": "jO7f8",
+      "fen": "8/1k6/2p5/1p1b2p1/4r3/P2K3p/1P5R/4B3 b - - 3 55",
+      "moves": [
+        "e4h4",
+        "e1h4",
+        "g5h4",
+        "h2h3"
+      ],
+      "rating": 829,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/jO7f8",
+      "quality": {
+        "rd": 81,
+        "popularity": 98,
+        "plays": 1893
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: Rh4 Bxh4 gxh4 Rxh3.",
+      "san": [
+        "Rh4",
+        "Bxh4",
+        "gxh4",
+        "Rxh3"
+      ]
+    },
+    {
+      "id": "fN3su",
+      "fen": "8/4k3/1p2p2p/3rQ3/3P1P2/8/6P1/6K1 w - - 1 50",
+      "moves": [
+        "f4f5",
+        "d5e5",
+        "d4e5",
+        "e6f5"
+      ],
+      "rating": 845,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "endgame",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/fN3su",
+      "quality": {
+        "rd": 83,
+        "popularity": 88,
+        "plays": 346
+      },
+      "reason": "Exchange a defender, then capture the piece it no longer protects. Published SAN: f5 Rxe5 dxe5 exf5.",
+      "san": [
+        "f5",
+        "Rxe5",
+        "dxe5",
+        "exf5"
+      ]
+    }
+  ],
+  "r2-mate-in-two": [
+    {
+      "id": "1ofEY",
+      "fen": "2Q5/8/5p2/4kP2/8/5PKP/8/4q3 w - - 13 56",
+      "moves": [
+        "g3g4",
+        "e1g1",
+        "g4h5",
+        "g1g5"
+      ],
+      "rating": 795,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "queenEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/1ofEY",
+      "quality": {
+        "rd": 84,
+        "popularity": 92,
+        "plays": 446
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: Kg4 Qg1+ Kh5 Qg5#.",
+      "san": [
+        "Kg4",
+        "Qg1+",
+        "Kh5",
+        "Qg5#"
+      ]
+    },
+    {
+      "id": "FxMBw",
+      "fen": "5q1k/p5rp/8/7P/3Q4/4R3/6P1/7K w - - 11 45",
+      "moves": [
+        "h5h6",
+        "f8f1",
+        "h1h2",
+        "f1g2"
+      ],
+      "rating": 721,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/FxMBw",
+      "quality": {
+        "rd": 86,
+        "popularity": 86,
+        "plays": 615
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: h6 Qf1+ Kh2 Qxg2#.",
+      "san": [
+        "h6",
+        "Qf1+",
+        "Kh2",
+        "Qxg2#"
+      ]
+    },
+    {
+      "id": "l1sIL",
+      "fen": "8/8/Q7/6p1/7k/5q2/1P6/6K1 b - - 6 68",
+      "moves": [
+        "g5g4",
+        "a6h6",
+        "h4g3",
+        "h6h2"
+      ],
+      "rating": 829,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "queenEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/l1sIL",
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 333
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: g4 Qh6+ Kg3 Qh2#.",
+      "san": [
+        "g4",
+        "Qh6+",
+        "Kg3",
+        "Qh2#"
+      ]
+    },
+    {
+      "id": "1czXN",
+      "fen": "5R2/6p1/5p1k/5P2/6P1/6K1/8/7r b - - 12 50",
+      "moves": [
+        "h1b1",
+        "f8h8",
+        "h6g5",
+        "h8h5"
+      ],
+      "rating": 814,
+      "themes": [
+        "endgame",
+        "master",
+        "mate",
+        "mateIn2",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/1czXN",
+      "quality": {
+        "rd": 86,
+        "popularity": 86,
+        "plays": 334
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: Rb1 Rh8+ Kg5 Rh5#.",
+      "san": [
+        "Rb1",
+        "Rh8+",
+        "Kg5",
+        "Rh5#"
+      ]
+    },
+    {
+      "id": "m7i5A",
+      "fen": "8/1Q6/5pk1/6p1/5q2/8/6K1/8 b - - 3 57",
+      "moves": [
+        "g6h5",
+        "b7h7",
+        "h5g4",
+        "h7h3"
+      ],
+      "rating": 840,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "queenEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/m7i5A",
+      "quality": {
+        "rd": 79,
+        "popularity": 89,
+        "plays": 363
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: Kh5 Qh7+ Kg4 Qh3#.",
+      "san": [
+        "Kh5",
+        "Qh7+",
+        "Kg4",
+        "Qh3#"
+      ]
+    },
+    {
+      "id": "Tmavl",
+      "fen": "2q1K3/5P1p/4N1k1/p7/3R4/8/3R4/8 w - - 1 50",
+      "moves": [
+        "d4d8",
+        "c8e6",
+        "e8f8",
+        "e6f7"
+      ],
+      "rating": 872,
+      "themes": [
+        "endgame",
+        "hangingPiece",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Tmavl",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 316
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: Rd8 Qxe6+ Kf8 Qxf7#.",
+      "san": [
+        "Rd8",
+        "Qxe6+",
+        "Kf8",
+        "Qxf7#"
+      ]
+    },
+    {
+      "id": "HHlk0",
+      "fen": "4Q3/3Q2pk/8/3Pb3/2q1K3/8/8/8 w - - 5 52",
+      "moves": [
+        "e4f5",
+        "c4f4",
+        "f5e6",
+        "f4f6"
+      ],
+      "rating": 874,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/HHlk0",
+      "quality": {
+        "rd": 80,
+        "popularity": 97,
+        "plays": 635
+      },
+      "reason": "Calculate a check, the published defense, and a mating finish. Published SAN: Kf5 Qf4+ Ke6 Qf6#.",
+      "san": [
+        "Kf5",
+        "Qf4+",
+        "Ke6",
+        "Qf6#"
+      ]
+    }
+  ],
+  "r2-road-review": [
+    {
+      "id": "0E0md",
+      "fen": "3r4/5pkp/6p1/1pNPp3/2n5/2P3P1/5P1P/3R2K1 b - - 2 33",
+      "moves": [
+        "f7f5",
+        "c5e6",
+        "g7f6",
+        "e6d8"
+      ],
+      "rating": 547,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "master",
+        "short"
+      ],
+      "source": "https://lichess.org/training/0E0md",
+      "quality": {
+        "rd": 89,
+        "popularity": 97,
+        "plays": 1178
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: f5 Ne6+ Kf6 Nxd8.",
+      "san": [
+        "f5",
+        "Ne6+",
+        "Kf6",
+        "Nxd8"
+      ]
+    },
+    {
+      "id": "DG2HO",
+      "fen": "4r3/pp2k3/5pp1/6P1/5Nn1/P1P1p3/1PK2P2/5R2 w - - 0 35",
+      "moves": [
+        "f2e3",
+        "g4e3",
+        "c2d3",
+        "e3f1"
+      ],
+      "rating": 567,
+      "themes": [
+        "advantage",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/DG2HO",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 552
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: fxe3 Nxe3+ Kd3 Nxf1.",
+      "san": [
+        "fxe3",
+        "Nxe3+",
+        "Kd3",
+        "Nxf1"
+      ]
+    },
+    {
+      "id": "4QI5N",
+      "fen": "8/6p1/3k1pP1/5P2/1K2n3/5R2/8/8 w - - 9 57",
+      "moves": [
+        "b4c4",
+        "e4d2",
+        "c4d3",
+        "d2f3"
+      ],
+      "rating": 592,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "master",
+        "masterVsMaster",
+        "short"
+      ],
+      "source": "https://lichess.org/training/4QI5N",
+      "quality": {
+        "rd": 82,
+        "popularity": 100,
+        "plays": 405
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: Kc4 Nd2+ Kd3 Nxf3.",
+      "san": [
+        "Kc4",
+        "Nd2+",
+        "Kd3",
+        "Nxf3"
+      ]
+    },
+    {
+      "id": "eQyKb",
+      "fen": "3r4/6kp/p4b2/Q7/8/7P/6K1/8 b - - 2 45",
+      "moves": [
+        "d8d6",
+        "a5c7",
+        "g7g6",
+        "c7d6"
+      ],
+      "rating": 891,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/eQyKb",
+      "quality": {
+        "rd": 78,
+        "popularity": 99,
+        "plays": 1372
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: Rd6 Qc7+ Kg6 Qxd6.",
+      "san": [
+        "Rd6",
+        "Qc7+",
+        "Kg6",
+        "Qxd6"
+      ]
+    },
+    {
+      "id": "Bceqz",
+      "fen": "r7/3Q4/8/8/k1q5/6P1/5P1P/6K1 b - - 1 56",
+      "moves": [
+        "a4b3",
+        "d7b7",
+        "b3c2",
+        "b7a8"
+      ],
+      "rating": 884,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Bceqz",
+      "quality": {
+        "rd": 77,
+        "popularity": 100,
+        "plays": 689
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: Kb3 Qb7+ Kc2 Qxa8.",
+      "san": [
+        "Kb3",
+        "Qb7+",
+        "Kc2",
+        "Qxa8"
+      ]
+    },
+    {
+      "id": "HW7cQ",
+      "fen": "8/5pk1/6pp/8/8/6PP/1q3n1K/R4Q2 w - - 1 41",
+      "moves": [
+        "a1b1",
+        "f2g4",
+        "h2g1",
+        "b2h2"
+      ],
+      "rating": 1109,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/HW7cQ",
+      "quality": {
+        "rd": 86,
+        "popularity": 95,
+        "plays": 8933
+      },
+      "reason": "A knight uncovers a queen check. After the king moves, queen and knight deliver mate."
+    },
+    {
+      "id": "Ir23o",
+      "fen": "8/6k1/4p2p/1rBn3K/1P3P2/1R4P1/8/8 w - - 2 43",
+      "moves": [
+        "c5d4",
+        "d5f6",
+        "h5h4",
+        "b5h5"
+      ],
+      "rating": 1163,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Ir23o",
+      "quality": {
+        "rd": 76,
+        "popularity": 97,
+        "plays": 1661
+      },
+      "reason": "The solver starts in check. A knight blocks that check and gives double check, then the rook mates."
+    },
+    {
+      "id": "mOgP6",
+      "fen": "2r4k/5p1p/5p2/1p1p4/pP2pn2/8/P5PP/2R1R1K1 b - - 1 37",
+      "moves": [
+        "c8c4",
+        "c1c4",
+        "d5c4",
+        "e1e4"
+      ],
+      "rating": 849,
+      "themes": [
+        "advantage",
+        "capturingDefender",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/mOgP6",
+      "quality": {
+        "rd": 86,
+        "popularity": 88,
+        "plays": 865
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: Rc4 Rxc4 dxc4 Rxe4.",
+      "san": [
+        "Rc4",
+        "Rxc4",
+        "dxc4",
+        "Rxe4"
+      ]
+    },
+    {
+      "id": "0Bvtf",
+      "fen": "8/1k6/7P/2R3B1/KPP5/8/8/3q4 w - - 7 61",
+      "moves": [
+        "a4a5",
+        "d1a1",
+        "a5b5",
+        "a1a6"
+      ],
+      "rating": 847,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/0Bvtf",
+      "quality": {
+        "rd": 75,
+        "popularity": 99,
+        "plays": 686
+      },
+      "reason": "A fresh mixed position tests recognition rather than a named tactic. Published SAN: Ka5 Qa1+ Kb5 Qa6#.",
+      "san": [
+        "Ka5",
+        "Qa1+",
+        "Kb5",
+        "Qa6#"
+      ]
+    }
+  ]
+}

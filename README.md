@@ -1,8 +1,11 @@
 # Pawnshire
 
-A storybook chess tactics RPG in the spirit of Into the Breach. Rule of the design: **the rules of chess never change on the board.** The RPG lives around it. The name Gauntlet is kept for the replay mode that unlocks after the campaign. See [the design overview](docs/design.md) for the design, the [playbook](docs/playbook.md) for how to build and check a Region, [AGENTS.md](AGENTS.md) for working rules, and [Region 1 build progress](docs/progress.md) for the build log.
+A storybook chess tactics journey. **The rules of chess never change on the board.** Learn from published Lichess positions with a companion, then put each idea into practice. See [the current curriculum](docs/curriculum-first.md), [design overview](docs/design.md), [playbook](docs/playbook.md), [AGENTS.md](AGENTS.md), and [build progress](docs/progress.md).
 
 Play it: https://unformedideas.com/chess-rpg/
+
+Preview the new two-chapter journey: https://unformedideas.com/staging-chess-rpg/.
+The live site keeps the earlier campaign until this change is merged and deployed there.
 
 ## Run it
 
@@ -18,29 +21,43 @@ npm run puzzles          # rebuild the bounty puzzles from the Lichess database 
 ```
 
 In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy for automated testing).
+The default entry opens the new journey. No query parameter is needed on staging.
+Development-only entries preserve the earlier campaign (`?legacy=1`) and approved pilot (`?ambush=r2-two-at-once`).
+The journey, legacy campaign, and pilot use separate saves. Resetting the journey leaves the others intact.
 
-## What's in it (Region 1: the Bog)
+## What's in it
 
-- **Title flow:** "Do you know how the pieces move?", Gentle or Brave difficulty, and a starter companion (frog knight, owl bishop or tortoise rook) who tutors you.
-- **Region map** with five lesson battles on branching paths (threat awareness, protection, safe trades, back-rank mate, promotion) and the Goblin Chief's camp, which opens after four wins.
-- **Shouting goblins:** before your move the Bog Goblins announce the move they'd play if you passed, and must play it if it's still legal. Set traps, or foil them.
-- **Town:** a tavern that hires pieces at their chess value, an academy lesson on rook and queen mates (unlimited undo), and a bounty board of real Lichess puzzles that refreshes after every battle.
-- **Boss duel:** pick your army up to 10 points (no queen) and checkmate Grubnak; winning recruits Saffron the Fox Queen.
-- **Loop:** gold, one-time bonus goals, loss costs by difficulty, engine-confirmed fork banners, rewind charges, Threat Sight, and a localStorage save.
+- **The Bog:** loose pieces, safe captures, answering check, back-rank mate, promotion, and Grubnak's mixed review.
+- **The Kingsroad:** knight forks, double attacks, double check, removing defenders, mate in two, and Ashfang's mixed review.
+- **Published puzzles:** 88 distinct positions across demonstrations, practice waves, review challenges, and retry backups. Source lines remain unchanged.
+- **Guidance:** three companions, full demonstrations, four help settings, hints, and a journal of learned ideas.
+- **Progress:** sequential unlocks, saved completion, three stars per encounter, and unlimited retries. Replays can earn missed stars.
+- **Presentation:** painted backgrounds, animated animal pieces, classic-piece controls, and phone layouts.
+
+This journey assumes players know piece movement. The entry screen includes a reminder and links to Lichess Learn.
+Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their existing code remains available in the legacy development entry.
 
 ## Layout
 
 ```
-src/game/     rules with no screen code: battle.ts (objectives, rewind), campaign (save, map unlocks),
-              economy (gold, hiring, loss costs, bounties), boss (budget), region1*.ts (content), tactics, threats
+src/game/     curriculum (published content), journey (progress/stars), ambush (published-line rules),
+              plus legacy battle, campaign, economy, boss, region1*, tactics and threats
 src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), shout.ts (shouting goblins)
-src/scenes/   Phaser screens: Boot, Title, Starter, Map, Town, Puzzle, Muster, Battle
+src/scenes/   Boot, Journey (map/journal/settings), CoursePlay (lesson runner), and retained legacy screens
 src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
 src/flow.ts   campaign flow between screens (briefings, launching battles, results)
 scripts/      art generation, puzzle pipeline, engine copy, deploy staging, verify/ (engine playtests)
 ```
 
-## Adding a battle
+## Adding curriculum
+
+Add source-backed content to `src/game/curriculum.ts` and `curriculumPuzzles.json`.
+The curation script is `scripts/select-curriculum.mjs`; raw downloads stay in ignored `data/raw/`.
+Run `node scripts/select-curriculum.mjs --verify-shipped` to compare every shipped puzzle with the local Lichess database.
+Read [curriculum rules](docs/curriculum-first.md#learning-and-content-rules) before selecting positions or writing prompts.
+Content tests verify legal lines, lesson claims, quality fields, distinct sources, and backup completion.
+
+## Adding a legacy battle
 
 Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in `src/game/region1.ts`. The player is White and moves first. `npm test` checks every position is legal (including that the enemy isn't already in check, which chess.js doesn't catch), and `npm run verify:battles` plays it out against the real enemy AI with shouts.
 
@@ -48,7 +65,7 @@ Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in
 
 ```bash
 npm run deploy   # build, stage dist/ into dist-worker/chess-rpg/, wrangler deploy
-npm run deploy:staging # publish the Region 2 pilot at /staging-chess-rpg/
+npm run deploy:staging # publish the new journey only at /staging-chess-rpg/
 ```
 
 The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. The 3D model comparison files are left out of the deploy. The largest file is the 1.8 MB engine `.wasm`.

@@ -1,5 +1,15 @@
 # Pawnshire — Game Design Doc
 
+## Current direction: curriculum first
+
+**Approved 2026-10-23:** finish Regions 1 and 2 as a connected journey of published Lichess puzzle lessons and mixed chapter reviews.
+Keep the storybook art and UX. Defer recruitment, faction move rules, powers, shops, and live army bosses.
+The [curriculum-first plan](curriculum-first.md) is authoritative for this new basic campaign, including progression, difficulty, saves, and acceptance checks.
+The owner accepted the pilot and waived further human pilot testing as a gate.
+
+The sections below describe the earlier RPG design. Their conflicting army, economy, warm-up, and boss requirements are historical, not prerequisites.
+Chess rules, teaching clarity, licensing, established names, and the art direction still apply.
+
 ## Vision and pillars
 
 A fantasy tactics RPG that teaches real chess. You are a king who starts with almost no army, recruits pieces with gold won in battle, and fights short, puzzle-like battles that build up to a full game against the Lich King. It plays like Into the Breach: short battles, nothing hidden, and every turn a small puzzle with a clever answer.

@@ -4,6 +4,18 @@
 
 ## Design status
 
+**Current scope, approved 2026-10-23:** complete The Kingsroad with five published-puzzle lessons and Ashfang's mixed chapter review.
+The [curriculum-first plan](../../curriculum-first.md) supersedes conflicting requirements below.
+Teach knight forks, queen double attacks, double check, removing defenders, and mate in two.
+Reuse the accepted Two at once pilot's runner and presentation; adapt its content to the shared three-wave lesson structure.
+Keep the Bandit Riders' art direction, places, names, and short story beats.
+
+The earlier custom battles, siege, live army boss, Scrying Orb, wanted-poster AI, and hired hero mechanics are deferred.
+They do not block this Region. Ashfang's review checks ideas already taught, with no tactic label giving the answer away.
+Further human pilot playtesting and another owner design approval are not required; technical validation and independent review remain required.
+
+### Earlier pilot and Region brief
+
 **2026-10-23 pilot exception:** [#34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) replaces slot 3, Two at once, with a standalone four-wave puzzle ambush.
 The owner approved its revised decisions. Do not compose a custom position for that slot while the pilot runs.
 Its opening poster explains setup only. The live-battle poster below remains unchanged.

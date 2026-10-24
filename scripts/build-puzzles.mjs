@@ -91,6 +91,8 @@ async function main() {
   // A puzzle tagged with two themes goes in only the first pack that picks it, so bounty IDs stay unique.
   // Campaign ambush positions are reserved even when they also match a bounty theme.
   const used = new Set(JSON.parse(readFileSync(new URL('../src/game/region2AmbushPuzzles.json', import.meta.url), 'utf8')).map(p => p.id));
+  const curriculum = JSON.parse(readFileSync(new URL('../src/game/curriculumPuzzles.json', import.meta.url), 'utf8'));
+  for (const p of Object.values(curriculum).flat()) used.add(p.id);
   for (const [region, r] of Object.entries(REGIONS)) {
     mkdirSync(`${OUT_DIR}/${region}`, { recursive: true });
     index[region] = {};

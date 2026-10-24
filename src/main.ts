@@ -2,19 +2,13 @@ import '@fontsource/alegreya/latin-400.css';
 import '@fontsource/alegreya/latin-700.css';
 import '@fontsource/alegreya/latin-400-italic.css';
 import Phaser from 'phaser';
-import './engineHost';
 import './ui/overlay.css';
-import { BattleScene } from './scenes/Battle';
 import { BootScene } from './scenes/Boot';
-import { MapScene } from './scenes/Map';
-import { MusterScene } from './scenes/Muster';
-import { PuzzleScene } from './scenes/Puzzle';
-import { StarterScene } from './scenes/Starter';
-import { TownScene } from './scenes/Town';
-import { TitleScene } from './scenes/Title';
 import { dpr, fitGame } from './ui/screen';
 import { C } from './ui/theme';
-import { pilotEnabled } from './pilotMode';
+import { pilotEnabled, legacyEnabled } from './pilotMode';
+import { JourneyScene } from './scenes/Journey';
+import { CoursePlayScene } from './scenes/CoursePlay';
 
 async function start() {
   // Phaser draws text onto canvases, so the web font must be ready first.
@@ -29,8 +23,15 @@ async function start() {
 
   const d = dpr();
   // Keep this build-time guard beside the import so production drops the pilot chunk.
-  const pilotScenes = (import.meta.env.DEV || import.meta.env.MODE === 'staging') && pilotEnabled
+  const pilotScenes = import.meta.env.DEV && pilotEnabled
     ? [(await import('./scenes/Ambush')).AmbushScene] : [];
+  const legacyScenes = import.meta.env.DEV && legacyEnabled
+    ? [
+      (await import('./scenes/Title')).TitleScene, (await import('./scenes/Starter')).StarterScene,
+      (await import('./scenes/Map')).MapScene, (await import('./scenes/Town')).TownScene,
+      (await import('./scenes/Puzzle')).PuzzleScene, (await import('./scenes/Muster')).MusterScene,
+      (await import('./scenes/Battle')).BattleScene,
+    ] : [];
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
@@ -46,7 +47,7 @@ async function start() {
     input: { activePointers: 2, windowEvents: false },
     // Testing aid: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
-    scene: [BootScene, TitleScene, StarterScene, MapScene, TownScene, PuzzleScene, MusterScene, BattleScene, ...pilotScenes],
+    scene: [BootScene, JourneyScene, CoursePlayScene, ...pilotScenes, ...legacyScenes],
   });
 
   // Size the canvas once Phaser has booted, and again whenever the window changes.

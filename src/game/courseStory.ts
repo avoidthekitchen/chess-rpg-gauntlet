@@ -21,6 +21,11 @@ export function chapterStory(regionId: string, starter: StarterType): StoryLine[
       { speaker: 'The Lich King', line: 'A crown may change hands. A game need not end.' },
       { speaker: companion, line: 'The crystal points toward the Shadow Cult. We follow it together.' },
     ],
+    r5: [
+      { speaker: 'The Bone Wardens', line: 'The gate stands open. Our watch is ended.' },
+      { speaker: 'The Lich King', line: 'Enter, then. I have kept the final board waiting.' },
+      { speaker: companion, line: 'We have reached the keep. We face the last boards together.' },
+    ],
     r4: [
       { speaker: 'General Flint', line: 'I mistook pride for duty. These banners belong to Pawnshire.' },
       { speaker: 'Tadwell, the Frog Captain', line: 'Then let us carry them together, General.' },

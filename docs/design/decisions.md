@@ -38,6 +38,7 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | Region 5 uses 55 unchanged sources for short endgame decisions. Teach the opponent-promotes-first race before review; underpromotion means the only immediate mate. Rook support covers forcing clearance and deflection. |
 | 2026-10-24 | Region 4 teaches bishop development with check, file tactics, exposed-king checks, deflection, intermediate checking captures, and actual mate-threat defence. Overload is not claimed. |
 | 2026-10-24 | Region 3 uses 57 unchanged published sources. Pin escape teaches capturing the pinning attacker along its line; blocking and moving the rear piece remain unclaimed. |
 | 2026-10-24 | Derive map stops and totals from registered chapters. A compact chapter picker and taller phone trail support seven-node chapters without changing old progress. |

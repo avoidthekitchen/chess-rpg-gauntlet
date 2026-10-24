@@ -126,3 +126,6 @@ The source PNG remains local under Codex generated images; the compressed WebP i
 
 `map-region4.webp` uses the same built-in tool and ink/watercolour direction: an elevated fortress valley, red-and-gold banners, bridges, orchards, and open courtyards.
 No text or interface was generated. Compressed WebP is shipped; source PNG stays local.
+
+`map-region5.webp` continues the ink-and-watercolour direction: a moonlit keep, rocky paths, rivers, animal statues and skeleton sentries.
+The painted scene contains no text or interface. Existing piece portraits retain honest Bone Wardens identity text until dedicated skeleton portraits are available.

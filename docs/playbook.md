@@ -53,8 +53,8 @@ Each lesson opens after every earlier lesson is complete. Completed encounters r
 Each Region ends with a mixed review of taught skills. Finishing that review opens the next built Region.
 Stars mark completion, no misses, and no hints; only completion gates the route.
 
-The current journey ends after Ashfang’s review. Later Regions must be marked as planning until implemented.
-The [Region 3 brief](design/regions/region-03-shadow-cult.md) plans the next chapter; it is not a playable destination.
+The current journey reaches the Bone Wardens’ review. The Lich King capstone remains unbuilt.
+Region briefs distinguish implemented content from pending browser and release checks.
 
 Keep the winding painted route and short story encounters.
 A chief may host a review without becoming a live engine duel or requiring an army budget.

@@ -1,0 +1,75 @@
+import type { CourseRegion, LessonSeed } from '../curriculum';
+
+export const region5Seeds: LessonSeed[] = [
+  {
+    id: 'r5-passed-pawns', title: 'A path through the bones', theme: 'Passed pawns', tag: 'advancedPawn',
+    objective: 'Find a passed pawn and follow its short route to promotion.',
+    takeaway: 'A passed pawn has no enemy pawn ahead on its file or either neighbouring file. Still check the other pieces and replies.',
+    before: 'The Legion scouts were right. Skeleton animals guard the border, but small paths remain between them.',
+    after: 'A skeleton mouse lowers its spear. The path stays open.',
+    demo: 'Push the passed f-pawn three times. It promotes while their b-pawn only reaches b2.',
+    coaching: 'Find a passed pawn. Count its steps to promotion and check each reply.',
+  },
+  {
+    id: 'r5-pawn-races', title: 'Two paths to the gate', theme: 'Pawn races', tag: 'promotion',
+    objective: 'Count both pawns’ promotion moves. Include checks and captures in the race.',
+    takeaway: 'Count turns, not just squares. A check can delay a rival pawn; promoting first does not always decide the result.',
+    before: 'Two skeleton mice hurry toward opposite gates. Your companion counts their footsteps.',
+    after: 'The footsteps stop. One well-timed check made the difference.',
+    demo: 'Both pawns need three pushes. White moves first: push h6, h7, then promote with check before their pawn leaves e2.',
+    coaching: 'Count both routes. Which checks or captures change whose pawn can move next?',
+  },
+  {
+    id: 'r5-king-use', title: 'The crown takes a step', theme: 'King activity', tag: 'pawnEndgame',
+    objective: 'Find a safe king route that captures an enemy pawn in the published line.',
+    takeaway: 'The king can capture pawns too. Check enemy pawn attacks and keep the kings apart on every step.',
+    before: 'A skeleton lion waits beside the narrow road. Even a crown must watch its footing.',
+    after: 'The road is clear. Your companion checks the next square before following.',
+    demo: 'Move the black king to f5 safely. After each reply, capture the pawns on f4 and g5.',
+    coaching: 'Trace a safe king route toward a pawn. Check pawn attacks and the enemy king at each step.',
+  },
+  {
+    id: 'r5-rook-support', title: 'Make room at the gate', theme: 'Rook support', tag: 'promotion',
+    objective: 'Use a rook check to clear a promotion square or draw its defender away.',
+    takeaway: 'A rook check can make room for a pawn. Calculate the reply before giving up the rook.',
+    before: 'A skeleton tortoise blocks the gate. The smallest traveller needs room to pass.',
+    after: 'The gatehouse clears. Your companion points to the pawn’s new square.',
+    demo: 'Move the rook from a8 to g8 with check. Their king captures it; your pawn promotes on the cleared a8 square.',
+    coaching: 'Look for a rook check that opens the pawn’s route. What guards its promotion square after the reply?',
+  },
+  {
+    id: 'r5-endgame-skewers', title: 'One line, two guards', theme: 'Endgame skewers', tag: 'skewer',
+    objective: 'Check the king with a rook, then capture the rook behind it.',
+    takeaway: 'Remember skewers: a checking line can hide another target behind the king. Follow the king’s reply before capturing.',
+    before: 'Two Wardens stand in a straight line. Your companion remembers the Shadow Cult’s corridors.',
+    after: 'The rear guard is gone. There are fewer bones on the road.',
+    demo: 'Check with the rook on a4. The king on d4 moves away, leaving the rook on g4 to capture.',
+    coaching: 'Look along the rook’s checking line. Is another rook behind the enemy king?',
+  },
+  {
+    id: 'r5-underpromotion', title: 'The smaller crown', theme: 'Knight promotion mate', tag: 'underPromotion',
+    objective: 'Choose the promotion that gives checkmate immediately.',
+    takeaway: 'A queen is not always the right promotion. Here only a knight gives checkmate now; the other choices allow replies.',
+    before: 'The Wardens offer the pawn a grand crown. Your companion looks at the king’s escape squares.',
+    after: 'The smaller crown fits. The Wardens fall silent.',
+    demo: 'Promote the f-pawn to a knight. Its new attack checkmates the king on g3; a queen would allow replies.',
+    coaching: 'Compare all four promotions. Which new piece checks the king and leaves no legal reply?',
+  },
+  {
+    id: 'r5-gate-review', title: 'The keep’s threshold', theme: 'Mixed review', tag: 'mixed', review: true,
+    objective: 'Read each fresh board and choose the idea it needs.',
+    takeaway: 'Check your king’s safety, compare forcing moves, and calculate the reply. Small armies still need careful thought.',
+    before: 'The Bone Wardens set six boards before the keep. Your companion waits beside you.',
+    after: 'The last Warden steps aside. The keep’s gate opens. Beyond it, the Lich King waits.',
+    demo: 'Check your king’s safety. Look for forcing moves and test the opponent’s replies.',
+    coaching: 'Read the whole board. What can your opponent do after your move?',
+  },
+];
+
+export const region5Region: CourseRegion = {
+  id: 'r5', mapArt: 'map-region5', title: 'The Bone Wardens', subtitle: 'Count each step. Find the final move.', town: 'The Keep’s Gate',
+  bossName: 'The Bone Wardens',
+  intro: 'The Iron Legion scouts have found the Lich King’s vanguard: skeleton animals guarding the road to his keep.',
+  outro: 'The Bone Wardens step aside. The keep’s gate opens, and your companion follows you toward the Lich King.',
+  lessons: region5Seeds.map(seed => seed.id),
+};

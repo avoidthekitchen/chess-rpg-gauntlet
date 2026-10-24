@@ -1,0 +1,1241 @@
+{
+  "ekO0n": {
+    "kind": "passed-pawns",
+    "decisiveMove": "f5f6",
+    "pawn": "f5",
+    "explanation": "The f5 pawn is passed. Three pushes reach f8 while the b-pawn only reaches b2."
+  },
+  "SngGU": {
+    "kind": "passed-pawns",
+    "decisiveMove": "e5e6",
+    "pawn": "e5",
+    "explanation": "The e5 pawn is passed. Three pushes reach e8 while the h-pawn reaches h3."
+  },
+  "eXA2d": {
+    "kind": "passed-pawns",
+    "decisiveMove": "a4a3",
+    "pawn": "a4",
+    "explanation": "The a4 pawn is passed. Three pushes promote while the distant white king and g-pawn cannot stop this line."
+  },
+  "tjAtj": {
+    "kind": "passed-pawns",
+    "decisiveMove": "c4c3",
+    "pawn": "c4",
+    "explanation": "The c4 pawn is passed. Three pushes promote while the h-pawn advances twice."
+  },
+  "qW9gn": {
+    "kind": "passed-pawns",
+    "decisiveMove": "a4a3",
+    "pawn": "a4",
+    "explanation": "The a4 pawn is passed. Its third push promotes with check while the h-pawn reaches h6."
+  },
+  "tJPlM": {
+    "kind": "passed-pawns",
+    "decisiveMove": "h5h6",
+    "pawn": "h5",
+    "explanation": "The h5 pawn is passed: no black pawn ahead lies on g or h. Three pushes promote before the b-pawn reaches b2."
+  },
+  "bT7qi": {
+    "kind": "passed-pawns",
+    "decisiveMove": "b5b6",
+    "pawn": "b5",
+    "explanation": "The b5 pawn is passed. Three pushes promote while Black spends one reply on the king."
+  },
+  "2848Q": {
+    "kind": "pawn-races",
+    "decisiveMove": "h5h6",
+    "opponentPawn": "e4",
+    "solverPawn": "h5",
+    "explanation": "Both leading pawns need three pushes. White moves first and promotes with check while Black is still on e2."
+  },
+  "Ga1xx": {
+    "kind": "pawn-races",
+    "decisiveMove": "h4h3",
+    "opponentPawn": "g5",
+    "solverPawn": "h4",
+    "explanation": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on g7."
+  },
+  "wCrGT": {
+    "kind": "pawn-races",
+    "decisiveMove": "c4c3",
+    "opponentPawn": "b5",
+    "solverPawn": "c4",
+    "explanation": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on b7."
+  },
+  "S7BL2": {
+    "kind": "pawn-races",
+    "decisiveMove": "c5c6",
+    "opponentPawn": "b4",
+    "solverPawn": "c5",
+    "explanation": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on b2."
+  },
+  "kLwSl": {
+    "kind": "pawn-races",
+    "decisiveMove": "g5g6",
+    "opponentPawn": "e4",
+    "solverPawn": "g5",
+    "explanation": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on e2."
+  },
+  "AojWU": {
+    "kind": "pawn-races",
+    "decisiveMove": "f5f6",
+    "opponentPawn": "c4",
+    "solverPawn": "f5",
+    "explanation": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on c2."
+  },
+  "kf9cP": {
+    "kind": "pawn-races",
+    "decisiveMove": "f4e3",
+    "opponentPawn": "a7",
+    "solverPawn": "f4",
+    "explanation": "Black captures e3 with check, forcing a king reply. White promotes first, but Black promotes with check on the next move."
+  },
+  "J3blE": {
+    "kind": "king-use",
+    "decisiveMove": "e6f5",
+    "explanation": "The black king enters f5 safely, then captures the white pawns on f4 and g5."
+  },
+  "zf3eO": {
+    "kind": "king-use",
+    "decisiveMove": "e6f7",
+    "explanation": "The white king steps to f7, away from the black king, then captures the blocking g7 pawn."
+  },
+  "DQIdq": {
+    "kind": "king-use",
+    "decisiveMove": "d3e4",
+    "explanation": "The king captures the checking e4 pawn, enters e5, then captures e6. Each entry avoids enemy pawn and king attacks."
+  },
+  "kjp7V": {
+    "kind": "king-use",
+    "decisiveMove": "f5g4",
+    "explanation": "The black king enters g4 safely, then captures h4. The white king remains too far away to guard that pawn."
+  },
+  "8a9DZ": {
+    "kind": "king-use",
+    "decisiveMove": "c3d4",
+    "explanation": "The white king walks through d4 and e5 to capture f5. It avoids the black pawns’ attack squares."
+  },
+  "bkLyy": {
+    "kind": "king-use",
+    "decisiveMove": "g5g4",
+    "explanation": "The black king safely captures g4 and then h5, removing both white pawns."
+  },
+  "JkYR9": {
+    "kind": "king-use",
+    "decisiveMove": "e5d4",
+    "explanation": "The black king enters d4 safely and captures the pawn after c5. The white king cannot guard c5."
+  },
+  "8vtl4": {
+    "kind": "rook-support",
+    "decisiveMove": "a8g8",
+    "promotionMove": "a7a8q",
+    "explanation": "Rg8+ vacates a8 with check. After Kxg8, the a7 pawn promotes with check."
+  },
+  "SyVVa": {
+    "kind": "rook-support",
+    "decisiveMove": "h8e8",
+    "promotionMove": "h7h8q",
+    "explanation": "Re8+ vacates h8 with check. After Kxe8, the h7 pawn promotes with check."
+  },
+  "5T9FM": {
+    "kind": "rook-support",
+    "decisiveMove": "c8h8",
+    "promotionMove": "c7c8q",
+    "explanation": "Rh8+ clears c8 and forces a king reply. The c7 pawn then promotes."
+  },
+  "AuhcO": {
+    "kind": "rook-support",
+    "decisiveMove": "a8d8",
+    "promotionMove": "a7a8q",
+    "explanation": "Rd8+ clears a8 and forces a king reply. The a7 pawn then promotes."
+  },
+  "2Mc4A": {
+    "kind": "rook-support",
+    "decisiveMove": "b7b6",
+    "promotionMove": "a7a8q",
+    "explanation": "Rb6+ draws the defending rook from the a-file to b6. The a7 pawn then promotes."
+  },
+  "AgeRI": {
+    "kind": "rook-support",
+    "decisiveMove": "c7c6",
+    "promotionMove": "a7a8q",
+    "explanation": "Rc6+ draws the defending rook from the a-file to c6. The a7 pawn then promotes."
+  },
+  "Smt15": {
+    "kind": "rook-support",
+    "decisiveMove": "b2b6",
+    "promotionMove": "h2h1q",
+    "explanation": "Rb6+ draws the defending rook from the h-file to b6. The h2 pawn then promotes."
+  },
+  "PF2dd": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "a6a4",
+    "rearTarget": "g4",
+    "king": "d4",
+    "explanation": "Ra4+ puts the white king on d4 between the checking rook and the rook on g4. After the king leaves, Rxg4 wins that rook."
+  },
+  "DSB9m": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "c2d2",
+    "rearTarget": "d6",
+    "king": "d4",
+    "explanation": "Rd2+ lines up the king on d4 and rook on d6. After Kxc3, Rxd6 captures the rear rook."
+  },
+  "MhxI1": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "h5h6",
+    "rearTarget": "c6",
+    "king": "f6",
+    "explanation": "Rxh6+ checks the king on f6 with the rook on c6 behind it. After Ke7, Rxc6 wins the rook."
+  },
+  "SCh0x": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "h4h2",
+    "rearTarget": "c2",
+    "king": "f2",
+    "explanation": "Rh2+ checks the king on f2 with the rook on c2 behind it. After Ke3, Rxc2 wins the rook."
+  },
+  "w0GW4": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "g6h6",
+    "rearTarget": "h2",
+    "king": "h4",
+    "explanation": "Rh6+ checks the king on h4 with the rook on h2 behind it. After Kxg5, Rxh2 wins the rook."
+  },
+  "5TD72": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "b2b1",
+    "rearTarget": "f1",
+    "king": "c1",
+    "explanation": "Rb1+ checks the king on c1 with the rook on f1 behind it. After Kd2, Rxf1 wins the rook."
+  },
+  "qGfb3": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "g8h8",
+    "rearTarget": "h2",
+    "king": "h5",
+    "explanation": "Rh8+ checks the king on h5 with the rook on h2 behind it. After Kg4, Rxh2 wins the rook."
+  },
+  "Yb5Fq": {
+    "kind": "underpromotion",
+    "decisiveMove": "f2f1n",
+    "alternatives": {
+      "q": {
+        "move": "f2f1q",
+        "mate": false,
+        "legalReplies": [
+          "c8d8",
+          "c8e8",
+          "c8f8",
+          "c8g8",
+          "c8h8",
+          "c8c7",
+          "c8c6",
+          "c8c5",
+          "c8c4",
+          "c8c3",
+          "c8b8",
+          "c8a8",
+          "a4a5",
+          "b3b4",
+          "g3h2",
+          "c2c3",
+          "c2c4"
+        ]
+      },
+      "r": {
+        "move": "f2f1r",
+        "mate": false,
+        "legalReplies": [
+          "c8d8",
+          "c8e8",
+          "c8f8",
+          "c8g8",
+          "c8h8",
+          "c8c7",
+          "c8c6",
+          "c8c5",
+          "c8c4",
+          "c8c3",
+          "c8b8",
+          "c8a8",
+          "a4a5",
+          "b3b4",
+          "g3h2",
+          "c2c3",
+          "c2c4"
+        ]
+      },
+      "b": {
+        "move": "f2f1b",
+        "mate": false,
+        "legalReplies": [
+          "c8d8",
+          "c8e8",
+          "c8f8",
+          "c8g8",
+          "c8h8",
+          "c8c7",
+          "c8c6",
+          "c8c5",
+          "c8c4",
+          "c8c3",
+          "c8b8",
+          "c8a8",
+          "a4a5",
+          "b3b4",
+          "g3h2",
+          "c2c3",
+          "c2c4"
+        ]
+      },
+      "n": {
+        "move": "f2f1n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "f1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, c8d8 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "thYKI": {
+    "kind": "underpromotion",
+    "decisiveMove": "d7d8n",
+    "alternatives": {
+      "q": {
+        "move": "d7d8q",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "c6b7",
+          "h6h5",
+          "g5g4",
+          "e1e2",
+          "e1e3",
+          "e1e4",
+          "e1e5",
+          "e1e6",
+          "e1e7",
+          "e1e8",
+          "e1f1",
+          "e1g1",
+          "e1h1",
+          "e1d1",
+          "e1c1",
+          "e1b1",
+          "e1a1"
+        ]
+      },
+      "r": {
+        "move": "d7d8r",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "c6b7",
+          "h6h5",
+          "g5g4",
+          "e1e2",
+          "e1e3",
+          "e1e4",
+          "e1e5",
+          "e1e6",
+          "e1e7",
+          "e1e8",
+          "e1f1",
+          "e1g1",
+          "e1h1",
+          "e1d1",
+          "e1c1",
+          "e1b1",
+          "e1a1"
+        ]
+      },
+      "b": {
+        "move": "d7d8b",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "c6b7",
+          "h6h5",
+          "g5g4",
+          "e1e2",
+          "e1e3",
+          "e1e4",
+          "e1e5",
+          "e1e6",
+          "e1e7",
+          "e1e8",
+          "e1f1",
+          "e1g1",
+          "e1h1",
+          "e1d1",
+          "e1c1",
+          "e1b1",
+          "e1a1"
+        ]
+      },
+      "n": {
+        "move": "d7d8n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "d8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a6 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "2bNV8": {
+    "kind": "underpromotion",
+    "decisiveMove": "f7f8n",
+    "alternatives": {
+      "q": {
+        "move": "f7f8q",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "b7b6",
+          "b7b5",
+          "f6f5",
+          "h6h5",
+          "e4e3",
+          "b2b1n",
+          "b2b1b",
+          "b2b1r",
+          "b2b1q",
+          "f1e2",
+          "f1d3",
+          "f1c4",
+          "f1b5",
+          "f1a6",
+          "f1f2",
+          "f1f3",
+          "f1f4",
+          "f1g2",
+          "f1h3",
+          "f1g1",
+          "f1h1",
+          "f1e1",
+          "f1d1",
+          "f1c1",
+          "f1b1",
+          "f1a1"
+        ]
+      },
+      "r": {
+        "move": "f7f8r",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "b7b6",
+          "b7b5",
+          "f6f5",
+          "h6h5",
+          "e4e3",
+          "b2b1n",
+          "b2b1b",
+          "b2b1r",
+          "b2b1q",
+          "f1e2",
+          "f1d3",
+          "f1c4",
+          "f1b5",
+          "f1a6",
+          "f1f2",
+          "f1f3",
+          "f1f4",
+          "f1g2",
+          "f1h3",
+          "f1g1",
+          "f1h1",
+          "f1e1",
+          "f1d1",
+          "f1c1",
+          "f1b1",
+          "f1a1"
+        ]
+      },
+      "b": {
+        "move": "f7f8b",
+        "mate": false,
+        "legalReplies": [
+          "a7a6",
+          "a7a5",
+          "b7b6",
+          "b7b5",
+          "f6f5",
+          "h6h5",
+          "e4e3",
+          "b2b1n",
+          "b2b1b",
+          "b2b1r",
+          "b2b1q",
+          "f1e2",
+          "f1d3",
+          "f1c4",
+          "f1b5",
+          "f1a6",
+          "f1f2",
+          "f1f3",
+          "f1f4",
+          "f1g2",
+          "f1h3",
+          "f1g1",
+          "f1h1",
+          "f1e1",
+          "f1d1",
+          "f1c1",
+          "f1b1",
+          "f1a1"
+        ]
+      },
+      "n": {
+        "move": "f7f8n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "f8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a6 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "DuYAe": {
+    "kind": "underpromotion",
+    "decisiveMove": "f7f8n",
+    "alternatives": {
+      "q": {
+        "move": "f7f8q",
+        "mate": false,
+        "legalReplies": [
+          "d6d5",
+          "h6h5",
+          "a3a2",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1a1",
+          "e1d2",
+          "e1c3",
+          "e1b4",
+          "e1a5",
+          "e1f2",
+          "e1g3",
+          "e1h4"
+        ]
+      },
+      "r": {
+        "move": "f7f8r",
+        "mate": false,
+        "legalReplies": [
+          "d6d5",
+          "h6h5",
+          "a3a2",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1a1",
+          "e1d2",
+          "e1c3",
+          "e1b4",
+          "e1a5",
+          "e1f2",
+          "e1g3",
+          "e1h4"
+        ]
+      },
+      "b": {
+        "move": "f7f8b",
+        "mate": false,
+        "legalReplies": [
+          "d6d5",
+          "h6h5",
+          "a3a2",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1a1",
+          "e1d2",
+          "e1c3",
+          "e1b4",
+          "e1a5",
+          "e1f2",
+          "e1g3",
+          "e1h4"
+        ]
+      },
+      "n": {
+        "move": "f7f8n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "f8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, d6d5 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "YRKEI": {
+    "kind": "underpromotion",
+    "decisiveMove": "g7g8n",
+    "alternatives": {
+      "q": {
+        "move": "g7g8q",
+        "mate": false,
+        "legalReplies": [
+          "e8f8",
+          "e8e7",
+          "e8e6",
+          "e8e5",
+          "e8e4",
+          "e8d8",
+          "e8c8",
+          "e8b8",
+          "e8a8",
+          "b6b5",
+          "a5a4",
+          "e3e4",
+          "e3e5",
+          "e3e6",
+          "e3e7",
+          "e3f3",
+          "e3g3",
+          "e3h3",
+          "e3e2",
+          "e3e1",
+          "e3d3",
+          "e3c3",
+          "e3b3",
+          "e3a3"
+        ]
+      },
+      "r": {
+        "move": "g7g8r",
+        "mate": false,
+        "legalReplies": [
+          "e8f8",
+          "e8e7",
+          "e8e6",
+          "e8e5",
+          "e8e4",
+          "e8d8",
+          "e8c8",
+          "e8b8",
+          "e8a8",
+          "b6b5",
+          "a5a4",
+          "e3e4",
+          "e3e5",
+          "e3e6",
+          "e3e7",
+          "e3f3",
+          "e3g3",
+          "e3h3",
+          "e3e2",
+          "e3e1",
+          "e3d3",
+          "e3c3",
+          "e3b3",
+          "e3a3"
+        ]
+      },
+      "b": {
+        "move": "g7g8b",
+        "mate": false,
+        "legalReplies": [
+          "e8f8",
+          "e8e7",
+          "e8e6",
+          "e8e5",
+          "e8e4",
+          "e8d8",
+          "e8c8",
+          "e8b8",
+          "e8a8",
+          "b6b5",
+          "a5a4",
+          "e3e4",
+          "e3e5",
+          "e3e6",
+          "e3e7",
+          "e3f3",
+          "e3g3",
+          "e3h3",
+          "e3e2",
+          "e3e1",
+          "e3d3",
+          "e3c3",
+          "e3b3",
+          "e3a3"
+        ]
+      },
+      "n": {
+        "move": "g7g8n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "g8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, e8f8 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "tpsGj": {
+    "kind": "underpromotion",
+    "decisiveMove": "d2d1n",
+    "alternatives": {
+      "q": {
+        "move": "d2d1q",
+        "mate": false,
+        "legalReplies": [
+          "b7b8",
+          "b7c7",
+          "b7d7",
+          "b7e7",
+          "b7f7",
+          "b7g7",
+          "b7b6",
+          "b7b5",
+          "b7a7",
+          "h7h8",
+          "h7h6",
+          "h7h5",
+          "h7h4",
+          "h7h3",
+          "h7h2",
+          "h7h1",
+          "h7g7",
+          "h7f7",
+          "h7e7",
+          "h7d7",
+          "h7c7",
+          "e4e5",
+          "a3a4",
+          "e3f2",
+          "f3f4",
+          "g2g3",
+          "g2g4"
+        ]
+      },
+      "r": {
+        "move": "d2d1r",
+        "mate": false,
+        "legalReplies": [
+          "b7b8",
+          "b7c7",
+          "b7d7",
+          "b7e7",
+          "b7f7",
+          "b7g7",
+          "b7b6",
+          "b7b5",
+          "b7a7",
+          "h7h8",
+          "h7h6",
+          "h7h5",
+          "h7h4",
+          "h7h3",
+          "h7h2",
+          "h7h1",
+          "h7g7",
+          "h7f7",
+          "h7e7",
+          "h7d7",
+          "h7c7",
+          "e4e5",
+          "a3a4",
+          "e3f2",
+          "f3f4",
+          "g2g3",
+          "g2g4"
+        ]
+      },
+      "b": {
+        "move": "d2d1b",
+        "mate": false,
+        "legalReplies": [
+          "b7b8",
+          "b7c7",
+          "b7d7",
+          "b7e7",
+          "b7f7",
+          "b7g7",
+          "b7b6",
+          "b7b5",
+          "b7a7",
+          "h7h8",
+          "h7h6",
+          "h7h5",
+          "h7h4",
+          "h7h3",
+          "h7h2",
+          "h7h1",
+          "h7g7",
+          "h7f7",
+          "h7e7",
+          "h7d7",
+          "h7c7",
+          "e4e5",
+          "a3a4",
+          "e3f2",
+          "f3f4",
+          "g2g3",
+          "g2g4"
+        ]
+      },
+      "n": {
+        "move": "d2d1n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "d1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, b7b8 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "w4rdF": {
+    "kind": "underpromotion",
+    "decisiveMove": "g2g1n",
+    "alternatives": {
+      "q": {
+        "move": "g2g1q",
+        "mate": false,
+        "legalReplies": [
+          "a7a8",
+          "a7b7",
+          "a7c7",
+          "a7d7",
+          "a7a6",
+          "a7a5",
+          "a7a4",
+          "a7a3",
+          "a7a2",
+          "a7a1",
+          "e7e8",
+          "e7f7",
+          "e7g7",
+          "e7h7",
+          "e7e6",
+          "e7e5",
+          "e7e4",
+          "e7e3",
+          "e7e2",
+          "e7e1",
+          "e7d7",
+          "e7c7",
+          "e7b7"
+        ]
+      },
+      "r": {
+        "move": "g2g1r",
+        "mate": false,
+        "legalReplies": [
+          "a7a8",
+          "a7b7",
+          "a7c7",
+          "a7d7",
+          "a7a6",
+          "a7a5",
+          "a7a4",
+          "a7a3",
+          "a7a2",
+          "a7a1",
+          "e7e8",
+          "e7f7",
+          "e7g7",
+          "e7h7",
+          "e7e6",
+          "e7e5",
+          "e7e4",
+          "e7e3",
+          "e7e2",
+          "e7e1",
+          "e7d7",
+          "e7c7",
+          "e7b7"
+        ]
+      },
+      "b": {
+        "move": "g2g1b",
+        "mate": false,
+        "legalReplies": [
+          "a7a8",
+          "a7b7",
+          "a7c7",
+          "a7d7",
+          "a7a6",
+          "a7a5",
+          "a7a4",
+          "a7a3",
+          "a7a2",
+          "a7a1",
+          "e7e8",
+          "e7f7",
+          "e7g7",
+          "e7h7",
+          "e7e6",
+          "e7e5",
+          "e7e4",
+          "e7e3",
+          "e7e2",
+          "e7e1",
+          "e7d7",
+          "e7c7",
+          "e7b7"
+        ]
+      },
+      "n": {
+        "move": "g2g1n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "g1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a8 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "wNum3": {
+    "kind": "mate",
+    "decisiveMove": "e5b8",
+    "explanation": "Qxb8 captures the queen and gives immediate back-rank mate. The pawns on g7 and h7 block the king’s escape."
+  },
+  "YyCbR": {
+    "kind": "pawn-races",
+    "decisiveMove": "h3h2",
+    "opponentPawn": "b7",
+    "solverPawn": "h3",
+    "explanation": "White needs one push and Black needs two. Black pushes h2; White promotes, then Black promotes with check. First arrival alone is not the goal."
+  },
+  "8bbWP": {
+    "kind": "pawn-races",
+    "decisiveMove": "c4c3",
+    "opponentPawn": "b5",
+    "solverPawn": "c4",
+    "explanation": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on b7."
+  },
+  "GCVGr": {
+    "kind": "king-use",
+    "decisiveMove": "d3d4",
+    "explanation": "The white king safely captures d4 and then d5. Neither target is protected by the distant black king."
+  },
+  "kuWwt": {
+    "kind": "king-use",
+    "decisiveMove": "d3e3",
+    "explanation": "The white king enters e3 and f4 safely, then captures g4. This tests the concrete route, not a general zugzwang method."
+  },
+  "2RsIw": {
+    "kind": "rook-support",
+    "decisiveMove": "g8a8",
+    "promotionMove": "g7g8q",
+    "explanation": "Ra8+ clears g8 with check. After the king captures, g8=Q+ forces another reply; the new queen then captures a2."
+  },
+  "AzfPs": {
+    "kind": "rook-support",
+    "decisiveMove": "b1g1",
+    "promotionMove": "b2b1q",
+    "explanation": "Rg1+ clears b1 with check. After the king captures, b1=Q+ promotes with check."
+  },
+  "87kiD": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "h3h2",
+    "rearTarget": "c2",
+    "king": "f2",
+    "explanation": "Rh2+ checks the king on f2 with the rook on c2 behind it. After Kf3, Rxc2 wins the rook."
+  },
+  "D38Qx": {
+    "kind": "endgame-skewers",
+    "decisiveMove": "a7a8",
+    "rearTarget": "h8",
+    "king": "c8",
+    "explanation": "Ra8+ checks the king on c8 with the rook on h8 behind it. After Kb7, Rxh8 wins the rook."
+  },
+  "JB3YP": {
+    "kind": "underpromotion",
+    "decisiveMove": "c2c1n",
+    "alternatives": {
+      "q": {
+        "move": "c2c1q",
+        "mate": false,
+        "legalReplies": [
+          "f8g8",
+          "f8h8",
+          "f8g7",
+          "f8h6",
+          "f8f7",
+          "f8f6",
+          "f8f5",
+          "f8f4",
+          "f8f3",
+          "f8f2",
+          "f8f1",
+          "f8e7",
+          "f8d6",
+          "f8c5",
+          "f8e8",
+          "f8d8",
+          "f8c8",
+          "f8b8",
+          "f8a8",
+          "b6a7",
+          "b6b7",
+          "b6b8",
+          "b6c7",
+          "b6d8",
+          "b6c6",
+          "b6d6",
+          "b6e6",
+          "b6f6",
+          "b6g6",
+          "b6h6",
+          "b6c5",
+          "b6d4",
+          "b6e3",
+          "b6b5",
+          "b6a5",
+          "b6a6",
+          "d3e2"
+        ]
+      },
+      "r": {
+        "move": "c2c1r",
+        "mate": false,
+        "legalReplies": [
+          "f8g8",
+          "f8h8",
+          "f8g7",
+          "f8h6",
+          "f8f7",
+          "f8f6",
+          "f8f5",
+          "f8f4",
+          "f8f3",
+          "f8f2",
+          "f8f1",
+          "f8e7",
+          "f8d6",
+          "f8c5",
+          "f8e8",
+          "f8d8",
+          "f8c8",
+          "f8b8",
+          "f8a8",
+          "b6a7",
+          "b6b7",
+          "b6b8",
+          "b6c7",
+          "b6d8",
+          "b6c6",
+          "b6d6",
+          "b6e6",
+          "b6f6",
+          "b6g6",
+          "b6h6",
+          "b6c5",
+          "b6d4",
+          "b6e3",
+          "b6b5",
+          "b6a5",
+          "b6a6",
+          "d3e2"
+        ]
+      },
+      "b": {
+        "move": "c2c1b",
+        "mate": false,
+        "legalReplies": [
+          "f8g8",
+          "f8h8",
+          "f8g7",
+          "f8h6",
+          "f8f7",
+          "f8f6",
+          "f8f5",
+          "f8f4",
+          "f8f3",
+          "f8f2",
+          "f8f1",
+          "f8e7",
+          "f8d6",
+          "f8c5",
+          "f8e8",
+          "f8d8",
+          "f8c8",
+          "f8b8",
+          "f8a8",
+          "b6a7",
+          "b6b7",
+          "b6b8",
+          "b6c7",
+          "b6d8",
+          "b6c6",
+          "b6d6",
+          "b6e6",
+          "b6f6",
+          "b6g6",
+          "b6h6",
+          "b6c5",
+          "b6d4",
+          "b6e3",
+          "b6b5",
+          "b6a5",
+          "b6a6",
+          "d3e2"
+        ]
+      },
+      "n": {
+        "move": "c2c1n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "c1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, f8g8 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "2Qu17": {
+    "kind": "underpromotion",
+    "decisiveMove": "g7g8n",
+    "alternatives": {
+      "q": {
+        "move": "g7g8q",
+        "mate": false,
+        "legalReplies": [
+          "d6b7",
+          "d6c8",
+          "d6e8",
+          "d6f7",
+          "d6f5",
+          "d6e4",
+          "d6c4",
+          "d6b5",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1e1",
+          "b1f1",
+          "b1g1",
+          "b1h1",
+          "b1a1"
+        ]
+      },
+      "r": {
+        "move": "g7g8r",
+        "mate": false,
+        "legalReplies": [
+          "d6b7",
+          "d6c8",
+          "d6e8",
+          "d6f7",
+          "d6f5",
+          "d6e4",
+          "d6c4",
+          "d6b5",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1e1",
+          "b1f1",
+          "b1g1",
+          "b1h1",
+          "b1a1"
+        ]
+      },
+      "b": {
+        "move": "g7g8b",
+        "mate": false,
+        "legalReplies": [
+          "d6b7",
+          "d6c8",
+          "d6e8",
+          "d6f7",
+          "d6f5",
+          "d6e4",
+          "d6c4",
+          "d6b5",
+          "b1a2",
+          "b1b2",
+          "b1b3",
+          "b1b4",
+          "b1b5",
+          "b1b6",
+          "b1b7",
+          "b1b8",
+          "b1c2",
+          "b1d3",
+          "b1e4",
+          "b1f5",
+          "b1g6",
+          "b1c1",
+          "b1d1",
+          "b1e1",
+          "b1f1",
+          "b1g1",
+          "b1h1",
+          "b1a1"
+        ]
+      },
+      "n": {
+        "move": "g7g8n",
+        "mate": true,
+        "legalReplies": []
+      }
+    },
+    "explanation": "g8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, d6b7 is a legal reply. The claim is mate now, not that a queen must lose."
+  },
+  "YchKS": {
+    "kind": "mate",
+    "decisiveMove": "d4d1",
+    "explanation": "Rd1 is immediate back-rank mate. White’s f2, g2 and h2 pawns block the king."
+  },
+  "w5dLq": {
+    "kind": "mate",
+    "decisiveMove": "d8d1",
+    "explanation": "Rd1 is immediate back-rank mate. White’s f2, g2 and h2 pawns block the king."
+  }
+}

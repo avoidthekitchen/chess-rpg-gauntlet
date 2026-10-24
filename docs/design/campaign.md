@@ -5,7 +5,7 @@
 ## Campaign and Gauntlet
 
 The core campaign is a sequential learning journey through five Regions and a Lich King finale.
-Only Regions 1 and 2 are currently implemented. Later chapters must not appear playable before their content exists.
+Regions 1–5 are currently implemented. Later chapters must not appear playable before their content exists.
 Gauntlet is a possible later replay mode, not a required unlock or an implemented reward.
 
 ## Guided path
@@ -20,7 +20,8 @@ Completion, no-miss, and no-hint stars persist; replay can fill missing stars.
 There is no army budget, gold cost, permanent difficulty lockout, or shop requirement.
 See [systems](systems.md) for the actual help and attempt rules.
 
-The current Regions each have five three-position lessons and one four-position review, plus examples and retry backups.
+Regions 1 and 2 each have five three-position lessons and one four-position review, plus examples and retry backups.
+Regions 3–5 each have six lessons; their reviews have seven, six and six waves respectively.
 Later chapters should use as many focused lessons as their prerequisites require; five is not a universal quota.
 Do not add new skills only inside a mixed review.
 
@@ -33,9 +34,9 @@ Allies and opponents may play either chess color; ivory and ebony identify color
 | --- | --- | --- | --- |
 | [The Bog](regions/region-01-bog-goblins.md) | Built | Loose pieces, safe captures, answering check, back-rank mate, promotion mate | Grubnak's greed; free Saffron |
 | [The Kingsroad](regions/region-02-bandit-riders.md) | Built | Knight forks, queen double attacks, double check, removing defenders, mate in two | Ashfang's tolls and stolen banners |
-| [Shadow Cult](regions/region-03-shadow-cult.md) | Planned next | Pins, defensive responses, skewers, discovered attacks; earlier revisits | Fear and binding; discover the Lich King's identity |
-| Iron Legion | Syllabus planned | Tactical coordination, king safety, forcing sequences, defensive resources | Pride; win the kingdom's soldiers back |
-| Bone Wardens | Syllabus planned | Endgame tactics and conversion; separate technique work where supported | Reach the keep through the Lich's vanguard |
+| [Shadow Cult](regions/region-03-shadow-cult.md) | Built | Pins, capturing pinning attackers, skewers, x-rays, discoveries; earlier revisits | Fear and binding; discover the Lich King's identity |
+| [Iron Legion](regions/region-04-iron-legion.md) | Built | Tactical coordination, king safety, forcing sequences, defensive resources | Pride; win the kingdom's soldiers back |
+| [Bone Wardens](regions/region-05-bone-wardens.md) | Built | Short pawn races, safe king captures, rook support and skewers, immediate knight-promotion mates | Reach the keep through the Lich's vanguard |
 | Lich King | Syllabus planned | Mixed capstone of taught skills, using fresh published positions | The king who refused defeat finally accepts it |
 
 The final capstone does not require a full live engine game or a hired army.
@@ -69,5 +70,5 @@ They are not required for new Regions. Historical details are in [legacy campaig
 
 ## Battle outline by Region
 
-The active outline is the [syllabus](syllabus.md), with [Region 3's implementation brief](regions/region-03-shadow-cult.md) next.
+The active outline is the [syllabus](syllabus.md). The Lich King capstone remains the next unbuilt chapter.
 Older warm-up bands, branch counts, bounty packs, and boss armies remain in the historical campaign document.

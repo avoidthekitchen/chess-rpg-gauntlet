@@ -1,9 +1,11 @@
 import originalPuzzles from './curriculumPuzzles.json';
+import region5Puzzles from './course/region5Puzzles.json';
+import { region5Seeds, region5Region } from './course/region5';
 import region4Puzzles from './course/region4Puzzles.json';
 import { region4Seeds, region4Region } from './course/region4';
 import region3Puzzles from './course/region3Puzzles.json';
 import { region3Seeds, region3Region } from './course/region3';
-const puzzles = { ...originalPuzzles, ...region3Puzzles, ...region4Puzzles };
+const puzzles = { ...originalPuzzles, ...region3Puzzles, ...region4Puzzles, ...region5Puzzles };
 import type { AmbushDef, AmbushPuzzle } from './ambush';
 
 export interface CourseLesson extends AmbushDef {
@@ -145,7 +147,7 @@ const originalSeeds: LessonSeed[] = [
   },
 ];
 
-const seeds = [...originalSeeds, ...region3Seeds, ...region4Seeds];
+const seeds = [...originalSeeds, ...region3Seeds, ...region4Seeds, ...region5Seeds];
 
 /** Source positions and published lines are unchanged. Difficulty changes assistance, not the chess. */
 export const COURSE_LESSONS: CourseLesson[] = seeds.map(seed => {
@@ -178,6 +180,7 @@ export const COURSE_REGIONS: CourseRegion[] = [
   },
   region3Region,
   region4Region,
+  region5Region,
 ];
 
 export const courseLesson = (id: string): CourseLesson | undefined => COURSE_LESSONS.find(lesson => lesson.id === id);

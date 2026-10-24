@@ -53,7 +53,8 @@ The table records established roles, not a claim that every character and scene 
 | Tadwell, the Frog Captain | Frog Knight · knight | [Region 2](regions/region-02-bandit-riders.md) story ally (planned) | Formal, dutiful, proud of the old army; a little stiff | — |
 | The Lich King | Skeleton · king | Final villain | Cold and courtly, never raises his voice; talks about games he refused to lose | — |
 | General Flint | Lion · king | Iron Legion review host, then story ally | Proud, clipped commands; learns to distinguish duty from pride | — |
-| Regions 3–5 bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region | — |
+| The Bone Wardens | Skeleton animals · collective | Region 5 review hosts | Quiet, watchful, few words; their watch ends at the keep’s gate | — |
+| Other later bosses and heroes | Bosses are the king of their faction's own species; heroes are any non-king piece | — | To be written with each Region | — |
 
 **Naming conventions.** Supporting pieces may have short, earthy names (Pip, Nib, Bramble, Granite, Brother Hoot). Heroes get one memorable name and a title ("Saffron, the Fox Queen"). Bosses get a name and a rank ("Grubnak, the Goblin Chief"). Every name is unique across the cast, so a supporting piece never shares a hero's name. Species and piece names are in [Names and terms](glossary.md).
 

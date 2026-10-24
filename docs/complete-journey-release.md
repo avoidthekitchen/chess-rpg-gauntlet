@@ -77,9 +77,24 @@ The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gau
 
 ## Staging
 
+### Board visibility follow-up
+
+Current application revision: `a70192ef8bcf69981dbc9b50ebfc3b7b790231c9`.
+Cloudflare version: `994caac9-a981-49c5-9aa1-baa51d6b5efd`.
+Compact dialogue and capture/check/mate cards cover advice, leaving the board and action buttons clear.
+Desktop layouts keep their dedicated dialogue space. Opaque cards prevent text from blending with underlying advice.
+Rotation hides feedback until the board finishes its deferred layout rebuild. Dismissal and history remain available.
+Type-check, build, and 474 tests across 33 files passed. Independent layout review found no blocker.
+Chromium checked four sizes from 375×553 to 1280×800. WebKit checked phone, short-phone, and landscape sizes.
+Public Chromium repeated all four sizes; public WebKit repeated both portrait sizes with actual captures.
+Frame sampling found no board/action overlap, clipped capture text, or runtime exceptions in those demonstrations.
+The final opacity adjustment received another public short-phone WebKit check; its screenshot confirms readable capture text.
+WebKit emitted report-only CSP console notices, which did not block resources or gameplay.
+These focused UI checks do not replace or change the retained full-journey and legacy-engine results.
+
 ### Region shortcut follow-up
 
-Current application revision: `8f77559e149463c6f1a3811b3d284bcf883f72dd`.
+Previously deployed application revision: `8f77559e149463c6f1a3811b3d284bcf883f72dd`.
 Cloudflare version: `c040abf2-c4e3-417c-ac33-0a3ae09614c1`.
 Use `?region=1`–`5` or `?region=finale` for a separate saved preview. Production builds ignore these parameters.
 The follow-up passed 474 tests, type-check, build, and independent code review.

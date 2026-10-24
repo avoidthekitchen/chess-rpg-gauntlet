@@ -10,6 +10,9 @@
 - Frame sampling found no board/action overlap during speech and move banners, and no clipped capture text in the checked demonstrations.
 - WebKit passed rotation during capture, hidden feedback until rebuild, dismissal, and conversation history checks.
 - Final type-check, build, and 474 tests passed across 33 files. Independent layout review found no blocker.
+- Public Chromium repeated four viewport checks; WebKit repeated phone and short-phone capture checks with no overlap or runtime exceptions.
+- The final opacity adjustment received another short-phone WebKit check. Report-only CSP console notices did not block assets or gameplay.
+- Deployed `a70192e`; Cloudflare version `994caac9-a981-49c5-9aa1-baa51d6b5efd`.
 
 ## 2026-10-24 — Staging region shortcuts
 

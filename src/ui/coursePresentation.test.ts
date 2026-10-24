@@ -2,7 +2,7 @@ import { Chess } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
 import { uciMove } from '../game/ambush';
-import { COURSE_FORK_MOVES, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
+import { COURSE_FORK_MOVES, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
 
 const positions = COURSE_LESSONS.flatMap(lesson => [lesson.show, ...lesson.waves.flatMap(wave => [wave.main, wave.backup])]);
 
@@ -116,5 +116,74 @@ describe('lesson dialogue journal and holds', () => {
     await vi.advanceTimersByTimeAsync(300);
     await next;
     expect(vi.getTimerCount()).toBe(0);
+  });
+});
+
+describe('separate lesson speech lifetime', () => {
+  afterEach(() => vi.useRealTimers());
+  it('expires without discarding the last speaker or extending its reading time on reads', () => {
+    vi.useFakeTimers();
+    const changed = vi.fn();
+    const speech = new CourseSpeech(changed);
+    const info = companionSpeaker('n', 'Hop to it!');
+    speech.show(info);
+    vi.advanceTimersByTime(2000);
+    expect(speech.info).toBe(info);
+    expect(speech.visible).toBe(true);
+    vi.advanceTimersByTime(1200);
+    expect(speech.visible).toBe(false);
+    expect(speech.info).toBe(info); // Desktop and history retain the last line.
+    expect(changed).toHaveBeenCalledTimes(2);
+  });
+  it('holds a line for reading, restarts on release, and dismisses immediately', () => {
+    vi.useFakeTimers();
+    const speech = new CourseSpeech(() => {});
+    speech.show(companionSpeaker('b', 'Look again.'));
+    vi.advanceTimersByTime(2500);
+    speech.hold();
+    vi.advanceTimersByTime(9000);
+    expect(speech.visible).toBe(true);
+    speech.release();
+    vi.advanceTimersByTime(3100);
+    expect(speech.visible).toBe(true);
+    speech.dismiss();
+    expect(speech.visible).toBe(false);
+    speech.release();
+    vi.advanceTimersByTime(10000);
+    expect(speech.visible).toBe(false);
+  });
+  it('cancels older speech and clears every pending callback on wave, retry, or exit', () => {
+    vi.useFakeTimers();
+    const changed = vi.fn();
+    const speech = new CourseSpeech(changed);
+    speech.show(companionSpeaker('n', 'Hop!'));
+    vi.advanceTimersByTime(3000);
+    const next = companionSpeaker('r', 'A new board.');
+    speech.show(next);
+    vi.advanceTimersByTime(300);
+    expect(speech.visible).toBe(true);
+    expect(speech.info).toBe(next);
+    speech.clear();
+    const callsAfterExit = changed.mock.calls.length;
+    vi.advanceTimersByTime(10000);
+    expect(speech.info).toBe(null);
+    expect(speech.visible).toBe(false);
+    expect(changed).toHaveBeenCalledTimes(callsAfterExit);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+});
+
+describe('lesson guidance priority', () => {
+  it('uses specific coaching instead of repeating the initial objective', () => {
+    expect(courseGuidance('Find a safe capture.', 'Find a safe capture.', 'Their rook is loose. Check its defenders.'))
+      .toEqual({ status: '', coach: 'Their rook is loose. Check its defenders.' });
+  });
+  it('keeps hints, missed-move feedback, and demonstration guidance visible', () => {
+    for (const status of ['The green square shows the piece to move.', 'Not quite. Your move is taken back.', 'Your opponent replies…']) {
+      expect(courseGuidance(status, 'Find a safe capture.', 'Check its defenders.').status).toBe(status);
+    }
+    expect(courseGuidance('Watch this move.', 'Find a safe capture.', 'Watch this move.'))
+      .toEqual({ status: '', coach: 'Watch this move.' });
+    expect(courseGuidance('', 'Read the board.', '')).toEqual({ status: 'Read the board.', coach: '' });
   });
 });

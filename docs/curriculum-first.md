@@ -26,7 +26,11 @@ Deferring RPG mechanics does not mean removing the characters, celebrations, or 
 
 Wrong moves that will be taken back receive no tactical celebration. Reviews must not reveal the answer before the move.
 Speaking identity follows the puzzle's player color. A companion is not automatically every piece of its type on the board.
-Portraits and banners must leave phone controls usable. Respect reduced motion and cancel presentation work when an encounter ends.
+Teaching text takes priority over flavor dialogue. Never put a full speaking portrait ahead of advice inside the lesson's scroll area.
+On phones, use temporary speech cards and a compact portrait button for history. Keep cards away from teaching text and controls.
+On roomy desktops, keep the last speaker in a separate panel. Short landscape screens use the phone treatment.
+Check that the full current advice fits without scrolling on iPhone-sized views, including Gentle and the longest lesson text.
+Respect reduced motion and cancel presentation work when an encounter ends.
 Foiled, goblin shouts, Wanted, faction powers, and gold rewards remain outside this presentation pass.
 
 ## Learning scope

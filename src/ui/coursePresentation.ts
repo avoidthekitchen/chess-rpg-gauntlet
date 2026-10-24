@@ -3,7 +3,7 @@ import { isDoubleCheck } from '../game/ambush';
 import type { StarterType } from '../game/campaign';
 import { STARTERS } from '../game/campaign';
 import type { CourseLesson } from '../game/curriculum';
-import { DialogueLog, moveLabel } from './dialogue';
+import { DialogueLog, holdMs, moveLabel } from './dialogue';
 import { esc } from './overlay';
 import { portraitStyle } from './portrait';
 import { FACTION_SPECIES, SPECIES, pieceName, type SpeakerInfo } from './speaker';
@@ -128,4 +128,50 @@ export class CourseHolds {
     for (const [timer, resolve] of this.pending) { clearTimeout(timer); resolve(); }
     this.pending.clear();
   }
+}
+
+/** Speech expires independently of HUD renders; desktop can keep the last line. */
+export class CourseSpeech {
+  info: SpeakerInfo | null = null;
+  visible = false;
+  private timer: ReturnType<typeof setTimeout> | null = null;
+  constructor(private readonly changed: () => void) {}
+  show(info: SpeakerInfo) {
+    this.cancelTimer();
+    this.info = info;
+    this.visible = true;
+    this.release();
+  }
+  hold() { this.cancelTimer(); }
+  release() {
+    this.cancelTimer();
+    if (!this.info || !this.visible) return;
+    this.timer = setTimeout(() => {
+      this.timer = null;
+      this.visible = false;
+      this.changed();
+    }, holdMs(this.info.line));
+    this.changed();
+  }
+  dismiss() {
+    this.cancelTimer();
+    this.visible = false;
+    this.changed();
+  }
+  clear() {
+    this.cancelTimer();
+    this.info = null;
+    this.visible = false;
+    this.changed();
+  }
+  private cancelTimer() {
+    if (this.timer !== null) clearTimeout(this.timer);
+    this.timer = null;
+  }
+}
+
+/** Initial objectives give way to useful coaching; changed status and hints remain. */
+export function courseGuidance(message: string, objective: string, coach: string) {
+  const status = coach && (message === objective || message === coach) ? '' : message || (coach ? '' : objective);
+  return { status, coach };
 }

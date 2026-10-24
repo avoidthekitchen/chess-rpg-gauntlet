@@ -2,6 +2,33 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## Phone teaching space corrected (#34)
+
+The owner’s iPhone screenshot exposed clipped portraits and teaching advice below the scroll area.
+Earlier viewport checks missed this regression. The lesson now gives teaching text priority.
+
+- Removed full speaker portraits from the lesson scroll area. Current advice precedes feedback, hints, and controls.
+- Phones show temporary speech over the board, with a dismiss button and a compact portrait button for history.
+- Roomy desktop layouts keep a separate speaker panel. Short landscape screens use temporary speech.
+- Speech timing survives ordinary HUD updates. Leaving a lesson cancels the timer and removes its layer.
+- No puzzle content, chess rules, progression, or help budgets changed.
+
+**Validation**
+
+- TypeScript, production build, and all 225 tests pass. Five new tests cover speech timing and guidance selection.
+- WebKit with iPhone 15 touch emulation checked all ten guided lessons at 375×553 and 393×696.
+- The complete advice fit without scrolling. Wrong moves, replies, hints, demonstrations, expiry, history, and exit also passed.
+- An independent reviewer checked desktop, landscape, and phone layouts, focus, dismissal, resize, and cleanup. No blockers remain.
+- Public staging passed the same lesson’s touch move, reply, hint, expiry, and history checks at both phone sizes.
+- The final public run had no runtime errors, failed requests, or HTTP errors. WebKit logged report-only CSP diagnostics.
+- These are browser emulation checks, not tests on a physical iPhone.
+- The CI dependency planner found no engine-suite dependencies changed since the full run at `4624cdf`.
+
+**Deployment**
+
+[Play staging](https://unformedideas.com/staging-chess-rpg/). Deployment version: `d05d9914-c852-4e37-bba9-19039c4bbc93`.
+The fix is included in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37).
+
 ## Storybook presentation restored (#34)
 
 Built on 2026-10-23 after the owner approved restoring the earlier game's personality around the published curriculum.

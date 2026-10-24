@@ -1,6 +1,6 @@
 # Legacy game systems
 
-[Current systems](legacy-systems.md) · [Current playbook](../legacy-playbook.md) · [Legacy playbook](../legacy-playbook.md)
+[Current systems](systems.md) · [Current playbook](../playbook.md) · [Legacy playbook](../legacy-playbook.md)
 
 This archive preserves the earlier live-army campaign and standalone ambush pilot design.
 It is a historical record, not the specification for the current curriculum journey.

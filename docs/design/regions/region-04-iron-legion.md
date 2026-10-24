@@ -4,7 +4,8 @@
 
 ## Design status
 
-Implemented content, 2026-10-24. Local mechanism tests and type-check pass. Integration, independent review, browser checks, and full release checks are recorded by the parent task.
+Shipped in the [production journey](https://unformedideas.com/chess-rpg/), 2026-10-24. PRs #47–51 are merged.
+Local mechanism tests and type-check pass. Integrated checks and owner-accepted WebKit emulation are in the [release record](../../complete-journey-release.md).
 This is tactical coordination and defensive calculation. It is not a complete opening, positional, or defensive course.
 
 | Field | Chapter decision |
@@ -172,7 +173,7 @@ His scouts report Bone Wardens at the border. The Lich King’s brief written in
 
 The selected companion remains the tutor. Generic piece speech follows the puzzle’s player color.
 Existing tokens and portraits may stand in with honest identity text. Region 4 requests the distinct map-region4 landscape.
-The parent integration checks phone advice, speech history, reduced motion, classic pieces, and scene cancellation through the shared presentation.
+Integrated presentation evidence covers phone advice, speech history, reduced motion, classic pieces, and scene cancellation. See the [release record](../../complete-journey-release.md).
 
 ## Technique dependencies
 
@@ -187,7 +188,7 @@ These fixed source lines do not claim that capability.
 - Tests cover examples, every main position, every backup, review coverage, quality, legal replays, distinct IDs, and nearby backup ratings.
 - 2026-10-24: `node scripts/select-curriculum.mjs --verify-shipped` verified 200 unchanged sources, including all 55 Region 4 positions, against the local database.
 - 2026-10-24 review fixes: `npm run ci` passed type-check, production build, and 400 tests in 27 files. No legacy engine dependencies changed.
-- Parent integration owns shared runner completion/retry/save tests, independent teaching/code review, four viewports, WebKit touch emulation, CI, and full legacy regressions.
-- No human playtest or measured learning improvement is claimed here. Public staging verification and production release remain separate records.
+- Integrated runner, save, review, viewport, WebKit emulation, and CI evidence is in the [release record](../../complete-journey-release.md). Legacy engine benchmarks are retired release gates.
+- This chapter record does not establish measured learning improvement. Owner feedback, staging evidence, and production publication are recorded separately.
 
 See the parent progress entry and review PR for integrated build, browser, deployment, and release evidence.

@@ -3,7 +3,8 @@
 [Design overview](design.md) · [Region template](design/regions/region-template.md) · [Syllabus](design/syllabus.md) · [Build progress](progress.md)
 
 Build a clear learning path from unchanged published Lichess puzzles, with Pawnshire’s storybook presentation.
-The built journey contains five Regions and a two-encounter finale.
+The production journey contains five Regions and a two-encounter finale.
+Play it at https://unformedideas.com/chess-rpg/. The [alpha archive](alpha-reference.md) preserves the original game and provides a reference for its presentation.
 Chapters follow teaching prerequisites; they need not repeat the same lesson count.
 
 The [curriculum-first direction](curriculum-first.md) records the approved scope.
@@ -91,7 +92,7 @@ Verify these current behaviors:
 - Demonstration, setup, correct solver moves, published replies, wrong moves, hints, promotions, and alternate immediate mates.
 - Miss limits and unlimited retries on every difficulty, including Grandmaster.
 - Retry begins at position 1 and changes the failed wave to its backup.
-- Sequential unlocks, both chapter reviews, completion, later star improvements, and repeated completion without duplicate credit.
+- Sequential unlocks, all five chapter reviews and both finale encounters, completion, later star improvements, and repeated completion without duplicate credit.
 - Continue, revisit, reset confirmation, invalid saves, reload, and exits during setup, replies, celebrations, and victory animations.
 - Exactly-once attempt settlement before animations; an accepted victory survives interruption.
 - Journey reset and play leave legacy campaign and pilot saves unchanged.
@@ -158,6 +159,8 @@ Exercise normal UI navigation as well as any automated fixture or direct scene l
 Report browser evidence accurately. A resized desktop viewport is a layout check, not an iPhone Safari test.
 WebKit with iPhone-style viewport, touch, and device settings is emulation, not a physical-device run.
 Name the browser, settings, and limitations in the record; claim a real iPhone check only when one happened.
+For the 2026-10-24 release, the owner accepted 393×852 WebKit emulation because no physical device was available.
+That validation does not claim physical-device coverage; a physical test is not a release blocker.
 
 ## Review
 
@@ -171,6 +174,8 @@ Keep the owner’s pilot feedback separate from automated evidence and do not in
 
 `npm run deploy:staging` builds and deploys the journey at https://unformedideas.com/staging-chess-rpg/.
 `npm run deploy` targets production at https://unformedideas.com/chess-rpg/; use the destination authorized for the work.
+The owner published the accepted curriculum to production on 2026-10-24 and saved the original at [alpha](alpha-reference.md).
+Later deployments still use the destination authorized for that work.
 See [Technical design](design/technical.md#tech-stack-and-deployment) for staging paths and deployment details.
 
 On the deployed destination:

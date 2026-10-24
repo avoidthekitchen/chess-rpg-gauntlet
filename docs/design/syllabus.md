@@ -4,8 +4,10 @@
 
 ## Status and promise
 
-Implementation baseline, 2026-10-24. Regions 1–5 and the Lich King finale are registered in the complete review build.
-The owner approved completing the published-puzzle journey. The chapter briefs record source fit and validation; the release record distinguishes built content from pending checks.
+Implementation baseline, 2026-10-24. Regions 1–5 and the Lich King finale are registered in the production journey.
+The owner accepted the complete published-puzzle journey as production direction and published it on 2026-10-24.
+The chapter briefs record source fit and validation; the [release record](../complete-journey-release.md) records checks and owner-accepted 393×852 WebKit emulation. No physical-device coverage is claimed.
+Follow-ups #53–62 are deferred and do not block the current release.
 
 Players must already know how pieces move. The core teaches tactical recognition, calculation, defensive resources, and short endgame decisions.
 It does not yet promise complete opening play, sustained endgame technique, or competence in full games.

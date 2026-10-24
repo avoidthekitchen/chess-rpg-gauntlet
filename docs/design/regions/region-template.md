@@ -107,12 +107,13 @@ Record commands, dates, outcomes, and remaining issues. Follow the [verification
 - Correct and unexpected moves, alternate mates, hints, misses, retries, promotions, and exactly-once settlement.
 - Unlocks, stars, revisits, reloads, exit races, reset confirmation, and separate legacy and pilot saves.
 - Independent code and teaching review; a fresh reviewer subagent is allowed.
-- `npm run ci` before the PR, with all selected legacy engine regressions intact.
-- `npm run ci -- --full` before the Region ships; published puzzles do not waive this requirement.
+- `npm run ci` before the PR: type-check, build, and unit tests.
+- Source verification and affected browser checks before the Region ships. `npm run ci -- --full` runs the same current checks.
 - Desktop, phone portrait, short phone, and landscape checks, including Gentle and the longest advice.
 - Deployed navigation, asset loading, browser errors, and saved completion.
 
-Published tactical lessons need no new engine tournaments. Retained custom battles keep their regression checks.
+Published tactical lessons need no engine tournaments. Legacy benchmarks are optional historical diagnostics, not merge or release gates.
+Use `npm run ci -- --legacy --full` only when those diagnostics are useful; preserve their actual results.
 Report whether mobile evidence came from a resized viewport, WebKit device emulation, or a physical iPhone.
 Do not describe emulation as a physical Safari playthrough.
 

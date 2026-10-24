@@ -4,6 +4,9 @@
 
 ## Implemented content
 
+Shipped in the [production journey](https://unformedideas.com/chess-rpg/) on 2026-10-24. PRs #47–51 are merged.
+Current integrated evidence and owner-accepted WebKit emulation are in the [release record](../../complete-journey-release.md).
+
 The source pack contains six guided lessons and a seven-wave mixed review, curated on 2026-10-24.
 It preserves 57 published Lichess puzzles, including every setup move, reply, and endpoint.
 The chosen companion remains the coach. The Cult Leader hosts the review; no new named character or recruitment mechanic is introduced.
@@ -131,7 +134,7 @@ They cover every legal replay, unchanged SAN record, quality floor, source ident
 The source comparison checks stored fields against the local database; record its final result in shared build progress.
 Discovery checks also reject any legal immediate recapture of the collected target.
 The replacement sources `TgvdT`, `6bAqC`, and `Kp2Gw` preserve their published lines and endpoints.
-Independent teaching review, integrated course completion, responsive layouts, and release CI remain separate checks.
+Independent teaching review, integrated course completion, responsive layouts, and release CI are recorded separately in the [release record](../../complete-journey-release.md).
 
 The chapter does not teach opposition, key squares, general pin defence, or sustained endgame conversion.
 Those require broader source coverage or a technique runner that accepts multiple sound continuations.

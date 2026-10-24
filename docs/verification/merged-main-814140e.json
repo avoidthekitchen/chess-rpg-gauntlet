@@ -1,0 +1,436 @@
+{
+  "runtimeRevision": "814140e98989c2dfa1a2509033afd2f9ee6bca7e",
+  "scope": "Local production-build full journeys; live bundle/smoke and explicitly labeled recovery fixtures. Documentation-only follow-up changes no runtime files.",
+  "ci": {
+    "command": "npm run ci",
+    "passed": true,
+    "tests": 496,
+    "files": 37
+  },
+  "sources": {
+    "command": "node scripts/select-curriculum.mjs --verify-shipped",
+    "unchangedPublishedSources": 273
+  },
+  "desktop": {
+    "status": "passed with keyboard limitations",
+    "head": "814140e98989c2dfa1a2509033afd2f9ee6bca7e",
+    "url": "http://127.0.0.1:4179/?loop=timeout",
+    "bundle": "index-DkDZYZYe.js",
+    "bundleSha256": "d6c99c617761853f6434aed59359ca3c0566f59ef760d9997097a0bfd083b0b6",
+    "browser": "153.0.8010.12",
+    "settings": {
+      "viewport": "1280x800",
+      "engine": "Chromium headless",
+      "difficulty": "Brave (knight)",
+      "companion": "Sir Hob",
+      "initialSave": "Fresh normal-UI New journey",
+      "reducedMotion": "Enabled from Region 3 onward; normal animations in Regions 1\u20132"
+    },
+    "journey": {
+      "encounters": 35,
+      "solverMoves": 231,
+      "sourcePositions": 119,
+      "attempts": 35,
+      "stars": 105,
+      "promotions": 21,
+      "knightUnderpromotions": 4,
+      "endingReplayAndReload": true,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedResponses": []
+    },
+    "completedLessonReplay": {
+      "passed": true,
+      "lesson": "r1-loose-pieces",
+      "moves": 6,
+      "attemptsBefore": 35,
+      "attemptsAfter": 36,
+      "completed": 35,
+      "stars": 105,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedResponses": []
+    },
+    "keyboard": {
+      "htmlControls": true,
+      "checks": [
+        "moves",
+        "start",
+        "menu",
+        "reset",
+        "page:map",
+        "page:journal",
+        "page:map",
+        "lesson:r1-loose-pieces",
+        "begin",
+        "history",
+        "leave"
+      ],
+      "chapterChangeFocusAndPersistence": true,
+      "chapterStoryOnward": "r2",
+      "nativeArrows": "Not validated: headed Chromium trivial select experiment also failed to change with synthetic ArrowUp/ArrowDown, Space, Enter. Programmatic selectOption change events preserved focus and persisted selection.",
+      "board": "Pointer-only square handlers in src/ui/phaserBoard.ts; full keyboard chess play is not supported/validated."
+    },
+    "harnessDisclosure": [
+      "Initial local URL mistakenly included /chess-rpg/, causing expected asset 404 on root-only preview. Corrected to root before valid fresh run; this is not an application failure.",
+      "After six encounters, the harness checked chapter-story presence before scene replacement, then waited for a map while the normal chapter ending was visible. Added map-or-story wait and resumed the earned normal-UI save. No completion fixtures or direct scene launches were used.",
+      "Separate earned-save replay of Region 1 ending and its Onward control passed.",
+      "Keyboard harness selector/confirmation errors were corrected before the final passing controls check."
+    ],
+    "visualInspection": [
+      "Region 1 safe-capture board/advice/speaker layout",
+      "Region 1 promotion board orientation",
+      "Chapter-picker keyboard focus ring",
+      "Region 3 pin demonstration",
+      "Region 4 long defence demonstration advice",
+      "Final ending and revisit controls"
+    ],
+    "limitations": [
+      "Local production-build browser validation; live destination checked by root agent.",
+      "Automated source-oracle play proves navigation and published-line execution, not learning effectiveness.",
+      "No physical-device testing and no full board keyboard support.",
+      "Native select arrow behavior remains unvalidated in the automation environment."
+    ]
+  },
+  "phone": {
+    "revision": "814140e98989c2dfa1a2509033afd2f9ee6bca7e",
+    "browser": "26.6",
+    "browserConfig": {
+      "engine": "webkit",
+      "isMobile": true,
+      "hasTouch": true,
+      "deviceScaleFactor": 3,
+      "viewport": {
+        "width": 393,
+        "height": 852
+      }
+    },
+    "environments": [
+      {
+        "w": 393,
+        "h": 852,
+        "dpr": 3,
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Mobile/15E148 Safari/604.1",
+        "touch": 0,
+        "scripts": [
+          "http://127.0.0.1:4179/assets/index-DkDZYZYe.js"
+        ]
+      }
+    ],
+    "failure": null,
+    "errors": [],
+    "consoleErrors": [],
+    "failedResponses": [],
+    "endingReplayAndReload": true,
+    "promotions": [
+      {
+        "lesson": "r1-promotion",
+        "wave": 0,
+        "uci": "g2g1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r1-promotion",
+        "wave": 1,
+        "uci": "d2d1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r1-promotion",
+        "wave": 2,
+        "uci": "f2f1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r1-bog-review",
+        "wave": 3,
+        "uci": "a7b8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-passed-pawns",
+        "wave": 0,
+        "uci": "e7e8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-passed-pawns",
+        "wave": 1,
+        "uci": "c2c1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-passed-pawns",
+        "wave": 2,
+        "uci": "h7h8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-pawn-races",
+        "wave": 0,
+        "uci": "h2h1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-pawn-races",
+        "wave": 1,
+        "uci": "c7c8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-pawn-races",
+        "wave": 2,
+        "uci": "e2e1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-rook-support",
+        "wave": 0,
+        "uci": "h7h8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-rook-support",
+        "wave": 1,
+        "uci": "a7a8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-rook-support",
+        "wave": 2,
+        "uci": "a7a8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-underpromotion",
+        "wave": 0,
+        "uci": "d7d8n",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-underpromotion",
+        "wave": 1,
+        "uci": "f7f8n",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-underpromotion",
+        "wave": 2,
+        "uci": "d2d1n",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-gate-review",
+        "wave": 3,
+        "uci": "h2h1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-gate-review",
+        "wave": 4,
+        "uci": "c2c1n",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r5-gate-review",
+        "wave": 5,
+        "uci": "g7g8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "finale-threshold",
+        "wave": 2,
+        "uci": "b7b8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "finale-last-board",
+        "wave": 1,
+        "uci": "a7a8q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      }
+    ],
+    "fixtures": [],
+    "completed": 35,
+    "encounters": 35,
+    "moves": 231,
+    "layoutSamples": 105,
+    "animationSamples": 204,
+    "visibleAnimationSamples": 60,
+    "layoutIssues": []
+  },
+  "phoneReplay": {
+    "revision": "814140e98989c2dfa1a2509033afd2f9ee6bca7e",
+    "browser": "26.6",
+    "browserConfig": {
+      "engine": "webkit",
+      "isMobile": true,
+      "hasTouch": true,
+      "deviceScaleFactor": 3,
+      "viewport": {
+        "width": 393,
+        "height": 852
+      }
+    },
+    "environments": null,
+    "failure": null,
+    "errors": [],
+    "consoleErrors": [],
+    "failedResponses": [],
+    "endingReplayAndReload": null,
+    "promotions": [
+      {
+        "lesson": "r1-promotion",
+        "wave": 0,
+        "uci": "g2g1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r1-promotion",
+        "wave": 1,
+        "uci": "d2d1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      },
+      {
+        "lesson": "r1-promotion",
+        "wave": 2,
+        "uci": "f2f1q",
+        "modal": "Choose your promotion\nknight\nbishop\nrook\nqueen"
+      }
+    ],
+    "fixtures": [],
+    "completed": 0,
+    "encounters": 0,
+    "moves": 3,
+    "layoutSamples": 3,
+    "animationSamples": 90,
+    "visibleAnimationSamples": 24,
+    "layoutIssues": []
+  },
+  "live": {
+    "revision": "814140e98989c2dfa1a2509033afd2f9ee6bca7e",
+    "checks": [
+      {
+        "url": "https://unformedideas.com/chess-rpg/",
+        "errors": [],
+        "failed": [],
+        "assets": [
+          {
+            "url": "https://unformedideas.com/chess-rpg/assets/index-CbCH10sF.css",
+            "sha256": "1d6dd0e1cec4a97bd08a6cac936aac639303733e7f8d44f70470ebb4c01004a3",
+            "matchesProduction": true,
+            "matchesStaging": true
+          },
+          {
+            "url": "https://unformedideas.com/chess-rpg/assets/index-DkDZYZYe.js",
+            "sha256": "d6c99c617761853f6434aed59359ca3c0566f59ef760d9997097a0bfd083b0b6",
+            "matchesProduction": true,
+            "matchesStaging": false
+          }
+        ],
+        "status": 200,
+        "text": "Pawnshire\n\nA storybook chess tactics journey\n\nNew journey\n\nThe rules of chess never change on the board.",
+        "finalUrl": "https://unformedideas.com/chess-rpg/?loop=timeout",
+        "storageKeys": [
+          "pawnshire-journey-v1"
+        ],
+        "save": {
+          "version": 1,
+          "finaleComplete": false,
+          "endingSeen": false,
+          "difficulty": "knight",
+          "starter": "n",
+          "currentRegion": "r1",
+          "completed": [],
+          "stars": {},
+          "attempts": 0,
+          "retryWaves": {},
+          "active": null,
+          "lastResult": null
+        },
+        "newAndContinue": true,
+        "previewIgnored": true
+      },
+      {
+        "url": "https://unformedideas.com/alpha-chess-rpg/",
+        "errors": [],
+        "failed": [],
+        "assets": [
+          {
+            "url": "https://unformedideas.com/alpha-chess-rpg/assets/index-BtCfAMBJ.css",
+            "sha256": "643adeb77ecc06fdae73a9c378d384bf2a7e3f9ee0ef6950b9d769e3a9275892",
+            "matchesProduction": false,
+            "matchesStaging": false
+          },
+          {
+            "url": "https://unformedideas.com/alpha-chess-rpg/assets/index-DTsMkAvX.js",
+            "sha256": "ee3465a692ae49ed7a9145f1ed0b312216de5ffdbb8879f1258e22a9c7ff16f6",
+            "matchesProduction": false,
+            "matchesStaging": false
+          }
+        ],
+        "status": 200,
+        "text": "",
+        "finalUrl": "https://unformedideas.com/alpha-chess-rpg/?loop=timeout"
+      }
+    ]
+  },
+  "recovery": {
+    "revision": "814140e",
+    "scope": "Explicit recovery fixtures, not fresh playthroughs",
+    "checks": [
+      {
+        "base": "http://127.0.0.1:4179/",
+        "fixture": "literal two-chapter accepted save",
+        "interruptionCountedOnce": true,
+        "retryUsesBackup": true,
+        "obsoleteAttemptRetired": true,
+        "legacyKeysPreserved": true
+      },
+      {
+        "base": "http://127.0.0.1:4179/",
+        "fixture": "malformed JSON",
+        "backupSurvivesNewJourney": true
+      },
+      {
+        "base": "http://127.0.0.1:4179/",
+        "fixture": "historically earned finale preview with earlier prerequisites precompleted, copied into production key and flags damaged deliberately",
+        "mixedLaterIdsAccepted": true,
+        "derivedFinaleRepaired": true,
+        "unseenEndingRecovered": true,
+        "replayReload": true
+      },
+      {
+        "base": "https://unformedideas.com/chess-rpg/",
+        "fixture": "literal two-chapter accepted save",
+        "interruptionCountedOnce": true,
+        "retryUsesBackup": true,
+        "obsoleteAttemptRetired": true,
+        "legacyKeysPreserved": true
+      },
+      {
+        "base": "https://unformedideas.com/chess-rpg/",
+        "fixture": "malformed JSON",
+        "backupSurvivesNewJourney": true
+      },
+      {
+        "base": "https://unformedideas.com/chess-rpg/",
+        "fixture": "historically earned finale preview with earlier prerequisites precompleted, copied into production key and flags damaged deliberately",
+        "mixedLaterIdsAccepted": true,
+        "derivedFinaleRepaired": true,
+        "unseenEndingRecovered": true,
+        "replayReload": true
+      }
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "knownLimitations": [
+    "No physical device available; owner accepted iPhone 15-sized WebKit emulation.",
+    "Native select arrow-key behavior remains unverified; HTML focus and selection persistence passed.",
+    "Board play is pointer-based.",
+    "Promotion dialog border clips by 7px each side at 393px; choices remain usable.",
+    "Tall token overlap is deferred in issue #62.",
+    "Published solutions are the oracle; this does not measure teaching effectiveness."
+  ]
+}

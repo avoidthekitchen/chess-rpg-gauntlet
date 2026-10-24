@@ -1,11 +1,11 @@
-# First complete journey: review and release record
+# Complete curriculum: production and release record
 
 [Roadmap #36](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/36) · [Integration #46](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/46) · [Progress](progress.md)
 
 ## Review order
 
-The pull requests are stacked. Review and merge from top to bottom; each comparison contains its own chapter or integration changes.
-Deploy the complete integration only. Regional heads depend on the later shared UI and stale-active-save recovery fixes.
+All five PRs merged to main in the order below on 2026-10-24, ending at `814140e98989c2dfa1a2509033afd2f9ee6bca7e`.
+Their complete runtime includes the shared UI and stale-active-save recovery fixes; intermediate regional snapshots are historical.
 
 | Work | Issue | Review |
 | --- | --- | --- |
@@ -19,16 +19,59 @@ The complete curriculum has 28 guided lessons, five regional reviews, and two fi
 All earlier source positions and completion IDs remain unchanged. Stars and help settings never gate the story.
 Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Dedicated faction portraits remain future work.
 
-## Current release policy (2026-10-24)
+## Production acceptance and final validation (2026-10-24)
+
+The owner confirmed the complete curriculum as production direction and accepted the major review fixes.
+The owner published it at https://unformedideas.com/chess-rpg/ and preserved the original at https://unformedideas.com/alpha-chess-rpg/.
+Follow-ups #53–62 may wait. This validation did not deploy or replace either live site.
+No physical device was available; the owner accepted iPhone 15-sized WebKit emulation as sufficient for this check.
+No physical iPhone result is claimed. Native chapter-picker arrow behavior remains a separate verification limitation in #56.
+
+At runtime revision `814140e98989c2dfa1a2509033afd2f9ee6bca7e`:
+
+- `npm run ci` passed type-check, production build, and all 496 tests in 37 files.
+- `node scripts/select-curriculum.mjs --verify-shipped` verified all 273 unchanged published sources against the local database.
+- Production JavaScript `index-DkDZYZYe.js` matches the local merged build byte for byte: `d6c99c617761853f6434aed59359ca3c0566f59ef760d9997097a0bfd083b0b6` (SHA-256).
+- Production CSS `index-CbCH10sF.css` also matches: `1d6dd0e1cec4a97bd08a6cac936aac639303733e7f8d44f70470ebb4c01004a3` (SHA-256).
+- Live New Journey, Continue, reload, production save-key selection and disabled region-preview shortcuts passed in isolated browser storage.
+- Explicit recovery fixtures passed locally and on production: old two-chapter progress, interrupted/obsolete attempts, rejected-save backup preservation, derived finale repair, unseen ending, replay and reload.
+- These fixtures preserved legacy and pilot keys. The copied finale fixture uses historical earned finale progress with preview prerequisites; it is not a fresh journey.
+- Fresh desktop Chromium 153 (1280×800, Brave) and WebKit 26.6 (393×852, Gentle) each completed all 35 encounters, 231 solver moves and 105 stars.
+- Each route exercised 21 promotion dialogs, including four knight underpromotions. Ending replay, reload and completed-lesson replay preserved completion and stars.
+- Desktop replay added one attempt, from 35 to 36. Phone promotion-lesson replay did the same. Neither duplicated completion.
+- Both valid routes and replays recorded zero page errors, console errors or failed HTTP responses.
+- Phone layouts also covered 375×812, 375×553 and 844×390. Across route and replay, 108 lesson-layout records and 294 animation samples were collected.
+- Eighty-four animation samples contained visible feedback. None overlapped board squares or action buttons; sampled advice and actions fit their lesson panels.
+- HTML keyboard controls passed. Chapter selection preserved focus and saved changes. Native select arrows remain unverified; even a standalone headed-browser select rejected synthetic arrows.
+
+[Compact validation evidence](verification/merged-main-814140e.json) records the exact runtime and coverage.
+Published solutions supplied the move oracle. These runs verify execution and presentation, not measured learning effectiveness.
+The desktop harness resumed its normally earned save after correcting a chapter-transition wait. No completion fixtures unlocked either full route.
+Both harnesses initially used an incorrect preview subpath; the valid runs used the production preview root.
+WebKit used mobile mode, DPR 3 and touchscreen taps. It reported zero maximum touch points despite that configuration.
+Real browser chrome, hardware safe-area behavior and physical touch are outside this emulation claim.
+Board play remains pointer-based; HTML keyboard coverage does not imply keyboard chess input.
+
+### Deferred presentation finding
+
+The settled promotion dialog is 407px wide at x=-7 in the 393px viewport: its outer border clips by 7px on each side.
+All four choices and the title remain visible and usable. This is a cosmetic P3 follow-up, recorded here without changing runtime scope.
+Check shared dialog border-box sizing in `src/ui/overlay.css`, including compact portrait and landscape layouts, when addressing it.
+This finding is separate from the passing lesson advice/action checks. Existing tall-token overlap remains deferred in #62.
+
+The archived alpha URL returned its distinct `index-DTsMkAvX.js` build without application errors or failed requests during the opening check.
+That observation does not claim a full alpha playthrough.
+
+## Release policy (2026-10-24)
 
 The owner retired the legacy battle benchmark as a merge and release gate because new material will replace that campaign.
 The historical failures below remain accurate but no longer block this stack.
 Current curriculum tests, source verification, code review, and browser checks remain required.
 `npm run ci` and `npm run ci -- --full` exclude the retired benchmarks.
 Optional diagnostics remain available through `npm run ci -- --legacy --full` and `npm run verify:battles`.
-This decision does not merge the PRs or deploy production. Staging remains at application `e473d2a`.
+The owner later authorized the merges and confirmed production promotion. Staging’s recorded application remains `e473d2a`.
 
-## Second review follow-up (2026-10-24)
+## Historical second review follow-up (2026-10-24)
 
 The regional corrections are `fdf741b` (R3), `bd35714` (R4), `b9b236d` (R5), and `76854cc` (finale table).
 The integrated check passes 496 tests in 37 files. All 273 records match the local published database.
@@ -41,7 +84,7 @@ Journal jumps use the measured sticky header height. Terminal moves no longer pr
 Focused desktop and phone WebKit checks cover wrong moves, multi-move replies, terminal status, journal offsets and demonstration rotation.
 Public deployment evidence follows below. No legacy engine implementation, corpus, or threshold changed in this follow-up.
 
-## Review follow-up (2026-10-24)
+## Historical review follow-up (2026-10-24)
 
 Application revision `27a3a9c` uses staging bundle `index-DhffRnHC.js`. Publication details follow in the staging record.
 
@@ -122,7 +165,9 @@ VERIFY_BATTLE=r1-trades npx vitest run --config vitest.verify.config.ts scripts/
 The failed cell prints complete legal move traces for replay. `knight` is the internal ID for Brave difficulty.
 The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42) remains relevant; this release does not waive the failed bar.
 
-## Staging
+## Historical staging deployments
+
+The entries below describe earlier deployment and review checkpoints. Later merge and production decisions supersede their draft-only restrictions.
 
 ### Second review follow-up
 
@@ -195,14 +240,14 @@ The final publication at `1859ee8` repeated artifact, fresh-navigation, and Old 
 An earned desktop save copied into the public profile retained all 35 completions, 105 stars, 37 attempts, and the finale flag.
 Changing its companion to Old Brick, replaying the ending, reloading, and replaying again preserved the resulting save bytes exactly.
 These were targeted public checks. The two complete normal-UI journeys ran against the local production preview.
-Production at `/chess-rpg/` is outside this task.
+At this historical checkpoint, production at `/chess-rpg/` was outside the task. The owner subsequently promoted the curriculum there.
 
-## Future promotion and rollback
+## Production maintenance and rollback
 
-1. Review the stacked changes and resolve or explicitly disposition the recorded legacy release failures. Retain their evidence.
-2. Run applicable CI and the full release regression on the chosen revision. Verify staging on desktop and a physical iPhone before claiming device coverage.
-3. Record the current production deployment version, candidate Git revision, and a backup of any preview journey worth keeping.
-4. Obtain the separately required production release decision. Only then run the production deployment command.
+1. The initial stack is merged and production is published. For later changes, review the affected code and retain revision-specific evidence.
+2. Run current CI, source checks and affected desktop/phone flows. Legacy benchmark results are historical diagnostics.
+3. Record the current production deployment version, candidate Git revision, and backups of progress worth keeping.
+4. Use the deployment destination authorized for the new change. Build production mode for production; do not copy a staging bundle.
 5. Check production redirects, fonts, artwork, New Journey, Continue, chapter transitions, final completion, and ending replay.
 6. For rollback, prefer a known-good build that understands all 35 completion IDs and the finale flag. Recheck its save reader before restoring it.
 

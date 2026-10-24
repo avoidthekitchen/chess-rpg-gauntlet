@@ -4,8 +4,9 @@ A storybook chess tactics journey. **The rules of chess never change on the boar
 
 Play it: https://unformedideas.com/chess-rpg/
 
-Preview the complete five-Region journey and Lich King finale: https://unformedideas.com/staging-chess-rpg/.
-The live site keeps the earlier campaign until this change is merged and deployed there.
+The complete five-Region journey and Lich King finale is live at that production address.
+Preview changes at https://unformedideas.com/staging-chess-rpg/.
+The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](docs/alpha-reference.md).
 
 ## Run it
 
@@ -69,20 +70,21 @@ Content tests verify legal lines, lesson claims, quality fields, distinct source
 
 Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in `src/game/region1.ts`. The player is White and moves first. `npm test` checks every position is legal (including that the enemy isn't already in check, which chess.js doesn't catch), and `npm run verify:battles` plays it out against the real enemy AI with shouts.
 
-The [release record](docs/complete-journey-release.md) tracks review PRs, validation, staging, and future promotion safeguards.
+The [release record](docs/complete-journey-release.md) tracks merged review PRs, validation, deployment, and save safeguards.
+The owner accepted the major feedback and deferred follow-ups #53–62. The owner accepted 393×852 WebKit emulation for this check; no physical-device coverage is claimed.
 
 ## Deploying
 
 ```bash
 npm run deploy   # build, stage dist/ into dist-worker/chess-rpg/, wrangler deploy
-npm run deploy:staging # publish the new journey only at /staging-chess-rpg/
+npm run deploy:staging # publish a preview at /staging-chess-rpg/
 ```
 
 The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. The 3D model comparison files are left out of the deploy. The largest file is the 1.8 MB engine `.wasm`.
 
 ## Board, tokens and art
 
-The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures. The curriculum uses `src/ui/coursePresentation.ts` for portrait dialogue, truthful move cues, and conversation history. On phones, temporary speech appears over the board and a small portrait button opens conversation history. Roomy desktop layouts keep speech in a separate panel. Teaching advice stays in the lesson panel. The "Classic pieces" button switches to standard chess pieces.
+The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures. The curriculum uses `src/ui/coursePresentation.ts` for portrait dialogue, truthful move cues, and conversation history. On phones, temporary speech overlays lesson advice while keeping board squares and action buttons clear. A small portrait button opens conversation history. Roomy desktop layouts keep speech in a separate panel. Teaching advice stays in the lesson panel. The "Classic pieces" button switches to standard chess pieces.
 
 
 Art is AI-generated with Google's Gemini 3 Pro Image (`google/gemini-3-pro-image`) through OpenRouter, styled after `art/reference/`. Check Google's and OpenRouter's current terms for commercial use before shipping; images carry an invisible SynthID watermark.

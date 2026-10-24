@@ -4,8 +4,8 @@
 
 ## Design status
 
-Implemented in the journey registry and source-verified, 2026-10-24. Independent teaching review is complete; browser checks, full CI and staging evidence belong to the journey release record.
-This record does not claim those pending checks passed.
+Shipped in the [production journey](https://unformedideas.com/chess-rpg/), 2026-10-24. PRs #47–51 are merged.
+Independent teaching review is complete. Integrated checks and owner-accepted WebKit emulation belong to the [release record](../../complete-journey-release.md).
 
 | Field | Chapter decision |
 | --- | --- |
@@ -165,8 +165,8 @@ No source is extended, composed or substituted to imply a missing technique capa
 
 ## Verification and handoff
 
-**Deploy with [PR #51](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/51), not independently.**
-Review-wave reordering changes which source an in-progress wave index identifies. Region 5 requires PR #51’s stale active-run recovery before deployment.
+**Deployment dependency delivered:** [PR #51](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/51) merged with Region 5.
+Review-wave reordering changes which source an in-progress wave index identifies. The release includes PR #51’s stale active-run recovery.
 Completed lesson prerequisite order remains unchanged.
 
 Content verification completed on 2026-10-24:
@@ -195,11 +195,12 @@ A later compatibility regression confirmed that swapping rook support and skewer
 The original lesson order is restored; the interleaved review remains. The regression now checks that those saves load with all progress intact.
 The compatibility follow-up passed all 12 focused tests and `npm run ci`: type-check, build and 411 tests across 28 files.
 
-At the original integration revision, CI passed type-check, build and 407 unit tests across 28 files. Normal CI skips both engine groups by dependency selection.
-The full release suite remains pending: the retained baseline reproduced a legacy r1-guard Brave bonus-rate failure, tracked in #42.
-Full browser navigation, viewport and staging checks remain pending; this is an integration checkpoint.
+At the original integration revision, CI passed type-check, build and 407 unit tests across 28 files. That revision selected neither engine group.
+At that checkpoint, the retained baseline reproduced a legacy r1-guard Brave bonus-rate failure, tracked in #42.
+Browser, viewport, and staging checks were then pending. These are historical checkpoint results.
+The owner later retired legacy benchmarks as release gates; their failures are preserved without blocking the curriculum.
 
-Integration tests, full release regressions, browser evidence and staging checks are recorded in [build progress](../../progress.md).
+Current integration tests, release checks, browser evidence and staging checks are recorded in [build progress](../../progress.md) and the [release record](../../complete-journey-release.md).
 This content record does not substitute for those checks or claim an owner playtest.
 Browser checks must cover desktop, portrait, short phone and landscape, with WebKit touch emulation identified accurately.
 Preserve readable advice, separate temporary speech, the 44px history control, classic pieces, reduced motion and cancellation on exit.
@@ -208,4 +209,4 @@ All 55 sources matched the raw database exactly, with no overlap against the ear
 A depth-20 Stockfish MultiPV check covered every legal move at all five solver turns in GCVGr and VIy5h.
 Published moves scored +6.01 to +6.28 pawns; every alternative scored +0.13 or less. This is bounded engine evidence, not a proof.
 
-Production publication remains a separate decision from staging.
+The owner published the accepted curriculum to production on 2026-10-24. The owner accepted 393×852 WebKit emulation for this check; no physical-device coverage is claimed.

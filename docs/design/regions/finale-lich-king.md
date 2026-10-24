@@ -128,6 +128,9 @@ No quality filter was relaxed and no source-yield gap remains.
 
 ## Validation and integration gates
 
+Shipped in the [production journey](https://unformedideas.com/chess-rpg/) on 2026-10-24. PRs #47–51 are merged.
+Current integrated evidence and owner-accepted WebKit emulation are in the [release record](../../complete-journey-release.md).
+
 The strict content test defines 39 checks: structure, neutral prompts, registered prerequisites, global reservations, every legal line, every mechanism, and real-runner completion.
 All 18 board-mechanism checks pass. The real runner completes both encounters with each possible failed-wave backup.
 Every final encounter path, including the final backup, ends in actual checkmate.
@@ -135,5 +138,5 @@ The strict tests are registered as `src/game/course/finale.test.ts`, with all ea
 Save tests cover accepted wins before animation, interruption, replay, older saves, and completion without optional stars.
 
 The full source comparison and TypeScript check pass.
-Independent content review passed all 18 mechanisms and database rows. Browser checks, release CI, and staging verification remain separate delivery checks.
-Report those outcomes in shared build progress. Do not infer them from source verification or this brief.
+Independent content review passed all 18 mechanisms and database rows. Browser checks, release CI, and staging verification have separate evidence.
+Read the shared [build progress](../../progress.md) and [release record](../../complete-journey-release.md) for those outcomes.

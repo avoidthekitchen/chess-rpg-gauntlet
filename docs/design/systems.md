@@ -147,7 +147,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
 **One engine call, two questions.** All three ask the engine about a position, so they share one code path, but they show different things:
 
-- **Shout and Scrying Orb:** the move the enemy would actually pick if you passed, using its habit and difficulty. Goblins announce it every turn; the Orb shows it on demand. Both use `planIfPassed` in `src/ai/intent.ts`. Because the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), it is an always-on Orb in the goblins' voice. Showing the plan never changes what the enemy then does.
+- **Shout and Scrying Orb:** the move the enemy would actually pick if you passed, using its habit and difficulty. Goblins announce it every turn; the Orb shows it on demand. The shout uses `planIfPassed` in `src/ai/intent.ts`, and the Orb will too. Because the shout decides again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), it is an always-on Orb in the goblins' voice. Showing the plan never changes what the enemy then does.
 - **Far Sight:** the enemy's best reply after a move you're considering. It analyses the position after that move, not the passed-turn position.
 
  Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.

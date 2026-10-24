@@ -33,7 +33,7 @@ In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy fo
 ```
 src/game/     rules with no screen code: battle.ts (objectives, rewind), campaign (save, map unlocks),
               economy (gold, hiring, loss costs, bounties), boss (budget), region1*.ts (content), tactics, threats
-src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), shout.ts (shouting goblins)
+src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), intent.ts ("what would you play if I passed?"), shout.ts (shouting goblins)
 src/scenes/   Phaser screens: Boot, Title, Starter, Map, Town, Puzzle, Muster, Battle
 src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
 src/flow.ts   campaign flow between screens (briefings, launching battles, results)

@@ -16,14 +16,14 @@ import type { BattleDef } from './content';
  * Every position here is checked by `npm run verify:battles` (scripts/verify): strong
  * play wins at least 90% against Gentle and Brave goblins, careless play
  * loses most games, and no battle can be won on the first move. Material goals are bigger
- * than any single capture, so one greedy grab (judged before the recapture) never wins.
+ * than any single capture, so one greedy grab never wins.
  */
 export const REGION1_BATTLES: BattleDef[] = [
   {
     // The shout is cxd5: a pawn hits the knight. Don't just run. Ne7+ saves it with check and
     // forks the king and the loose c8 rook (the h5 bishop can't reach c8), worth 5 points.
     // Nf6+ also forks, but only swaps the knight for the bishop (gxh5). The goal is 7, so
-    // then comes a second wave: pick up two loose pawns (a7, b7, c6) while the goblins guard
+    // then comes a second wave: pick up two loose pawns (a7, b7, and c6 once b7 falls) while the goblins guard
     // what they can and the h5 bishop pokes at your pieces. The goal is bigger than the rook,
     // so the fork alone never wins.
     id: 'r1-reeds',
@@ -69,7 +69,7 @@ export const REGION1_BATTLES: BattleDef[] = [
     enemy: { name: 'Mudfoot Raiders', personality: 'raider' },
     intro: 'Mudfoot raiders want to stomp through the two villages by the bridge. Hold them off until the lanterns are lit.',
     lesson:
-      'A square is safe when you guard it at least as many times as the enemy attacks it. When a guard is attacked, move it to a square where it still guards, or protect it, before doing anything else. Count again after every enemy move.',
+      'A square is safe when you guard it at least as many times as the enemy attacks it. When a guard is attacked, move it to a square where it still guards, or protect it, before doing anything else. A piece that isn’t a guard still matters: whatever takes it may join the attack. Count again after every enemy move.',
     fen: '6k1/5pp1/7p/2p3n1/n3p3/8/1B1N2PP/4R1K1 w - - 0 1',
     objective: { kind: 'survive', turns: 7 },
     villages: ['c4', 'e3'],
@@ -92,7 +92,7 @@ export const REGION1_BATTLES: BattleDef[] = [
   },
   {
     // The d5 knight is pinned to the king by the b3 bishop. It is attacked twice (bishop and
-    // knight) and defended twice (the c6 pawn and the b7 bishop), so Bxd5 or Nxd5 only loses
+    // knight) and defended twice (the c6 pawn, and the b7 bishop behind it), so Bxd5 or Nxd5 only loses
     // material. The shout is usually the king stepping out of the pin (Kf8), which frees the
     // knight. Strike first with a third attacker, the cheapest one: e4 wins the knight for a
     // pawn at most. Then count again. After exd5 cxd5, d5 has two attackers and one defender,
@@ -114,10 +114,10 @@ export const REGION1_BATTLES: BattleDef[] = [
       { kind: 'quick', moves: 6, gold: 5 },
       { kind: 'noRewind', gold: 5 },
     ],
-    tip: 'Count attackers and defenders. Not enough? Bring one more, the cheapest.',
+    tip: 'Count attackers and defenders, and if you’re short, bring the cheapest extra attacker.',
     before: [
       { who: 'enemy', text: 'Bargains! Lovely bargains! Take one, go on!' },
-      { who: 'companion', text: 'Their knight is stuck in front of their king. Two of ours hit it, but two of theirs guard it. Let’s bring one more.' },
+      { who: 'companion', text: 'Two of ours hit their stuck knight, but two of theirs guard it: the pawn, and the bishop behind it. Let’s bring one more.' },
     ],
     after: [
       { who: 'enemy', text: 'No fair! You counted!' },
@@ -129,8 +129,10 @@ export const REGION1_BATTLES: BattleDef[] = [
     // One guard watches the back rank: the d7 rook. Re8+ forces Rd8, and now that rook is
     // pinned to its king. Bh3+ checks down the other diagonal; the goblins can only block
     // (Bg4, f5) or step to b8, and each blocker falls to the bishop with check. Then Rxd8 is
-    // mate. Their shout (Rxg2, grabbing the bishop) is a real threat, but checks come first:
-    // a player who stops to defend lets the sentries settle in. Mate in 5 against best defence.
+    // mate. Their shout varies (a rook move, Bg4 to save the loose d1 bishop, ...f5, sometimes
+    // Rxg2+, which only gives a rook for the bishop since the king guards g2). None of it
+    // matters if you check first: grabbing the d1 bishop or stopping to defend lets the
+    // sentries settle in. Mate in 5 against best defence.
     id: 'r1-backrank',
     kind: 'skirmish',
     theme: 'Basic checkmates',
@@ -139,7 +141,7 @@ export const REGION1_BATTLES: BattleDef[] = [
     enemy: { name: 'Bogwall Sentries', personality: 'standard' },
     intro: 'The sentries hide their captain behind a neat wall of goblin pawns. Neat, but there’s no back door.',
     lesson:
-      'A king boxed in by its own pawns can be checkmated on the back rank. Count the pieces guarding that rank. Check along it so a guard has to block, then keep checking: every blocker they throw in is one more piece you can take. A check must be answered, so it beats any threat they make. Give your own king a little air so the same trick can’t catch you.',
+      'A king boxed in by its own pawns can be checkmated on the back rank. Count the pieces guarding that rank. Check along it so a guard has to block, then keep checking: every blocker they throw in is one more piece you can take. A check must be answered first, so a run of checks leaves them no time for their threat. Give your own king a little air so the same trick can’t catch you.',
     fen: '2k5/pppr2p1/5p2/8/7P/P1PP4/r5B1/3bR1K1 w - - 0 1',
     objective: { kind: 'checkmate', maxMoves: 8 },
     reward: 20,
@@ -150,7 +152,7 @@ export const REGION1_BATTLES: BattleDef[] = [
     tip: 'One rook guards the back row. Check first, and keep checking.',
     before: [
       { who: 'enemy', text: 'Nobody gets past the Mud Wall!' },
-      { who: 'companion', text: 'The wall keeps us out, but it also keeps their captain in. Who’s guarding the row behind it? I count one rook.' },
+      { who: 'companion', text: 'The wall keeps us out, but it also keeps their captain in. Only one rook guards the row behind it.' },
       { who: 'narrator', text: 'Only checkmate will end this one.' },
     ],
     after: [
@@ -172,7 +174,7 @@ export const REGION1_BATTLES: BattleDef[] = [
     region: 'The Bog',
     enemy: { name: 'Puddle Runners', personality: 'standard' },
     intro:
-      'Two of your pawns wade side by side toward the far bank. A goblin runner squats in front of one, and a goblin pawn waits beside the other.',
+      'Two of your pawns wade side by side toward the far bank. A goblin runner squats in front of one, and a goblin pawn waits ahead of the other.',
     lesson:
       'Two pawns side by side can break through a wall. Push one forward: if it’s taken, the other pawn takes back and has a clear path. Before each push, check which squares ahead the enemy can still reach. A knight can’t guard the squares right next to it.',
     fen: '7k/p1n5/8/1PP4p/6p1/2NB4/5PK1/8 w - - 0 1',

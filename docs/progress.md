@@ -144,7 +144,14 @@ The game is now called **Pawnshire** (title screen, page title, README, package 
 - Goblins no longer must play their shout. After your move they decide again and prefer it. "Foiled!" when your move made it impossible, including moving away the piece they shouted they'd capture; "Oi! You've guarded it!" or "Changed my mind!" when they drop one that still stands. The map intro and companion lines say the arrow is one plan.
 - `planIfPassed` and `nullMoveFen` (`src/ai/intent.ts`) answer "what would you play if I passed?" for the shout and the future Scrying Orb (#13). Rewind hears the same shout, cached per position.
 - The battle review no longer judges your move after a forced reply. The simulator (`scripts/verify/simulate.ts`) models the new rule.
-- Next: re-verify the battles and redesign the ones that only worked because the shout was forced.
+- Without an engine, goblins play their shout unless they have a mate or a good capture (`fallbackMove`), so the shout still means something.
+- All five Region 1 battles were redesigned, because each one only worked while the shout was forced:
+  - Trouble in the Reeds: the shout is cxd5; Ne7+ saves the knight and forks the loose rook. Goal 7 points in 10 moves.
+  - Lanterns at Mossbridge: villages moved to c4 and e3, one guard each; the pressure is pawns walking onto them.
+  - The Swap Meet: a pinned knight, attacked twice and guarded twice; add the cheapest third attacker. Goal 4 points in 10 moves.
+  - Behind the Mud Wall: a back-rank mate in 5 against best defence, from a Lichess puzzle.
+  - The Pawn's Plunge: two pawns break through. Its bonuses are now within 6 moves and no rewind (flawless dropped, since the break gives up a pawn).
+- These only aim to pass the verification bars; finer balance waits for the guided-path playtest (#24, T8).
 
 ## Battle cue timing (PR #21)
 

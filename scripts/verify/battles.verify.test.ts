@@ -18,7 +18,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
  * Env: VERIFY_GAMES (games per player per difficulty, default 24), VERIFY_BATTLE (one id),
  * VERIFY_ENGINES (parallel Stockfish processes, default 8), VERIFY_SHOW=1 prints competent
  * losses and VERIFY_SHOW=all every game. With VERIFY_BATTLE set, VERIFY_FEN,
- * VERIFY_OBJECTIVE (JSON), VERIFY_VILLAGES (c3,f3) and VERIFY_BONUSES (JSON) try a variant without editing the battle.
+ * VERIFY_OBJECTIVE (JSON), VERIFY_VILLAGES (c4,e3) and VERIFY_BONUSES (JSON) try a variant without editing the battle.
  */
 
 const GAMES = Number(process.env.VERIFY_GAMES ?? 24);

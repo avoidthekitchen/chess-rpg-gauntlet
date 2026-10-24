@@ -70,7 +70,7 @@ Our army. Each enemy faction has its own species and in-game names, listed with 
 | Companion | Your starter character (Sir Hob, Sage Ollie or Old Brick) |
 | Hero | A named character who joins at the end of a Region |
 | Militia | Unnamed pieces in a battle's set lineup |
-| Shout | A Bog Goblin announcing its next move ([details](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
+| Shout | A Bog Goblin announcing the move it would play if you passed ([details](regions/region-01-bog-goblins.md#ai-habit-shouting-goblins)) |
 | Foiled! | The banner when your move makes a shouted move illegal |
 | Wanted poster | The Bandit Riders' mark on the piece they're hunting ([details](regions/region-02-bandit-riders.md#ai-habit-wanted-poster)) |
 | Scrying Orb | A power bought in town: shows the move the enemy would play if you passed |

@@ -9,7 +9,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
 /**
  * Engine-backed checks for the Region 1 lesson battles. For each battle, plays many full
  * games with the real shouting rule against the Gentle and Brave goblins:
- * - a competent (Stockfish, shout-aware) player must win at least 90% and usually earn the bonuses;
+ * - a competent (Stockfish) player, who assumes the goblins' best reply, must win at least 90% and usually earn the bonuses;
  * - a careless player (a random pick among a depth-1 top five) must lose most games;
  * - every game must end for a reason that fits the objective.
  * Two more players are reported but not asserted: `greedy` (always grabs the biggest capture,
@@ -18,7 +18,7 @@ import { playGame, replay, runPool, type GameResult, type PlayerKind } from './s
  * Env: VERIFY_GAMES (games per player per difficulty, default 24), VERIFY_BATTLE (one id),
  * VERIFY_ENGINES (parallel Stockfish processes, default 8), VERIFY_SHOW=1 prints competent
  * losses and VERIFY_SHOW=all every game. With VERIFY_BATTLE set, VERIFY_FEN,
- * VERIFY_OBJECTIVE (JSON) and VERIFY_VILLAGES (c3,f3) try a variant without editing the battle.
+ * VERIFY_OBJECTIVE (JSON), VERIFY_VILLAGES (c4,e3) and VERIFY_BONUSES (JSON) try a variant without editing the battle.
  */
 
 const GAMES = Number(process.env.VERIFY_GAMES ?? 24);
@@ -45,7 +45,7 @@ interface Row {
   wins: number;
   bonus: Record<string, number>;
   avgMoves: number;
-  /** Average number of Black moves forced by a standing shout, over wins. */
+  /** Average number of Black moves that matched the shout, over wins. */
   avgShouts: number;
   reasons: Record<string, number>;
 }
@@ -92,6 +92,7 @@ const tuned = (b: BattleDef): BattleDef => ({
   fen: process.env.VERIFY_FEN ?? b.fen,
   objective: process.env.VERIFY_OBJECTIVE ? JSON.parse(process.env.VERIFY_OBJECTIVE) : b.objective,
   villages: process.env.VERIFY_VILLAGES ? (process.env.VERIFY_VILLAGES.split(',') as BattleDef['villages']) : b.villages,
+  bonuses: process.env.VERIFY_BONUSES ? JSON.parse(process.env.VERIFY_BONUSES) : b.bonuses,
 });
 const battles = REGION1_BATTLES.filter((b) => !ONLY || b.id === ONLY).map((b) => (ONLY ? tuned(b) : b));
 

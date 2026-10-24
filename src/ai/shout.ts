@@ -1,52 +1,39 @@
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import type { AiProfile } from '../game/difficulty';
 import type { Engine } from './engine';
-import { chooseEnemyMove, type EnemyView, type Rng } from './enemy';
+import type { EnemyView, Habits, Rng } from './enemy';
+import { nullMoveFen, planIfPassed } from './intent';
+
+export { nullMoveFen };
 
 /**
- * Shouting goblins: before your move, the enemy announces the move it would play if
- * you did nothing, and it must play that move if it's still legal after yours.
- * It's the same question as the Scrying Orb: "what is the enemy's best move here?"
+ * Shouting goblins: before your move, the enemy announces the move it would play if you
+ * passed (`planIfPassed`, the same question as the Scrying Orb). After your move it decides
+ * again: the shouted move gets a bonus in its weighted pick (`Habits.shout`), but it can
+ * switch, and it can't play the shout once your move made it illegal ("Foiled!").
  */
-
-/**
- * The position with the side to move skipped (a "null move"), so the other side can
- * be asked what it wants. Null when the side to move is in check, since skipping
- * would leave a king capturable.
- */
-export function nullMoveFen(fen: string): string | null {
-  const chess = new Chess(fen);
-  if (chess.inCheck()) return null;
-  const parts = fen.split(' ');
-  parts[1] = parts[1] === 'w' ? 'b' : 'w';
-  parts[3] = '-'; // an en passant chance belongs to the side that passed
-  const out = parts.join(' ');
-  try {
-    const flipped = new Chess(out);
-    return flipped.moves().length > 0 ? out : null;
-  } catch {
-    return null;
-  }
-}
 
 /** The move the enemy announces for the position where it's your turn, or null if it can't shout. */
-export async function planShout(battle: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
-  const fen = nullMoveFen(battle.fen);
-  if (!fen) return null;
-  try {
-    // Ask the enemy what it would play in the skipped-turn position.
-    return await chooseEnemyMove({ fen, scenario: battle.scenario }, engine, profile, rng);
-  } catch {
-    return null;
-  }
+export function planShout(battle: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
+  return planIfPassed(battle, engine, profile, rng);
 }
 
-/** Whether an announced move is still legal in this position (with the enemy to move). */
-export function shoutStands(fen: string, uci: string): boolean {
+/**
+ * Whether an announced move still stands in this position (with the enemy to move). If not,
+ * the shout is foiled. Given the position it was shouted in, a shouted capture also falls once
+ * its target has left the square: the same move would now be a different, usually losing, one.
+ */
+export function shoutStands(fen: string, uci: string, shoutFen?: string | null): boolean {
   const chess = new Chess(fen);
-  return chess
+  const legal = chess
     .moves({ verbose: true })
     .some((m) => m.from === uci.slice(0, 2) && m.to === uci.slice(2, 4) && (m.promotion ?? '') === (uci[4] ?? ''));
+  if (!legal || !shoutFen) return legal;
+  const to = uci.slice(2, 4) as Square;
+  const then = new Chess(shoutFen);
+  const wanted = then.get(to);
+  if (!wanted || wanted.color !== then.turn()) return true; // not a capture when shouted
+  return chess.get(to)?.color === wanted.color;
 }
 
 const NAME: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
@@ -69,4 +56,34 @@ export function shoutLine(fen: string, uci: string, villages: Square[] = []): st
   if (move.promotion) return `Watch me grow big on ${to}!`;
   if (chess.inCheck()) return `I’m coming to ${to} to poke your king!`;
   return `Next I’m going to ${to}! Hah!`;
+}
+
+/**
+ * The habits a battle's enemy brings to its reply. Only a shouting battle gets the shout
+ * bonus, and only while the shout is still legal; a plan shown any other way (the Scrying
+ * Orb) never becomes a habit.
+ */
+export function replyHabits(shouts: boolean, shout: string | null, fen: string, shoutFen?: string | null): Habits {
+  return { shout: shouts && shout && shoutStands(fen, shout, shoutFen) ? shout : null };
+}
+
+/** Shouts by position, so a rewind (or a replayed position) hears the same shout instead of a fresh pick. */
+export class ShoutBook {
+  private byFen = new Map<string, string | null>();
+
+  has(fen: string): boolean {
+    return this.byFen.has(fen);
+  }
+
+  get(fen: string): string | null | undefined {
+    return this.byFen.get(fen);
+  }
+
+  /** The shout for this position: the remembered one, or a new plan that's then remembered. */
+  async plan(view: EnemyView, engine: Engine | null, profile: AiProfile, rng?: Rng): Promise<string | null> {
+    if (this.byFen.has(view.fen)) return this.byFen.get(view.fen)!;
+    const uci = await planShout(view, engine, profile, rng);
+    this.byFen.set(view.fen, uci);
+    return uci;
+  }
 }

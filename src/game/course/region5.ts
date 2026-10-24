@@ -29,15 +29,6 @@ export const region5Seeds: LessonSeed[] = [
     coaching: 'Count the shortest open route to a pawn. A legal detour can give their king time to defend.',
   },
   {
-    id: 'r5-endgame-skewers', title: 'One line, two guards', theme: 'Endgame skewers', tag: 'skewer',
-    objective: 'Check the king with a rook, then capture the rook behind it.',
-    takeaway: 'Remember skewers: a checking line can hide another target behind the king. Follow the king’s reply before capturing.',
-    before: 'Two Wardens stand in a straight line. Your companion remembers the Shadow Cult’s corridors.',
-    after: 'The rear guard is gone. There are fewer bones on the road.',
-    demo: 'Check with the rook on a4. The king on d4 moves away, leaving the rook on g4 to capture.',
-    coaching: 'Look along the rook’s checking line. Is another rook behind the enemy king?',
-  },
-  {
     id: 'r5-rook-support', title: 'Make room at the gate', theme: 'Rook support', tag: 'promotion',
     objective: 'Use a rook check to clear a promotion square or draw its defender away.',
     takeaway: 'A rook check can make room for a pawn. Calculate the reply: the king may capture, step aside, or block its own pawn.',
@@ -45,6 +36,15 @@ export const region5Seeds: LessonSeed[] = [
     after: 'The gatehouse clears. Your companion points to the pawn’s new square.',
     demo: 'Move the rook from a8 to g8 with check. Their king captures it; your pawn promotes on the cleared a8 square.',
     coaching: 'Look for a rook check that opens the pawn’s route. What guards its promotion square after the reply?',
+  },
+  {
+    id: 'r5-endgame-skewers', title: 'One line, two guards', theme: 'Endgame skewers', tag: 'skewer',
+    objective: 'Check the king with a rook, then capture the rook behind it.',
+    takeaway: 'Remember skewers: a checking line can hide another target behind the king. Follow the king’s reply before capturing.',
+    before: 'Two Wardens stand in a straight line. Your companion remembers the Shadow Cult’s corridors.',
+    after: 'The rear guard is gone. There are fewer bones on the road.',
+    demo: 'Check with the rook on a4. The king on d4 moves away, leaving the rook on g4 to capture.',
+    coaching: 'Look along the rook’s checking line. Is another rook behind the enemy king?',
   },
   {
     id: 'r5-underpromotion', title: 'The smaller crown', theme: 'Knight promotion mate', tag: 'underPromotion',

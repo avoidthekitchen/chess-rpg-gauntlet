@@ -117,7 +117,7 @@
         "short"
       ],
       "source": "https://lichess.org/training/c2Bgp",
-      "reason": "The rook on f8 pins the rook on f2 to the queen on f1. The bishop captures on e3 and attacks that rook; after the queen moves, the bishop takes the rook. Published line after setup: Bxe3, Qe2, Bxf2+.",
+      "reason": "Bxe3 pins the rook on f2 to its king on g1 and attacks it twice with the rook on f8. Qe2 still defends f2, but Bxf2+ wins material: Qxf2 allows Rxf2, exchanging the queen for a rook. Published line after setup: Bxe3, Qe2, Bxf2+.",
       "quality": {
         "rd": 77,
         "popularity": 96,
@@ -700,15 +700,15 @@
   ],
   "r3-discoveries": [
     {
-      "id": "NYamc",
-      "fen": "8/8/r4pR1/8/4kPK1/8/8/8 w - - 3 55",
+      "id": "TgvdT",
+      "fen": "8/8/8/5pk1/7p/r4P1R/5K2/8 b - - 11 55",
       "moves": [
-        "g6h6",
-        "f6f5",
-        "g4h5",
-        "a6h6"
+        "a3b3",
+        "f3f4",
+        "g5g4",
+        "h3b3"
       ],
-      "rating": 848,
+      "rating": 995,
       "themes": [
         "crushing",
         "discoveredAttack",
@@ -717,38 +717,37 @@
         "rookEndgame",
         "short"
       ],
-      "source": "https://lichess.org/training/NYamc",
-      "reason": "Moving the pawn from f6 gives check and opens the rook on a6 against the rook on h6. After the reply, that rear piece captures the target. Published line after setup: f5+, Kh5, Rxh6+.",
-      "quality": {
-        "rd": 80,
-        "popularity": 98,
-        "plays": 830
-      }
-    },
-    {
-      "id": "E4Paq",
-      "fen": "8/4r3/4nk2/4R1p1/6P1/8/8/4R1K1 w - - 0 47",
-      "moves": [
-        "g1g2",
-        "e6f4",
-        "g2f3",
-        "e7e5"
-      ],
-      "rating": 830,
-      "themes": [
-        "advantage",
-        "discoveredAttack",
-        "endgame",
-        "master",
-        "short"
-      ],
-      "source": "https://lichess.org/training/E4Paq",
-      "reason": "Moving the knight from e6 gives check and opens the rook on e7 against the rook on e5. After the reply, that rear piece captures the target. Published line after setup: Nf4+, Kf3, Rxe5.",
+      "source": "https://lichess.org/training/TgvdT",
       "quality": {
         "rd": 78,
         "popularity": 100,
-        "plays": 994
-      }
+        "plays": 678
+      },
+      "reason": "Moving the pawn from f3 gives check and opens the rook on h3 against the rook on b3. After the king moves, the rook captures its target and cannot be immediately recaptured. Published line after setup: f4+, Kg4, Rxb3."
+    },
+    {
+      "id": "6bAqC",
+      "fen": "8/5pk1/2R4p/p1N2p2/1r6/8/5PK1/8 b - - 6 38",
+      "moves": [
+        "b4c4",
+        "c5e6",
+        "g7f6",
+        "c6c4"
+      ],
+      "rating": 913,
+      "themes": [
+        "crushing",
+        "discoveredAttack",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/6bAqC",
+      "quality": {
+        "rd": 75,
+        "popularity": 98,
+        "plays": 2626
+      },
+      "reason": "Moving the knight from c5 gives check and opens the rook on c6 against the rook on c4. After the king moves, the rook captures its target and cannot be immediately recaptured. Published line after setup: Ne6+, Kf6, Rxc4."
     },
     {
       "id": "K7icn",
@@ -1082,103 +1081,6 @@
       }
     },
     {
-      "id": "3iPpu",
-      "fen": "6rk/6p1/4R2p/p3B3/P1r5/6P1/5PK1/8 b - - 0 37",
-      "moves": [
-        "c4a4",
-        "e6h6"
-      ],
-      "rating": 1104,
-      "themes": [
-        "endgame",
-        "mate",
-        "mateIn1",
-        "oneMove",
-        "pin"
-      ],
-      "source": "https://lichess.org/training/3iPpu",
-      "reason": "The bishop on e5 pins the pawn on g7 to the king on h8. It cannot capture on h6 without exposing its king. Published line after setup: Rxh6#.",
-      "quality": {
-        "rd": 76,
-        "popularity": 95,
-        "plays": 1520
-      }
-    },
-    {
-      "id": "NWZHe",
-      "fen": "5k2/5p2/2p5/5pQ1/4b3/q6P/6P1/6RK w - - 2 46",
-      "moves": [
-        "h3h4",
-        "a3h3"
-      ],
-      "rating": 1187,
-      "themes": [
-        "endgame",
-        "mate",
-        "mateIn1",
-        "oneMove",
-        "pin"
-      ],
-      "source": "https://lichess.org/training/NWZHe",
-      "reason": "The bishop on e4 pins the pawn on g2 to the king on h1. It cannot capture on h3 without exposing its king. Published line after setup: Qh3#.",
-      "quality": {
-        "rd": 78,
-        "popularity": 86,
-        "plays": 494
-      }
-    },
-    {
-      "id": "6HOpv",
-      "fen": "r4k1r/ppp3p1/3p1q1p/2bPp3/8/3PB2P/PPn2PQP/1R3RK1 b - - 2 16",
-      "moves": [
-        "c5e3",
-        "f2e3",
-        "c2e3",
-        "f1f6"
-      ],
-      "rating": 970,
-      "themes": [
-        "advantage",
-        "discoveredAttack",
-        "middlegame",
-        "pin",
-        "short"
-      ],
-      "source": "https://lichess.org/training/6HOpv",
-      "reason": "The pawn on f2 is pinned to its king on g1 by the bishop on e3. It captures the pinning piece along that same line, leaving its king safe. Published line after setup: fxe3, Nxe3, Rxf6+.",
-      "quality": {
-        "rd": 83,
-        "popularity": 94,
-        "plays": 1539
-      }
-    },
-    {
-      "id": "9ztkq",
-      "fen": "5r1k/2p5/p2pnN1p/4q3/8/6QP/P5PK/5R2 b - - 7 44",
-      "moves": [
-        "f8f6",
-        "g3e5",
-        "d6e5",
-        "f1f6"
-      ],
-      "rating": 1109,
-      "themes": [
-        "capturingDefender",
-        "crushing",
-        "endgame",
-        "intermezzo",
-        "pin",
-        "short"
-      ],
-      "source": "https://lichess.org/training/9ztkq",
-      "reason": "The queen on g3 is pinned to its king on h2 by the queen on e5. It captures the pinning piece along that same line, leaving its king safe. Published line after setup: Qxe5, dxe5, Rxf6.",
-      "quality": {
-        "rd": 82,
-        "popularity": 92,
-        "plays": 2741
-      }
-    },
-    {
       "id": "Q4BuY",
       "fen": "8/3R4/p1K5/8/8/8/2b5/2k5 w - - 5 74",
       "moves": [
@@ -1226,6 +1128,151 @@
         "rd": 86,
         "popularity": 100,
         "plays": 538
+      }
+    },
+    {
+      "id": "i7TIO",
+      "fen": "8/1R2R3/2k1p3/3p3p/8/2P3PK/r2n3r/8 w - - 5 49",
+      "moves": [
+        "h3h2",
+        "d2f3",
+        "h2h3",
+        "a2h2"
+      ],
+      "rating": 1211,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn2",
+        "short"
+      ],
+      "source": "https://lichess.org/training/i7TIO",
+      "reason": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Nf3+, Kh3, Rh2#. Published line after setup: Nf3+, Kh3, Rh2#.",
+      "quality": {
+        "rd": 80,
+        "popularity": 96,
+        "plays": 7337
+      }
+    },
+    {
+      "id": "KPo9X",
+      "fen": "1B2k3/p6p/1p6/2p5/4b3/P2q4/1P4P1/4Q2K w - - 4 36",
+      "moves": [
+        "b8a7",
+        "d3h3",
+        "h1g1",
+        "h3g2"
+      ],
+      "rating": 1139,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn2",
+        "pin",
+        "short"
+      ],
+      "source": "https://lichess.org/training/KPo9X",
+      "reason": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Qh3+, Kg1, Qxg2#. Published line after setup: Qh3+, Kg1, Qxg2#.",
+      "quality": {
+        "rd": 77,
+        "popularity": 96,
+        "plays": 720
+      }
+    },
+    {
+      "id": "3iPpu",
+      "fen": "6rk/6p1/4R2p/p3B3/P1r5/6P1/5PK1/8 b - - 0 37",
+      "moves": [
+        "c4a4",
+        "e6h6"
+      ],
+      "rating": 1104,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "pin"
+      ],
+      "source": "https://lichess.org/training/3iPpu",
+      "reason": "The bishop on e5 pins the pawn on g7 to the king on h8. It cannot capture on h6 without exposing its king. Published line after setup: Rxh6#.",
+      "quality": {
+        "rd": 76,
+        "popularity": 95,
+        "plays": 1520
+      }
+    },
+    {
+      "id": "NWZHe",
+      "fen": "5k2/5p2/2p5/5pQ1/4b3/q6P/6P1/6RK w - - 2 46",
+      "moves": [
+        "h3h4",
+        "a3h3"
+      ],
+      "rating": 1187,
+      "themes": [
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "pin"
+      ],
+      "source": "https://lichess.org/training/NWZHe",
+      "reason": "The bishop on e4 pins the pawn on g2 to the king on h1. It cannot capture on h3 without exposing its king. Published line after setup: Qh3#.",
+      "quality": {
+        "rd": 78,
+        "popularity": 86,
+        "plays": 494
+      }
+    },
+    {
+      "id": "lAFvE",
+      "fen": "8/8/8/3p3R/kpp5/1b2B3/1K6/8 w - - 6 64",
+      "moves": [
+        "h5d5",
+        "c4c3",
+        "b2c1",
+        "b3d5"
+      ],
+      "rating": 931,
+      "themes": [
+        "crushing",
+        "discoveredAttack",
+        "endgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/lAFvE",
+      "reason": "Moving the pawn from c4 gives check and opens the bishop on b3 against the rook on d5. After the reply, that rear piece captures the target. Published line after setup: c3+, Kc1, Bxd5.",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 446
+      }
+    },
+    {
+      "id": "WOWAY",
+      "fen": "8/4k3/8/pp2q3/4b3/1Pr3P1/P3R3/K3Q3 w - - 0 36",
+      "moves": [
+        "e2e4",
+        "c3c1"
+      ],
+      "rating": 993,
+      "themes": [
+        "discoveredCheck",
+        "doubleCheck",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/WOWAY",
+      "reason": "Moving the rook from c3 uncovers the queen on e5 against the king on a1. The moved piece also checks; this double check is checkmate, so there is no reply. Published line after setup: Rc1#.",
+      "quality": {
+        "rd": 82,
+        "popularity": 92,
+        "plays": 681
       }
     },
     {
@@ -1280,54 +1327,6 @@
       }
     },
     {
-      "id": "lAFvE",
-      "fen": "8/8/8/3p3R/kpp5/1b2B3/1K6/8 w - - 6 64",
-      "moves": [
-        "h5d5",
-        "c4c3",
-        "b2c1",
-        "b3d5"
-      ],
-      "rating": 931,
-      "themes": [
-        "crushing",
-        "discoveredAttack",
-        "endgame",
-        "short"
-      ],
-      "source": "https://lichess.org/training/lAFvE",
-      "reason": "Moving the pawn from c4 gives check and opens the bishop on b3 against the rook on d5. After the reply, that rear piece captures the target. Published line after setup: c3+, Kc1, Bxd5.",
-      "quality": {
-        "rd": 78,
-        "popularity": 100,
-        "plays": 446
-      }
-    },
-    {
-      "id": "WOWAY",
-      "fen": "8/4k3/8/pp2q3/4b3/1Pr3P1/P3R3/K3Q3 w - - 0 36",
-      "moves": [
-        "e2e4",
-        "c3c1"
-      ],
-      "rating": 993,
-      "themes": [
-        "discoveredCheck",
-        "doubleCheck",
-        "endgame",
-        "mate",
-        "mateIn1",
-        "oneMove"
-      ],
-      "source": "https://lichess.org/training/WOWAY",
-      "reason": "Moving the rook from c3 uncovers the queen on e5 against the king on a1. The moved piece also checks; this double check is checkmate, so there is no reply. Published line after setup: Rc1#.",
-      "quality": {
-        "rd": 82,
-        "popularity": 92,
-        "plays": 681
-      }
-    },
-    {
       "id": "ZvWIQ",
       "fen": "8/5k2/2K2P2/3N1n2/8/2P4R/2r5/8 w - - 1 62",
       "moves": [
@@ -1379,54 +1378,54 @@
       }
     },
     {
-      "id": "i7TIO",
-      "fen": "8/1R2R3/2k1p3/3p3p/8/2P3PK/r2n3r/8 w - - 5 49",
+      "id": "Kp2Gw",
+      "fen": "2r3k1/3r2p1/p2pbR2/1p6/3QPq2/1P3P2/PKP5/6R1 b - - 0 29",
       "moves": [
-        "h3h2",
-        "d2f3",
-        "h2h3",
-        "a2h2"
+        "f4e5",
+        "d4e5",
+        "d6e5",
+        "f6e6"
       ],
-      "rating": 1211,
+      "rating": 1186,
       "themes": [
-        "discoveredCheck",
-        "doubleCheck",
-        "endgame",
-        "mate",
-        "mateIn2",
-        "short"
-      ],
-      "source": "https://lichess.org/training/i7TIO",
-      "reason": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Nf3+, Kh3, Rh2#. Published line after setup: Nf3+, Kh3, Rh2#.",
-      "quality": {
-        "rd": 80,
-        "popularity": 96,
-        "plays": 7337
-      }
-    },
-    {
-      "id": "KPo9X",
-      "fen": "1B2k3/p6p/1p6/2p5/4b3/P2q4/1P4P1/4Q2K w - - 4 36",
-      "moves": [
-        "b8a7",
-        "d3h3",
-        "h1g1",
-        "h3g2"
-      ],
-      "rating": 1139,
-      "themes": [
-        "endgame",
-        "mate",
-        "mateIn2",
+        "advantage",
+        "capturingDefender",
+        "middlegame",
         "pin",
         "short"
       ],
-      "source": "https://lichess.org/training/KPo9X",
-      "reason": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Qh3+, Kg1, Qxg2#. Published line after setup: Qh3+, Kg1, Qxg2#.",
+      "source": "https://lichess.org/training/Kp2Gw",
       "quality": {
-        "rd": 77,
-        "popularity": 96,
-        "plays": 720
+        "rd": 81,
+        "popularity": 93,
+        "plays": 1788
+      },
+      "reason": "The queen on d4 is pinned to its king on b2 by the queen on e5. It captures the pinning queen along that line. After the d6 pawn recaptures, Rxe6 takes the bishop that pawn defended. Published line after setup: Qxe5, dxe5, Rxe6."
+    },
+    {
+      "id": "9ztkq",
+      "fen": "5r1k/2p5/p2pnN1p/4q3/8/6QP/P5PK/5R2 b - - 7 44",
+      "moves": [
+        "f8f6",
+        "g3e5",
+        "d6e5",
+        "f1f6"
+      ],
+      "rating": 1109,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "endgame",
+        "intermezzo",
+        "pin",
+        "short"
+      ],
+      "source": "https://lichess.org/training/9ztkq",
+      "reason": "The queen on g3 is pinned to its king on h2 by the queen on e5. It captures the pinning piece along that same line, leaving its king safe. Published line after setup: Qxe5, dxe5, Rxf6.",
+      "quality": {
+        "rd": 82,
+        "popularity": 92,
+        "plays": 2741
       }
     }
   ]

@@ -89,10 +89,10 @@
       "id": "c2Bgp",
       "lesson": "r3-pins",
       "slot": "backup-2",
-      "kind": "pin",
-      "attacker": "f8",
+      "kind": "create-pin",
+      "attacker": "e3",
       "front": "f2",
-      "rear": "f1",
+      "rear": "g1",
       "target": "e3",
       "san": [
         "Bxa3",
@@ -101,7 +101,7 @@
         "Bxf2+"
       ],
       "sourceGame": "https://lichess.org/hpZ6Eee2#39",
-      "explanation": "The rook on f8 pins the rook on f2 to the queen on f1. The bishop captures on e3 and attacks that rook; after the queen moves, the bishop takes the rook.",
+      "explanation": "Bxe3 pins the rook on f2 to its king on g1 and attacks it twice with the rook on f8. Qe2 still defends f2, but Bxf2+ wins material: Qxf2 allows Rxf2, exchanging the queen for a rook.",
       "sourceFieldsSha256": "02a85d74242df5bc7b6d5c62af822089aa4edff7c9cd9299cdfb73cfdcdd4d27"
     },
     {
@@ -538,42 +538,42 @@
       "sourceFieldsSha256": "e41f820b20ae5f2ed682745a92c64aa634739fa3448b76f207bb9fcd1fb56185"
     },
     {
-      "id": "NYamc",
+      "id": "TgvdT",
+      "kind": "discovery",
+      "attacker": "h3",
+      "front": "f3",
+      "rear": "",
+      "target": "b3",
+      "san": [
+        "Rb3",
+        "f4+",
+        "Kg4",
+        "Rxb3"
+      ],
+      "sourceGame": "https://lichess.org/JEvdgDLn/black#110",
+      "sourceFieldsSha256": "5b80cda750d13d3a354aa2fabcef1682ebe7b1bf940da68be6004e32185283ea",
       "lesson": "r3-discoveries",
       "slot": "example",
-      "kind": "discovery",
-      "attacker": "a6",
-      "front": "f6",
-      "rear": "",
-      "target": "h6",
-      "san": [
-        "Rh6",
-        "f5+",
-        "Kh5",
-        "Rxh6+"
-      ],
-      "sourceGame": "https://lichess.org/UTRZl2D3#109",
-      "explanation": "Moving the pawn from f6 gives check and opens the rook on a6 against the rook on h6. After the reply, that rear piece captures the target.",
-      "sourceFieldsSha256": "691b1a5ba076657473d1adfcf5c115fc5d25ffd2175137c7eabe652890d57631"
+      "explanation": "Moving the pawn from f3 gives check and opens the rook on h3 against the rook on b3. After the king moves, the rook captures its target and cannot be immediately recaptured."
     },
     {
-      "id": "E4Paq",
+      "id": "6bAqC",
+      "kind": "discovery",
+      "attacker": "c6",
+      "front": "c5",
+      "rear": "",
+      "target": "c4",
+      "san": [
+        "Rc4",
+        "Ne6+",
+        "Kf6",
+        "Rxc4"
+      ],
+      "sourceGame": "https://lichess.org/0j20QrBX/black#76",
+      "sourceFieldsSha256": "e08a90ed56edacedafe97ea5cb25d85fe2ae72856cafb381e3d7645da0d94d9d",
       "lesson": "r3-discoveries",
       "slot": "main-1",
-      "kind": "discovery",
-      "attacker": "e7",
-      "front": "e6",
-      "rear": "",
-      "target": "e5",
-      "san": [
-        "Kg2",
-        "Nf4+",
-        "Kf3",
-        "Rxe5"
-      ],
-      "sourceGame": "https://lichess.org/LObAbiFz#93",
-      "explanation": "Moving the knight from e6 gives check and opens the rook on e7 against the rook on e5. After the reply, that rear piece captures the target.",
-      "sourceFieldsSha256": "76fc3704fc1d171ea95bc771163bf7e3feb8f65f28b7c1a993885b773d8cd42c"
+      "explanation": "Moving the knight from c5 gives check and opens the rook on c6 against the rook on c4. After the king moves, the rook captures its target and cannot be immediately recaptured."
     },
     {
       "id": "K7icn",
@@ -821,81 +821,9 @@
       "sourceFieldsSha256": "4749e116cc31b81ea3a00571e2f5a60ea0b4494f2c7a9cec4ffe9b6b229fc141"
     },
     {
-      "id": "3iPpu",
-      "lesson": "r3-cult-review",
-      "slot": "main-1",
-      "kind": "pin",
-      "attacker": "e5",
-      "front": "g7",
-      "rear": "h8",
-      "target": "h6",
-      "san": [
-        "Rxa4",
-        "Rxh6#"
-      ],
-      "sourceGame": "https://lichess.org/deRmgLbx/black#74",
-      "explanation": "The bishop on e5 pins the pawn on g7 to the king on h8. It cannot capture on h6 without exposing its king.",
-      "sourceFieldsSha256": "b70236406a652a3f1424c925d2d04c92a28ec9f207346f43d45e3ccbc3d457b8"
-    },
-    {
-      "id": "NWZHe",
-      "lesson": "r3-cult-review",
-      "slot": "backup-1",
-      "kind": "pin",
-      "attacker": "e4",
-      "front": "g2",
-      "rear": "h1",
-      "target": "h3",
-      "san": [
-        "h4",
-        "Qh3#"
-      ],
-      "sourceGame": "https://lichess.org/BU3qLlS2#91",
-      "explanation": "The bishop on e4 pins the pawn on g2 to the king on h1. It cannot capture on h3 without exposing its king.",
-      "sourceFieldsSha256": "56c54453dfcbbbd894ff2c22b4404236d3136e5ef4d5437503318c3d1e7411cc"
-    },
-    {
-      "id": "6HOpv",
-      "lesson": "r3-cult-review",
-      "slot": "main-2",
-      "kind": "escape",
-      "attacker": "e3",
-      "front": "f2",
-      "rear": "g1",
-      "target": "e3",
-      "san": [
-        "Bxe3",
-        "fxe3",
-        "Nxe3",
-        "Rxf6+"
-      ],
-      "sourceGame": "https://lichess.org/PA9Uvo7Y/black#32",
-      "explanation": "The pawn on f2 is pinned to its king on g1 by the bishop on e3. It captures the pinning piece along that same line, leaving its king safe.",
-      "sourceFieldsSha256": "52682f81e9347aefc5480cb35e3944214e75786826b6436f4bfca19da2e926df"
-    },
-    {
-      "id": "9ztkq",
-      "lesson": "r3-cult-review",
-      "slot": "backup-2",
-      "kind": "escape",
-      "attacker": "e5",
-      "front": "g3",
-      "rear": "h2",
-      "target": "e5",
-      "san": [
-        "Rxf6",
-        "Qxe5",
-        "dxe5",
-        "Rxf6"
-      ],
-      "sourceGame": "https://lichess.org/i4jUZD2a/black#88",
-      "explanation": "The queen on g3 is pinned to its king on h2 by the queen on e5. It captures the pinning piece along that same line, leaving its king safe.",
-      "sourceFieldsSha256": "d8f76da52695abf5dc7fb8b8c0dd6151f7ecde5c288cda09dfe95d450e55da41"
-    },
-    {
       "id": "Q4BuY",
       "lesson": "r3-cult-review",
-      "slot": "main-3",
+      "slot": "main-1",
       "kind": "skewer",
       "attacker": "e4",
       "front": "c6",
@@ -914,7 +842,7 @@
     {
       "id": "6wYzF",
       "lesson": "r3-cult-review",
-      "slot": "backup-3",
+      "slot": "backup-1",
       "kind": "skewer",
       "attacker": "g2",
       "front": "f3",
@@ -931,47 +859,81 @@
       "sourceFieldsSha256": "fd260a18cd44eaef6a18ae73f94c74c4e592c55e342ed3ff1af4f05bf2ea809e"
     },
     {
-      "id": "KUSTl",
+      "id": "i7TIO",
       "lesson": "r3-cult-review",
-      "slot": "main-4",
-      "kind": "xray",
-      "attacker": "d8",
-      "front": "e8",
+      "slot": "main-2",
+      "kind": "mate",
+      "attacker": "",
+      "front": "",
       "rear": "",
-      "target": "f8",
+      "target": "",
       "san": [
-        "Rxe7",
-        "Rf8+",
-        "Rxf8",
-        "Rxf8#"
+        "Kxh2",
+        "Nf3+",
+        "Kh3",
+        "Rh2#"
       ],
-      "sourceGame": "https://lichess.org/NoMqNUsR/black#72",
-      "explanation": "The rook on d8 looks through the enemy rook on e8 toward f8. The first move starts an exchange there; that blocker recaptures, then the rear piece recaptures it.",
-      "sourceFieldsSha256": "9bea29c5d56565ccb800d42e085839860093853ac99d18f92c1f3e7ff4a56881"
+      "sourceGame": "https://lichess.org/I5X4x6Or#97",
+      "explanation": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Nf3+, Kh3, Rh2#.",
+      "sourceFieldsSha256": "79c940b43559950fad31a9235ae1157fb08d98422b09d268adc61bb1595e9f67"
     },
     {
-      "id": "9SvxP",
+      "id": "KPo9X",
       "lesson": "r3-cult-review",
-      "slot": "backup-4",
-      "kind": "xray",
-      "attacker": "f6",
-      "front": "e6",
+      "slot": "backup-2",
+      "kind": "mate",
+      "attacker": "",
+      "front": "",
       "rear": "",
-      "target": "d6",
+      "target": "",
       "san": [
-        "Re6",
-        "Rd6+",
-        "Rxd6",
-        "Qxd6#"
+        "Bxa7",
+        "Qh3+",
+        "Kg1",
+        "Qxg2#"
       ],
-      "sourceGame": "https://lichess.org/7x7wb2nZ/black#82",
-      "explanation": "The queen on f6 looks through the enemy rook on e6 toward d6. The first move starts an exchange there; that blocker recaptures, then the rear piece recaptures it.",
-      "sourceFieldsSha256": "00e7de21722ae0b7da8ba75aa3be3eab1bc3eefde56ba22144d1ac987fed1c2a"
+      "sourceGame": "https://lichess.org/GWOpZkRy#71",
+      "explanation": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Qh3+, Kg1, Qxg2#.",
+      "sourceFieldsSha256": "2ad112baa60648d411ed4eff19c9503043e84f3249a6e595b4239bbfc7d38087"
+    },
+    {
+      "id": "3iPpu",
+      "lesson": "r3-cult-review",
+      "slot": "main-3",
+      "kind": "pin",
+      "attacker": "e5",
+      "front": "g7",
+      "rear": "h8",
+      "target": "h6",
+      "san": [
+        "Rxa4",
+        "Rxh6#"
+      ],
+      "sourceGame": "https://lichess.org/deRmgLbx/black#74",
+      "explanation": "The bishop on e5 pins the pawn on g7 to the king on h8. It cannot capture on h6 without exposing its king.",
+      "sourceFieldsSha256": "b70236406a652a3f1424c925d2d04c92a28ec9f207346f43d45e3ccbc3d457b8"
+    },
+    {
+      "id": "NWZHe",
+      "lesson": "r3-cult-review",
+      "slot": "backup-3",
+      "kind": "pin",
+      "attacker": "e4",
+      "front": "g2",
+      "rear": "h1",
+      "target": "h3",
+      "san": [
+        "h4",
+        "Qh3#"
+      ],
+      "sourceGame": "https://lichess.org/BU3qLlS2#91",
+      "explanation": "The bishop on e4 pins the pawn on g2 to the king on h1. It cannot capture on h3 without exposing its king.",
+      "sourceFieldsSha256": "56c54453dfcbbbd894ff2c22b4404236d3136e5ef4d5437503318c3d1e7411cc"
     },
     {
       "id": "lAFvE",
       "lesson": "r3-cult-review",
-      "slot": "main-5",
+      "slot": "main-4",
       "kind": "discovery",
       "attacker": "b3",
       "front": "c4",
@@ -990,7 +952,7 @@
     {
       "id": "WOWAY",
       "lesson": "r3-cult-review",
-      "slot": "backup-5",
+      "slot": "backup-4",
       "kind": "double",
       "attacker": "e5",
       "front": "c3",
@@ -1003,6 +965,44 @@
       "sourceGame": "https://lichess.org/khEMbGSG#71",
       "explanation": "Moving the rook from c3 uncovers the queen on e5 against the king on a1. The moved piece also checks; this double check is checkmate, so there is no reply.",
       "sourceFieldsSha256": "693bd1aaec7e47063f1318c1d0edfcbd169489c2ae4ecc595e289fa85c210459"
+    },
+    {
+      "id": "KUSTl",
+      "lesson": "r3-cult-review",
+      "slot": "main-5",
+      "kind": "xray",
+      "attacker": "d8",
+      "front": "e8",
+      "rear": "",
+      "target": "f8",
+      "san": [
+        "Rxe7",
+        "Rf8+",
+        "Rxf8",
+        "Rxf8#"
+      ],
+      "sourceGame": "https://lichess.org/NoMqNUsR/black#72",
+      "explanation": "The rook on d8 looks through the enemy rook on e8 toward f8. The first move starts an exchange there; that blocker recaptures, then the rear piece recaptures it.",
+      "sourceFieldsSha256": "9bea29c5d56565ccb800d42e085839860093853ac99d18f92c1f3e7ff4a56881"
+    },
+    {
+      "id": "9SvxP",
+      "lesson": "r3-cult-review",
+      "slot": "backup-5",
+      "kind": "xray",
+      "attacker": "f6",
+      "front": "e6",
+      "rear": "",
+      "target": "d6",
+      "san": [
+        "Re6",
+        "Rd6+",
+        "Rxd6",
+        "Qxd6#"
+      ],
+      "sourceGame": "https://lichess.org/7x7wb2nZ/black#82",
+      "explanation": "The queen on f6 looks through the enemy rook on e6 toward d6. The first move starts an exchange there; that blocker recaptures, then the rear piece recaptures it.",
+      "sourceFieldsSha256": "00e7de21722ae0b7da8ba75aa3be3eab1bc3eefde56ba22144d1ac987fed1c2a"
     },
     {
       "id": "ZvWIQ",
@@ -1043,42 +1043,42 @@
       "sourceFieldsSha256": "9bc0b64d52f17455ef37a6aad28b39136da3cd46d2dd5b538c55d79881650f8c"
     },
     {
-      "id": "i7TIO",
+      "id": "Kp2Gw",
+      "kind": "escape",
+      "attacker": "e5",
+      "front": "d4",
+      "rear": "b2",
+      "target": "e5",
+      "san": [
+        "Qe5",
+        "Qxe5",
+        "dxe5",
+        "Rxe6"
+      ],
+      "sourceGame": "https://lichess.org/FwTryTjT/black#58",
+      "sourceFieldsSha256": "0cfbbe515dc666fe09a8aecc77035ae84baddecf5896451ff2848c22ed819347",
       "lesson": "r3-cult-review",
       "slot": "main-7",
-      "kind": "mate",
-      "attacker": "",
-      "front": "",
-      "rear": "",
-      "target": "",
-      "san": [
-        "Kxh2",
-        "Nf3+",
-        "Kh3",
-        "Rh2#"
-      ],
-      "sourceGame": "https://lichess.org/I5X4x6Or#97",
-      "explanation": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Nf3+, Kh3, Rh2#.",
-      "sourceFieldsSha256": "79c940b43559950fad31a9235ae1157fb08d98422b09d268adc61bb1595e9f67"
+      "explanation": "The queen on d4 is pinned to its king on b2 by the queen on e5. It captures the pinning queen along that line. After the d6 pawn recaptures, Rxe6 takes the bishop that pawn defended."
     },
     {
-      "id": "KPo9X",
+      "id": "9ztkq",
       "lesson": "r3-cult-review",
       "slot": "backup-7",
-      "kind": "mate",
-      "attacker": "",
-      "front": "",
-      "rear": "",
-      "target": "",
+      "kind": "escape",
+      "attacker": "e5",
+      "front": "g3",
+      "rear": "h2",
+      "target": "e5",
       "san": [
-        "Bxa7",
-        "Qh3+",
-        "Kg1",
-        "Qxg2#"
+        "Rxf6",
+        "Qxe5",
+        "dxe5",
+        "Rxf6"
       ],
-      "sourceGame": "https://lichess.org/GWOpZkRy#71",
-      "explanation": "The first solver move gives check. After the published king reply, the second solver move delivers checkmate. The complete source is Qh3+, Kg1, Qxg2#.",
-      "sourceFieldsSha256": "2ad112baa60648d411ed4eff19c9503043e84f3249a6e595b4239bbfc7d38087"
+      "sourceGame": "https://lichess.org/i4jUZD2a/black#88",
+      "explanation": "The queen on g3 is pinned to its king on h2 by the queen on e5. It captures the pinning piece along that same line, leaving its king safe.",
+      "sourceFieldsSha256": "d8f76da52695abf5dc7fb8b8c0dd6151f7ecde5c288cda09dfe95d450e55da41"
     }
   ],
   "hashSerialization": "SHA-256 of UTF-8 id,FEN,moves,rating,rd,popularity,plays,themes joined by commas, without a trailing newline. Moves and themes use single spaces. Game URL and opening metadata are excluded."

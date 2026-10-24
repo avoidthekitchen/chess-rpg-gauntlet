@@ -14,6 +14,7 @@ import { TownScene } from './scenes/Town';
 import { TitleScene } from './scenes/Title';
 import { dpr, fitGame } from './ui/screen';
 import { C } from './ui/theme';
+import { pilotEnabled } from './pilotMode';
 
 async function start() {
   // Phaser draws text onto canvases, so the web font must be ready first.
@@ -27,7 +28,8 @@ async function start() {
   }
 
   const d = dpr();
-  const pilotScenes = import.meta.env.DEV && new URLSearchParams(location.search).get('ambush') === 'r2-two-at-once'
+  // Keep this build-time guard beside the import so production drops the pilot chunk.
+  const pilotScenes = (import.meta.env.DEV || import.meta.env.MODE === 'staging') && pilotEnabled
     ? [(await import('./scenes/Ambush')).AmbushScene] : [];
   const game = new Phaser.Game({
     type: Phaser.AUTO,

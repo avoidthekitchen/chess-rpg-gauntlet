@@ -17,7 +17,7 @@ type Phase = 'launcher' | 'teaching' | 'demonstrating' | 'taught' | 'setup' | 's
 const pause = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 const pieceName = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
-/** A dev-only encounter pilot. Chess and settlement rules live in src/game. */
+/** A development and staging encounter pilot. Rules live in src/game. */
 export class AmbushScene extends BaseScene {
   private pilot!: PilotState;
   private phase: Phase = 'launcher';
@@ -125,7 +125,7 @@ export class AmbushScene extends BaseScene {
       const gone = pilotGone(this.pilot, DEF);
       const cleared = save.cleared.includes(DEF.id);
       this.hud.innerHTML = `<div class="ambush-launcher"><section class="ambush-card">
-        <p class="ambush-eyebrow">Pawnshire · The Kingsroad · Local pilot</p>
+        <p class="ambush-eyebrow">Pawnshire · The Kingsroad · Region 2 pilot</p>
         <h1>Two at once</h1><p class="ambush-deck">One stolen banner. Four waves. Two checks.</p>
         <div class="ambush-story">${DEF.before.map(s => `<p>${esc(s)}</p>`).join('')}</div>
         <div class="ambush-pills"><span>4 waves</span><span>Double check</span><span>20g + two 5g bonuses</span></div>

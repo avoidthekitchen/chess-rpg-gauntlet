@@ -48,6 +48,7 @@ Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in
 
 ```bash
 npm run deploy   # build, stage dist/ into dist-worker/chess-rpg/, wrangler deploy
+npm run deploy:staging # publish the Region 2 pilot at /staging-chess-rpg/
 ```
 
 The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. The 3D model comparison files are left out of the deploy. The largest file is the 1.8 MB engine `.wasm`.

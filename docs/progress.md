@@ -13,7 +13,13 @@ Run `npm run dev`, then open `http://localhost:5173/?ambush=r2-two-at-once`.
 The launcher offers all four difficulties and three companions. Brave is the default.
 Each fresh pilot starts with 100g and a seeded roster.
 Reset Pilot clears only `pawnshire-ambush-pilot-v1`; the campaign save stays separate.
-The launch path is development-only and is absent from the production bundle.
+The normal production bundle excludes the pilot. The owner also requested a separate staging deployment for phone testing.
+`npm run deploy:staging` builds the pilot and publishes only the `staging-chess-rpg` routes.
+Phone preview: https://unformedideas.com/staging-chess-rpg/.
+The staging Worker is `chess-rpg-staging`; the live game's routes remain unchanged.
+The separate reviewer checked deployment isolation. Production contains no pilot assets; staging uses its own build and upload directories.
+The public preview passed all four waves, saved 130g after reload, and left campaign storage unchanged.
+Phone checks at 375×812, 375×553 and 844×390 passed with no runtime errors or failed game assets.
 
 **Content and authoring**
 

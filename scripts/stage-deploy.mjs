@@ -4,9 +4,10 @@
 import { cp, mkdir, rm, stat } from 'node:fs/promises';
 import { relative, sep } from 'node:path';
 
-const SUBPATH = 'chess-rpg';
-const source = new URL('../dist/', import.meta.url);
-const root = new URL('../dist-worker/', import.meta.url);
+const staging = process.argv.includes('--staging');
+const SUBPATH = staging ? 'staging-chess-rpg' : 'chess-rpg';
+const source = new URL(staging ? '../dist-staging/' : '../dist/', import.meta.url);
+const root = new URL(staging ? '../dist-worker-staging/' : '../dist-worker/', import.meta.url);
 const target = new URL(`./${SUBPATH}/`, root);
 
 await stat(new URL('index.html', source)); // fail early if there's no build
@@ -20,4 +21,4 @@ await cp(source, target, {
     return !path.endsWith('.DS_Store') && !skip.some((d) => rel === d || rel.startsWith(d + sep));
   },
 });
-console.log(`Staged dist/ → dist-worker/${SUBPATH}/`);
+console.log(`Staged ${source.pathname} → ${target.pathname}`);

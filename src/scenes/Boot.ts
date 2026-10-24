@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { FACTIONS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
+import { pilotEnabled } from '../pilotMode';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 const SPRITE_SETS = ['ally', ...FACTIONS];
@@ -32,6 +33,6 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     document.getElementById('boot')?.remove();
-    goTo(this.game, import.meta.env.DEV && new URLSearchParams(location.search).get('ambush') === 'r2-two-at-once' ? 'ambush' : 'title');
+    goTo(this.game, pilotEnabled ? 'ambush' : 'title');
   }
 }

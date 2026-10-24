@@ -7,7 +7,7 @@ import { uciMove } from '../ambush';
 
 const all = Object.values(puzzles).flat();
 // Evidence records board facts; every claim below is recomputed from the source line.
-const evidence = rawEvidence as Record<string, { skill: string; guard?: string; king?: string; checkingSquare?: string; pinner?: string[] }>;
+const evidence = rawEvidence as Record<string, { skill: string; guard?: string; king?: string; checkingSquare?: string; pinner?: string[]; immediateRecapture?: string; counterReply?: string }>;
 const value: Record<string, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
 const otherSide = (color: 'w' | 'b') => color === 'w' ? 'b' : 'w';
 const opponentTurn = (start: Chess) => {

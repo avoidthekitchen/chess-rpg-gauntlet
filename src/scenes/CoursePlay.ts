@@ -48,12 +48,13 @@ export class CoursePlayScene extends BaseScene {
   private style: PieceStyle = 'tokens';
   private exampleOnly = false;
   private valid = false;
+  private feedbackLayoutPending = false;
 
   constructor() { super('course-play'); }
 
   init(data: { lessonId?: string; exampleOnly?: boolean } = {}) {
     this.session++;
-    this.valid = false;
+    this.valid = false; this.feedbackLayoutPending = false;
     const save = loadJourney();
     const lesson = courseLesson(data.lessonId ?? '');
     if (!save || !lesson || !lessonUnlocked(save, lesson.id)) {
@@ -100,6 +101,11 @@ export class CoursePlayScene extends BaseScene {
   }
 
   requestLayout() {
+    // The board rebuild waits for an in-flight move; hide feedback until both agree again.
+    this.feedbackLayoutPending = true;
+    if (this.speechElement) this.speechElement.hidden = true;
+    const moment = this.hud?.querySelector<HTMLElement>('.course-moment');
+    if (moment) moment.hidden = true;
     this.cueHolds.clear(); this.cue = null;
     super.requestLayout();
   }
@@ -122,6 +128,7 @@ export class CoursePlayScene extends BaseScene {
 
   protected build() {
     if (!this.valid) return;
+    this.feedbackLayoutPending = false;
     // Transient moments are discarded when a deferred resize rebuilds the board.
     this.cue = null;
     coverImage(this, courseRegion(this.lesson.regionId)?.mapArt ? `bg-${courseRegion(this.lesson.regionId)!.mapArt}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
@@ -205,7 +212,7 @@ export class CoursePlayScene extends BaseScene {
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);
-    const moment = this.cue ? `<div class="course-moment ${this.cue.capture ? 'capture' : ''}" style="left:${l.x}px;top:${l.y + l.width * BOARD_TALL / BOARD_SPAN * .3}px;width:${l.width}px" role="status">${coursePortrait(this.cue.info)}<div><small>${esc(this.cue.labels.join(' · '))}</small><strong>${esc(this.cue.title)}</strong></div></div>` : '';
+    const moment = this.cue ? `<div class="course-moment ${this.cue.capture ? 'capture' : ''}" hidden role="status">${coursePortrait(this.cue.info)}<div><small>${esc(this.cue.labels.join(' · '))}</small><strong>${esc(this.cue.title)}</strong></div></div>` : '';
     this.hud.innerHTML = `<header class="ambush-top">${this.btn('leave', '← Map')}<div><span class="journey-kicker">${esc(region.title)}</span><strong>${esc(def.title)}</strong></div>${this.btn('style', this.style === 'tokens' ? 'Classic pieces' : 'Animal pieces')}</header>
       <section class="ambush-panel" style="left:${l.panelX}px;top:${l.panelY}px;width:${l.panelWidth}px;max-height:${panelHeight}px" aria-label="Lesson controls">
       <div class="ambush-panel-scroll" tabindex="0" aria-label="Lesson status and companion advice">
@@ -216,7 +223,26 @@ export class CoursePlayScene extends BaseScene {
       ${run && !teaching && !['won', 'lost'].includes(this.phase) ? `<p class="ambush-bonuses">${run.misses === 0 ? '☆' : '–'} No misses &nbsp; ${run.hintsUsed === 0 ? '☆' : '–'} No hints</p>` : ''}
       <p class="ambush-source">Published Lichess position${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? ` · <a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">${esc(this.puzzle.id)}</a>` : ''}</p>
       </div><div class="ambush-actions">${actions}</div></section>${moment}`;
+    const momentElement = this.hud.querySelector<HTMLElement>('.course-moment');
+    if (momentElement) this.positionFeedback(momentElement, persistentSpeech);
     this.renderSpeech();
+  }
+
+  /** Compact feedback covers advice, never squares or the fixed action row. */
+  private positionFeedback(element: HTMLElement, persistent: boolean) {
+    if (this.feedbackLayoutPending) { element.hidden = true; return; }
+    const anchor = this.hud.querySelector<HTMLElement>(persistent ? '.ambush-panel' : '.ambush-panel-scroll');
+    if (!anchor) { element.hidden = true; return; }
+    const bounds = anchor.getBoundingClientRect();
+    const top = persistent ? bounds.bottom + 12 : bounds.top;
+    const height = persistent ? Math.min(156, this.H - this.safe.bottom - top - 8) : bounds.height;
+    element.hidden = height < 44;
+    element.style.left = `${bounds.left}px`;
+    element.style.top = `${top}px`;
+    element.style.width = `${bounds.width}px`;
+    element.style.maxHeight = `${Math.max(0, height)}px`;
+    // Keep the portrait and text readable even in a short landscape advice area.
+    element.style.setProperty('--feedback-portrait-height', `${Math.max(24, Math.min(96, height - 26))}px`);
   }
 
   private action(action: string) {
@@ -333,17 +359,11 @@ export class CoursePlayScene extends BaseScene {
       });
     }
     const element = this.speechElement;
-    const l = this.layout();
-    element.hidden = false;
     element.className = `course-speech ${persistent ? 'persistent' : 'toast'}`;
     const content = courseDialogueRow(info!, 'course-speech-voice') + (persistent ? '' : '<button data-dismiss-speech title="Dismiss dialogue" aria-label="Dismiss dialogue">×</button>');
     // Preserve the node and a reader's focus across ordinary board/HUD updates.
     if (element.dataset.line !== content) { element.innerHTML = content; element.dataset.line = content; }
-    element.style.left = `${persistent ? l.panelX : l.x + 8}px`;
-    element.style.width = `${persistent ? l.panelWidth : l.width - 16}px`;
-    const panel = this.hud.querySelector<HTMLElement>('.ambush-panel');
-    element.style.top = `${persistent ? (panel?.getBoundingClientRect().bottom ?? l.panelY) + 12 : l.y + l.width * BOARD_TALL / BOARD_SPAN - 8}px`;
-    element.style.maxHeight = `${persistent ? 156 : Math.max(100, l.width * BOARD_TALL / BOARD_SPAN - 24)}px`;
+    this.positionFeedback(element, persistent);
     if (this.speechLayer && element.parentElement !== this.speechLayer) this.speechLayer.appendChild(element);
   }
 

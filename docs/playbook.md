@@ -141,7 +141,8 @@ Check the affected flow at all four viewports, including Gentle and the longest 
 | 375×553 | Full advice and main controls fit the short phone viewport |
 | 844×390 | Landscape layout keeps the board, advice, and controls usable; temporary speech |
 
-Temporary speech must be outside lesson scroll content and must not cover teaching text or actions.
+Temporary speech stays outside lesson scroll content. On compact screens it may cover advice; board squares and action buttons must stay clear.
+Capture and check banners follow the same bounds. Verify those bounds while moves animate, not only after speech disappears.
 Do not put a large portrait ahead of the advice, hide text behind a tap, or truncate current advice.
 The history button needs a 44×44 CSS pixel target and an accessible name.
 Keep long history scrollable while its heading and close control remain visible.

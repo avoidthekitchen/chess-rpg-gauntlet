@@ -1,5 +1,15 @@
 # Build progress
 
+## 2026-10-24 — Keep moving pieces visible
+
+- At the owner's request, compact dialogue now overlays lesson advice instead of the board. Action buttons stay clear.
+- Capture, check, and mate banners use the same bounds. Roomy desktop layouts use the existing dialogue space beside the board.
+- Rotation hides feedback while the moving board waits for its layout rebuild. Dialogue remains available in history.
+- Chromium checks covered 393×852, 375×553, 844×390, and 1280×800. WebKit covered the three compact sizes.
+- Frame sampling found no board/action overlap during speech and move banners, and no clipped capture text in the checked demonstrations.
+- WebKit passed rotation during capture, hidden feedback until rebuild, dismissal, and conversation history checks.
+- Final type-check, build, and 474 tests passed across 33 files. Independent layout review found no blocker.
+
 ## 2026-10-24 — Staging region shortcuts
 
 - Added `?region=1`–`5` and `?region=finale` to staging and development, opening the requested chapter map directly.

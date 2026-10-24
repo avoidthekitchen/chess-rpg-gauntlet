@@ -82,7 +82,7 @@
 .course-play .course-speech[hidden] { display:none; }
 .course-play .course-speech .course-dialogue { margin:0; gap:12px; }
 .course-play .course-speech .course-dialogue p { font-size:18px; }
-.course-play .course-speech.toast { transform:translateY(-100%); padding-right:46px; }
+.course-play .course-speech.toast { padding-right:46px; }
 .course-play .course-speech.toast .course-portrait { width:48px; height:64px; }
 .course-play .course-speech.toast .course-dialogue p { font-size:17px; }
 .course-play .course-speech.toast .course-dialogue strong { font-size:10px; }
@@ -102,3 +102,9 @@
 @media(max-width:639px) and (max-height:650px) {
   .course-play .course-advice { font-size:15px; line-height:1.25; }
 }
+
+/* Feedback stays inside the advice area (or the desktop dialogue slot), off the board. */
+.course-play .course-moment { z-index:2; overflow-y:auto; overscroll-behavior:contain; }
+.course-play .course-moment[hidden] { display:none; }
+.course-play .course-moment .course-portrait { height:var(--feedback-portrait-height, 96px); width:calc(var(--feedback-portrait-height, 96px) * .75); }
+.course-play .course-speech.toast .course-portrait { max-height:var(--feedback-portrait-height, 64px); }

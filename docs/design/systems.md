@@ -83,7 +83,7 @@ Legacy campaign and standalone pilot saves remain separate and unchanged.
 
 Teaching text takes priority over flavor dialogue.
 Keep the full current advice visible without scrolling on phone views, including Gentle and the longest lesson text.
-Temporary portrait speech lives outside the lesson’s scrolling content and away from advice and controls.
+Temporary portrait speech stays outside the lesson’s scrolling content. On compact screens it overlays advice, leaving board squares and action buttons clear.
 Roomy desktops retain the last speaker in a separate panel; phones and short landscape screens use temporary cards.
 The 44px portrait button opens a conversation history grouped by example and practice position.
 

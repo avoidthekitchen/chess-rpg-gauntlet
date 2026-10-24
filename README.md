@@ -5,7 +5,8 @@ A storybook chess tactics journey. **The rules of chess never change on the boar
 Play it: https://unformedideas.com/chess-rpg/
 
 Preview the complete five-Region journey and Lich King finale: https://unformedideas.com/staging-chess-rpg/.
-The live site keeps the earlier campaign until this change is merged and deployed there.
+The complete journey is also live at the main URL.
+The original RPG is preserved at https://unformedideas.com/alpha-chess-rpg/ for [UX, art, and presentation reference](docs/alpha-reference.md).
 
 ## Run it
 

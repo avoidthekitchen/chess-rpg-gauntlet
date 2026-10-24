@@ -2,6 +2,18 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## 2026-10-24 — Preserve alpha and promote the journey
+
+- The owner approved archiving the original game before replacing production with the accepted staging curriculum.
+- Published the frozen RPG at https://unformedideas.com/alpha-chess-rpg/ on its own Worker.
+- Tagged the exact original source and isolated archive source. Saved both built versions and checksums in a permanent GitHub release.
+- Prefixed archive browser storage with `pawnshire-alpha:`. Tests and public-browser sentinels verify separation from main and staging saves.
+- Promoted application `e473d2a`, from integration `7daf231`, to https://unformedideas.com/chess-rpg/. Staging remains separate.
+- Archive CI passed 172 tests; current CI passed 496. Legacy simulations were not a release gate and were not rerun.
+- Verified every deployed asset, both hosts’ redirects, a real alpha engine reply, production lesson completion and reload, and four viewport sizes.
+- Added an [illustrated presentation reference](alpha-reference.md) and the [production release record](complete-journey-release.md#production-promotion-2026-10-24).
+- This publication does not merge the draft PR stack. No physical-device test is claimed.
+
 ## 2026-10-24 — Retire the legacy benchmark gate
 
 - The owner confirmed that new material replaces the legacy campaign, so its battle benchmark no longer blocks merges or releases.

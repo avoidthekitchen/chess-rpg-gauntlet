@@ -30,6 +30,11 @@ Their rules, source files, saves, and engine regressions remain available for de
 Cloudflare’s configured HTML handling supplies the trailing-slash redirect.
 Use the deployment destination authorized for the work, and keep generated output out of commits.
 
+The accepted journey is live at `/chess-rpg/`. The original RPG is frozen at `/alpha-chess-rpg/` on Worker `chess-rpg-alpha`.
+Its source and deployment configuration live on tag `pawnshire-alpha-2026-10-24`; main-game deployments do not update it.
+Archive storage keys use the prefix `pawnshire-alpha:`. Current, staging, and original campaign saves stay separate.
+See [archive reference and downloads](../alpha-reference.md).
+
 Build and dev commands run `scripts/copy-engine.mjs` first.
 It copies Stockfish’s lite-single JavaScript, WASM, and license notice into `public/engine/`.
 A source puzzle embedded in the built curriculum is separate from the retained bounty JSON under `public/puzzles/`.

@@ -1,6 +1,6 @@
 # Pawnshire: notes for agents and contributors
 
-Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is at https://unformedideas.com/staging-chess-rpg/; the original game remains live at https://unformedideas.com/chess-rpg/. Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
+Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is live at https://unformedideas.com/chess-rpg/, with previews at https://unformedideas.com/staging-chess-rpg/. The original game is frozen at https://unformedideas.com/alpha-chess-rpg/ for [presentation reference](docs/alpha-reference.md). Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
 
 ## Rules that never bend
 

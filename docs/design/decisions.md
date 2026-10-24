@@ -20,7 +20,7 @@ The owner retired the legacy battle benchmark gate on 2026-10-24 because new mat
 - [ ] Explain repaired or unreadable saves to the player and offer a clear recovery path; keep the preserved raw backup.
 - [ ] Audit startup loading: lazy chapter artwork and splitting legacy code need re-entry, failure and offline checks.
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
-- [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
+- [x] Release the accepted journey to production after preserving the original RPG and its source. Keep legacy saves and staging separate.
 
 - [x] Retire the legacy battle benchmark as a merge and release gate, per the owner’s 2026-10-24 instruction. Preserve results and optional diagnostics; replacement curriculum checks remain required.
 
@@ -44,6 +44,7 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | The owner approved archiving the exact original RPG at `/alpha-chess-rpg/`, then promoting the accepted staging journey to `/chess-rpg/`. The frozen archive uses a separate Worker and prefixed browser storage. Source tags, build downloads, checksums, and [presentation screenshots](../alpha-reference.md) preserve the reference. This release does not merge the draft PR stack. |
 | 2026-10-24 | The owner retired legacy battle benchmarks as release gates because new material will replace them. CI requires explicit `--legacy` opt-in for historical engine diagnostics. This clears the benchmark blocker without changing its results or authorizing merge or production deployment. |
 | 2026-10-24 | Superseded by the owner’s later deprecation decision: review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
 | 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |

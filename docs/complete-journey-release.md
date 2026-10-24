@@ -2,6 +2,53 @@
 
 [Roadmap #36](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/36) · [Integration #46](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/46) · [Progress](progress.md)
 
+## Production promotion: 2026-10-24
+
+The owner approved preserving the original RPG, then promoting the accepted staging journey to production.
+This authorizes deployment; the draft PR stack remains unmerged.
+The owner also confirmed that legacy Stockfish simulations must not block the Lichess curriculum release.
+
+| Destination | Source | Cloudflare version |
+| --- | --- | --- |
+| Original production, retained as a build download | `pawnshire-original-live-2026-10-24` / `95786fe` | `103297be-5973-497f-9c12-67c806b85b20` |
+| [Frozen alpha](https://unformedideas.com/alpha-chess-rpg/) | `pawnshire-alpha-2026-10-24` / `32d369e` | `b87a8627-c6b3-4cac-9f73-e7165df141e3` |
+| [Current production](https://unformedideas.com/chess-rpg/) | `7daf231`, application `e473d2a`; release tag `pawnshire-journey-2026-10-24` | `e3854317-fa00-4131-b536-3878c8ab2c60` |
+| [Staging](https://unformedideas.com/staging-chess-rpg/) | Retained staging build | `b05138a2-f1ac-4615-9148-85f4dea4e49b` |
+
+The original source rebuilds the live JavaScript byte for byte.
+All 55 original files and 59 staging files matched their saved builds before deployment.
+The isolated alpha preserves all original art, fonts, puzzles, Stockfish, and CSS bytes.
+Only storage isolation changes its application JavaScript.
+All alpha storage keys use `pawnshire-alpha:`, including piece preferences.
+
+The [alpha release](https://github.com/avoidthekitchen/chess-rpg-gauntlet/releases/tag/pawnshire-alpha-2026-10-24) retains both original and isolated builds, source tags, SHA-256 manifests, and package checksums.
+The [illustrated reference](alpha-reference.md) records presentation details worth revisiting.
+
+Validation:
+
+- Archive CI: type-check, build, and 172 tests passed. New tests exercise storage isolation and blocked storage.
+- Current CI: type-check, build, and 496 tests passed. Retired engine benchmarks were not rerun.
+- Both Wrangler dry runs passed. The archive uses its own Worker and route configuration.
+- All 55 alpha and 59 production files matched the deployed builds. All 59 staging files still matched after promotion.
+- The no-slash routes redirect correctly for alpha and production, including the `www` host.
+- Public Chromium played an alpha move and received Stockfish’s reply. Archive `.wasm` and artwork requests succeeded.
+- Archive layouts were captured at 1280×800, 375×812, 375×553, and 844×390.
+- Public Chromium showed the current lesson example at all four sizes.
+- A fresh production journey completed its first lesson through board clicks, earned three stars, and retained progress after reload.
+- That production run had no runtime exceptions or failed requests.
+- Archive play left original campaign, production journey, staging journey, and shared preference sentinels unchanged.
+- Rule-generated test saves opened each later chapter and its first encounter on production.
+- A completed test save opened the ending, replayed it, and retained all 35 completions and the finale flag after reload.
+- Those chapter and ending checks had no runtime exceptions or failed requests. Archive and staging saves remained unchanged.
+
+These checks use Chromium and resized desktop viewports. No physical iPhone test is claimed.
+Later-chapter and ending fixtures are smoke checks, not a new full browser playthrough.
+The earlier complete-journey browser runs and source checks remain recorded below; this promotion does not change content or game rules.
+
+Future deployments should use the production release tag or its descendants, with `npm run deploy` targeting Worker `chess-rpg`.
+To rebuild alpha, use its frozen tag in a separate checkout. Its `npm run deploy` targets only Worker `chess-rpg-alpha`.
+Keep staging separate. The legacy save stays under `gauntlet-save-v1`; production and staging keep their existing journey keys.
+
 ## Review order
 
 The pull requests are stacked. Review and merge from top to bottom; each comparison contains its own chapter or integration changes.

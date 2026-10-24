@@ -1,0 +1,1816 @@
+{
+  "r5-passed-pawns": [
+    {
+      "id": "ekO0n",
+      "fen": "8/8/p7/P1k1KP2/1p6/8/8/8 b - - 0 58",
+      "moves": [
+        "b4b3",
+        "f5f6",
+        "c5c4",
+        "f6f7",
+        "b3b2",
+        "f7f8q"
+      ],
+      "rating": 444,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/ekO0n",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 407
+      },
+      "san": [
+        "b3",
+        "f6",
+        "Kc4",
+        "f7",
+        "b2",
+        "f8=Q"
+      ],
+      "reason": "The f5 pawn is passed. Three pushes reach f8 while the b-pawn only reaches b2. Published SAN: b3 f6 Kc4 f7 b2 f8=Q."
+    },
+    {
+      "id": "SngGU",
+      "fen": "8/pp4p1/3K4/4P2p/1P6/6k1/P7/8 b - - 1 37",
+      "moves": [
+        "g7g5",
+        "e5e6",
+        "h5h4",
+        "e6e7",
+        "h4h3",
+        "e7e8q"
+      ],
+      "rating": 498,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/SngGU",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 351
+      },
+      "san": [
+        "g5",
+        "e6",
+        "h4",
+        "e7",
+        "h3",
+        "e8=Q"
+      ],
+      "reason": "The e5 pawn is passed. Three pushes reach e8 while the h-pawn reaches h3. Published SAN: g5 e6 h4 e7 h3 e8=Q."
+    },
+    {
+      "id": "eXA2d",
+      "fen": "8/5K2/4p1p1/4P1P1/pk6/8/8/8 w - - 0 52",
+      "moves": [
+        "f7g6",
+        "a4a3",
+        "g6f7",
+        "a3a2",
+        "g5g6",
+        "a2a1q"
+      ],
+      "rating": 517,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/eXA2d",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 314
+      },
+      "san": [
+        "Kxg6",
+        "a3",
+        "Kf7",
+        "a2",
+        "g6",
+        "a1=Q"
+      ],
+      "reason": "The a4 pawn is passed. Three pushes promote while the distant white king and g-pawn cannot stop this line. Published SAN: Kxg6 a3 Kf7 a2 g6 a1=Q."
+    },
+    {
+      "id": "tjAtj",
+      "fen": "8/7K/6p1/3k2P1/2p4P/8/5P2/8 w - - 0 45",
+      "moves": [
+        "h7g6",
+        "c4c3",
+        "h4h5",
+        "c3c2",
+        "h5h6",
+        "c2c1q"
+      ],
+      "rating": 547,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/tjAtj",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 472
+      },
+      "san": [
+        "Kxg6",
+        "c3",
+        "h5",
+        "c2",
+        "h6",
+        "c1=Q"
+      ],
+      "reason": "The c4 pawn is passed. Three pushes promote while the h-pawn advances twice. Published SAN: Kxg6 c3 h5 c2 h6 c1=Q."
+    },
+    {
+      "id": "qW9gn",
+      "fen": "8/8/7K/1k5P/p7/8/8/8 w - - 0 56",
+      "moves": [
+        "h6g6",
+        "a4a3",
+        "g6g7",
+        "a3a2",
+        "h5h6",
+        "a2a1q"
+      ],
+      "rating": 550,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/qW9gn",
+      "quality": {
+        "rd": 85,
+        "popularity": 100,
+        "plays": 512
+      },
+      "san": [
+        "Kg6",
+        "a3",
+        "Kg7",
+        "a2",
+        "h6",
+        "a1=Q+"
+      ],
+      "reason": "The a4 pawn is passed. Its third push promotes with check while the h-pawn reaches h6. Published SAN: Kg6 a3 Kg7 a2 h6 a1=Q+."
+    },
+    {
+      "id": "tJPlM",
+      "fen": "8/5p2/1p2pP2/3pP2P/8/2k5/5K2/8 b - - 0 45",
+      "moves": [
+        "b6b5",
+        "h5h6",
+        "b5b4",
+        "h6h7",
+        "b4b3",
+        "h7h8q"
+      ],
+      "rating": 552,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "master",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/tJPlM",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 314
+      },
+      "san": [
+        "b5",
+        "h6",
+        "b4",
+        "h7",
+        "b3",
+        "h8=Q"
+      ],
+      "reason": "The h5 pawn is passed: no black pawn ahead lies on g or h. Three pushes promote before the b-pawn reaches b2. Published SAN: b5 h6 b4 h7 b3 h8=Q."
+    },
+    {
+      "id": "bT7qi",
+      "fen": "8/8/7p/1PK1kpp1/8/7P/8/8 b - - 0 48",
+      "moves": [
+        "f5f4",
+        "b5b6",
+        "f4f3",
+        "b6b7",
+        "e5e4",
+        "b7b8q"
+      ],
+      "rating": 562,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "master",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/bT7qi",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 514
+      },
+      "san": [
+        "f4",
+        "b6",
+        "f3",
+        "b7",
+        "Ke4",
+        "b8=Q"
+      ],
+      "reason": "The b5 pawn is passed. Three pushes promote while Black spends one reply on the king. Published SAN: f4 b6 f3 b7 Ke4 b8=Q."
+    }
+  ],
+  "r5-pawn-races": [
+    {
+      "id": "2848Q",
+      "fen": "8/8/8/3k2KP/4p3/8/8/8 b - - 0 44",
+      "moves": [
+        "d5d4",
+        "h5h6",
+        "e4e3",
+        "h6h7",
+        "e3e2",
+        "h7h8q"
+      ],
+      "rating": 477,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/2848Q",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 421
+      },
+      "san": [
+        "Kd4",
+        "h6",
+        "e3",
+        "h7",
+        "e2",
+        "h8=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. White moves first and promotes with check while Black is still on e2. Published SAN: Kd4 h6 e3 h7 e2 h8=Q+."
+    },
+    {
+      "id": "Ga1xx",
+      "fen": "8/8/6K1/6P1/6kp/8/8/8 w - - 0 52",
+      "moves": [
+        "g6h6",
+        "h4h3",
+        "g5g6",
+        "h3h2",
+        "g6g7",
+        "h2h1q"
+      ],
+      "rating": 514,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/Ga1xx",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 836
+      },
+      "san": [
+        "Kh6",
+        "h3",
+        "g6",
+        "h2",
+        "g7",
+        "h1=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on g7. Published SAN: Kh6 h3 g6 h2 g7 h1=Q+."
+    },
+    {
+      "id": "wCrGT",
+      "fen": "8/8/1K6/1P6/1kp5/8/8/8 w - - 0 54",
+      "moves": [
+        "b6c6",
+        "c4c3",
+        "b5b6",
+        "c3c2",
+        "b6b7",
+        "c2c1q"
+      ],
+      "rating": 617,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/wCrGT",
+      "quality": {
+        "rd": 86,
+        "popularity": 100,
+        "plays": 539
+      },
+      "san": [
+        "Kc6",
+        "c3",
+        "b6",
+        "c2",
+        "b7",
+        "c1=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on b7. Published SAN: Kc6 c3 b6 c2 b7 c1=Q+."
+    },
+    {
+      "id": "S7BL2",
+      "fen": "8/8/8/K1P5/1p6/1k6/8/8 b - - 0 53",
+      "moves": [
+        "b3c4",
+        "c5c6",
+        "b4b3",
+        "c6c7",
+        "b3b2",
+        "c7c8q"
+      ],
+      "rating": 641,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/S7BL2",
+      "quality": {
+        "rd": 84,
+        "popularity": 100,
+        "plays": 915
+      },
+      "san": [
+        "Kc4",
+        "c6",
+        "b3",
+        "c7",
+        "b2",
+        "c8=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on b2. Published SAN: Kc4 c6 b3 c7 b2 c8=Q+."
+    },
+    {
+      "id": "kLwSl",
+      "fen": "8/8/8/pp1kpKP1/2p5/P7/1P6/8 b - - 0 41",
+      "moves": [
+        "e5e4",
+        "g5g6",
+        "e4e3",
+        "g6g7",
+        "e3e2",
+        "g7g8q"
+      ],
+      "rating": 722,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/kLwSl",
+      "quality": {
+        "rd": 90,
+        "popularity": 93,
+        "plays": 332
+      },
+      "san": [
+        "e4",
+        "g6",
+        "e3",
+        "g7",
+        "e2",
+        "g8=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on e2. Published SAN: e4 g6 e3 g7 e2 g8=Q+."
+    },
+    {
+      "id": "kf9cP",
+      "fen": "8/8/P7/8/4pp2/4P3/1PPK1k2/8 w - - 0 37",
+      "moves": [
+        "a6a7",
+        "f4e3",
+        "d2c3",
+        "e3e2",
+        "a7a8q",
+        "e2e1q"
+      ],
+      "rating": 708,
+      "themes": [
+        "advancedPawn",
+        "advantage",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/kf9cP",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 910
+      },
+      "san": [
+        "a7",
+        "fxe3+",
+        "Kc3",
+        "e2",
+        "a8=Q",
+        "e1=Q+"
+      ],
+      "reason": "fxe3+ forces a king reply. White promotes first, then Black promotes with check. Both sides keep queens; converting Black’s advantage lies beyond this line. Published SAN: a7 fxe3+ Kc3 e2 a8=Q e1=Q+."
+    },
+    {
+      "id": "AojWU",
+      "fen": "8/p7/8/2k2P2/2p1K3/6P1/8/8 b - - 0 53",
+      "moves": [
+        "c5b4",
+        "f5f6",
+        "c4c3",
+        "f6f7",
+        "c3c2",
+        "f7f8q"
+      ],
+      "rating": 725,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "master",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/AojWU",
+      "quality": {
+        "rd": 90,
+        "popularity": 98,
+        "plays": 386
+      },
+      "san": [
+        "Kb4",
+        "f6",
+        "c3",
+        "f7",
+        "c2",
+        "f8=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. White moves first and promotes with check while Black is on c2. Published SAN: Kb4 f6 c3 f7 c2 f8=Q+."
+    }
+  ],
+  "r5-king-use": [
+    {
+      "id": "J3blE",
+      "fen": "8/8/4k1p1/6P1/5p2/2K3P1/8/8 w - - 0 52",
+      "moves": [
+        "g3f4",
+        "e6f5",
+        "c3d2",
+        "f5f4",
+        "d2e1",
+        "f4g5"
+      ],
+      "rating": 544,
+      "themes": [
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame"
+      ],
+      "source": "https://lichess.org/training/J3blE",
+      "quality": {
+        "rd": 90,
+        "popularity": 100,
+        "plays": 345
+      },
+      "san": [
+        "gxf4",
+        "Kf5",
+        "Kd2",
+        "Kxf4",
+        "Ke1",
+        "Kxg5"
+      ],
+      "reason": "Kf5 starts a shortest open route to f4. After capturing there, the king takes the pawn on g5. Published SAN: gxf4 Kf5 Kd2 Kxf4 Ke1 Kxg5."
+    },
+    {
+      "id": "zf3eO",
+      "fen": "8/6p1/4KpPp/8/5kP1/8/8/8 b - - 8 54",
+      "moves": [
+        "f4g4",
+        "e6f7",
+        "h6h5",
+        "f7g7"
+      ],
+      "rating": 606,
+      "themes": [
+        "crushing",
+        "endgame",
+        "pawnEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/zf3eO",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 352
+      },
+      "san": [
+        "Kxg4",
+        "Kf7",
+        "h5",
+        "Kxg7"
+      ],
+      "reason": "Kf7 starts a shortest open route to g7. Ke7 is legal but needs an extra step to reach the pawn. Published SAN: Kxg4 Kf7 h5 Kxg7."
+    },
+    {
+      "id": "DQIdq",
+      "fen": "8/8/4p3/2kp2p1/4P1P1/2PK4/8/8 b - - 0 41",
+      "moves": [
+        "d5e4",
+        "d3e4",
+        "c5c4",
+        "e4e5",
+        "c4c3",
+        "e5e6"
+      ],
+      "rating": 624,
+      "themes": [
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame"
+      ],
+      "source": "https://lichess.org/training/DQIdq",
+      "quality": {
+        "rd": 87,
+        "popularity": 100,
+        "plays": 595
+      },
+      "san": [
+        "dxe4+",
+        "Kxe4",
+        "Kc4",
+        "Ke5",
+        "Kxc3",
+        "Kxe6"
+      ],
+      "reason": "Kxe4 removes the checking pawn. Ke5 then follows a shortest open route to the pawn on e6. Published SAN: dxe4+ Kxe4 Kc4 Ke5 Kxc3 Kxe6."
+    },
+    {
+      "id": "kjp7V",
+      "fen": "8/8/6p1/5kPp/3K3P/8/8/8 w - - 5 70",
+      "moves": [
+        "d4e3",
+        "f5g4",
+        "e3e4",
+        "g4h4"
+      ],
+      "rating": 636,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "pawnEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/kjp7V",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 306
+      },
+      "san": [
+        "Ke3",
+        "Kg4",
+        "Ke4",
+        "Kxh4"
+      ],
+      "reason": "Kg4 starts a shortest open route to h4. The white king remains too far away to guard that pawn. Published SAN: Ke3 Kg4 Ke4 Kxh4."
+    },
+    {
+      "id": "8a9DZ",
+      "fen": "8/6p1/8/2k2p1p/5P1P/2K2P2/8/8 b - - 3 50",
+      "moves": [
+        "c5b5",
+        "c3d4",
+        "b5c6",
+        "d4e5",
+        "c6d7",
+        "e5f5"
+      ],
+      "rating": 643,
+      "themes": [
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame"
+      ],
+      "source": "https://lichess.org/training/8a9DZ",
+      "quality": {
+        "rd": 88,
+        "popularity": 100,
+        "plays": 393
+      },
+      "san": [
+        "Kb5",
+        "Kd4",
+        "Kc6",
+        "Ke5",
+        "Kd7",
+        "Kxf5"
+      ],
+      "reason": "Kd4 and Ke5 take the shortest open route to f5. Kd3 is legal but adds a step because the f5 pawn attacks e4. Published SAN: Kb5 Kd4 Kc6 Ke5 Kd7 Kxf5."
+    },
+    {
+      "id": "bkLyy",
+      "fen": "8/8/4p2p/6kP/4K3/6P1/8/8 w - - 1 63",
+      "moves": [
+        "g3g4",
+        "g5g4",
+        "e4e5",
+        "g4h5"
+      ],
+      "rating": 662,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "pawnEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/bkLyy",
+      "quality": {
+        "rd": 79,
+        "popularity": 100,
+        "plays": 393
+      },
+      "san": [
+        "g4",
+        "Kxg4",
+        "Ke5",
+        "Kxh5"
+      ],
+      "reason": "Kxg4 and Kxh5 each capture a pawn one step away. Neither move spends a turn on a detour. Published SAN: g4 Kxg4 Ke5 Kxh5."
+    },
+    {
+      "id": "JkYR9",
+      "fen": "8/8/4p3/4k1p1/2P1P1P1/6K1/8/8 w - - 1 60",
+      "moves": [
+        "g3f3",
+        "e5d4",
+        "c4c5",
+        "d4c5"
+      ],
+      "rating": 673,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "pawnEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/JkYR9",
+      "quality": {
+        "rd": 85,
+        "popularity": 100,
+        "plays": 577
+      },
+      "san": [
+        "Kf3",
+        "Kd4",
+        "c5",
+        "Kxc5"
+      ],
+      "reason": "Kd4 approaches the c-pawn on a shortest open route. After c5, the king captures it; the white king cannot guard c5. Published SAN: Kf3 Kd4 c5 Kxc5."
+    }
+  ],
+  "r5-rook-support": [
+    {
+      "id": "8vtl4",
+      "fen": "R7/P5k1/8/8/8/6p1/r5P1/3K4 b - - 2 57",
+      "moves": [
+        "a2g2",
+        "a8g8",
+        "g7g8",
+        "a7a8q"
+      ],
+      "rating": 898,
+      "themes": [
+        "advancedPawn",
+        "attraction",
+        "crushing",
+        "endgame",
+        "master",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/8vtl4",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 407
+      },
+      "san": [
+        "Rxg2",
+        "Rg8+",
+        "Kxg8",
+        "a8=Q+"
+      ],
+      "reason": "Rg8+ vacates a8 with check. After Kxg8, the a7 pawn promotes with check. Published SAN: Rxg2 Rg8+ Kxg8 a8=Q+."
+    },
+    {
+      "id": "SyVVa",
+      "fen": "7R/K3kp1P/P7/8/r7/4p3/8/8 b - - 0 61",
+      "moves": [
+        "e3e2",
+        "h8e8",
+        "e7e8",
+        "h7h8q"
+      ],
+      "rating": 944,
+      "themes": [
+        "advancedPawn",
+        "attraction",
+        "crushing",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/SyVVa",
+      "quality": {
+        "rd": 78,
+        "popularity": 100,
+        "plays": 525
+      },
+      "san": [
+        "e2",
+        "Re8+",
+        "Kxe8",
+        "h8=Q+"
+      ],
+      "reason": "Re8+ vacates h8 with check. After Kxe8, the h7 pawn promotes with check. Published SAN: e2 Re8+ Kxe8 h8=Q+."
+    },
+    {
+      "id": "5T9FM",
+      "fen": "2R5/2P3r1/8/8/8/8/4K1p1/6k1 b - - 6 64",
+      "moves": [
+        "g1h2",
+        "c8h8",
+        "h2g3",
+        "c7c8q"
+      ],
+      "rating": 937,
+      "themes": [
+        "advancedPawn",
+        "clearance",
+        "crushing",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/5T9FM",
+      "quality": {
+        "rd": 78,
+        "popularity": 97,
+        "plays": 845
+      },
+      "san": [
+        "Kh2",
+        "Rh8+",
+        "Kg3",
+        "c8=Q"
+      ],
+      "reason": "Rh8+ clears c8 and forces a king reply. The c7 pawn then promotes. Published SAN: Kh2 Rh8+ Kg3 c8=Q."
+    },
+    {
+      "id": "AuhcO",
+      "fen": "R7/P7/8/8/1r6/2p4K/3k4/8 b - - 0 46",
+      "moves": [
+        "c3c2",
+        "a8d8",
+        "d2c1",
+        "a7a8q"
+      ],
+      "rating": 1054,
+      "themes": [
+        "advancedPawn",
+        "clearance",
+        "crushing",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/AuhcO",
+      "quality": {
+        "rd": 77,
+        "popularity": 98,
+        "plays": 1021
+      },
+      "san": [
+        "c2",
+        "Rd8+",
+        "Kc1",
+        "a8=Q"
+      ],
+      "reason": "Rd8+ clears a8 and drives the black king to c1, blocking its own c2 pawn. White then promotes with a8=Q. Published SAN: c2 Rd8+ Kc1 a8=Q."
+    },
+    {
+      "id": "2Mc4A",
+      "fen": "8/PR6/5rkp/2p5/8/6P1/7K/8 b - - 0 53",
+      "moves": [
+        "f6a6",
+        "b7b6",
+        "a6b6",
+        "a7a8q"
+      ],
+      "rating": 1049,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "master",
+        "masterVsMaster",
+        "promotion",
+        "rookEndgame",
+        "short",
+        "superGM"
+      ],
+      "source": "https://lichess.org/training/2Mc4A",
+      "quality": {
+        "rd": 82,
+        "popularity": 95,
+        "plays": 7166
+      },
+      "san": [
+        "Ra6",
+        "Rb6+",
+        "Rxb6",
+        "a8=Q"
+      ],
+      "reason": "Rb6+ draws the defending rook from the a-file to b6. The a7 pawn then promotes. Published SAN: Ra6 Rb6+ Rxb6 a8=Q."
+    },
+    {
+      "id": "AgeRI",
+      "fen": "8/P1R5/6k1/5p2/7p/r7/1K6/8 b - - 1 54",
+      "moves": [
+        "a3a6",
+        "c7c6",
+        "a6c6",
+        "a7a8q"
+      ],
+      "rating": 1045,
+      "themes": [
+        "advancedPawn",
+        "advantage",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/AgeRI",
+      "quality": {
+        "rd": 80,
+        "popularity": 95,
+        "plays": 778
+      },
+      "san": [
+        "Ra6",
+        "Rc6+",
+        "Rxc6",
+        "a8=Q"
+      ],
+      "reason": "Rc6+ draws the defending rook from the a-file to c6. The a7 pawn then promotes. Published SAN: Ra6 Rc6+ Rxc6 a8=Q."
+    },
+    {
+      "id": "Smt15",
+      "fen": "8/2k5/7R/1K6/P7/8/1r5p/8 w - - 3 51",
+      "moves": [
+        "b5a6",
+        "b2b6",
+        "h6b6",
+        "h2h1q"
+      ],
+      "rating": 1055,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "deflection",
+        "endgame",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/Smt15",
+      "quality": {
+        "rd": 87,
+        "popularity": 94,
+        "plays": 555
+      },
+      "san": [
+        "Ka6",
+        "Rb6+",
+        "Rxb6",
+        "h1=Q"
+      ],
+      "reason": "Rb6+ draws the defending rook from the h-file to b6. The h2 pawn then promotes. Published SAN: Ka6 Rb6+ Rxb6 h1=Q."
+    }
+  ],
+  "r5-endgame-skewers": [
+    {
+      "id": "PF2dd",
+      "fen": "8/8/r2p3k/8/6R1/3KP1P1/8/8 w - - 0 67",
+      "moves": [
+        "d3d4",
+        "a6a4",
+        "d4d5",
+        "a4g4"
+      ],
+      "rating": 554,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/PF2dd",
+      "quality": {
+        "rd": 81,
+        "popularity": 100,
+        "plays": 334
+      },
+      "san": [
+        "Kd4",
+        "Ra4+",
+        "Kd5",
+        "Rxg4"
+      ],
+      "reason": "Ra4+ puts the white king on d4 between the checking rook and the rook on g4. After the king leaves, Rxg4 wins that rook. Published SAN: Kd4 Ra4+ Kd5 Rxg4."
+    },
+    {
+      "id": "DSB9m",
+      "fen": "8/8/3R2Pk/8/2Kp4/2p5/2r5/8 w - - 0 65",
+      "moves": [
+        "c4d4",
+        "c2d2",
+        "d4c3",
+        "d2d6"
+      ],
+      "rating": 567,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/DSB9m",
+      "quality": {
+        "rd": 89,
+        "popularity": 98,
+        "plays": 747
+      },
+      "san": [
+        "Kxd4",
+        "Rd2+",
+        "Kxc3",
+        "Rxd6"
+      ],
+      "reason": "Rd2+ lines up the king on d4 and rook on d6. After Kxc3, Rxd6 captures the rear rook. Published SAN: Kxd4 Rd2+ Kxc3 Rxd6."
+    },
+    {
+      "id": "MhxI1",
+      "fen": "8/5pk1/2r4p/7R/5P2/5K2/5P2/8 b - - 14 52",
+      "moves": [
+        "g7f6",
+        "h5h6",
+        "f6e7",
+        "h6c6"
+      ],
+      "rating": 568,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/MhxI1",
+      "quality": {
+        "rd": 86,
+        "popularity": 98,
+        "plays": 720
+      },
+      "san": [
+        "Kf6",
+        "Rxh6+",
+        "Ke7",
+        "Rxc6"
+      ],
+      "reason": "Rxh6+ checks the king on f6 with the rook on c6 behind it. After Ke7, Rxc6 wins the rook. Published SAN: Kf6 Rxh6+ Ke7 Rxc6."
+    },
+    {
+      "id": "SCh0x",
+      "fen": "8/8/3k4/3Pp3/2P4r/4KP2/2R5/8 w - - 10 60",
+      "moves": [
+        "e3f2",
+        "h4h2",
+        "f2e3",
+        "h2c2"
+      ],
+      "rating": 584,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/SCh0x",
+      "quality": {
+        "rd": 85,
+        "popularity": 100,
+        "plays": 682
+      },
+      "san": [
+        "Kf2",
+        "Rh2+",
+        "Ke3",
+        "Rxc2"
+      ],
+      "reason": "Rh2+ checks the king on f2 with the rook on c2 behind it. After Ke3, Rxc2 wins the rook. Published SAN: Kf2 Rh2+ Ke3 Rxc2."
+    },
+    {
+      "id": "w0GW4",
+      "fen": "8/8/6R1/6P1/6kP/8/p6r/K7 b - - 0 58",
+      "moves": [
+        "g4h4",
+        "g6h6",
+        "h4g5",
+        "h6h2"
+      ],
+      "rating": 588,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/w0GW4",
+      "quality": {
+        "rd": 83,
+        "popularity": 100,
+        "plays": 576
+      },
+      "san": [
+        "Kxh4",
+        "Rh6+",
+        "Kxg5",
+        "Rxh2"
+      ],
+      "reason": "Rh6+ checks the king on h4 with the rook on h2 behind it. After Kxg5, Rxh2 wins the rook. Published SAN: Kxh4 Rh6+ Kxg5 Rxh2."
+    },
+    {
+      "id": "5TD72",
+      "fen": "8/8/8/8/8/8/krK5/5R2 w - - 13 112",
+      "moves": [
+        "c2c1",
+        "b2b1",
+        "c1d2",
+        "b1f1"
+      ],
+      "rating": 591,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/5TD72",
+      "quality": {
+        "rd": 84,
+        "popularity": 100,
+        "plays": 462
+      },
+      "san": [
+        "Kc1",
+        "Rb1+",
+        "Kd2",
+        "Rxf1"
+      ],
+      "reason": "Rb1+ checks the king on c1 with the rook on f1 behind it. After Kd2, Rxf1 wins the rook. Published SAN: Kc1 Rb1+ Kd2 Rxf1."
+    },
+    {
+      "id": "qGfb3",
+      "fen": "6R1/8/8/7P/6k1/5p2/7r/3K4 b - - 5 52",
+      "moves": [
+        "g4h5",
+        "g8h8",
+        "h5g4",
+        "h8h2"
+      ],
+      "rating": 593,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/qGfb3",
+      "quality": {
+        "rd": 89,
+        "popularity": 98,
+        "plays": 967
+      },
+      "san": [
+        "Kxh5",
+        "Rh8+",
+        "Kg4",
+        "Rxh2"
+      ],
+      "reason": "Rh8+ checks the king on h5 with the rook on h2 behind it. After Kg4, Rxh2 wins the rook. Published SAN: Kxh5 Rh8+ Kg4 Rxh2."
+    }
+  ],
+  "r5-underpromotion": [
+    {
+      "id": "Yb5Fq",
+      "fen": "2R5/8/8/3p1k2/P5pK/1P6/2P2p1r/8 w - - 2 50",
+      "moves": [
+        "h4g3",
+        "f2f1n"
+      ],
+      "rating": 779,
+      "themes": [
+        "advancedPawn",
+        "cornerMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/Yb5Fq",
+      "quality": {
+        "rd": 86,
+        "popularity": 90,
+        "plays": 3276
+      },
+      "san": [
+        "Kg3",
+        "f1=N#"
+      ],
+      "reason": "f1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, c8d8 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: Kg3 f1=N#."
+    },
+    {
+      "id": "thYKI",
+      "fen": "8/pR1P4/7p/1kP3p1/3K4/8/P7/4r3 b - - 4 45",
+      "moves": [
+        "b5c6",
+        "d7d8n"
+      ],
+      "rating": 839,
+      "themes": [
+        "advancedPawn",
+        "cornerMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/thYKI",
+      "quality": {
+        "rd": 85,
+        "popularity": 91,
+        "plays": 26546
+      },
+      "san": [
+        "Kc6",
+        "d8=N#"
+      ],
+      "reason": "d8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a6 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: Kc6 d8=N#."
+    },
+    {
+      "id": "2bNV8",
+      "fen": "6R1/pp3P1k/5p1p/8/P3pP2/7P/BpP4K/2q2Q2 b - - 0 35",
+      "moves": [
+        "c1f1",
+        "f7f8n"
+      ],
+      "rating": 840,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/2bNV8",
+      "quality": {
+        "rd": 83,
+        "popularity": 89,
+        "plays": 3709
+      },
+      "san": [
+        "Qxf1",
+        "f8=N#"
+      ],
+      "reason": "f8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a6 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: Qxf1 f8=N#."
+    },
+    {
+      "id": "DuYAe",
+      "fen": "8/4NP1k/3pK2p/8/3B4/p7/1p5P/4b3 b - - 1 52",
+      "moves": [
+        "b2b1q",
+        "f7f8n"
+      ],
+      "rating": 870,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/DuYAe",
+      "quality": {
+        "rd": 83,
+        "popularity": 90,
+        "plays": 8468
+      },
+      "san": [
+        "b1=Q",
+        "f8=N#"
+      ],
+      "reason": "f8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, d6d5 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: b1=Q f8=N#."
+    },
+    {
+      "id": "QAnl6",
+      "fen": "8/p1p1R1P1/3p4/1p2kP2/6K1/8/P7/2r5 b - - 4 39",
+      "moves": [
+        "e5f6",
+        "g7g8n"
+      ],
+      "rating": 954,
+      "themes": [
+        "advancedPawn",
+        "cornerMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/QAnl6",
+      "quality": {
+        "rd": 82,
+        "popularity": 91,
+        "plays": 3241
+      },
+      "san": [
+        "Kf6",
+        "g8=N#"
+      ],
+      "reason": "g8=N# is the only immediate checkmate. Queen, rook and bishop promotions all allow replies. The claim is mate now, not that a queen must lose. Published SAN: Kf6 g8=N#."
+    },
+    {
+      "id": "tpsGj",
+      "fen": "3r1k2/1R4R1/p7/1b4p1/1P2P3/P3KP2/3p2P1/8 w - - 4 51",
+      "moves": [
+        "g7h7",
+        "d2d1n"
+      ],
+      "rating": 894,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/tpsGj",
+      "quality": {
+        "rd": 82,
+        "popularity": 86,
+        "plays": 1156
+      },
+      "san": [
+        "Rh7",
+        "d1=N#"
+      ],
+      "reason": "d1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, b7b8 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: Rh7 d1=N#."
+    },
+    {
+      "id": "w4rdF",
+      "fen": "7k/R5R1/8/7p/2p2p1P/2Pb3K/1r4p1/8 w - - 0 38",
+      "moves": [
+        "g7e7",
+        "g2g1n"
+      ],
+      "rating": 929,
+      "themes": [
+        "advancedPawn",
+        "cornerMate",
+        "endgame",
+        "master",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/w4rdF",
+      "quality": {
+        "rd": 84,
+        "popularity": 89,
+        "plays": 14773
+      },
+      "san": [
+        "Rge7",
+        "g1=N#"
+      ],
+      "reason": "g1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, a7a8 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: Rge7 g1=N#."
+    }
+  ],
+  "r5-gate-review": [
+    {
+      "id": "oBLk6",
+      "fen": "5k2/5p2/p2r1q2/8/P6P/6Q1/5PP1/R5K1 w - - 3 49",
+      "moves": [
+        "h4h5",
+        "f6a1"
+      ],
+      "rating": 820,
+      "themes": [
+        "crushing",
+        "endgame",
+        "hangingPiece",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/oBLk6",
+      "quality": {
+        "rd": 87,
+        "popularity": 89,
+        "plays": 609
+      },
+      "san": [
+        "h5",
+        "Qxa1+"
+      ],
+      "reason": "Qxa1+ captures the unguarded rook with check. The published line stops at that material gain. Published SAN: h5 Qxa1+."
+    },
+    {
+      "id": "YchKS",
+      "fen": "6k1/6pp/1R2b3/8/2prB3/8/P1P2PPP/6K1 w - - 0 26",
+      "moves": [
+        "b6e6",
+        "d4d1"
+      ],
+      "rating": 424,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove"
+      ],
+      "source": "https://lichess.org/training/YchKS",
+      "quality": {
+        "rd": 89,
+        "popularity": 100,
+        "plays": 465
+      },
+      "san": [
+        "Rxe6",
+        "Rd1#"
+      ],
+      "reason": "Rd1 is immediate back-rank mate. White’s f2, g2 and h2 pawns block the king. Published SAN: Rxe6 Rd1#."
+    },
+    {
+      "id": "2cGjV",
+      "fen": "6k1/1p3ppp/p1p1p3/8/2P5/6QP/PP3PPK/3q4 b - - 3 26",
+      "moves": [
+        "d1a4",
+        "g3b8"
+      ],
+      "rating": 600,
+      "themes": [
+        "backRankMate",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "queenEndgame"
+      ],
+      "source": "https://lichess.org/training/2cGjV",
+      "quality": {
+        "rd": 87,
+        "popularity": 99,
+        "plays": 790
+      },
+      "san": [
+        "Qa4",
+        "Qb8#"
+      ],
+      "reason": "Qb8# mates along the back rank. Black’s f7, g7 and h7 pawns close the king’s escape squares. Published SAN: Qa4 Qb8#."
+    },
+    {
+      "id": "GCVGr",
+      "fen": "8/p7/8/1p1p4/1P1p2k1/3K4/P7/8 b - - 1 48",
+      "moves": [
+        "g4f4",
+        "d3d4",
+        "f4f5",
+        "d4d5"
+      ],
+      "rating": 707,
+      "themes": [
+        "crushing",
+        "endgame",
+        "pawnEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/GCVGr",
+      "quality": {
+        "rd": 82,
+        "popularity": 100,
+        "plays": 375
+      },
+      "san": [
+        "Kf4",
+        "Kxd4",
+        "Kf5",
+        "Kxd5"
+      ],
+      "reason": "The white king safely captures d4 and then d5. Neither target is protected by the distant black king. Published SAN: Kf4 Kxd4 Kf5 Kxd5."
+    },
+    {
+      "id": "VIy5h",
+      "fen": "8/3k4/6p1/3K2P1/8/8/8/8 w - - 3 60",
+      "moves": [
+        "d5c5",
+        "d7e6",
+        "c5d4",
+        "e6f5",
+        "d4e3",
+        "f5g5"
+      ],
+      "rating": 742,
+      "themes": [
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame"
+      ],
+      "source": "https://lichess.org/training/VIy5h",
+      "quality": {
+        "rd": 82,
+        "popularity": 100,
+        "plays": 328
+      },
+      "san": [
+        "Kc5",
+        "Ke6",
+        "Kd4",
+        "Kf5",
+        "Ke3",
+        "Kxg5"
+      ],
+      "reason": "Ke6 and Kf5 follow the shortest open route to g5. Each step is the only legal king move that shortens that route. Published SAN: Kc5 Ke6 Kd4 Kf5 Ke3 Kxg5."
+    },
+    {
+      "id": "87kiD",
+      "fen": "4k3/8/2R5/5p2/P7/7r/2p2K2/8 w - - 0 45",
+      "moves": [
+        "c6c2",
+        "h3h2",
+        "f2f3",
+        "h2c2"
+      ],
+      "rating": 605,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/87kiD",
+      "quality": {
+        "rd": 82,
+        "popularity": 100,
+        "plays": 346
+      },
+      "san": [
+        "Rxc2",
+        "Rh2+",
+        "Kf3",
+        "Rxc2"
+      ],
+      "reason": "Rh2+ checks the king on f2 with the rook on c2 behind it. After Kf3, Rxc2 wins the rook. Published SAN: Rxc2 Rh2+ Kf3 Rxc2."
+    },
+    {
+      "id": "D38Qx",
+      "fen": "2k5/R7/1p6/2p5/8/6K1/7r/8 b - - 3 43",
+      "moves": [
+        "h2h8",
+        "a7a8",
+        "c8b7",
+        "a8h8"
+      ],
+      "rating": 608,
+      "themes": [
+        "crushing",
+        "endgame",
+        "rookEndgame",
+        "short",
+        "skewer"
+      ],
+      "source": "https://lichess.org/training/D38Qx",
+      "quality": {
+        "rd": 87,
+        "popularity": 98,
+        "plays": 1028
+      },
+      "san": [
+        "Rh8",
+        "Ra8+",
+        "Kb7",
+        "Rxh8"
+      ],
+      "reason": "Ra8+ checks the king on c8 with the rook on h8 behind it. After Kb7, Rxh8 wins the rook. Published SAN: Rh8 Ra8+ Kb7 Rxh8."
+    },
+    {
+      "id": "YyCbR",
+      "fen": "8/5p2/1P6/8/5p2/2P3kp/1P6/5K2 w - - 0 54",
+      "moves": [
+        "b6b7",
+        "h3h2",
+        "b7b8q",
+        "h2h1q"
+      ],
+      "rating": 802,
+      "themes": [
+        "advancedPawn",
+        "advantage",
+        "endgame",
+        "pawnEndgame",
+        "promotion",
+        "short"
+      ],
+      "source": "https://lichess.org/training/YyCbR",
+      "quality": {
+        "rd": 82,
+        "popularity": 98,
+        "plays": 485
+      },
+      "san": [
+        "b7",
+        "h2",
+        "b8=Q",
+        "h1=Q+"
+      ],
+      "reason": "White needs one push and Black needs two. After h2 and b8=Q, h1=Q+ gives check. Both sides keep queens; conversion remains outside this line. Published SAN: b7 h2 b8=Q h1=Q+."
+    },
+    {
+      "id": "8bbWP",
+      "fen": "8/8/8/8/1Ppk1K2/8/P7/8 w - - 1 55",
+      "moves": [
+        "b4b5",
+        "c4c3",
+        "b5b6",
+        "c3c2",
+        "b6b7",
+        "c2c1q"
+      ],
+      "rating": 818,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "promotion"
+      ],
+      "source": "https://lichess.org/training/8bbWP",
+      "quality": {
+        "rd": 80,
+        "popularity": 100,
+        "plays": 309
+      },
+      "san": [
+        "b5",
+        "c3",
+        "b6",
+        "c2",
+        "b7",
+        "c1=Q+"
+      ],
+      "reason": "Both leading pawns need three pushes. Black moves first and promotes with check while White is on b7. Published SAN: b5 c3 b6 c2 b7 c1=Q+."
+    },
+    {
+      "id": "JB3YP",
+      "fen": "8/5P2/1Q6/1p1pk3/1P6/3Kp3/r1pb4/8 w - - 0 45",
+      "moves": [
+        "f7f8q",
+        "c2c1n"
+      ],
+      "rating": 1177,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/JB3YP",
+      "quality": {
+        "rd": 85,
+        "popularity": 91,
+        "plays": 2387
+      },
+      "san": [
+        "f8=Q",
+        "c1=N#"
+      ],
+      "reason": "c1=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, f8g8 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: f8=Q c1=N#."
+    },
+    {
+      "id": "2Qu17",
+      "fen": "8/6P1/3n1KBk/8/8/8/1p6/8 b - - 2 52",
+      "moves": [
+        "b2b1q",
+        "g7g8n"
+      ],
+      "rating": 1289,
+      "themes": [
+        "advancedPawn",
+        "endgame",
+        "mate",
+        "mateIn1",
+        "oneMove",
+        "promotion",
+        "underPromotion"
+      ],
+      "source": "https://lichess.org/training/2Qu17",
+      "quality": {
+        "rd": 84,
+        "popularity": 90,
+        "plays": 3579
+      },
+      "san": [
+        "b1=Q",
+        "g8=N#"
+      ],
+      "reason": "g8=N# gives immediate checkmate. Queen, rook and bishop promotions do not mate; after a queen, d6b7 is a legal reply. The claim is mate now, not that a queen must lose. Published SAN: b1=Q g8=N#."
+    },
+    {
+      "id": "2RsIw",
+      "fen": "6R1/kp4P1/2p5/8/8/7K/p1r4P/8 b - - 0 38",
+      "moves": [
+        "c2c5",
+        "g8a8",
+        "a7a8",
+        "g7g8q",
+        "a8a7",
+        "g8a2"
+      ],
+      "rating": 1000,
+      "themes": [
+        "advancedPawn",
+        "attraction",
+        "crushing",
+        "endgame",
+        "long",
+        "promotion",
+        "rookEndgame"
+      ],
+      "source": "https://lichess.org/training/2RsIw",
+      "quality": {
+        "rd": 86,
+        "popularity": 89,
+        "plays": 987
+      },
+      "san": [
+        "Rc5",
+        "Ra8+",
+        "Kxa8",
+        "g8=Q+",
+        "Ka7",
+        "Qxa2+"
+      ],
+      "reason": "Ra8+ clears g8 with check. After the king captures, g8=Q+ forces another reply; the new queen then captures a2. Published SAN: Rc5 Ra8+ Kxa8 g8=Q+ Ka7 Qxa2+."
+    },
+    {
+      "id": "AzfPs",
+      "fen": "2k5/1R4P1/5P2/8/8/8/1p4K1/1r6 w - - 1 49",
+      "moves": [
+        "b7f7",
+        "b1g1",
+        "g2g1",
+        "b2b1q"
+      ],
+      "rating": 1050,
+      "themes": [
+        "advancedPawn",
+        "attraction",
+        "crushing",
+        "endgame",
+        "master",
+        "promotion",
+        "rookEndgame",
+        "short"
+      ],
+      "source": "https://lichess.org/training/AzfPs",
+      "quality": {
+        "rd": 77,
+        "popularity": 99,
+        "plays": 1620
+      },
+      "san": [
+        "Rf7",
+        "Rg1+",
+        "Kxg1",
+        "b1=Q+"
+      ],
+      "reason": "Rg1+ clears b1 with check. After the king captures, b1=Q+ promotes with check. Published SAN: Rf7 Rg1+ Kxg1 b1=Q+."
+    }
+  ]
+}

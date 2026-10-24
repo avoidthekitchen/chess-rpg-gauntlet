@@ -1,5 +1,16 @@
 # Build progress
 
+## 2026-10-24 — Region 5: Bone Wardens (#44)
+
+- Added six lessons and a six-wave review using 55 unchanged published sources; the registered journey now contains 255 distinct positions.
+- Added the keep landscape, watchful faction voices and a replayable ending that opens the keep’s gate. The chosen companion remains the coach.
+- Independent Astra review matched all 55 source records and their mechanisms. Applied P2: kf9cP is wave 3 main, teaching opponent-first promotion before review.
+- Added regression coverage for that teaching order, registry integration, chapter ending and honest faction identities.
+- `npm run ci` passes: type-check, production build and 407 tests in 28 files. Both engine groups are skipped by the unchanged dependency selector.
+- Full release regressions remain pending. The retained baseline reproduced r1-guard Brave’s bonus-rate failure: 11/23 wins, below 50%; #42 tracks investigation.
+- Full normal-UI browser runs, all four viewports and staging checks remain pending. No production release is claimed.
+
+
 ## 2026-10-24 — Region 4: Iron Legion (#43)
 
 - Added six lessons and General Flint’s six-wave review, using 55 unchanged sources.

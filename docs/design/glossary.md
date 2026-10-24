@@ -73,6 +73,7 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | Shadow Cult | Region 3, the bound villages |
 | The Iron March | Region 4, the Iron Legion’s fortress valley |
 | Flintwatch | The Iron March’s fortress town |
+| The Keep’s Gate | Region 5’s destination, guarded by the Bone Wardens |
 
 ## Current journey terms
 
@@ -116,3 +117,5 @@ The following names describe the retained original game or later ideas, not curr
 | Gauntlet | The replay mode that unlocks after the campaign |
 
 General Flint is the Iron Legion’s proud general and Region 4 review host. He returns to Pawnshire’s side after the review.
+
+The Bone Wardens collectively host Region 5’s review. They are the Lich King’s skeleton-animal vanguard; no new named leader is introduced.

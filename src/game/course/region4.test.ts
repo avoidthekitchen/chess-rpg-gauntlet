@@ -145,6 +145,7 @@ describe('Iron Legion published teaching evidence', () => {
         const guard = ev.guard as Square;
         const king = ev.king as Square;
         const target = (ev.checkingSquare ?? first.to) as Square;
+        expect(target, `${p.id}: the pinned guard cannot capture the checking piece`).toBe(first.to);
         expect(start.attackers(target, enemy), p.id).toContain(guard);
         const unpinned = new Chess(start.fen());
         expect(unpinned.attackers(king, first.color), p.id).toHaveLength(0);

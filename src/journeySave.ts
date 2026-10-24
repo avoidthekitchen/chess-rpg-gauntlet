@@ -71,6 +71,7 @@ export function loadJourney(): JourneySave | null {
       (Object.hasOwn(value, 'finaleComplete') && typeof value.finaleComplete !== 'boolean')) return null;
     const save = value as unknown as JourneySave;
     save.finaleComplete ??= false;
+    save.endingSeen = value.endingSeen === true;
     if (!save.completed.every(id => lessonUnlocked(save, id)) || !regionUnlocked(save, save.currentRegion)) return null;
     for (const [id, stars] of Object.entries(value.stars)) {
       if (!save.completed.includes(id) || !object(stars) || typeof stars.clean !== 'boolean' || typeof stars.noHint !== 'boolean') return null;
@@ -96,7 +97,8 @@ export function loadJourney(): JourneySave | null {
       } else settleJourney(save, true, true);
     }
     const finalLesson = COURSE_REGIONS.find(region => region.kind === 'finale')?.lessons.at(-1);
-    if (save.finaleComplete !== !!(finalLesson && save.completed.includes(finalLesson))) return null;
+    save.finaleComplete = !!(finalLesson && save.completed.includes(finalLesson));
+    if (!save.finaleComplete) save.endingSeen = false;
     persistJourney(save);
     return save;
   } catch { return null; }

@@ -178,16 +178,20 @@ describe('finale save recovery', () => {
     expect(loadJourney()!.attempts).toBe(2);
   });
 
-  it('rejects malformed flags and contradictory finale completion records', () => {
+  it('rejects malformed flags but repairs derived finale completion records', () => {
     for (const flag of [null, 1, 'true', {}, []]) {
       data.set(JOURNEY_KEY, JSON.stringify({ ...newJourney(), finaleComplete: flag }));
       expect(loadJourney()).toBeNull();
     }
     persistJourney({ ...newJourney(), finaleComplete: true });
-    expect(loadJourney()).toBeNull();
+    expect(loadJourney()!.finaleComplete).toBe(false);
     const completed = newJourney();
     completed.completed = ids;
     persistJourney(completed);
-    expect(loadJourney()).toBeNull();
+    expect(loadJourney()!.finaleComplete).toBe(true);
+    const { finaleComplete: _, ...missingFlag } = completed;
+    data.set(JOURNEY_KEY, JSON.stringify(missingFlag));
+    expect(loadJourney()!.completed).toEqual(ids);
+    expect(loadJourney()!.finaleComplete).toBe(true);
   });
 });

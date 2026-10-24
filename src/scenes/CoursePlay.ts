@@ -2,7 +2,7 @@ import { Chess, type Move, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
-import { beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
+import { journeyMilestone, beginJourneyLesson, lessonUnlocked, settleJourney, type JourneySave } from '../game/journey';
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
@@ -426,9 +426,8 @@ export class CoursePlayScene extends BaseScene {
   private home() {
     this.session++; this.holds.clear(); this.cueHolds.clear(); this.cue = null; this.speech.clear(); this.busy = false;
     settleJourney(this.save, true); persistJourney(this.save);
-    const acceptedWin = ['won', 'replying'].includes(this.phase) && this.save.active?.lessonId === this.lesson.id && this.save.active.run.status === 'won';
-    const page = this.exampleOnly ? 'journal' : !acceptedWin || !this.lesson.review ? 'map'
-      : this.lesson.id === 'finale-threshold' ? 'interlude' : this.lesson.id === 'finale-last-board' ? 'ending' : 'story';
+    const milestone = ['won', 'replying'].includes(this.phase) ? journeyMilestone(this.save, this.lesson.id) : null;
+    const page = this.exampleOnly ? 'journal' : milestone === 'chapter' ? 'story' : milestone ?? 'map';
     goTo(this.game, 'journey', { page, storyRegion: this.lesson.regionId });
   }
 

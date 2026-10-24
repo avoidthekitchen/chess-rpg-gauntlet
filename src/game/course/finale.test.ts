@@ -3,7 +3,7 @@ import { Chess, type Color, type Square } from 'chess.js';
 import pack from './finalePuzzles.json';
 import evidence from './finaleEvidence.json';
 import { finaleSeeds, finaleRegion } from './finale';
-import { COURSE_LESSONS, type CourseLesson } from '../curriculum';
+import { COURSE_LESSONS, courseLesson } from '../curriculum';
 import { moveAmbush, nextAmbushWave, startAmbush, uciMove, wavePuzzle } from '../ambush';
 
 const puzzles = Object.values(pack).flat();
@@ -57,7 +57,7 @@ describe('Lich King mixed capstone content', () => {
       for (const prerequisite of e.prerequisites) expect(COURSE_LESSONS.some(l => l.id === prerequisite), prerequisite).toBe(true);
     }
     expect(evidence.positions.filter(e => e.slot.startsWith('main')).map(e => e.kind))
-      .toEqual(['fork', 'defend', 'passed', 'queenMate', 'between', 'escape', 'support', 'xrayMate']);
+      .toEqual(['fork', 'defend', 'passed', 'queenMate', 'between', 'support', 'escape', 'xrayMate']);
   });
 
   it('reserves every source apart from all earlier chapters, legacy ambushes, bounties, and warm-ups', () => {
@@ -214,13 +214,8 @@ describe('Lich King mixed capstone content', () => {
 
   it('completes every backup path through the real runner, ending the last encounter in actual mate', () => {
     for (const seed of finaleSeeds) {
-      const selected = pack[seed.id as keyof typeof pack];
-      const lesson: CourseLesson = {
-        ...seed, regionId: 'finale', review: true, kind: 'ambush', reward: 0, bonuses: [],
-        before: [seed.before], after: [seed.after], show: selected[0],
-        showLines: { n: seed.demo, b: seed.demo, r: seed.demo },
-        waves: Array.from({ length: 4 }, (_, i) => ({ main: selected[i * 2 + 1], backup: selected[i * 2 + 2], line: seed.coaching })),
-      };
+      const lesson = courseLesson(seed.id)!;
+      expect(lesson.regionId).toBe('finale');
       for (const backup of [undefined, 0, 1, 2, 3]) {
         let run = startAmbush(lesson, 'knight', backup);
         while (run.status !== 'won') {

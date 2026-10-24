@@ -7,7 +7,7 @@ export const finaleSeeds: LessonSeed[] = [
     objective: 'Choose what each board needs, using the ideas learned along the journey.',
     takeaway: 'Start with both kings. Compare forcing moves, calculate the reply, and take your time.',
     before: 'The Lich King waits inside the keep. “I have kept your crown safe. You need only leave it here.”',
-    after: 'The Lich King studies the boards. “You returned after every mistake.” Your companion stays beside you as he sets one final table.',
+    after: 'The Lich King straightens a fallen piece. For once, he leaves it on the board.',
     demo: 'Check both kings, compare your possible moves, and calculate the opponent’s strongest reply.',
     coaching: 'Read the whole board. What threatens your king, and what changes after your move?',
   },
@@ -24,7 +24,7 @@ export const finaleSeeds: LessonSeed[] = [
 
 export const finaleRegion: CourseRegion = {
   id: 'finale', kind: 'finale', mapArt: 'map-finale', title: 'The Lich King',
-  subtitle: 'One final table. Everything you have learned.', town: 'The Keep', bossName: 'The Lich King',
+  subtitle: 'The crown awaits. Ideas from every chapter.', town: 'The Keep', bossName: 'The Lich King',
   intro: 'The keep is quiet. The former Lion King waits with the crown he could never bear to lose. Your companion enters beside you.',
   outro: 'The Lich King accepts checkmate. Pawnshire is free, and the crown is yours. Your companion stays for the road home.',
   lessons: finaleSeeds.map(seed => seed.id),

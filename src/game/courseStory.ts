@@ -51,18 +51,18 @@ export function finaleInterlude(starter: StarterType): StoryLine[] {
       b: 'A mistake is something to study, Your Majesty.',
       r: 'Set the pieces straight. Take the next step.',
     }[starter] },
-    { speaker: 'The Lich King', line: 'Then sit with me. One last table.' },
+    { speaker: 'The Lich King', line: 'Then sit with me. Let us finish what we began.' },
   ];
 }
 
 export function journeyEnding(starter: StarterType): StoryLine[] {
   return [
-    { speaker: 'The Lich King', line: 'Checkmate. I accept it. I have kept this crown too long.' },
+    { speaker: 'The Lich King', line: 'I have kept this crown too long. Take it home.' },
     { speaker: 'Saffron, the Fox Queen', line: 'The gates are open. Pawnshire is waiting for its king.' },
     { speaker: STARTERS[starter].name, line: {
       n: 'From the ferry to the keep. Not bad for a few hops.',
-      b: 'A kingdom restored, and still more to learn. A good beginning.',
-      r: 'The road is safe. Let us go home.',
+      b: 'From the Cult’s closed ledger to an open gate. There is always more to learn.',
+      r: 'We held the Legion’s gate. Now we can open this one.',
     }[starter] },
   ];
 }

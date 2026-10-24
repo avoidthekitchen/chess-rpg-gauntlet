@@ -27,8 +27,9 @@ The shared journey registers both encounters, saves final completion, and provid
 ## Coverage matrix
 
 Every prerequisite below names an actual delivered lesson. Main and backup assess the same taught mechanism.
-Both encounters include attack, defence, short endgame decisions, and mating play.
+Together the encounters revisit ideas from every chapter. The threshold assesses Regions 2, 4, and 5; the last encounter also draws on Regions 1 and 3.
 The second encounter combines familiar ideas; its backups introduce no new technique.
+Its order is intermediate capture, rook support, pin escape, then checkmate. Ratings guide curation, not a promised rising difficulty at every board.
 
 | Encounter / slot | Main / backup | Delivered prerequisites | Verified decision |
 | --- | --- | --- | --- |
@@ -37,8 +38,8 @@ The second encounter combines familiar ideas; its backups introduce no new techn
 | Threshold / 3 | JNKkg / gI0hw | `r5-passed-pawns`, `r5-pawn-races` | Three passed-pawn pushes promote with check before the opponent can promote. |
 | Threshold / 4 | 0aWlo / 0RaDJ | `r2-mate-in-two` | A queen check, king reply, and second queen move produce legal mate. |
 | Last board / 1 | 1xVVV / LmJKq | `r4-between`, `r2-remove-defender` | Capture the enemy queen’s knight defender with check before taking the queen. |
-| Last board / 2 | QWUnM / l0NYo | `r3-escape-pins`, `r1-safe-captures` | A king-pinned piece captures its own pinning attacker. Continue through the published reply and capture. |
-| Last board / 3 | mqbS0 / ykqWD | `r5-rook-support`, `r4-deflect` | A rook check draws the enemy rook off the pawn’s file, allowing promotion. |
+| Last board / 3 | QWUnM / l0NYo | `r3-escape-pins`, `r1-safe-captures` | A king-pinned piece captures its own pinning attacker. Continue through the published reply and capture. |
+| Last board / 2 | mqbS0 / ykqWD | `r5-rook-support`, `r4-deflect` | A rook check draws the enemy rook off the pawn’s file, allowing promotion. |
 | Last board / 4 | uFhSB / oH2I9 | `r3-xrays`, plus `r1-back-rank` or `r2-mate-in-two` | An enemy blocker recaptures on the checking square. The rear rook or queen recaptures for mate on the back rank. |
 
 The stored threshold example, `ERa4T`, revisits `r3-skewers`: a bishop checks a king and captures the rook behind it.

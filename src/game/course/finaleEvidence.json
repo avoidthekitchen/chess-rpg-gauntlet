@@ -257,7 +257,7 @@
     {
       "id": "1xVVV",
       "lesson": "finale-last-board",
-      "slot": "main-1",
+      "slot": "main1",
       "kind": "between",
       "prerequisites": [
         "r4-between",
@@ -282,7 +282,7 @@
     {
       "id": "LmJKq",
       "lesson": "finale-last-board",
-      "slot": "backup-1",
+      "slot": "backup1",
       "kind": "between",
       "prerequisites": [
         "r4-between",
@@ -305,9 +305,59 @@
       "sourceLineSha256": "f79ce7daaa9783cf591ce3ac5cc2822a0207fb3d16b69bf9e3f85dd471f16c7a"
     },
     {
+      "id": "mqbS0",
+      "lesson": "finale-last-board",
+      "slot": "main2",
+      "kind": "support",
+      "prerequisites": [
+        "r5-rook-support",
+        "r4-deflect"
+      ],
+      "attacker": "",
+      "front": "a3",
+      "rear": "",
+      "target": "a8",
+      "threats": [],
+      "san": [
+        "Ra3",
+        "Rxg3+",
+        "Rxg3",
+        "a8=Q+"
+      ],
+      "explanation": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn\u2019s file to g3; the pawn then promotes.",
+      "sourceGame": "https://lichess.org/4fMYUlLq/black#110",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "e6ab4af96672a7953941ec308de71459406e2b8559f08faae34c0201dbb70aee"
+    },
+    {
+      "id": "ykqWD",
+      "lesson": "finale-last-board",
+      "slot": "backup2",
+      "kind": "support",
+      "prerequisites": [
+        "r5-rook-support",
+        "r4-deflect"
+      ],
+      "attacker": "",
+      "front": "b5",
+      "rear": "",
+      "target": "b8",
+      "threats": [],
+      "san": [
+        "Kg7",
+        "Rxg5+",
+        "Rxg5",
+        "b8=Q"
+      ],
+      "explanation": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn\u2019s file to g5; the pawn then promotes.",
+      "sourceGame": "https://lichess.org/wzKJUYmd/black#100",
+      "sourceOpeningTags": "",
+      "sourceLineSha256": "dc4bcab8c450ca9fb12aa1cedfad57c71c1b85ac6038a1361c75e91581ddf56d"
+    },
+    {
       "id": "QWUnM",
       "lesson": "finale-last-board",
-      "slot": "main-2",
+      "slot": "main3",
       "kind": "escape",
       "prerequisites": [
         "r3-escape-pins",
@@ -332,7 +382,7 @@
     {
       "id": "l0NYo",
       "lesson": "finale-last-board",
-      "slot": "backup-2",
+      "slot": "backup3",
       "kind": "escape",
       "prerequisites": [
         "r3-escape-pins",
@@ -355,59 +405,9 @@
       "sourceLineSha256": "8aff24794d4cc667bc27cdfb5337b64227233102e4b5d924d9e923425b429273"
     },
     {
-      "id": "mqbS0",
-      "lesson": "finale-last-board",
-      "slot": "main-3",
-      "kind": "support",
-      "prerequisites": [
-        "r5-rook-support",
-        "r4-deflect"
-      ],
-      "attacker": "",
-      "front": "a3",
-      "rear": "",
-      "target": "a8",
-      "threats": [],
-      "san": [
-        "Ra3",
-        "Rxg3+",
-        "Rxg3",
-        "a8=Q+"
-      ],
-      "explanation": "The enemy rook on a3 can capture a queen promoted on a8. The checking capture Rxg3+ draws that rook off the pawn’s file to g3; the pawn then promotes.",
-      "sourceGame": "https://lichess.org/4fMYUlLq/black#110",
-      "sourceOpeningTags": "",
-      "sourceLineSha256": "e6ab4af96672a7953941ec308de71459406e2b8559f08faae34c0201dbb70aee"
-    },
-    {
-      "id": "ykqWD",
-      "lesson": "finale-last-board",
-      "slot": "backup-3",
-      "kind": "support",
-      "prerequisites": [
-        "r5-rook-support",
-        "r4-deflect"
-      ],
-      "attacker": "",
-      "front": "b5",
-      "rear": "",
-      "target": "b8",
-      "threats": [],
-      "san": [
-        "Kg7",
-        "Rxg5+",
-        "Rxg5",
-        "b8=Q"
-      ],
-      "explanation": "The enemy rook on b5 can capture a queen promoted on b8. The checking capture Rxg5+ draws that rook off the pawn’s file to g5; the pawn then promotes.",
-      "sourceGame": "https://lichess.org/wzKJUYmd/black#100",
-      "sourceOpeningTags": "",
-      "sourceLineSha256": "dc4bcab8c450ca9fb12aa1cedfad57c71c1b85ac6038a1361c75e91581ddf56d"
-    },
-    {
       "id": "uFhSB",
       "lesson": "finale-last-board",
-      "slot": "main-4",
+      "slot": "main4",
       "kind": "xrayMate",
       "prerequisites": [
         "r3-xrays",
@@ -432,7 +432,7 @@
     {
       "id": "oH2I9",
       "lesson": "finale-last-board",
-      "slot": "backup-4",
+      "slot": "backup4",
       "kind": "xrayMate",
       "prerequisites": [
         "r3-xrays",

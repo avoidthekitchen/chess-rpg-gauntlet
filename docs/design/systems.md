@@ -18,10 +18,13 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 **Battle types**
 
 1. **Skirmish:** small armies. Checkmate, or win material within a set number of moves.
-2. **Ambush:** a real puzzle position ("the enemy walked into your trap, find the strike"), then play it out to a win against the AI. Turning an advantage into a win is a skill puzzles alone don't teach.
+2. **Ambush:** published Lichess puzzles framed as one fight ([below](#ambushes)). The default map node from Region 2 on.
 3. **Siege:** survive a set number of turns while protecting village squares. Teaches defence and prophylaxis.
 4. **Promotion run:** escort a pawn to the far rank, where it's promoted in a small ceremony. Teaches pawn endgames.
 5. **Boss duel:** a nearly full or full game against a faction leader.
+6. **Technique node:** a Lichess Practice position played out against a perfect defender, with unlimited undo and nothing lost by failing, like Region 1's rook and queen mates. It pays its reward on the first clear and counts as a win on the map (`src/game/academy.ts`). Used for endgames puzzles can't teach ([Encounter kinds](campaign.md#encounter-kinds)).
+
+Skirmish, siege and promotion run are **custom battles**: positions of our own, checked with engine playtests. The core game uses only Region 1's five; new ones come after it ([build order](../design.md#build-order-core-game-first)).
 
 **Your pieces in battle.** Every piece type can be used from the start, because players either finished the tutorial or said they know the moves. Lesson battles (skirmish, siege, promotion run) use a set lineup chosen by the scenario: pieces you've hired appear as your named characters, and the rest as unnamed militia. Ambush battles use the puzzle position as it is. Boss duels let you pick your army up to a points budget, using standard piece values. The budget grows by region, from about 10 points in region 1 to the full 39 of a complete chess set, which only the Lich King battle allows. A boss can also cap specific piece types when its lesson needs it, for example no queen in region 1. Every captured piece comes back after the battle, win or lose.
 
@@ -32,6 +35,27 @@ Battles are short scenarios on a standard 8×8 board, each with a goal, a move l
 - **Built so far (Region 1):** checkmate, fork, check, promotion and capture are detected (`src/game/tactics.ts`). Fork banners, yours and the enemy's, show only when Stockfish confirms the fork wins material (`src/game/tacticCheck.ts`), and a confirmed fork pays gold. Checkmate needs no engine check. The other launch patterns are still to build.
 
 **Scenario format** (the `BattleDef` type in `src/game/content.ts`; each Region has one array of them, such as `REGION1_BATTLES` in `src/game/region1Battles.ts`): starting position (FEN) or, for bosses, the points budget and enemy setup; goal, move limit, enemy faction and AI settings, bonus objectives, rewards, and the dialogue before and after.
+
+### Ambushes
+
+Approved 2026-10-23 and piloted in [#34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34); the default node from Region 2 on since 2026-10-24.
+
+- **Flow.** A briefing, then your companion shows one position (skippable), then 4 waves. Each wave is one published Lichess puzzle, rising in rating, with a backup puzzle of the same idea.
+- **The chess never changes.** Positions, setup moves, solutions and the enemy's replies are exactly as published. A wave ends at the end of its solution; you never play on against the engine.
+- **Accepted moves.** The published move, or any mate when the published move mates (`checkPuzzleMove` in `src/game/bounty.ts`). Lichess keeps only puzzles where each solver move is the one clearly winning move, so no engine check is needed. An illegal tap isn't a miss.
+- **Misses.** A wrong legal move is taken back and counts as a miss; you try the same position again. Reaching the miss limit loses the ambush, with the usual [loss cost](campaign.md#campaign-and-gauntlet). Rewinds don't apply.
+- **Retry.** Starts again at wave 1, with the backup puzzle for the wave you lost on.
+- **Help by difficulty.** Difficulty changes the help, never the puzzles or the replies:
+
+  | | Gentle | Brave | Champion | Grandmaster |
+  | --- | --- | --- | --- | --- |
+  | Companion line before each wave | Yes | First wave only | No | No |
+  | Hint (lights up the piece that moves) | Yes | Yes | No | No |
+  | Misses before you lose | No limit | 3 | 2 | 2 |
+
+- **Rewards.** 15–25g on the first win, plus two 5g bonus goals: **clean** (no misses) and **no hints**. No tactic gold. The tactic's banner (DOUBLE CHECK!, FORK!) shows on the move that makes it.
+- **Faction habits** may only tell, because the replies are fixed. Region 2's wanted poster marks the piece the puzzle's setup move goes after, before that move plays, then disappears.
+- **Content rules** are in the [playbook](../playbook.md#ambush-content-rules).
 
 ## Your army
 
@@ -55,6 +79,8 @@ You start as a king with one companion and two pawns, and build toward a full ch
 | King | Lion | Regal; this is you | — | — |
 
 **No wounds.** Captured pieces return after every battle, so a sacrifice never has a lasting cost. Losing material still hurts inside the battle, which is the real chess lesson.
+
+**In the core game** your army fights in bosses and in Region 1's battles; ambushes and technique nodes use their published positions. A role for your army in other nodes comes after the core game ([build order](../design.md#build-order-core-game-first)).
 
 **Avoiding grind.** Gold comes from varied, short content: battle rewards, bonus objectives, side quests, and a tavern bounty board of puzzles. No required replays of the same practice game.
 
@@ -97,6 +123,8 @@ See [campaign loss costs](campaign.md#campaign-and-gauntlet) for the consequence
 ## AI habits by faction
 
 Every faction has one readable habit that teaches its Region's theme. Habits change what the enemy chooses or tells you, never how pieces move. All six were approved on 2026-10-22; each one's finer details are settled when its Region is designed.
+
+**In the core game** (decided 2026-10-24), only what's built runs: Region 1's shouts and raider as they are today, and Region 2's wanted poster as a tell in ambushes. Bosses have no habit. The shout and raider changes ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4), [#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)), the poster's tilt and the habits for Regions 3–5 come after the core game.
 
 **Tell or tilt, never force** (approved 2026-10-23). A habit may:
 
@@ -154,7 +182,7 @@ Undo is unlimited in training and limited in battles, like Into the Breach's one
 
  Together they teach the habit in order: first the enemy says its plan out loud, then you pay to see it, then you learn to work it out yourself.
 
-**Ladder by Region** (approved 2026-10-22). Help arrives as the habits fade, so the player always has one rung of support:
+**Ladder by Region** (approved 2026-10-22; built after the core game, so the core game has no powers beyond Threat Sight and rewinds). Help arrives as the habits fade, so the player always has one rung of support:
 
 | Region | The enemy's plan | New in town |
 | --- | --- | --- |
@@ -201,6 +229,9 @@ The numbers the game uses today, and where each is set, so later Regions stay co
 | Bounty target rating | Gentle 900, Brave 1200, Champion 1500, Grandmaster 1800 (fixed until the adaptive rating exists) | `playerRatingFor` in `src/game/bounty.ts` |
 | Bounty pay | 10g at your rating, ±2g per 100 points, between 2g and 30g | `bountyReward` in `src/game/bounty.ts` |
 | Academy first clear | 10g per exercise (Region 1's academy, until the guided path replaces it) | `src/game/academy.ts` |
+| Ambush waves | 4, each with a backup, plus 1 shown position; ratings rise across the Region's warm-up band, the last wave up to 150 above it (Region 2's pilot: about 700, 850, 1000, 1150) | Each ambush's definition ([pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34)) |
+| Ambush miss limits | Gentle none, Brave 3, Champion and Grandmaster 2 per ambush (first guess) | `AMBUSH_HELP` in `src/game/ambush.ts` ([pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34)) |
+| Ambush reward | 15–25g on the first win (pilot: 20g); clean and no hints 5g each, once; no tactic gold | Each ambush's definition |
 | Warm-up first solve (not built) | 5g the first time you solve a battle's warm-up (first guess) | Guided path |
 | Review threshold | A move must cost about a pawn (90 centipawns) to be called a mistake | `MISTAKE_CP` in `src/game/review.ts` |
 | Talking-head time on phones | 1.2 s + 60 ms per character, between 3.2 s and 9 s, then a 0.8 s fade | `holdMs` in `src/ui/dialogue.ts` |

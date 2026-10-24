@@ -65,7 +65,7 @@ The [guided path](#planned-guided-path) replaces this academy with a warm-up in 
 
 ## Planned: guided path
 
-Approved 2026-10-22, not yet built. Region 1 is revised to the [guided path](../campaign.md#guided-path) as the worked example for every later Region. The code changes will be specced in a GitHub issue ([open TODO](../decisions.md#open-todos)).
+Approved 2026-10-22, not yet built. Region 1 is revised to the [guided path](../campaign.md#guided-path), specced in [#24](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/24). **In the core game** (decided 2026-10-24) only the map below, the new bounty tags and bounty deduplication are built. The warm-ups, library, boss practice and refresher bounties come after the core game ([build order](../../design.md#build-order-core-game-first)), and Region 1's battles stay as built.
 
 ```mermaid
 flowchart BT

@@ -11,15 +11,14 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [x] **Main story arc:** approved in [Story](story.md#main-story-arc), with its open questions answered.
 - [ ] **Recurring characters:** Region 2's are named (Ashfang, Tadwell). Name the Region 3–5 bosses and heroes as each Region is designed ([Story](story.md#recurring-characters)). The Lich King's voice is approved.
 - [x] **Region 1 detailed design:** written up as built in [Region 1](regions/region-01-bog-goblins.md), the worked example for the [Region template](regions/region-template.md).
-- [ ] **Region 2 detailed design:** the [brief](regions/region-02-bandit-riders.md) is approved; the battles, warm-ups and dialogue are designed by the builder and approved by the owner.
+- [ ] **Region 2 detailed design:** five ambushes and the boss ([brief](regions/region-02-bandit-riders.md), revised 2026-10-24). The builder picks the puzzles and writes the words; the owner approves.
+- [ ] **Technique nodes:** build the node kind from the academy's practice mode, with the first one in Region 3 (opposition).
 - [ ] **Regions 3–5 and the Lich King:** detailed designs, each as its own file under `regions/` copied from the [Region template](regions/region-template.md), linked from the faction and curriculum summary tables in [Campaign](campaign.md#regions-and-factions). Keep the summary rows in the campaign overview.
 - [x] **Faction AI habits:** approved in [AI habits by faction](systems.md#ai-habits-by-faction). Each Region settles its habit's finer details.
 - [x] **Help ladder by Region:** approved in [Powers and rewind](systems.md#powers-and-rewind). The Orb's price and charges are set with Region 2.
-- [ ] **Region 1 guided path:** revise Region 1 to the [guided path](campaign.md#guided-path): a warm-up in each battle node, the map rewired to a main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), the rook and queen mates as Grubnak's boss warm-up, the academy turned into the library, and refresher bounties. The in-battle lesson panel becomes a one-line reminder. Spec as a GitHub issue once this design is approved ([Region 1](regions/region-01-bog-goblins.md#planned-guided-path)).
+- [ ] **Region 1 map:** rewire Region 1 to the [guided path](campaign.md#guided-path)'s main path (Reeds, Mossbridge, Swap Meet) and two branches (Mud Wall, Pawn's Plunge), with the new bounty tags and bounty deduplication ([#24](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/24) T1, T6a, T6b). Its warm-ups, library and refresher bounties are on the later list.
 - [ ] **Placement check:** an optional set of 5 or 6 puzzles at the start that marks warm-ups the player already knows, so they start ready to skip, and seeds the hidden adaptive rating. Design it with the adaptive rating.
-- [ ] **Siege raider:** move the raider to tell or tilt and re-verify the sieges ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)).
 - [x] **Shout rule:** decided 2026-10-23: goblins keep announcing, then decide again after your move ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), under the [tell or tilt](systems.md#ai-habits-by-faction) rule.
-- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built. Deferred past Region 2 (decided 2026-10-22); decide when to build them.
 - [ ] **Region 1 playtest:** run the test in [Region 1](regions/region-01-bog-goblins.md#playtest) and record the results there.
 - [x] **Region 2 numbers:** set in the [brief](regions/region-02-bandit-riders.md): 5 battles, 4 wins open the boss, Region 1's rewards and pay, and the Orb at 3 charges for 30g.
 
@@ -34,8 +33,23 @@ The one place to track unfinished design work. When one is resolved, move the an
 - [ ] **Hero on a full roster:** Saffron joins with no cap check (`addCharacter` in `src/game/campaign.ts`), so a player who hired a queen ends with two. Apply the replace-and-refund rule ([Your army](systems.md#your-army)) to every hero, with tests.
 - [x] **Tortoise name:** renamed "Tortoise Tower" to "Tortoise Golem" in `SPECIES` (`src/ui/speaker.ts`), per [Names and terms](glossary.md).
 
+**Later (after the core game)**
+
+Decided 2026-10-24 ([build order](../design.md#build-order-core-game-first)). Pick these up once every Region and the Lich King are playable.
+
+- [ ] **Faction habits:** the shout re-decide ([#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)), the raider tilt ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)), the wanted poster in live play ([#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) and the habits for Regions 3–5. Region 1's shouts and raider run as built and verified meanwhile.
+- [ ] **Powers:** the Scrying Orb ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)), Far Sight, Oracle, Blunder Ward and rewind relics.
+- [ ] **Your army outside bosses:** decide what hiring does in ambushes and technique nodes, if anything, together with gold pacing.
+- [ ] **Heroes:** Tadwell and the later heroes, with the full-roster rule.
+- [ ] **XP, levels and titles:** designed ([Story](story.md#recurring-characters)) but not built.
+- [ ] **New custom battles:** sieges, escorts and Region 4's strategy goals (develop and castle, take the open file).
+- [ ] **Art:** faction token and portrait sets for Regions 2–5 ([#10](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/10) for Region 2).
+- [ ] **Guided-path extras:** Region 1's warm-ups, the library and refresher bounties ([#24](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/24) T2–T5 and T7), the timed review set and harder ambush puzzle choices for Champion and Grandmaster.
+- [ ] **Wanted poster polish** in ambushes.
+
 ## Open questions
 
+- [ ] Ambush miss limits (Gentle none, Brave 3, Champion and Grandmaster 2) and wave ratings: first guesses from the pilot; revisit if integration or play shows a problem.
 - [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
 - [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
 - [ ] Exact gold numbers for battle rewards and bounty pay: tune in playtests.
@@ -46,13 +60,21 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
-| 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |
-| 2026-10-23 | Region 2's mating battle opens with a 2 or 3 move setup before a mate in 2 or 3, so it meets the 4 to 7 move bar with no exception. The short mate stays in its warm-up, and the battle position is our own |
-| 2026-10-23 | Scrying Orb charges are spent once, when a reveal succeeds; the answer is kept for that position within the attempt, shown again free on rewind, and never refunded. Failed or abandoned reveals cost nothing ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)) |
+| 2026-10-24 | **Core game first.** Build every Region and the Lich King with Lichess-based content before flavor and RPG systems. Deferred until after the core game: faction habits beyond what's built (including [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4) and [#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)), the Scrying Orb and the help ladder, heroes, XP, a role for your army outside bosses, new custom battles, new faction art, the library, refresher bounties and Region 1's warm-ups ([build order](../design.md#build-order-core-game-first)) |
+| 2026-10-24 | Encounter kinds in the core game: ambushes by default; technique nodes from Lichess Practice for opposition (Region 3) and Lucena and Philidor (Region 5), reusing the academy's practice mode; a live boss per Region. Region 1 keeps its five built battles. No new custom battles ([Encounter kinds](campaign.md#encounter-kinds)) |
+| 2026-10-24 | Region 2 is five ambushes and Ashfang's live game. The banner-wagon siege becomes a removing-the-defender ambush, and the mating battle a mate-in-two ambush. Two at once reuses the pilot |
+| 2026-10-24 | Region 4 teaches development and king safety through the tactics that punish their neglect (`opening`, `attackingF2F7`, `kingsideAttack`, `exposedKing`). The open-files branch becomes a `mateIn3` revisit. Strategy goal kinds wait until after the core game |
+| 2026-10-24 | An ambush node has no separate warm-up: its shown position teaches, and the first wave tests. In the core game, Region 1's battles keep the academy and in-battle lesson; [#24](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/24) keeps the map, the new bounty tags and bounty deduplication (T1, T6a, T6b) |
+| 2026-10-24 | New Regions may use earlier faction art until their own is made. New boss names can stay open until their Region is designed |
+| 2026-10-23 | **Ambushes** (approved after the [pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34), D1–D9): 4 waves of published Lichess puzzles with backups, played exactly as published. Difficulty changes help, never the chess. Misses: Gentle none, Brave 3, Champion and Grandmaster 2; loss costs as for battles, with Grandmaster removal. The published move or an alternative mate is accepted, with no engine check. Rewards 15–25g, plus clean and no-hints bonuses at 5g; no tactic gold. Habits only tell. Battle content rules and verification bars cover custom battles; bosses keep their own bar ([rules](systems.md#ambushes)) |
+| 2026-10-23 | The owner approved ambushes for most new teaching nodes after playing the pilot (D9). No further pilot playtests are needed; wanted-poster polish is deferred |
+| 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) (deferred 2026-10-24 until after the core game; ambushes show the poster as a tell only) |
+| 2026-10-23 | Region 2's mating battle opens with a 2 or 3 move setup before a mate in 2 or 3, so it meets the 4 to 7 move bar with no exception. The short mate stays in its warm-up, and the battle position is our own (superseded 2026-10-24: the node is a mate-in-two ambush) |
+| 2026-10-23 | Scrying Orb charges are spent once, when a reveal succeeds; the answer is kept for that position within the attempt, shown again free on rewind, and never refunded. Failed or abandoned reveals cost nothing ([#13](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/13)) (deferred 2026-10-24 until after the core game) |
 | 2026-10-23 | Each Region keeps its own completion record. Players can return to earlier Regions to play skipped branches and missed bonus goals. The bounty board uses the newest Region's pack ([#9](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/9)) |
 | 2026-10-23 | A hero who joins a full roster replaces a hired piece of the same type and refunds its price. The starter is never replaced, so the army stays within a chess set. Applies to Saffron and Tadwell |
 | 2026-10-23 | Faction habits follow "tell or tilt, never force": they may tell you something true or tilt the enemy's choice among moves within the difficulty's window, never force a move it wouldn't otherwise consider |
-| 2026-10-23 | The siege raider moves to tell or tilt: the engine finds moves within the difficulty's window, and the raider picks the one with the most village pressure. Siege battles are re-verified ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)) |
+| 2026-10-23 | The siege raider moves to tell or tilt: the engine finds moves within the difficulty's window, and the raider picks the one with the most village pressure. Siege battles are re-verified ([#23](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/23)) (deferred 2026-10-24 until after the core game; Region 1's sieges keep today's verified raider) |
 | 2026-10-23 | A boss may have a boss practice instead of a warm-up: a technique played out against the engine, unlimited undo, always skippable. Region 1's rook and queen mates are one |
 | 2026-10-23 | Each tip-card theme gets at least one bounty in its Region's pack: a published Lichess puzzle, by its tag or picked by hand when it has none. Practice positions are used only as tip-card examples, never as paid bounties |
 | 2026-10-23 | Every habit tilt is a capped weight bonus in one weighted pick among moves within the window, so habits combine (a shouting raider) and none overrides the pick. Starting bonuses: shout ×3, raider up to ×3. Bonuses belong to the faction's AI; revealing a plan never adds one |
@@ -70,7 +92,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Puzzle-only themes with no battle (zwischenzug, overloaded pieces, underpromotion and others) get a one-screen tip card on the bounty board, not a lesson |
 | 2026-10-22 | Refresher bounties: the game tracks results per theme, and one of the 4 bounty slots brings back your weakest theme with its warm-up attached (spaced-repetition style). Mistakes are drilled on the board, not with new map nodes |
 | 2026-10-22 | "Checks, captures, threats" (Heisman) is Region 1's first warm-up and its one-line battle reminder |
-| 2026-10-22 | Region 4's strategy is tested with new battle goal kinds (develop and castle within N moves, take the open file first), not puzzles |
+| 2026-10-22 | Region 4's strategy is tested with new battle goal kinds (develop and castle within N moves, take the open file first), not puzzles (deferred 2026-10-24 until after the core game) |
 | 2026-10-22 | Curriculum revised: defending added to Region 1, removing the defender to Region 2, opposition moved from Region 5 to Region 3, lures and traps to Region 4, `mateIn3` as a revisit in Regions 3 and 4. The order also draws on Bain, Heisman, Silman, Polgar, Yusupov and Duolingo's path ([Curriculum](campaign.md#curriculum)) |
 | 2026-10-22 | Battle dialogue can always be read again: on phones a floating line stays up longer the longer it is (and while held), the last line stays in the panel, and "What was said" lists every line this battle |
 | 2026-10-22 | `npm run ci` is the local CI: quick checks always, engine playtests only when a change reaches them (found by following imports), `--full` before a Region ships |
@@ -79,7 +101,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Difficulty levels are shown as Gentle and Brave (code ids `squire` and `knight` unchanged), so "Knight" only means the piece |
 | 2026-10-22 | Material goals show the piece values under the meter, and every capture or promotion floats its point change (+3 gold, −3 red) over the square; the meter stays net |
 | 2026-10-22 | Region 2 brief: Bandit Riders are raccoons, hare riders, magpies, badgers, a stoat and Ashfang the wolf; places are the Kingsroad, Waymeet and the Broken Wheel |
-| 2026-10-22 | Region 2 hero is Tadwell, a frog knight captain of the old army; the boss posts no wanted posters |
+| 2026-10-22 | Region 2 hero is Tadwell, a frog knight captain of the old army; the boss posts no wanted posters (Tadwell deferred 2026-10-24 until after the core game) |
 | 2026-10-22 | Region 2 keeps Region 1's shape: 5 battles, 4 wins open the boss, same rewards; Scrying Orb is 3 charges for 30g |
 | 2026-10-22 | XP, levels and titles are deferred past Region 2 |
 | 2026-10-22 | Wanted poster: target is the first piece the enemy's best line wins or attacks, never the king; no commitment, so no review special case |
@@ -89,7 +111,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-22 | Pawnshire is also the name of the Lion King's kingdom |
 | 2026-10-22 | The starter companion is the coach for every lesson; heroes like Saffron don't teach. The Lich King is cold and courtly |
 | 2026-10-22 | Faction habits: Bandit wanted poster (target from their best line, poster icon, named by the Gentle advice), Shadow Cult binding, Iron Legion proud (renamed from greedy), Bone Wardens relentless march, Lich King none |
-| 2026-10-22 | Help ladder: Scrying Orb charges in Region 2, Far Sight in 3, Oracle and Blunder Ward (once per battle) in 4, rewind relics in 5 |
+| 2026-10-22 | Help ladder: Scrying Orb charges in Region 2, Far Sight in 3, Oracle and Blunder Ward (once per battle) in 4, rewind relics in 5 (deferred 2026-10-24 until after the core game) |
 | 2026-10-22 | "Tortoise Golem" is the canonical species name for the rook; "tower" stays its short name (replaced the same day: see the piece-name row above) |
 | 2026-10-22 | Region 1's boss, Grubnak, doesn't shout: the final exam for the habit the shouts taught |
 | 2026-10-22 | Every Region follows the Region template, with Region 1 as the worked example, and meets the playbook's verification bars |

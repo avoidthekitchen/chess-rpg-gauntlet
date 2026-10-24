@@ -2,7 +2,7 @@
 
 [Design overview](../../design.md) · [Region 1 (worked example)](region-01-bog-goblins.md) · [Playbook](../../playbook.md)
 
-Copy this file to `region-NN-<faction>.md` for each new Region. Fill every section before building; a section you can't fill yet becomes an [open TODO](../decisions.md#open-todos). [Region 1](region-01-bog-goblins.md) shows each section filled in. Shared rules live in the topic documents; link to them instead of restating them here.
+Copy this file to `region-NN-<faction>.md` for each new Region. In the [core game](../../design.md#build-order-core-game-first), a Region is ambushes, at most one technique node, bounties and a boss: write "Later" for the habit, hero and art sections, and leave out custom battles and warm-ups. Fill every section before building; a section you can't fill yet becomes an [open TODO](../decisions.md#open-todos). [Region 1](region-01-bog-goblins.md) shows each section filled in. Shared rules live in the topic documents; link to them instead of restating them here.
 
 ## Design status
 
@@ -14,13 +14,13 @@ Then a summary table with these rows:
 | --- | --- |
 | Faction | Name, its own species for each piece and its outfit (see [Art](../art.md) for how a faction is designed) |
 | Headline theme | From the [curriculum](../campaign.md#curriculum) row, plus what it revisits |
-| AI habit | The faction's readable habit ([AI habits](../systems.md#ai-habits-by-faction)) |
-| Battles | How many (usually 5), split into main path and branches, and which wins open the boss |
-| Warm-ups | One per battle, named; plus a boss warm-up if needed |
+| AI habit | The faction's readable habit ([AI habits](../systems.md#ai-habits-by-faction)); "Later" in the core game |
+| Nodes | How many (usually 5), each one's kind ([Encounter kinds](../campaign.md#encounter-kinds)), split into main path and branches, and which wins open the boss |
+| Warm-ups | One per custom battle, named; ambushes open with their own shown position |
 | Bounty tags | The Lichess puzzle tags from the curriculum row |
 | Tip cards | The Region's puzzle-only themes, or none |
 | Boss | Name, points budget and piece caps, and whether the habit applies |
-| Hero | Name, species and piece |
+| Hero | Name, species and piece; "Later" in the core game |
 | Places | Region, town and tavern names |
 
 ## AI habit
@@ -31,9 +31,22 @@ What the faction does every turn, why it teaches this Region's theme, and where 
 
 A mermaid diagram of nodes and paths, following the [map rules](../../playbook.md#map-rules): the main path of headline battles in teaching order, the branches, and the wins that open the boss. Say for each branch whether it's a revisit, a mate or an endgame.
 
+## Ambushes
+
+One row per ambush, meeting the [ambush content rules](../../playbook.md#ambush-content-rules). Puzzles are Lichess ids.
+
+| # | Path | Ambush (enemy squad) | Theme · tag | Shown puzzle | Waves 1–4 (main / backup) | Reward |
+| --- | --- | --- | --- | --- | --- | --- |
+
+Then each puzzle's link, rating and why it was picked, and the words: the briefing, the shown position's line for each starter, one line per wave and the win lines.
+
+## Technique node
+
+If the Region has one: the Lichess Practice study and chapter, the goal, and the known result, meeting the [technique node rules](../../playbook.md#technique-node-rules).
+
 ## Battles
 
-One row per battle:
+Custom battles only. None in the core game. One row per battle:
 
 | # | Path | Battle (enemy squad) | Kind · theme | Goal | The idea | Moves (strong player) | Reward · bonus goals |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -42,7 +55,7 @@ One row per battle:
 
 ## Warm-ups
 
-One row per battle, meeting the [warm-up rules](../../playbook.md#warm-up-content-rules). Your starter companion coaches every warm-up.
+Custom battles only. One row per battle, meeting the [warm-up rules](../../playbook.md#warm-up-content-rules). Your starter companion coaches every warm-up.
 
 | Battle | Warm-up idea (one line) | Lichess tag and Practice outline | Shown position | Try position | Backup position and hint |
 | --- | --- | --- | --- | --- | --- |
@@ -71,7 +84,7 @@ The new art this Region needs: the faction token and portrait set, backgrounds, 
 
 ## Verification
 
-The `npm run verify:battles` table: strong and careless win rates at each difficulty, and the average moves.
+The `npm run verify:battles` table for the boss and any custom battles: strong and careless win rates at each difficulty, and the average moves. Ambushes and technique nodes list their content tests.
 
 ## Playtest
 

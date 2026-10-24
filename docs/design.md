@@ -16,15 +16,24 @@ A fantasy tactics RPG that teaches real chess. You are a king who starts with al
 
 **Goals:** a commercial product, sold as an iOS app and also playable on the web. The code is open source (GPL-3), and that's fine: the product is the polished game, art and ongoing content, not secret code. Anything we ship, whether code, art or data, needs a license that allows commercial use.
 
+## Build order: core game first
+
+Decided 2026-10-24. Build a complete basic game first: every Region and the Lich King playable, teaching from proven Lichess material. Flavor and RPG systems come after, once the core game teaches well from start to finish.
+
+- **In the core game:** the map, ambushes made of published Lichess puzzles ([Encounter kinds](design/campaign.md#encounter-kinds)), technique nodes from Lichess Practice for the endgames puzzles can't teach, a live boss game per Region, bounties, gold, hiring, and the four difficulties. Region 1 keeps its five built battles.
+- **After the core game:** faction habits beyond what's built, the Scrying Orb and the other powers, heroes, XP, a role for your army outside bosses, new custom battles, faction art for Regions 2–5, the library and refresher bounties. The [later list](design/decisions.md#open-todos) tracks them.
+
+Why: fitting those systems into every battle slowed the game down, and each custom battle needed rounds of engine playtests. Lichess puzzles come with checked solutions and ratings, so a new Region needs puzzle selection and words, not new positions.
+
 ## Core loop
 
-Pick a battle on the region map, learn its idea in a short warm-up, win it for gold and XP, then spend in town before the next battle.
+Pick a battle on the region map, learn its idea in a short warm-up, win it for gold, then spend in town before the next battle.
 
 ```mermaid
 flowchart LR
     Map["Region map<br/>Pick the next battle"] --> Warmup["Warm-up<br/>Show one, try one"]
     Warmup --> Battle["Battle<br/>5 to 10 moves, one goal"]
-    Battle --> Rewards["Rewards<br/>Gold, XP, bonus goals"]
+    Battle --> Rewards["Rewards<br/>Gold, bonus goals"]
     Rewards -->|to town| Town
     subgraph Town
         Library["Library<br/>Replay warm-ups, read tip cards"]
@@ -32,6 +41,8 @@ flowchart LR
     end
     Town -->|next battle| Map
 ```
+
+From Region 2 on, most map nodes are **ambushes**: your companion shows one position, then you break four waves of real Lichess puzzles. The show-one step does the warm-up's job, and the waves are the test.
 
 Each step has one job. The **warm-up** teaches a battle's idea right before the battle, with nothing at stake. The **battle** tests it under pressure (goals, move limits, scarce rewinds, gold at stake). **Bounties** repeat it with real puzzles until it sticks, and bring back the ideas you got wrong. The map leads you through the ideas every player needs and lets you choose the rest ([Guided path](design/campaign.md#guided-path)). Four wins in the right places open the boss duel ([the rule](design/campaign.md#guided-path)), which leads to the next region.
 

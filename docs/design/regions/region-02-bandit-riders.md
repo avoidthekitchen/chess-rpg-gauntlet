@@ -4,18 +4,18 @@
 
 ## Design status
 
-**Brief approved 2026-10-22; detailed design not started.** This page is the brief: the calls the owner has made, and the limits for the parts still to design. Sections marked **To design** are filled in by whoever builds the Region, then approved by the owner before any content is built ([playbook](../../playbook.md#order-of-work)). Work is tracked in the [Region 2 spec issue](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/8) and its sub-issues.
+**Brief approved 2026-10-22; revised 2026-10-24 for the [core game](../../design.md#build-order-core-game-first).** Region 2 is five ambushes and Ashfang's live game. The wanted poster's live tilt, the Scrying Orb, Tadwell and the Bandit Rider art come after the core game; their sections below are kept for then and marked **Later**. Two at once is built in the [pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34). This page is the brief: the calls the owner has made, and the limits for the parts still to design. Sections marked **To design** are filled in by whoever builds the Region, then approved by the owner before any content is built ([playbook](../../playbook.md#order-of-work)). Work is tracked in the [Region 2 spec issue](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/8) and its sub-issues.
 
 | | |
 | --- | --- |
 | Faction | Bandit Riders: masked highway thieves. Raccoon cutpurses, hare riders, magpies, badgers, a stoat and Ashfang the wolf, in dark cloaks and masks ([species](#art)) |
 | Headline theme | Forks, double attacks, mating patterns; revisits safe trades |
-| AI habit | **Wanted poster:** each turn they mark the piece they're hunting, but not the move ([details](#ai-habit-wanted-poster)) |
-| Battles | 5 on a [guided path](../campaign.md#guided-path): a main path of 3, then 2 branches; the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)) |
-| Warm-ups | One per battle, coached by your starter companion, plus a boss warm-up on stopping forks |
+| AI habit | **Wanted poster:** in the core game, a tell in ambushes: it marks the piece a puzzle's setup move goes after ([ambushes](../systems.md#ambushes)). The live-play version below comes later |
+| Nodes | 5 ambushes on a [guided path](../campaign.md#guided-path): a main path of 3, then 2 branches; the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)) |
+| Warm-ups | None separate: each ambush opens with one shown position, coached by your starter companion |
 | Bounty tags | `fork`, `doubleCheck`, `capturingDefender`, `mateIn2`; one or two bounties from Region 1's `hangingPiece` and `mateIn1` |
 | Boss | Ashfang, the Bandit Lord: a 16-point budget, queens allowed, and he posts no wanted posters |
-| Hero | Tadwell, the Frog Captain: a knight |
+| Hero | Tadwell, the Frog Captain: a knight (later) |
 | Places | The Kingsroad (region), Waymeet (town), the Broken Wheel (tavern) |
 
 ## What's decided and what's open
@@ -24,14 +24,16 @@ Decided by the owner (don't change without a decision-log row):
 
 - The species, names and places in the table above.
 - The habit and how it fades: target only, Gentle advice names it, the boss has none.
-- The numbers: 5 battles, 4 wins open the boss (per the [guided path](../campaign.md#guided-path) unlock rule, decided 2026-10-22), 15–25g per battle, a 50g boss, a 16-point boss budget.
-- The Scrying Orb arrives here: 3 charges for 30g in Waymeet.
-- The hero is a frog knight captain of the old army.
+- The numbers: 5 nodes, 4 wins open the boss (per the [guided path](../campaign.md#guided-path) unlock rule, decided 2026-10-22), 15–25g per battle, a 50g boss, a 16-point boss budget.
+- The Scrying Orb arrives here: 3 charges for 30g in Waymeet (later).
+- The hero is a frog knight captain of the old army (later).
 - XP, levels and titles are **not** in Region 2. They get their own issue later.
 
-Open for the builder to design, within the limits below: the five battle positions and squad names, the warm-up positions, all dialogue and the boss army's exact pieces.
+Open for the builder to design, within the limits below: the puzzles for each ambush, the squad names, all dialogue and the boss army's exact pieces.
 
 ## AI habit: wanted poster
+
+**Later.** The core game shows the poster only in ambushes, as a tell ([ambushes](../systems.md#ambushes)). The rules below are for live battles after the core game.
 
 Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details settled with this brief:
 
@@ -52,6 +54,8 @@ Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details s
 
 ## Scrying Orb
 
+**Later**, after the core game.
+
 The Orb shows the full move the enemy would play if you passed: the same engine question as a goblin shout. It's sold in Waymeet as **3 charges for 30g**, bought with bounty gold. A charge lasts one turn. Charges carry over between battles, work on every difficulty, and work in the boss duel. Bought charges stack with no cap.
 
 It overlaps the poster on purpose: it bridges the drop from Region 1's whole move to Region 2's target only.
@@ -67,25 +71,21 @@ It overlaps the poster on purpose: it bridges the drop from Region 1's whole mov
 
 ## Map
 
-**To design.** Five battles on a [guided path](../campaign.md#guided-path), following the [map rules](../../playbook.md#map-rules): slots 1–3 below are the main path in that order, slots 4 and 5 are branches, and the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)).
+**To design.** Five ambushes on a [guided path](../campaign.md#guided-path), following the [map rules](../../playbook.md#map-rules): slots 1–3 below are the main path in that order, slots 4 and 5 are branches, and the boss opens after 4 wins ([unlock rule](../campaign.md#guided-path)).
 
-## Battles
+## Ambushes
 
-**To design.** One row per battle, as in the [template](region-template.md#battles). Each battle must meet the [content rules and verification bars](../../playbook.md#battle-content-rules). These slots set each battle's theme:
+Revised 2026-10-24: all five nodes are ambushes, following the [ambush rules](../systems.md#ambushes) and [content rules](../../playbook.md#ambush-content-rules). Each is 9 published Lichess puzzles (1 shown, 4 waves, 4 backups), rated across Region 2's warm-up band of 600–1000, the last wave up to 1150. Rewards are 15–25g with the clean and no-hints bonus goals.
 
-| # | Path | Slot | Kind · theme | Limits |
+| # | Path | Ambush | Theme · tag | What to pick |
 | --- | --- | --- | --- | --- |
-| 1 | Main | First ambush | Skirmish · knight forks | The poster shows which piece a hare rider is after; you dodge with tempo, then land a fork of your own |
-| 2 | Main | Double trouble | Skirmish · double attacks | A queen, bishop or rook fork, not only knights; the target is one half of the attack |
-| 3 | Main | Two at once | Skirmish · double check | A position where the only way through is a double check |
-| 4 | Branch | The banner wagons | Siege · safe trades and removing the defender (revisit) | The villages are banner wagons; reuse the siege rules and the `raider` AI, after it moves to tell or tilt ([AI habits](../systems.md#ai-habits-by-faction)). Taking a raider's defender should be the way to win a trade |
-| 5 | Branch | Into the trap | Skirmish · mating patterns | A setup of 2 or 3 moves (win or deflect a defender, open a line) leads into a mate in 2 or 3 using a pattern from Lichess Checkmate Patterns II–IV, so a strong player needs 4 to 7 moves, as the [bars](../../playbook.md#verification-bars) ask. The position is our own: Practice positions stay in warm-ups and tip cards. The short mate is this battle's "Mate in two" warm-up. Leave smothered, Anastasia's, Arabian and Boden's mates to the Gauntlet ([campaign](../campaign.md#campaign-and-gauntlet)) |
+| 1 | Main | First ambush | Knight forks · `fork` | Forks made by a knight, the hare riders' own trick |
+| 2 | Main | Double trouble | Double attacks · `fork` | Forks made by a queen, bishop, rook or pawn, not a knight |
+| 3 | Main | Two at once | Double check · `doubleCheck` | **Built** in the [pilot](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) (`src/game/region2Ambush.ts`) |
+| 4 | Branch | The banner wagons | Removing the defender (revisits safe trades) · `capturingDefender` | Take the guard, then win what it guarded |
+| 5 | Branch | Into the trap | Mate in two · `mateIn2` | Patterns from Checkmate Patterns II–IV. Leave smothered, Anastasia's, Arabian and Boden's mates to the Gauntlet ([campaign](../campaign.md#campaign-and-gauntlet)) |
 
-Enemy squads are knight-heavy: most battles give the bandits at least one hare rider. Rewards are 15–25g with two 5g bonus goals each, as in Region 1.
-
-## Warm-ups
-
-**To design.** One warm-up per battle, following the [warm-up rules](../../playbook.md#warm-up-content-rules), with the ideas and tags from the [battle outline](../campaign.md#battle-outline-by-region): knight forks, double attacks, double check, taking the guard first, and mate in two. Ashfang gets a boss warm-up on stopping a fork before it lands (`fork` with `defensiveMove`). Your starter companion coaches every warm-up, whichever piece it's about.
+Every bandit squad has at least one hare rider in its briefing. Puzzle positions are used as published, so the boards show whatever pieces the original game had.
 
 ## Bounty board
 
@@ -101,6 +101,8 @@ Tags `fork`, `doubleCheck`, `capturingDefender` and `mateIn2`, plus one or two b
 
 ## Hero: Tadwell, the Frog Captain
 
+**Later**, after the core game. Ashfang's defeat still frees him in the story; he joins your army when heroes are built.
+
 A captain of the Lion King's old army, found guarding the last banner in Ashfang's camp. He joins as a named knight. He's formal and dutiful, proud of the old army, and a little stiff: a straight-backed contrast to Sir Hob's showing off. Like every hero, he doesn't teach lessons. He first matters in Region 3.
 
 **A full roster.** You may already own two knights, such as Sir Hob and a hired one. A hero then replaces a hired piece of the same type and refunds its price (30g for a knight), with a line saying so. The starter is never replaced, so the army stays within a chess set ([hiring rules](../systems.md#your-army)). If you own two hired knights, the most recently hired one leaves. The tests cover a roster with both knight slots filled, with and without Sir Hob.
@@ -109,17 +111,17 @@ A captain of the Lion King's old army, found guarding the last banner in Ashfang
 
 Built in the [Region registry](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/9):
 
-- **One record per Region.** The save keeps each Region's progress apart: battles cleared, boss beaten, hero joined. Today's global `bossBeaten` and `heroJoined` move into Region 1's record.
+- **One record per Region.** The save keeps each Region's progress apart: nodes cleared, boss beaten, hero joined (once heroes exist). Today's global `bossBeaten` and `heroJoined` move into Region 1's record.
 - **Beating Grubnak opens Region 2.** It doesn't mark Ashfang beaten or Tadwell joined.
 - **Old saves.** A save from before the registry loads into Region 1 unchanged. One that has already beaten Grubnak loads with Region 1 complete and Region 2 open, keeps Saffron, and gets no second Saffron.
 - **Reloading** after moving on lands you in Region 2.
-- **Going back.** You can return to any earlier Region's map to play branches you skipped and earn bonus goals you missed, so you can practice more skills. Replays follow the [guided path](../campaign.md#guided-path) rules, so a cleared battle skips its warm-up.
+- **Going back.** You can return to any earlier Region's map to play branches you skipped and earn bonus goals you missed, so you can practice more skills. Replays follow the [guided path](../campaign.md#guided-path) rules, so a cleared ambush skips its shown position.
 - **Bounty board.** The board uses the newest Region's pack. When you move on, unsolved Region 1 bounties are replaced with Region 2's; puzzles you've solved or failed stay done.
 
 ## Story beats
 
 - **Arrival:** bandits have stolen the old army's banners along the Kingsroad, so the army can't regroup. Your companion explains the wanted posters.
-- **Each battle:** a short exchange with that battle's bandit squad. Each win recovers a banner.
+- **Each ambush:** a short briefing with that ambush's bandit squad. Each win recovers a banner.
 - **After the boss:** Ashfang yields the road and Tadwell is freed with the last banner. Ashfang's paymaster's purse carries a Shadow Cult crystal: the hook into Region 3.
 - **The Lich King's hint** (one per Region from here on): one recovered banner bears the old Lion King's crest, struck through. Nobody explains it yet.
 - **Interlude:** one or two lines from the Lich King, cold and courtly ([voice](../story.md#recurring-characters)). A draft to start from: "Keep the banners, little king. I flew mine once, at the game I would not lose."
@@ -127,6 +129,8 @@ Built in the [Region registry](https://github.com/avoidthekitchen/chess-rpg-gaun
 All lines follow the [voice guide](../story.md#voice-and-dialogue).
 
 ## Art
+
+**Later.** In the core game, Region 1's art stands in for the Bandit Riders.
 
 The Bandit Rider token and portrait set, made as [Art direction](../art.md#adding-a-faction) describes. Masks and dark cloaks, roadside gear, the shared headgear shapes. About $2 to $4 including retries.
 
@@ -145,7 +149,7 @@ Also needed: a portrait for Tadwell (a frog knight in the old army's colors, dis
 
 ## Verification
 
-**To fill in** with the `npm run verify:battles` table, as in [Region 1](region-01-bog-goblins.md#verification).
+**To fill in:** the boss's `npm run verify:battles` rows, as in [Region 1](region-01-bog-goblins.md#verification). Ambushes need only their content tests.
 
 ## Playtest
 

@@ -11,7 +11,8 @@ One entry per build step. The latest entry follows the [curriculum-first scope](
 - Kept compact advice clear during player choices and completed examples; fixed terminal-move wording and measured journal offsets.
 - Corrected tuning counts and finale table order. Recorded deferred loading, remediation and recovery-notice work explicitly.
 - The integrated build and 496 tests passed; all 273 sources match the original database. Independent content and UI code reviews found no remaining issue.
-- Targeted desktop and phone WebKit checks passed. Historical full-engine output is committed for reproducibility; its release failure remains unwaived.
+- Targeted desktop and phone WebKit checks passed locally and on public staging. Historical full-engine output is committed; its release failure remains unwaived.
+- Deployed `e473d2a`; Cloudflare version `b05138a2-f1ac-4615-9148-85f4dea4e49b`. Replied to all 11 new inline findings and each review summary.
 
 ## 2026-10-24 — Address the five PR reviews
 

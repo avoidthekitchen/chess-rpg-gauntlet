@@ -15,7 +15,7 @@ Independent review, source verification, applicable CI, and browser checks remai
 - [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
 - [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
 - [x] Add chapter transitions, named ally appearances, the finale interlude, and a saved ending.
-- [ ] Add position-specific wrong-move explanations and optional solution review after a failed attempt. This needs a teaching design beyond #40/#41.
+- [ ] Add position-specific wrong-move explanations, including promotion alternatives, and optional solution review after a failed attempt. This needs a teaching design beyond #40/#41.
 - [ ] Explain repaired or unreadable saves to the player and offer a clear recovery path; keep the preserved raw backup.
 - [ ] Audit startup loading: lazy chapter artwork and splitting legacy code need re-entry, failure and offline checks.
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.

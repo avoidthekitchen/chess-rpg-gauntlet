@@ -30,7 +30,7 @@ Foe labels now use faction and chess role until matching species artwork exists.
 Compact speech cannot cover advice during player input or the completed-example takeaway; desktop retains its separate dialogue space.
 Journal jumps use the measured sticky header height. Terminal moves no longer promise an opponent reply.
 Focused desktop and phone WebKit checks cover wrong moves, multi-move replies, terminal status, journal offsets and demonstration rotation.
-Public publication evidence follows below. No legacy engine implementation, corpus, or threshold changed in this follow-up.
+Public deployment evidence follows below. No legacy engine implementation, corpus, or threshold changed in this follow-up.
 
 ## Review follow-up (2026-10-24)
 
@@ -115,9 +115,24 @@ The [reproducibility follow-up](https://github.com/avoidthekitchen/chess-rpg-gau
 
 ## Staging
 
+### Second review follow-up
+
+Current application revision: `e473d2af20ab5f255778533cd2da30ef51f10662`.
+Cloudflare version: `b05138a2-f1ac-4615-9148-85f4dea4e49b`.
+Public assets: `index-cnoE1bm6.js` and `index-CbCH10sF.css`.
+
+Public WebKit at 393×852 and Chromium at 1280×800 passed the targeted follow-up checks.
+Real board input exercised wrong moves, opponent replies, and terminal moves in the Region 3 preview.
+Compact dialogue cleared before decisions; desktop retained its separate dialogue space. Terminal moves showed “Good move…” without promising a reply.
+Journal targets cleared their measured sticky headers on both layouts.
+Phone demonstration rotation to 852×393 preserved later dialogue and cleared it before the completed-example takeaway.
+These were seeded region previews, not fresh full journeys or physical-device tests. No application errors or failed requests occurred.
+All 11 new inline findings received replies, with a summary on each PR. The PRs remain draft; production was not deployed.
+Later documentation-only commits do not change this deployed application.
+
 ### Five-PR review follow-up
 
-Current application revision: `27a3a9c36d456e9ac36abcfe77cb71527023fce5`.
+Previously deployed application revision: `27a3a9c36d456e9ac36abcfe77cb71527023fce5`.
 Cloudflare version: `f0243edb-2b70-4a3a-872e-4bb8fb9537e9`.
 Public JavaScript `index-DhffRnHC.js` matches the tested local artifact:
 `9eae19905f88d174d54ade9c19f68a2efe5537a11d86c8abc4d62c9eb1e93729` (SHA-256).
@@ -197,5 +212,5 @@ New Journey keeps its confirmation when a valid journey exists and resets only i
 WebKit touch emulation is not a physical iPhone test. Published-puzzle completion is not evidence of measured rating gains or full-game proficiency.
 Opposition, key squares, Lucena, Philidor, sustained conversion, adaptive refreshers, and full games need separate teaching systems.
 Wrong-move feedback remains general. Longer review retries can repeat known positions without explaining each incorrect legal move.
-Position-specific remediation belongs with the follow-up teaching and refresher work in #40 and #41.
+Position-specific explanations, including promotion alternatives, and optional post-loss solution review need a separate teaching design beyond #40 and #41.
 Armies, powers, economy, faction AI, native iOS packaging, and the post-game gauntlet remain deferred.

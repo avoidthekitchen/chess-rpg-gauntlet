@@ -45,7 +45,7 @@ The first skirmish opens both paths, so one battle can be skipped (`src/game/reg
 
 ## Battles
 
-All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 96–100% of the time on Gentle and Brave, and careless play wins 0–17% ([verification](#verification)).
+All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 92–100% of the time on Gentle and Brave, and careless play wins 0–33% ([verification](#verification)).
 
 | # | Battle | Kind · theme | Goal | The idea | Moves (strong player) | Reward · bonus goals |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -122,14 +122,14 @@ The Bog Goblin token and portrait set (their species and in-game names are in [A
 
 | Battle | Strong player wins (Gentle / Brave) | Strong player's average moves | Careless player wins (Gentle / Brave) |
 | --- | --- | --- | --- |
-| Trouble in the Reeds | 100% / 100% | 4.2 / 5.0 | 4% / 8% |
-| Lanterns at Mossbridge | 100% / 100% | 7.3 / 7.2 | 17% / 13% |
-| The Swap Meet | 100% / 100% | 4.2 / 4.2 | 0% / 0% |
-| Behind the Mud Wall | 100% / 100% | 5.5 / 4.6 | 4% / 4% |
-| The Pawn's Plunge | 100% / 100% | 5.9 / 6.1 | 8% / 0% |
-| Boss duel | Passed the boss bar when the no-shout boss merged (about 92% wins); the full table is to be recorded on the next run | — | — |
+| Trouble in the Reeds | 96% / 96% | 5.8 / 5.7 | 0% / 0% |
+| Lanterns at Mossbridge | 100% / 100% | 9.0 / 9.0 | 21% / 33% |
+| The Swap Meet | 92% / 100% | 3.8 / 4.9 | 4% / 0% |
+| Behind the Mud Wall | 100% / 100% | 4.4 / 4.6 | 0% / 0% |
+| The Pawn's Plunge | 100% / 100% | 4.2 / 5.0 | 0% / 4% |
+| Boss duel | Passed the boss bar when the no-shout boss merged (about 92% wins). Not re-run for the shout change: the boss doesn't shout or raid, so its AI is unchanged (a one-army spot check matched `main`). The full check takes over an hour | — | — |
 
-A simulated "greedy" player (always grabs the biggest capture) wins Trouble in the Reeds and The Pawn's Plunge fairly often (about 33–67% across runs). That's worth watching in playtests.
+A simulated "greedy" player (always grabs the biggest capture, else pushes a pawn) wins The Pawn's Plunge often (about 80%), because its breakthrough push is also the greedy move. Mossbridge runs 9 turns, so its average moves sit above the 4–7 target. Both are worth watching in playtests.
 
 ## Playtest
 

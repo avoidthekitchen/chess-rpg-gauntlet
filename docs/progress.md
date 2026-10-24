@@ -2,6 +2,17 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## 2026-10-24 — Follow-up review corrections
+
+- Corrected Kp2Gw's queen-defender explanation and strengthened its board-based checks.
+- Replaced ERCLb's truncated material trade with x4f2j/fdj22 and tested unique non-checking defensive captures.
+- Replaced kuWwt's untaught opposition with VIy5h. Shortest-route checks now include both king-review sources.
+- Named reused portraits by faction and chess role. Species labels require matching artwork.
+- Kept compact advice clear during player choices and completed examples; fixed terminal-move wording and measured journal offsets.
+- Corrected tuning counts and finale table order. Recorded deferred loading, remediation and recovery-notice work explicitly.
+- The integrated build and 496 tests passed; all 273 sources match the original database. Independent content and UI code reviews found no remaining issue.
+- Targeted desktop and phone WebKit checks passed. Historical full-engine output is committed for reproducibility; its release failure remains unwaived.
+
 ## 2026-10-24 — Address the five PR reviews
 
 - Corrected teaching sources, narrowed unsupported claims and strengthened tests around the actual chess decisions.

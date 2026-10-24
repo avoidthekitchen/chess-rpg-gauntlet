@@ -1,4 +1,4 @@
-import { COURSE_OPENINGS, COURSE_VOICES, courseCast } from '../game/courseCast';
+import { COURSE_OPENINGS, COURSE_VOICES, COURSE_FOE_ART, courseFoeName, courseCast } from '../game/courseCast';
 import { type Chess, type Color, type Move } from 'chess.js';
 import { isDoubleCheck } from '../game/ambush';
 import type { StarterType } from '../game/campaign';
@@ -56,12 +56,12 @@ export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly Cour
   else if (cues.includes('Check')) line = 'Check. Their king must answer.';
   else if (cues.includes('Capture')) line = 'Got you!';
   else line = { p: 'One step closer.', n: 'Hop to it!', b: 'Along the diagonal.', r: 'Slow and steady.', q: 'Watch closely.', k: 'Steady now.' }[type];
-  return { side, type, name: side === 'ally' ? SPECIES[type] : courseCast(regionId).species[type], line };
+  return { side, type, name: side === 'ally' ? SPECIES[type] : courseFoeName(regionId, type), line };
 }
 
 const REACTIONS: Record<StarterType, { win: string; miss: string; wave: string }> = {
   n: { win: 'Every board cleared! That calls for a victory hop.', miss: 'Even a brave knight stops to look again.', wave: 'A fine leap forward. Ready for the next board?' },
-  b: { win: 'Well observed. A good plan survives the reply.', miss: 'A useful question: what did their reply change?', wave: 'An idea understood. Shall we test it again?' },
+  b: { win: 'Well observed. A good plan survives the reply.', miss: 'Look again. What can your opponent do next?', wave: 'An idea understood. Shall we test it again?' },
   r: { win: 'Well played. One sound move after another.', miss: 'No hurry. Settle, look, then move.', wave: 'Good work. Keep that steady pace.' },
 };
 export const companionReaction = (starter: StarterType, event: 'win' | 'miss' | 'wave') => companionSpeaker(starter, REACTIONS[starter][event]);
@@ -78,7 +78,7 @@ export function courseIntro(lesson: CourseLesson, starter: StarterType): Speaker
   const region = courseRegion(lesson.regionId);
   const cast = courseCast(lesson.regionId);
   const opening = lesson.review ? cast.reviewOpening : cast.lessonOpening;
-  return [{ side: 'foe', type: lesson.review ? 'k' : 'p', name: lesson.review ? region?.bossName ?? 'The challenger' : cast.species.p, line: COURSE_OPENINGS[lesson.id] ?? opening },
+  return [{ side: 'foe', type: lesson.review ? 'k' : 'p', name: lesson.review ? region?.bossName ?? 'The challenger' : courseFoeName(lesson.regionId, 'p'), line: COURSE_OPENINGS[lesson.id] ?? opening },
     companionSpeaker(starter, lesson.review ? 'Your turn. Read each board and choose your plan.' : INTRO[starter])];
 }
 
@@ -97,7 +97,7 @@ export class CourseDialogueLog {
 }
 
 export function coursePortrait(info: SpeakerInfo, extra = '') {
-  return `<span class="course-portrait ${info.side} ${extra}" style="${portraitStyle(info.type, info.side === 'ally' ? 'ally' : 'bog')}" aria-hidden="true"></span>`;
+  return `<span class="course-portrait ${info.side} ${extra}" style="${portraitStyle(info.type, info.side === 'ally' ? 'ally' : COURSE_FOE_ART)}" aria-hidden="true"></span>`;
 }
 export function courseDialogueRow(info: SpeakerInfo, extra = '') {
   return `<div class="course-dialogue ${info.side} ${extra}">${coursePortrait(info)}<div><strong>${esc(info.name)}</strong><p>${esc(info.line)}</p></div></div>`;
@@ -165,4 +165,9 @@ export class CourseSpeech {
 export function courseGuidance(message: string, objective: string, coach: string) {
   const status = coach && (message === objective || message === coach) ? '' : message || (coach ? '' : objective);
   return { status, coach };
+}
+
+/** Compact speech cannot cover the advice while choosing or reading a finished example. */
+export function courseAllowsSpeech(phase: string, persistent: boolean) {
+  return !['briefing', 'won', 'lost'].includes(phase) && (persistent || !['solving', 'taught'].includes(phase));
 }

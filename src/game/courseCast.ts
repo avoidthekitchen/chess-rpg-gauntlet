@@ -2,19 +2,29 @@ import type { PieceSymbol } from 'chess.js';
 
 interface CourseCast {
   faction: string;
+  /** Species names are displayed only when their matching artwork is shipped. */
+  speciesArt: 'bog' | null;
   species: Record<PieceSymbol, string>;
   lessonOpening: string;
   reviewOpening: string;
   endingTitle: string;
 }
 export const COURSE_CAST: Record<string, CourseCast> = {
-  r1: { faction: 'Bog Goblins', species: { p: 'Bog Rat Pawn', n: 'Bog Salamander Knight', b: 'Bog Crow Bishop', r: 'Snapping Turtle Rook', q: 'Swamp Viper Queen', k: 'Toad King' }, lessonOpening: 'Your turn, traveller.', reviewOpening: 'Four boards. Let us begin.', endingTitle: 'The Bog is free.' },
-  r2: { faction: 'Bandit Riders', species: { p: 'Raccoon Pawn', n: 'Hare Knight', b: 'Magpie Bishop', r: 'Badger Rook', q: 'Stoat Queen', k: 'Wolf King' }, lessonOpening: 'Your turn, traveller.', reviewOpening: 'Four boards. Let us settle the account.', endingTitle: 'The Kingsroad is free.' },
-  r3: { faction: 'Shadow Cult', species: { p: 'Cult Mouse Pawn', n: 'Cult Hare Knight', b: 'Cult Owl Bishop', r: 'Cult Tortoise Rook', q: 'Cult Fox Queen', k: 'Cult Lion King' }, lessonOpening: 'Stay where you are. Nothing need be lost.', reviewOpening: 'Leave the ledger closed. Keep your crown.', endingTitle: 'The villages are free.' },
-  r4: { faction: 'Iron Legion', species: { p: 'Legion Mouse Pawn', n: 'Legion Horse Knight', b: 'Legion Owl Bishop', r: 'Legion Tortoise Rook', q: 'Legion Fox Queen', k: 'Legion Lion King' }, lessonOpening: 'Hold your post. Keep your eyes open.', reviewOpening: 'Six boards. Let us see who should carry these banners.', endingTitle: 'The banners come home.' },
-  r5: { faction: 'Bone Wardens', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Horse Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'The gate is still guarded.', reviewOpening: 'Six boards stand before the gate. Take your place.', endingTitle: 'The gate is open.' },
-  finale: { faction: 'The Lich King’s army', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Horse Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'Four boards. We have time.', reviewOpening: 'Four boards. We have time.', endingTitle: 'Pawnshire is free.' },
+  r1: { speciesArt: 'bog', faction: 'Bog Goblins', species: { p: 'Bog Rat Pawn', n: 'Bog Salamander Knight', b: 'Bog Crow Bishop', r: 'Snapping Turtle Rook', q: 'Swamp Viper Queen', k: 'Toad King' }, lessonOpening: 'Your turn, traveller.', reviewOpening: 'Four boards. Let us begin.', endingTitle: 'The Bog is free.' },
+  r2: { speciesArt: null, faction: 'Bandit Riders', species: { p: 'Raccoon Pawn', n: 'Hare Knight', b: 'Magpie Bishop', r: 'Badger Rook', q: 'Stoat Queen', k: 'Wolf King' }, lessonOpening: 'Your turn, traveller.', reviewOpening: 'Four boards. Let us settle the account.', endingTitle: 'The Kingsroad is free.' },
+  r3: { speciesArt: null, faction: 'Shadow Cult', species: { p: 'Cult Mouse Pawn', n: 'Cult Hare Knight', b: 'Cult Owl Bishop', r: 'Cult Tortoise Rook', q: 'Cult Fox Queen', k: 'Cult Lion King' }, lessonOpening: 'Stay where you are. Nothing need be lost.', reviewOpening: 'Leave the ledger closed. Keep your crown.', endingTitle: 'The villages are free.' },
+  r4: { speciesArt: null, faction: 'Iron Legion', species: { p: 'Legion Mouse Pawn', n: 'Legion Horse Knight', b: 'Legion Owl Bishop', r: 'Legion Tortoise Rook', q: 'Legion Fox Queen', k: 'Legion Lion King' }, lessonOpening: 'Hold your post. Keep your eyes open.', reviewOpening: 'Six boards. Let us see who should carry these banners.', endingTitle: 'The banners come home.' },
+  r5: { speciesArt: null, faction: 'Bone Wardens', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Horse Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'The gate is still guarded.', reviewOpening: 'Six boards stand before the gate. Take your place.', endingTitle: 'The gate is open.' },
+  finale: { speciesArt: null, faction: 'The Lich King’s army', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Horse Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'Four boards. We have time.', reviewOpening: 'Four boards. We have time.', endingTitle: 'Pawnshire is free.' },
 };
+/** Shared board/portrait set until dedicated faction art is available. */
+export const COURSE_FOE_ART = 'bog' as const;
+const chessNames: Record<PieceSymbol, string> = { p: 'Pawn', n: 'Knight', b: 'Bishop', r: 'Rook', q: 'Queen', k: 'King' };
+export function courseFoeName(id: string, piece: PieceSymbol): string {
+  const cast = courseCast(id);
+  return cast.speciesArt === COURSE_FOE_ART ? cast.species[piece] : `${cast.faction} · ${chessNames[piece]}`;
+}
+
 export const courseCast = (id: string): CourseCast => COURSE_CAST[id] ?? COURSE_CAST.r2;
 
 export const COURSE_VOICES: Record<string, Record<string, string>> = {

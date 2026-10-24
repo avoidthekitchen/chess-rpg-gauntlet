@@ -5,6 +5,7 @@
 ## Review order
 
 The pull requests are stacked. Review and merge from top to bottom; each comparison contains its own chapter or integration changes.
+Deploy the complete integration only. Regional heads depend on the later shared UI and stale-active-save recovery fixes.
 
 | Work | Issue | Review |
 | --- | --- | --- |
@@ -17,6 +18,19 @@ The pull requests are stacked. Review and merge from top to bottom; each compari
 The complete curriculum has 28 guided lessons, five regional reviews, and two finale encounters: 35 encounters and 273 distinct published positions.
 All earlier source positions and completion IDs remain unchanged. Stars and help settings never gate the story.
 Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Dedicated faction portraits remain future work.
+
+## Second review follow-up (2026-10-24)
+
+The regional corrections are `fdf741b` (R3), `bd35714` (R4), `b9b236d` (R5), and `76854cc` (finale table).
+The integrated check passes 496 tests in 37 files. All 273 records match the local published database.
+Coverage remains 529 solver states, 1,860 recovery round trips and 64 alternative-mate cases.
+Independent rechecks verified the new defender, material and shortest-route evidence.
+
+Foe labels now use faction and chess role until matching species artwork exists.
+Compact speech cannot cover advice during player input or the completed-example takeaway; desktop retains its separate dialogue space.
+Journal jumps use the measured sticky header height. Terminal moves no longer promise an opponent reply.
+Focused desktop and phone WebKit checks cover wrong moves, multi-move replies, terminal status, journal offsets and demonstration rotation.
+Public publication evidence follows below. No legacy engine implementation, corpus, or threshold changed in this follow-up.
 
 ## Review follow-up (2026-10-24)
 
@@ -37,6 +51,8 @@ Application revision `27a3a9c` uses staging bundle `index-DhffRnHC.js`. Publicat
 - Four existing landscapes were recompressed at unchanged dimensions: 2,124,970 bytes became 1,663,962 bytes.
 - The fresh full `npm run verify:battles` run finished in 1,799.52 seconds: 11 tests passed and one failed. The boss suite passed.
 - Its sole failure was trades Brave at 21/24 wins, below 90%. The dedicated fresh-engine repeatability test passed.
+- Reproduce with `npm run verify:battles` on application revision `27a3a9c36d456e9ac36abcfe77cb71527023fce5`.
+- [Raw full-run output](verification/legacy-full-27a3a9c.log) retains all cells and the failure trace. The run began on the working candidate; its engine files match that revision.
 - This full engine stage and the separate 492-test `npm run check` are recorded explicitly; no green full-CI result is claimed.
 - The legacy failure remains an unwaived release gate. No thresholds, corpus seeds or simulator heuristics were changed.
 

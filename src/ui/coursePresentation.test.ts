@@ -1,8 +1,10 @@
-import { Chess } from 'chess.js';
+import { COURSE_CAST, COURSE_FOE_ART, courseFoeName } from '../game/courseCast';
+import { FACTION_SPECIES } from './speaker';
+import { Chess, type PieceSymbol } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
 import { uciMove } from '../game/ambush';
-import { COURSE_FORK_MOVES, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
+import { COURSE_FORK_MOVES, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, coursePortrait, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
 
 const positions = COURSE_LESSONS.flatMap(lesson => [lesson.show, ...lesson.waves.flatMap(wave => [wave.main, wave.backup])]);
 
@@ -70,8 +72,8 @@ describe('lesson speakers and story', () => {
 
   it('names each review host and uses chapter identity for reused enemy art', () => {
     const hosts: Record<string, string> = { r3: 'The Cult Leader', r4: 'General Flint', r5: 'The Bone Wardens' };
-    const names: Record<string, string> = { r3: 'Cult Mouse Pawn', r4: 'Legion Mouse Pawn', r5: 'Skeleton Mouse Pawn' };
-    const prefixes: Record<string, string> = { r3: 'Cult ', r4: 'Legion ', r5: 'Skeleton ' };
+    const names: Record<string, string> = { r3: 'Shadow Cult · Pawn', r4: 'Iron Legion · Pawn', r5: 'Bone Wardens · Pawn' };
+    const prefixes: Record<string, string> = { r3: 'Shadow Cult · ', r4: 'Iron Legion · ', r5: 'Bone Wardens · ' };
     for (const lesson of COURSE_LESSONS.filter(lesson => lesson.regionId in hosts)) {
       const intro = courseIntro(lesson, 'b');
       expect(intro[0].name).toBe(lesson.review ? hosts[lesson.regionId] : names[lesson.regionId]);
@@ -200,5 +202,32 @@ describe('lesson guidance priority', () => {
     expect(courseGuidance('Watch this move.', 'Find a safe capture.', 'Watch this move.'))
       .toEqual({ status: '', coach: 'Watch this move.' });
     expect(courseGuidance('', 'Read the board.', '')).toEqual({ status: 'Read the board.', coach: '' });
+  });
+});
+
+
+describe('honest portrait identity and compact advice', () => {
+  it('names species only when the displayed portrait set matches them', () => {
+    for (const [id, cast] of Object.entries(COURSE_CAST)) for (const type of Object.keys(cast.species) as PieceSymbol[]) {
+      const name = courseFoeName(id, type);
+      const portrait = coursePortrait({ side: 'foe', type, name, line: 'Your move.' });
+      expect(portrait).toContain(`-${COURSE_FOE_ART}.webp`);
+      if (cast.speciesArt === COURSE_FOE_ART) expect(name).toBe(FACTION_SPECIES[COURSE_FOE_ART][type]);
+      else {
+        expect(name).toMatch(new RegExp(`^${cast.faction} · (Pawn|Knight|Bishop|Rook|Queen|King)$`));
+        expect(name).not.toBe(cast.species[type]);
+      }
+    }
+  });
+  it('keeps compact advice clear for player decisions and completed demonstrations', () => {
+    for (const phase of ['solving', 'taught']) {
+      expect(courseAllowsSpeech(phase, false)).toBe(false);
+      expect(courseAllowsSpeech(phase, true)).toBe(true);
+    }
+    for (const phase of ['demonstrating', 'replying', 'setup']) expect(courseAllowsSpeech(phase, false)).toBe(true);
+    for (const phase of ['won', 'lost', 'briefing']) for (const persistent of [true, false]) expect(courseAllowsSpeech(phase, persistent)).toBe(false);
+  });
+  it('does not invent an opponent reply in missed-move feedback', () => {
+    expect(companionReaction('b', 'miss').line).not.toContain('their reply');
   });
 });

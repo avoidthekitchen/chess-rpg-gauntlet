@@ -15,6 +15,9 @@ Independent review, source verification, applicable CI, and browser checks remai
 - [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
 - [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
 - [x] Add chapter transitions, named ally appearances, the finale interlude, and a saved ending.
+- [ ] Add position-specific wrong-move explanations and optional solution review after a failed attempt. This needs a teaching design beyond #40/#41.
+- [ ] Explain repaired or unreadable saves to the player and offer a clear recovery path; keep the preserved raw backup.
+- [ ] Audit startup loading: lazy chapter artwork and splitting legacy code need re-entry, failure and offline checks.
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
 - [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
 
@@ -42,7 +45,8 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 | --- | --- |
 | 2026-10-24 | Review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
 | 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |
-| 2026-10-24 | Faction species labels are canonical even while art is reused. `src/game/courseCast.ts` owns chapter voices, openings, species, and ending headings. Dedicated faction portraits remain follow-up work. |
+| 2026-10-24 | Use faction plus chess-role labels while borrowing Bog artwork. Display species names only with matching art. The earlier canonical-label exception is superseded; future species concepts need art and naming review. |
+| 2026-10-24 | The finale revisits ideas rather than enforcing a rising rating at every wave. Its opening offers a foothold; actual checkmate is the closing payoff. Published ratings are selection guidance, not a difficulty guarantee. |
 | 2026-10-24 | Owner prioritizes seeing piece movement. Compact dialogue and move banners overlay lesson advice, never board squares or action buttons. Desktop uses the dialogue space beside the board. |
 | 2026-10-24 | Staging and development accept `?region=1`–`5` or `finale`. Each region preview uses separate test storage and marks only earlier chapters complete. Production ignores the shortcut. |
 | 2026-10-24 | The finale has two four-wave reviews and a separate interlude. Actual final checkmate sets an explicit saved completion flag before animation. Ending and earlier lessons remain replayable. |

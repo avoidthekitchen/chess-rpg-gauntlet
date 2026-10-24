@@ -196,7 +196,14 @@ export class JourneyScene extends BaseScene {
       this.save.currentRegion = id; persistJourney(this.save); this.rebuild(); this.hud.querySelector<HTMLSelectElement>('[data-region-picker]')?.focus(); this.hud.scrollTop = 0; return;
     }
     if (action.startsWith('journal:')) {
-      this.hud.querySelector(`[data-journal-region="${action.slice(8)}"]`)?.scrollIntoView({ block: 'start' }); return;
+      const target = this.hud.querySelector<HTMLElement>(`[data-journal-region="${action.slice(8)}"]`);
+      const header = this.hud.querySelector<HTMLElement>('.journey-header');
+      if (target) {
+        const inset = header && getComputedStyle(header).position === 'sticky' ? header.getBoundingClientRect().height : 0;
+        target.style.scrollMarginTop = `${inset + 16}px`;
+        target.scrollIntoView({ block: 'start' });
+      }
+      return;
     }
     if (action.startsWith('lesson:') || action.startsWith('example:')) {
       const id = action.split(':')[1]; if (!lessonUnlocked(this.save, id)) return;

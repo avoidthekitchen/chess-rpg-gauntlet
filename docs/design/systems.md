@@ -84,7 +84,7 @@ Legacy campaign and standalone pilot saves remain separate and unchanged.
 ## Presentation and truthful feedback
 
 Keep the full current advice visible without scrolling when the learner first chooses a move, including Gentle and the longest lesson text.
-Setup-move flavour clears before solving; its line remains in history.
+Compact speech clears whenever the player can choose a move or read a completed example. All lines remain in history.
 Temporary portrait speech stays outside the lesson’s scrolling content. On compact screens it overlays advice, leaving board squares and action buttons clear.
 During demonstrations and move feedback, temporary speech may cover advice for 3.2–9 seconds, ending sooner when dismissed or replaced.
 The advice returns automatically; no tap is required to reveal it. This compact-screen exception prioritizes visible piece movement.
@@ -119,9 +119,9 @@ Ratings guide selection; they do not promise how difficult a position feels to a
 
 | Value | Current setting | Set or checked in |
 | --- | --- | --- |
-| Built chapters | 2; 5 guided lessons and 1 mixed review each | `COURSE_REGIONS`, `COURSE_LESSONS` in `src/game/curriculum.ts` |
+| Built chapters | 5 Regions with 5, 5, 6, 6, 6 guided lessons and one review each; finale has two encounters | `COURSE_REGIONS`, `COURSE_LESSONS` in `src/game/curriculum.ts` |
 | Guided practice | 3 waves; 1 demonstration and 1 backup per wave | `curriculum.ts`, `curriculum.test.ts` |
-| Chapter review | 4 waves; its own example and backups | `curriculum.ts`, `curriculum.test.ts` |
+| Chapter review | 4, 4, 7, 6, 6 waves; finale 4 + 4; each has its own example and backups | `curriculum.ts`, `curriculum.test.ts` |
 | Distinct published positions | 273 across examples, main waves, and backups | `src/game/curriculum.test.ts` |
 | Solver moves per position | 1–3 after the setup move | `curriculum.test.ts` |
 | Selected rating bounds | 400–1300 | `curriculum.test.ts`, `scripts/select-curriculum.mjs` |

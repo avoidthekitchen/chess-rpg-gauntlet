@@ -1,3 +1,4 @@
+import { COURSE_FOE_ART } from '../game/courseCast';
 import { Chess, type Move, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
@@ -10,7 +11,7 @@ import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phas
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
-import { captureLine, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
+import { captureLine, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
@@ -135,7 +136,7 @@ export class CoursePlayScene extends BaseScene {
     coverImage(this, art ? `bg-${art}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
-      faction: 'bog', style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
+      faction: COURSE_FOE_ART, style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
       onSquare: sq => this.onSquare(sq),
     });
     this.refresh();
@@ -343,7 +344,7 @@ export class CoursePlayScene extends BaseScene {
     const info = this.speech.info;
     if (!this.hud || !this.valid) return;
     const persistent = this.W >= 640 && this.W > this.H && this.H >= 650;
-    const visible = !!info && !this.cue && !['briefing', 'won', 'lost'].includes(this.phase) && (persistent || this.speech.visible);
+    const visible = !!info && !this.cue && courseAllowsSpeech(this.phase, persistent) && (persistent || this.speech.visible);
     if (!visible) {
       if (this.speechElement) this.speechElement.hidden = true;
       return;
@@ -407,7 +408,7 @@ export class CoursePlayScene extends BaseScene {
     }
     this.phase = 'replying'; this.hintSquare = null;
     this.speech.clear();
-    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : 'Good move. Watch their reply…';
+    this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : outcome.moves.length > 1 ? 'Good move. Watch their reply…' : 'Good move…';
     for (let i = 0; i < outcome.moves.length; i++) {
       await this.play(outcome.moves[i], token, outcome.verdict !== 'miss' && i === 0, 1 + run.step * 2 + i, outcome.verdict === 'miss'); if (token !== this.session) return;
       if (i < outcome.moves.length - 1) {

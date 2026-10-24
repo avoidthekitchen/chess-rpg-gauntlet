@@ -59,6 +59,9 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | Bone Wardens | 5 | Skeleton Mouse Pawn, Skeleton Horse Knight, Skeleton Owl Bishop, Skeleton Tortoise Rook, Skeleton Fox Queen, Skeleton Lion King |
 | The Lich King's army | Final | The Bone Wardens’ skeleton species names |
 
+The new species rows are provisional art concepts, not current portrait labels. Recheck distinctness from companion species before producing dedicated art.
+Until then, Regions 2–5 and the finale use faction plus chess-role labels, without claiming the borrowed portrait depicts those species.
+
 General Flint is the lion general and Iron Legion review host. He is a king chess piece, not a former ruler of Pawnshire.
 
 ## Places

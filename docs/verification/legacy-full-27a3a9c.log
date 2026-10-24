@@ -1,0 +1,256 @@
+
+> pawnshire@0.0.1 verify:battles
+> vitest run --config vitest.verify.config.ts
+
+
+ RUN  v5.0.5 /Users/mistercheese/.codex/worktrees/complete-journey/chess-rpg-gauntlet
+
+Legacy boss corpus: VERIFY_SEED="pawnshire-legacy-v1", 8 games per cell; intervals describe sampling uncertainty, gates are unchanged.
+Legacy battle corpus: VERIFY_SEED="pawnshire-legacy-v1", 24 games per cell; intervals describe sampling uncertainty, gates are unchanged.
+r1-reeds squire competent: wins 23/24=95.8% (Wilson 95% 79.8–99.3%); flawless 21/23=91.3% (Wilson 95% 73.2–97.6%); noRewind 23/23=100.0% (Wilson 95% 85.7–100.0%)
+r1-reeds squire careless: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+r1-reeds squire greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-reeds squire random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-reeds knight competent: wins 23/24=95.8% (Wilson 95% 79.8–99.3%); flawless 21/23=91.3% (Wilson 95% 73.2–97.6%); noRewind 23/23=100.0% (Wilson 95% 85.7–100.0%)
+r1-reeds knight careless: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-reeds knight greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-reeds knight random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+frog + 2 squires + tower squire competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+frog + 2 squires + tower squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+frog + 2 squires + tower squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+r1-guard squire competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); flawless 14/24=58.3% (Wilson 95% 38.8–75.5%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-guard squire careless: wins 6/24=25.0% (Wilson 95% 12.0–44.9%)
+r1-guard squire greedy: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+r1-guard squire random: wins 2/24=8.3% (Wilson 95% 2.3–25.8%)
+r1-guard knight competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); flawless 17/24=70.8% (Wilson 95% 50.8–85.1%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-guard knight careless: wins 5/24=20.8% (Wilson 95% 9.2–40.5%)
+r1-guard knight greedy: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+r1-guard knight random: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+frog + 2 squires + tower knight competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+frog + 2 squires + tower knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+frog + 2 squires + tower knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+r1-trades squire competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); quick≤6 24/24=100.0% (Wilson 95% 86.2–100.0%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-trades squire careless: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+r1-trades squire greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-trades squire random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-trades knight competent: wins 21/24=87.5% (Wilson 95% 69.0–95.7%); quick≤6 16/21=76.2% (Wilson 95% 54.9–89.4%); noRewind 21/21=100.0% (Wilson 95% 84.5–100.0%)
+r1-trades knight competent game=0 seed=3271822379 won, lost=0, playerMoves=7: e3e4 g8h8 e4d5 c6c5 d5d6 b7c8 h2h3 b6b5 b3f7 g7g6 c3e4 a6a5 e4c5 h8g7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=1 seed=117880270 won, lost=0, playerMoves=3: e3e4 c6c5 b3d5 g8f8 d5b7 b6b5 — You won 6 points of material and kept them. The enemy flees!
+r1-trades knight competent game=2 seed=118027365 won, lost=0, playerMoves=3: e3e4 g8f8 e4d5 f8e8 d5c6 b7c8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=3 seed=3272366832 won, lost=0, playerMoves=4: e3e4 c6c5 e4d5 f6f5 d5d6 c5c4 b3c4 g8f8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=4 seed=3271233999 lost, lost=1, playerMoves=10: e3e4 g8h8 e4d5 g7g6 d5c6 b7c6 c3d1 a6a5 g1f1 h8g7 d1e3 c6d7 f1e1 g7h6 e1d2 h6h5 d2c2 b6b5 g2g3 — Out of moves. The enemy regroups and escapes.
+r1-trades knight competent game=5 seed=3338491570 lost, lost=1, playerMoves=10: e3e4 g8f8 e4d5 b6b5 d5c6 b7c6 c3d1 f8e8 d1e3 c6e4 f2f4 a6a5 b3d1 e8f7 d1e2 b5b4 g1f1 f7e8 f4f5 — Out of moves. The enemy regroups and escapes.
+r1-trades knight competent game=6 seed=117438985 won, lost=0, playerMoves=3: e3e4 g8f8 e4d5 b6b5 d5c6 b7a8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=7 seed=3271675284 won, lost=0, playerMoves=3: e3e4 g8f7 e4d5 f7e8 d5c6 b7a8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=8 seed=49342771 won, lost=1, playerMoves=7: e3e4 g8f8 e4d5 b6b5 d5c6 b7c6 g1f1 a6a5 b3c2 f8f7 c2f5 c6e8 f5h7 g7g6 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=9 seed=3337800022 lost, lost=1, playerMoves=10: e3e4 g8f8 e4d5 b6b5 d5c6 b7c6 g1f1 c6d7 c3e4 a6a5 a2a3 a5a4 b3a2 d7f5 e4d2 f5d3 f1e1 d3c2 a2b1 — Out of moves. The enemy regroups and escapes.
+r1-trades knight competent game=10 seed=3738671096 won, lost=1, playerMoves=8: e3e4 g8f8 e4d5 c6c5 b3d1 b7a8 f2f4 b6b5 d1c2 b5b4 c3a4 f6f5 a4c5 a8d5 c5a6 b4b3 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=11 seed=3805634477 won, lost=0, playerMoves=3: e3e4 h7h6 e4d5 g8f8 d5c6 b7c8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=12 seed=2731719766 won, lost=0, playerMoves=6: e3e4 h7h6 e4d5 c6c5 a2a3 g7g6 f2f3 g6g5 c3a4 g8f8 a4b6 f8e7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=13 seed=3738229811 won, lost=0, playerMoves=7: e3e4 c6c5 e4d5 g8f7 d5d6 f7e8 b3e6 b7c6 f2f4 e8d8 g2g4 f6f5 e6f5 c6d7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=14 seed=3738082716 won, lost=0, playerMoves=3: e3e4 h7h6 e4d5 b7c8 d5c6 g8f8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=15 seed=2731278481 won, lost=0, playerMoves=3: e3e4 g8f7 e4d5 b7a8 d5c6 f7e7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=16 seed=2731131386 won, lost=2, playerMoves=5: e3e4 g8f8 e4d5 c6d5 b3d5 b7d5 c3d5 f6f5 d5b6 f8e7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=17 seed=3737538263 won, lost=1, playerMoves=6: e3e4 c6c5 e4d5 f6f5 d5d6 g8f8 b3d5 b7d5 c3d5 f8e8 d5b6 g7g5 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=18 seed=2666286576 won, lost=1, playerMoves=5: e3e4 c6c5 b3d5 b7d5 c3d5 b6b5 e4e5 h7h6 e5f6 g8f7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=19 seed=3806914405 won, lost=1, playerMoves=5: e3e4 g8f8 e4d5 f6f5 d5c6 b7c6 b3c4 c6d7 c4a6 f8e7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=20 seed=1332668441 won, lost=1, playerMoves=7: e3e4 c6c5 b3d5 b7d5 c3d5 b6b5 e4e5 b5b4 e5e6 f6f5 g1f1 b4b3 a2b3 g7g6 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=21 seed=192040612 won, lost=2, playerMoves=5: e3e4 g8f8 e4d5 c6d5 b3d5 b7d5 c3d5 f6f5 d5b6 f8f7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=22 seed=191496159 won, lost=0, playerMoves=3: e3e4 h7h6 e4d5 g8f8 d5c6 b7a8 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight competent game=23 seed=1332521346 won, lost=1, playerMoves=6: e3e4 g8f8 e4d5 f8e7 d5c6 b7c6 f2f4 f6f5 b3c2 c6e8 c2f5 e8d7 — You won 4 points of material and kept them. The enemy flees!
+r1-trades knight careless: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-trades knight greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-trades knight random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank squire competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); quick≤5 24/24=100.0% (Wilson 95% 86.2–100.0%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-backrank squire careless: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank squire greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank squire random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank knight competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); quick≤5 24/24=100.0% (Wilson 95% 86.2–100.0%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-backrank knight careless: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank knight greedy: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-backrank knight random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-squire squire competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); quick≤6 24/24=100.0% (Wilson 95% 86.2–100.0%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-squire squire careless: wins 4/24=16.7% (Wilson 95% 6.7–35.9%)
+r1-squire squire greedy: wins 22/24=91.7% (Wilson 95% 74.2–97.7%)
+r1-squire squire random: wins 0/24=0.0% (Wilson 95% 0.0–13.8%)
+r1-squire knight competent: wins 24/24=100.0% (Wilson 95% 86.2–100.0%); quick≤6 24/24=100.0% (Wilson 95% 86.2–100.0%); noRewind 24/24=100.0% (Wilson 95% 86.2–100.0%)
+r1-squire knight careless: wins 2/24=8.3% (Wilson 95% 2.3–25.8%)
+r1-squire knight greedy: wins 16/24=66.7% (Wilson 95% 46.7–82.0%)
+r1-squire knight random: wins 1/24=4.2% (Wilson 95% 0.7–20.2%)
+
+battle        level   player     win   bonuses (of wins)          avg moves  shouts kept
+r1-reeds      squire  competent   96%   flawless 91%, noRewind 100%       5.5  0.6
+r1-reeds      squire  careless     4%   flawless 100%, noRewind 100%       5.0  1.0
+r1-reeds      squire  greedy       0%   flawless -, noRewind -           0.0  0.0
+r1-reeds      squire  random       0%   flawless -, noRewind -           0.0  0.0
+r1-reeds      knight  competent   96%   flawless 91%, noRewind 100%       4.6  0.6
+r1-reeds      knight  careless     0%   flawless -, noRewind -           0.0  0.0
+r1-reeds      knight  greedy       0%   flawless -, noRewind -           0.0  0.0
+r1-reeds      knight  random       0%   flawless -, noRewind -           0.0  0.0
+r1-guard      squire  competent  100%   flawless 58%, noRewind 100%       9.1  1.3
+r1-guard      squire  careless    25%   flawless 67%, noRewind 100%       9.0  2.3
+r1-guard      squire  greedy       4%   flawless 0%, noRewind 100%       9.0  1.0
+r1-guard      squire  random       8%   flawless 0%, noRewind 100%       9.0  2.5
+r1-guard      knight  competent  100%   flawless 71%, noRewind 100%       9.0  2.2
+r1-guard      knight  careless    21%   flawless 40%, noRewind 100%       9.0  2.2
+r1-guard      knight  greedy       4%   flawless 0%, noRewind 100%       9.0  3.0
+r1-guard      knight  random       4%   flawless 0%, noRewind 100%       9.0  2.0
+r1-trades     squire  competent  100%   quick≤6 100%, noRewind 100%       4.0  0.8
+r1-trades     squire  careless     4%   quick≤6 100%, noRewind 100%       4.0  2.0
+r1-trades     squire  greedy       0%   quick≤6 -, noRewind -            0.0  0.0
+r1-trades     squire  random       0%   quick≤6 -, noRewind -            0.0  0.0
+r1-trades     knight  competent   88%   quick≤6 76%, noRewind 100%       4.9  1.1
+r1-trades     knight  careless     0%   quick≤6 -, noRewind -            0.0  0.0
+r1-trades     knight  greedy       0%   quick≤6 -, noRewind -            0.0  0.0
+r1-trades     knight  random       0%   quick≤6 -, noRewind -            0.0  0.0
+r1-backrank   squire  competent  100%   quick≤5 100%, noRewind 100%       4.4  0.2
+r1-backrank   squire  careless     0%   quick≤5 -, noRewind -            0.0  0.0
+r1-backrank   squire  greedy       0%   quick≤5 -, noRewind -            0.0  0.0
+r1-backrank   squire  random       0%   quick≤5 -, noRewind -            0.0  0.0
+r1-backrank   knight  competent  100%   quick≤5 100%, noRewind 100%       4.5  0.0
+r1-backrank   knight  careless     0%   quick≤5 -, noRewind -            0.0  0.0
+r1-backrank   knight  greedy       0%   quick≤5 -, noRewind -            0.0  0.0
+r1-backrank   knight  random       0%   quick≤5 -, noRewind -            0.0  0.0
+r1-squire     squire  competent  100%   quick≤6 100%, noRewind 100%       4.0  0.6
+r1-squire     squire  careless    17%   quick≤6 0%, noRewind 100%        8.3  2.3
+r1-squire     squire  greedy      92%   quick≤6 91%, noRewind 100%       4.8  0.7
+r1-squire     squire  random       0%   quick≤6 -, noRewind -            0.0  0.0
+r1-squire     knight  competent  100%   quick≤6 100%, noRewind 100%       4.8  0.2
+r1-squire     knight  careless     8%   quick≤6 100%, noRewind 100%       6.0  0.5
+r1-squire     knight  greedy      67%   quick≤6 88%, noRewind 100%       5.5  0.8
+r1-squire     knight  random       4%   quick≤6 0%, noRewind 100%        8.0  2.0
+
+End reasons:
+  r1-reeds squire competent: {"won: You won 8 points of material and kept them":6,"won: You won 7 points of material and kept them":17,"lost: They took it back, and you’re out of moves":1}
+  r1-reeds squire careless: {"lost: Out of moves":23,"won: You won 9 points of material and kept them":1}
+  r1-reeds squire greedy: {"lost: Out of moves":20,"lost: Checkmate":4}
+  r1-reeds squire random: {"lost: Out of moves":17,"lost: Checkmate":7}
+  r1-reeds knight competent: {"won: You won 7 points of material and kept them":21,"won: You won 9 points of material and kept them":1,"won: You won 8 points of material and kept them":1,"lost: They took it back, and you’re out of moves":1}
+  r1-reeds knight careless: {"lost: Out of moves":24}
+  r1-reeds knight greedy: {"lost: Out of moves":18,"lost: Checkmate":6}
+  r1-reeds knight random: {"lost: Out of moves":10,"lost: Checkmate":14}
+  r1-guard squire competent: {"won: Reinforcements arrive":24}
+  r1-guard squire careless: {"lost: A raider was left standing on a village, and it burned":18,"won: Reinforcements arrive":6}
+  r1-guard squire greedy: {"lost: A raider was left standing on a village, and it burned":23,"won: Reinforcements arrive":1}
+  r1-guard squire random: {"lost: A raider was left standing on a village, and it burned":22,"won: Reinforcements arrive":2}
+  r1-guard knight competent: {"won: Reinforcements arrive":24}
+  r1-guard knight careless: {"lost: A raider was left standing on a village, and it burned":18,"won: Reinforcements arrive":5,"lost: Checkmate":1}
+  r1-guard knight greedy: {"lost: A raider was left standing on a village, and it burned":23,"won: Reinforcements arrive":1}
+  r1-guard knight random: {"lost: A raider was left standing on a village, and it burned":22,"won: Reinforcements arrive":1,"lost: Checkmate":1}
+  r1-trades squire competent: {"won: You won 4 points of material and kept them":19,"won: You won 6 points of material and kept them":5}
+  r1-trades squire careless: {"lost: Out of moves":23,"won: You won 4 points of material and kept them":1}
+  r1-trades squire greedy: {"lost: Out of moves":24}
+  r1-trades squire random: {"lost: Out of moves":23,"lost: Checkmate":1}
+  r1-trades knight competent: {"won: You won 4 points of material and kept them":20,"won: You won 6 points of material and kept them":1,"lost: Out of moves":3}
+  r1-trades knight careless: {"lost: Out of moves":23,"lost: They took it back, and you’re out of moves":1}
+  r1-trades knight greedy: {"lost: Out of moves":24}
+  r1-trades knight random: {"lost: Out of moves":24}
+  r1-backrank squire competent: {"won: Checkmate":24}
+  r1-backrank squire careless: {"lost: Out of moves":22,"lost: Checkmate":2}
+  r1-backrank squire greedy: {"lost: Out of moves":24}
+  r1-backrank squire random: {"lost: Out of moves":17,"lost: Checkmate":7}
+  r1-backrank knight competent: {"won: Checkmate":24}
+  r1-backrank knight careless: {"lost: Checkmate":5,"lost: Out of moves":19}
+  r1-backrank knight greedy: {"lost: Out of moves":23,"lost: Checkmate":1}
+  r1-backrank knight random: {"lost: Checkmate":10,"lost: Out of moves":14}
+  r1-squire squire competent: {"won: Your pawn reaches the far wall and is promoted":24}
+  r1-squire squire careless: {"lost: Out of moves":20,"won: Your pawn reaches the far wall and is promoted":4}
+  r1-squire squire greedy: {"won: Your pawn reaches the far wall and is promoted":22,"lost: Out of moves":2}
+  r1-squire squire random: {"lost: Out of moves":23,"lost: Checkmate":1}
+  r1-squire knight competent: {"won: Your pawn reaches the far wall and is promoted":24}
+  r1-squire knight careless: {"lost: Out of moves":22,"won: Your pawn reaches the far wall and is promoted":2}
+  r1-squire knight greedy: {"won: Your pawn reaches the far wall and is promoted":16,"lost: Out of moves":8}
+  r1-squire knight random: {"lost: Out of moves":21,"lost: Checkmate":2,"won: Your pawn reaches the far wall and is promoted":1}
+ ❯ scripts/verify/battles.verify.test.ts (11 tests | 1 failed) 277704ms
+   ❯ r1-trades (2)
+     × is won by competent play and lost by careless play 24259ms
+owl + 2 squires + tower squire competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+owl + 2 squires + tower squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+owl + 2 squires + tower squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+owl + 2 squires + tower knight competent: wins 6/8=75.0% (Wilson 95% 40.9–92.9%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+owl + 2 squires + tower knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+owl + 2 squires + tower knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+tortoise + 2 squires + frog squire competent: wins 7/8=87.5% (Wilson 95% 52.9–97.8%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+tortoise + 2 squires + frog squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+tortoise + 2 squires + frog squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+tortoise + 2 squires + frog knight competent: wins 7/8=87.5% (Wilson 95% 52.9–97.8%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+tortoise + 2 squires + frog knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+tortoise + 2 squires + frog knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 6/8=75.0% (Wilson 95% 40.9–92.9%)
+two towers squire competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two towers squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two towers squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two towers knight competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two towers knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two towers knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+tower + 5 squires squire competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+tower + 5 squires squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 6/8=75.0% (Wilson 95% 40.9–92.9%)
+tower + 5 squires squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 6/8=75.0% (Wilson 95% 40.9–92.9%)
+tower + 5 squires knight competent: wins 5/8=62.5% (Wilson 95% 30.6–86.3%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+tower + 5 squires knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+tower + 5 squires knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two mages + frog + squire squire competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two mages + frog + squire squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+two mages + frog + squire squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 6/8=75.0% (Wilson 95% 40.9–92.9%)
+two mages + frog + squire knight competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two mages + frog + squire knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+two mages + frog + squire knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+two frogs + mage + squire squire competent: wins 7/8=87.5% (Wilson 95% 52.9–97.8%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two frogs + mage + squire squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+two frogs + mage + squire squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two frogs + mage + squire knight competent: wins 8/8=100.0% (Wilson 95% 67.6–100.0%); losses 0/8=0.0% (Wilson 95% 0.0–32.4%)
+two frogs + mage + squire knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+two frogs + mage + squire knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+frog + 2 squires (no hires) squire competent: wins 1/8=12.5% (Wilson 95% 2.2–47.1%); losses 4/8=50.0% (Wilson 95% 21.5–78.5%)
+frog + 2 squires (no hires) squire careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+frog + 2 squires (no hires) squire greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 7/8=87.5% (Wilson 95% 52.9–97.8%)
+frog + 2 squires (no hires) knight competent: wins 1/8=12.5% (Wilson 95% 2.2–47.1%); losses 4/8=50.0% (Wilson 95% 21.5–78.5%)
+frog + 2 squires (no hires) knight careless: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+frog + 2 squires (no hires) knight greedy: wins 0/8=0.0% (Wilson 95% 0.0–32.4%); losses 8/8=100.0% (Wilson 95% 67.6–100.0%)
+
+Goblin Chief duel (8 games per cell)
+frog + 2 squires + tower       squire  competent 100% (35 mv, fastest 19, 2 flawless) | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate; The battle ends in a draw; 1 unfinished]
+frog + 2 squires + tower       knight  competent 100% (32 mv, fastest 20, 4 flawless) | careless 0% [Checkmate] | greedy 0% [The battle ends in a draw; Checkmate]
+owl + 2 squires + tower        squire  competent 100% (31 mv, fastest 14, 3 flawless) | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate]
+owl + 2 squires + tower        knight  competent 75% (23 mv, fastest 18, 5 flawless) [2 unfinished] | careless 0% [Checkmate; 1 unfinished] | greedy 0% [The battle ends in a draw; Checkmate]
+tortoise + 2 squires + frog    squire  competent 88% (31 mv, fastest 17, 5 flawless) [1 unfinished] | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate]
+tortoise + 2 squires + frog    knight  competent 88% (34 mv, fastest 21, 6 flawless) [1 unfinished] | careless 0% [Checkmate] | greedy 0% [Checkmate; The battle ends in a draw; 2 unfinished]
+two towers                     squire  competent 100% (17 mv, fastest 7, 8 flawless) | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate; The battle ends in a draw; 1 unfinished]
+two towers                     knight  competent 100% (16 mv, fastest 9, 8 flawless) | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate; 1 unfinished]
+tower + 5 squires              squire  competent 100% (22 mv, fastest 13, 5 flawless) | careless 0% [Checkmate; The battle ends in a draw; 2 unfinished] | greedy 0% [Checkmate; The battle ends in a draw; 2 unfinished]
+tower + 5 squires              knight  competent 63% (34 mv, fastest 21, 3 flawless) [3 unfinished] | careless 0% [Checkmate] | greedy 0% [Checkmate; 1 unfinished]
+two mages + frog + squire      squire  competent 100% (30 mv, fastest 10, 3 flawless) | careless 0% [Checkmate] | greedy 0% [Checkmate; The battle ends in a draw; 2 unfinished]
+two mages + frog + squire      knight  competent 100% (31 mv, fastest 20, 3 flawless) | careless 0% [Checkmate] | greedy 0% [Checkmate]
+two frogs + mage + squire      squire  competent 88% (37 mv, fastest 28, 2 flawless) [1 unfinished] | careless 0% [Checkmate] | greedy 0% [Checkmate; 1 unfinished]
+two frogs + mage + squire      knight  competent 100% (34 mv, fastest 25, 2 flawless) | careless 0% [Checkmate; 1 unfinished] | greedy 0% [Checkmate]
+frog + 2 squires (no hires)    squire  competent 13% (44 mv, fastest 44, 1 flawless) [Checkmate; 3 unfinished] | careless 0% [Checkmate] | greedy 0% [Checkmate; The battle ends in a draw; 1 unfinished]
+frog + 2 squires (no hires)    knight  competent 13% (70 mv, fastest 70, 0 flawless) [Checkmate; The battle ends in a draw; 3 unfinished] | careless 0% [Checkmate] | greedy 0% [Checkmate]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  scripts/verify/battles.verify.test.ts > r1-trades > is won by competent play and lost by careless play
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "knight: competent win rate 88% < 90%",
++ ]
+
+ ❯ scripts/verify/battles.verify.test.ts:179:22
+    177|         }
+    178|       }
+    179|     expect(failures).toEqual([]);
+       |                      ^
+    180|   });
+    181| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 11 passed (12)
+   Start at  12:04:58
+   Duration  1799.52s (tests 100%)
+

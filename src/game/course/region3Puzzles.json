@@ -1400,7 +1400,7 @@
         "popularity": 93,
         "plays": 1788
       },
-      "reason": "The queen on d4 is pinned to its king on b2 by the queen on e5. It captures the pinning queen along that line. After the d6 pawn recaptures, Rxe6 takes the bishop that pawn defended. Published line after setup: Qxe5, dxe5, Rxe6."
+      "reason": "The queen on d4 is pinned to its king on b2 by the queen on e5. Qxe5 removes the only defender of the bishop on e6. After dxe5, Rxe6 takes the undefended bishop. Published line after setup: Qxe5, dxe5, Rxe6."
     },
     {
       "id": "9ztkq",

@@ -1,5 +1,14 @@
 # Build progress
 
+## 2026-10-24 — Staging region shortcuts
+
+- Added `?region=1`–`5` and `?region=finale` to staging and development, opening the requested chapter map directly.
+- Each region preview has separate saved test progress. Earlier chapters are marked complete; the requested chapter starts unsolved.
+- Reload preserves preview progress. Reset restarts that preview. Removing the parameter returns to the normal journey save.
+- Production ignores the shortcut. Independent code review found no blocker in gating, storage isolation, reload, or reset.
+- Type-check, build, and 474 tests passed. CI selected the unchanged engine harness from the whole branch; its redundant rerun was stopped.
+- The preceding full engine result remains applicable: boss passed, with one unwaived legacy trades failure. Public preview checks follow deployment.
+
 ## 2026-10-24 — First complete journey integration (#46)
 
 The complete review build has 35 encounters, 28 learned journal ideas, and 273 distinct published sources.

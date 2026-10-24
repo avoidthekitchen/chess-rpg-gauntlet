@@ -22,6 +22,9 @@ npm run puzzles          # rebuild the bounty puzzles from the Lichess database 
 
 In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy for automated testing).
 The default entry opens the new journey. No query parameter is needed on staging.
+For testing, append `?region=3` to jump to Region 3. Values `1`–`5` and `finale` work in staging and development only.
+Each shortcut has separate saved test progress. Earlier chapters are marked complete; the requested chapter starts unsolved.
+Reload keeps test progress and returns to the requested chapter. Remove the parameter to return to your normal journey.
 Development-only entries preserve the earlier campaign (`?legacy=1`) and approved pilot (`?ambush=r2-two-at-once`).
 The journey, legacy campaign, and pilot use separate saves. Resetting the journey leaves the others intact.
 

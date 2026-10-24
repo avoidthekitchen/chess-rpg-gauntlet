@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { FACTIONS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
 import { pilotEnabled, legacyEnabled } from '../pilotMode';
+import { prepareJourneyPreview } from '../journeySave';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 const SPRITE_SETS = ['ally', ...FACTIONS];
@@ -33,6 +34,7 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     document.getElementById('boot')?.remove();
-    goTo(this.game, pilotEnabled ? 'ambush' : legacyEnabled ? 'title' : 'journey');
+    const preview = !pilotEnabled && !legacyEnabled && prepareJourneyPreview();
+    goTo(this.game, pilotEnabled ? 'ambush' : legacyEnabled ? 'title' : 'journey', preview ? { page: 'map' } : undefined);
   }
 }

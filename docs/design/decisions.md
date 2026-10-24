@@ -38,6 +38,7 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | Staging and development accept `?region=1`–`5` or `finale`. Each region preview uses separate test storage and marks only earlier chapters complete. Production ignores the shortcut. |
 | 2026-10-24 | The finale has two four-wave reviews and a separate interlude. Actual final checkmate sets an explicit saved completion flag before animation. Ending and earlier lessons remain replayable. |
 | 2026-10-24 | Region 5 uses 55 unchanged sources for short endgame decisions. Teach the opponent-promotes-first race before review; underpromotion means the only immediate mate. Rook support covers forcing clearance and deflection. |
 | 2026-10-24 | Region 4 teaches bishop development with check, file tactics, exposed-king checks, deflection, intermediate checking captures, and actual mate-threat defence. Overload is not claimed. |

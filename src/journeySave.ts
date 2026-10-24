@@ -2,12 +2,28 @@ import { Chess } from 'chess.js';
 import { AMBUSH_HELP, uciMove, wavePuzzle, type AmbushRun } from './game/ambush';
 import { COURSE_REGIONS, courseLesson } from './game/curriculum';
 import { DIFFICULTIES } from './game/difficulty';
-import { lessonUnlocked, regionUnlocked, settleJourney, type JourneySave } from './game/journey';
+import { lessonUnlocked, newJourney, regionUnlocked, settleJourney, type JourneySave } from './game/journey';
 import { store } from './store';
+import { preparePreviewSave, previewRegion } from './journeyPreview';
 
-export const JOURNEY_KEY = 'pawnshire-journey-v1';
+export const JOURNEY_KEY = previewRegion ? `pawnshire-preview-v1:${previewRegion}` : 'pawnshire-journey-v1';
 export function persistJourney(save: JourneySave) { store.set(JOURNEY_KEY, JSON.stringify(save)); }
 export function clearJourney() { store.remove(JOURNEY_KEY); }
+
+/** New/reset preview journeys return to the requested chapter with isolated progress. */
+export function newJourneyForMode(...args: Parameters<typeof newJourney>): JourneySave {
+  const save = newJourney(...args);
+  return previewRegion ? preparePreviewSave(save, previewRegion) : save;
+}
+
+/** Run once at boot, not on every map visit. Reload preserves this preview's progress. */
+export function prepareJourneyPreview(): boolean {
+  if (!previewRegion) return false;
+  const save = loadJourney() ?? newJourneyForMode();
+  save.currentRegion = previewRegion;
+  persistJourney(save);
+  return true;
+}
 
 const object = (value: unknown): value is Record<string, unknown> =>
   !!value && typeof value === 'object' && !Array.isArray(value);

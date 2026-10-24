@@ -1,14 +1,15 @@
 import { STARTERS, type StarterType } from '../game/campaign';
 import { COURSE_LESSONS, COURSE_REGIONS, courseLesson, courseRegion } from '../game/curriculum';
 import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
-import { journeyComplete, lessonUnlocked, newJourney, regionUnlocked, type JourneySave } from '../game/journey';
-import { clearJourney, loadJourney, persistJourney } from '../journeySave';
+import { journeyComplete, lessonUnlocked, regionUnlocked, type JourneySave } from '../game/journey';
+import { clearJourney, loadJourney, newJourneyForMode, persistJourney } from '../journeySave';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/journey.css';
 import { chapterStory, finaleInterlude, journeyEnding } from '../game/courseStory';
 import { journeyRoute, journeyTrail } from '../ui/journeyLayout';
+import { previewRegion } from '../journeyPreview';
 
 type Page = 'title' | 'setup' | 'map' | 'journal' | 'settings' | 'story' | 'interlude' | 'ending';
 const ART = { n: 'knight', b: 'bishop', r: 'rook' };
@@ -127,7 +128,10 @@ export class JourneyScene extends BaseScene {
       <div class="journey-map" style="--map-art:url('${esc(mapArt)}');--phone-map-height:${phoneHeight}px"><svg class="journey-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><polyline class="journey-route-wide" points="${journeyRoute(desktop)}"/><polyline class="journey-route-phone" points="${journeyRoute(phone)}"/></svg><ol class="journey-trail" aria-label="${esc(current.title)} lessons in order">${nodes}</ol><p class="journey-map-caption">${completedHere} of ${current.lessons.length} encounters complete · ${DIFFICULTIES[save.difficulty].label}</p></div>
       <footer class="journey-map-footer"><div class="journey-companion-note"><img src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt=""/><p><strong>${esc(STARTERS[save.starter].name)}</strong><br>${chapterDone ? esc(current.outro) : esc(current.intro)}</p></div><div class="journey-stars-note">${current.kind === 'finale' ? (save.finaleComplete ? this.btn('ending', 'See the ending again') : save.completed.includes('finale-threshold') ? this.btn('interlude', 'Read the story so far') : '') : chapterDone ? this.btn(`story:${current.id}`, 'Read the chapter ending') : ''}<p class="journey-help">Stars: complete a lesson, solve cleanly, and solve without hints. Revisit to earn any you missed.</p></div></footer>`;
     }
-    this.hud.innerHTML = `${header}<div class="journey-content">${body}</div>`;
+    const normalUrl = new URL(location.href);
+    normalUrl.searchParams.delete('region');
+    const previewNotice = previewRegion ? `<p class="journey-notice" role="status"><strong>Region preview.</strong> Earlier chapters are marked complete for testing. Test progress saves separately. <a href="${esc(normalUrl.href)}">Return to normal journey</a>.</p>` : '';
+    this.hud.innerHTML = `${header}<div class="journey-content">${previewNotice}${body}</div>`;
   }
 
   private openSetup() {
@@ -153,7 +157,7 @@ export class JourneyScene extends BaseScene {
     }
     if (action === 'start') {
       this.page = 'map';
-      this.save = newJourney(this.difficulty, this.starter); persistJourney(this.save); this.rebuild(); this.hud.scrollTop = 0; return;
+      this.save = newJourneyForMode(this.difficulty, this.starter); persistJourney(this.save); this.rebuild(); this.hud.scrollTop = 0; return;
     }
     if (action.startsWith('difficulty:')) {
       const d = action.split(':')[1] as DifficultyId;

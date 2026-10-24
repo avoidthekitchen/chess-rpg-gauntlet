@@ -32,7 +32,8 @@ The journey, legacy campaign, and pilot use separate saves. Resetting the journe
 - **Published puzzles:** 88 distinct positions across demonstrations, practice waves, review challenges, and retry backups. Source lines remain unchanged.
 - **Guidance:** three companions, full demonstrations, four help settings, hints, and a journal of learned ideas.
 - **Progress:** sequential unlocks, saved completion, three stars per encounter, and unlimited retries. Replays can earn missed stars.
-- **Presentation:** painted backgrounds, animated animal pieces, classic-piece controls, and phone layouts.
+- **Presentation:** Continue/New journey title, painted route maps, portrait introductions, talking pieces, conversation history, accurate move banners, and victory stars.
+- **Board feel:** animated animal pieces, classic-piece controls, and phone layouts.
 
 This journey assumes players know piece movement. The entry screen includes a reminder and links to Lichess Learn.
 Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their existing code remains available in the legacy development entry.
@@ -43,7 +44,7 @@ Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their 
 src/game/     curriculum (published content), journey (progress/stars), ambush (published-line rules),
               plus legacy battle, campaign, economy, boss, region1*, tactics and threats
 src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), shout.ts (shouting goblins)
-src/scenes/   Boot, Journey (map/journal/settings), CoursePlay (lesson runner), and retained legacy screens
+src/scenes/   Boot, Journey (title/map/journal/settings), CoursePlay (lesson runner), and retained legacy screens
 src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
 src/flow.ts   campaign flow between screens (briefings, launching battles, results)
 scripts/      art generation, puzzle pipeline, engine copy, deploy staging, verify/ (engine playtests)
@@ -72,7 +73,7 @@ The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unf
 
 ## Board, tokens and art
 
-The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures (`src/ui/portrait.ts`, lines in `src/ui/speaker.ts`); on phones the card floats at the bottom of the screen. The "Pieces" button switches to standard chess pieces.
+The battle board is drawn in Phaser (`src/ui/phaserBoard.ts`), ported from the PixiJS prototype: a knight hops in an arc and leaves a dotted L, a rook stomps square by square, and a capture gets a freeze frame, a white flash, a shake and a knock-out. Each piece is a simplified **token**, a bust of its animal in its chess headgear, sized to stay about one square tall so it reads at 45 px on a phone. The detailed figurines appear as **talking heads** beside the board when a piece moves or captures. The curriculum uses `src/ui/coursePresentation.ts` for portrait dialogue, truthful move cues, and conversation history. On phones, dialogue sits in the lesson panel beneath the board. The "Classic pieces" button switches to standard chess pieces.
 
 
 Art is AI-generated with Google's Gemini 3 Pro Image (`google/gemini-3-pro-image`) through OpenRouter, styled after `art/reference/`. Check Google's and OpenRouter's current terms for commercial use before shipping; images carry an invisible SynthID watermark.

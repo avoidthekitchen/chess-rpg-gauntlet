@@ -11,6 +11,26 @@ Keep Pawnshire's storybook art, board interaction, companions, and responsive la
 Defer recruitment, army budgets, faction move rules, paid powers, and live army bosses.
 These systems must not delay a complete learning path.
 
+## Presentation belongs in the core journey
+
+The owner approved restoring the earlier game's presentation after playing the two-chapter journey.
+Deferring RPG mechanics does not mean removing the characters, celebrations, or painted navigation.
+
+- Keep a painted splash with Continue and New journey. Confirm before replacing saved progress.
+- Show the lessons as a winding route across an illustrated map. Sequential progression does not require branching paths.
+- Introduce each encounter with short portrait dialogue, then offer the demonstration and practice.
+- Let moving pieces react through portrait cards. Keep the selected companion as the lesson's coach.
+- Keep a readable conversation history, grouped by example and practice position.
+- Celebrate accepted captures, checks, verified forks, double checks, promotions, and mates with accurate banners.
+- Use portrait-led victory cards, a brief star reveal, and distinct companion reactions.
+
+Wrong moves that will be taken back receive no tactical celebration. Reviews must not reveal the answer before the move.
+Speaking identity follows the puzzle's player color. A companion is not automatically every piece of its type on the board.
+Portraits and banners must leave phone controls usable. Respect reduced motion and cancel presentation work when an encounter ends.
+Foiled, goblin shouts, Wanted, faction powers, and gold rewards remain outside this presentation pass.
+
+## Learning scope
+
 This release assumes players know how pieces move. Say so at entry rather than promising an unfinished beginner tutorial.
 The companion teaches tactical ideas, while the classic-piece option supports players who prefer standard chess symbols.
 

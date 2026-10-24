@@ -2,6 +2,41 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## Storybook presentation restored (#34)
+
+Built on 2026-10-23 after the owner approved restoring the earlier game's personality around the published curriculum.
+
+- Restored Continue/New journey, the painted sequential route, portrait introductions, talking pieces, conversation history, and accurate move banners.
+- Added companion victory portraits, new-star reveals, and distinct reactions. Existing art and board animations are reused.
+- Capture, check, double check, promotion, mate, and reviewed forks celebrate accepted moves only. Incorrect attempts receive encouragement.
+- Fork cues require a curated published move and actual targets. Both solver colors use the correct ally and opponent identities.
+- Piece dialogue remains visible beside permitted advice. Mixed reviews keep neutral introductions and their direct challenge entry.
+- History labels distinguish examples, attempts, and positions. Its close button stays visible while the conversation scrolls.
+- Short phones receive more advice space and an expanded result card. Tablet maps use the tall route so outer labels fit.
+- New journey confirms before clearing the curriculum save. Earlier campaign and pilot saves remain separate.
+- No puzzle lines, game rules, difficulty budgets, progression, or rewards changed. No army, power, shout, Wanted, or Foiled mechanics returned.
+
+**Validation**
+
+- Separate adversarial code review cleared the final changes after fixes to accessible star state and tablet map clipping.
+- Separate visual review exercised a complete lesson on phone, landscape, and desktop layouts. Its final recheck cleared map, history, results, and visible short-phone dialogue.
+- A full browser run completed all 12 encounters and 10 demonstrations through actual board clicks at four viewport sizes.
+- That run included a hint and miss, earned the expected 34 stars, and preserved progress after reload without runtime errors.
+- A focused final pass checked skipped demonstrations, capture banners, resize cancellation, history controls, replay stars, and short-phone results.
+- Title Continue, reset cancellation, confirmed reset, and legacy/pilot save isolation passed. Retreat and reload settled only once.
+- TypeScript, production build, and all 220 tests across 23 files pass. Nine new tests cover cues, identities, history, and cancelled delays.
+- The previous full engine run remains valid: the CI dependency planner finds no engine-suite dependency changed since tested commit `4624cdf`.
+- Public staging completed the first lesson and its demonstration, history, stars, and reload through actual phone-sized board clicks.
+- Replayed Region 2 fork and double-check positions using progress earned in the full local playthrough. Reduced-motion demonstration playback completed.
+- Public checks caught a relative CSS map-image path. The corrected absolute URL loads in both regions at phone, tablet, and desktop sizes.
+- Final public checks reported no console errors, failed requests, or HTTP errors. The journey made no engine requests; development hooks were absent.
+
+**Deployment**
+
+[PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37) contains this presentation pass.
+[Play staging](https://unformedideas.com/staging-chess-rpg/) with the normal URL; existing journey saves still work.
+Deployment version: `cd11ee9a-098e-4316-b3a8-6d4b5ed9b60d`. Only staging routes were deployed; live-site JavaScript and CSS URLs stayed unchanged.
+
 ## Basic journey — complete Regions 1 and 2 (#34)
 
 Built on 2026-10-23 in `codex/regions1-2-curriculum` after the owner approved the curriculum-first direction.

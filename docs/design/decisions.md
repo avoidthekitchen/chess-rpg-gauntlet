@@ -57,6 +57,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-23 | Restore the earlier presentation around the published curriculum: Continue/New splash, illustrated sequential map, portrait introductions, talking pieces and history, and accurate move banners. Add portrait-led victory cards, a brief star reveal, and distinct companion reactions. These are core presentation; armies, powers, custom puzzles, and removed faction mechanics remain deferred. |
 | 2026-10-23 | Curriculum-first checkpoint: preserve the accepted pilot in draft PR #35 and remote `codex/checkpoint-approved-ambush` at `051ad26`. Continue the basic campaign on `codex/regions1-2-curriculum`. |
 | 2026-10-23 | Finish Regions 1 and 2 using published Lichess lessons. Each has five three-wave lessons and a four-wave mixed chapter review. Grubnak and Ashfang frame reviews; live army bosses are deferred. |
 | 2026-10-23 | Preserve art, companions, board UX, and chess rules. Defer hired-army purpose, faction move mechanics, shops, Scrying Orb, and other powers until the core learning game is complete. |

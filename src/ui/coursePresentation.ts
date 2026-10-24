@@ -1,0 +1,131 @@
+import { type Chess, type Color, type Move } from 'chess.js';
+import { isDoubleCheck } from '../game/ambush';
+import type { StarterType } from '../game/campaign';
+import { STARTERS } from '../game/campaign';
+import type { CourseLesson } from '../game/curriculum';
+import { DialogueLog, moveLabel } from './dialogue';
+import { esc } from './overlay';
+import { portraitStyle } from './portrait';
+import { FACTION_SPECIES, SPECIES, pieceName, type SpeakerInfo } from './speaker';
+
+export type CourseCue = 'Capture' | 'Check' | 'Fork' | 'Double check' | 'Promotion' | 'Mate';
+
+/** Reviewed first solver moves. A source tag alone never authorizes a fork claim. */
+export const COURSE_FORK_MOVES: Readonly<Record<string, string>> = {
+  HGP8R: 'e6d4', fV7qS: 'b5d4', HCLdy: 'b5c3', '9h861': 'd5e7', f766G: 'b4c2',
+  '1FEC8': 'c6d4', '8wC4T': 'a4b6', '93uiZ': 'f4f8', '87P1s': 'h3h7', Nj4H1: 'f4a4',
+  XWGtt: 'e3e8', '4a4pt': 'b6d8', QyMRm: 'e2e6', '6EHwR': 'd4d1', DYCLg: 'd4f5',
+  zFv3K: 'f5g3', '0E0md': 'c5e6', DG2HO: 'g4e3', '4QI5N': 'e4d2', eQyKb: 'a5c7', Bceqz: 'd7b7',
+};
+
+/** Inspect the resulting board only after the runner accepts a solver move. */
+export function courseMoveCues(chess: Chess, move: Move, accepted: boolean, puzzleId: string, publishedIndex: number): CourseCue[] {
+  if (!accepted) return [];
+  const cues: CourseCue[] = [];
+  if (move.captured) cues.push('Capture');
+  if (move.promotion) cues.push('Promotion');
+  const double = isDoubleCheck(chess);
+  if (double) cues.push('Double check');
+  else if (chess.isCheck() && !chess.isCheckmate()) cues.push('Check');
+  const uci = move.from + move.to + (move.promotion ?? '');
+  if (publishedIndex === 1 && COURSE_FORK_MOVES[puzzleId] === uci) {
+    const targets = chess.board().flat().filter(p => p && p.color !== move.color && p.type !== 'p' && chess.attackers(p.square, move.color).includes(move.to));
+    if (targets.length >= 2 && targets.some(p => p?.type === 'k')) cues.push('Fork');
+  }
+  if (chess.isCheckmate()) cues.push('Mate');
+  return cues;
+}
+
+export function companionSpeaker(starter: StarterType, line: string): SpeakerInfo {
+  return { side: 'ally', name: `${STARTERS[starter].name} · ${STARTERS[starter].species}`, type: starter, line };
+}
+
+/** Companion coaching is separate: a generic moving piece never borrows their name. */
+export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly CourseCue[], regionId: string): SpeakerInfo {
+  const side = move.color === solver ? 'ally' : 'foe';
+  const type = move.promotion ?? move.piece;
+  let line: string;
+  if (side === 'foe') line = (regionId === 'r1' ? { p: 'Squelch, squelch!', n: 'Sploosh! Gills first!', b: 'Peering through the reeds…', r: 'Mud shell coming through!', q: 'Out of the mist I come!', k: 'Guards! Guards!' } : { p: 'A little farther down the road.', n: 'Over the wall I go!', b: 'A long road from here.', r: 'Make way. Heavy luggage.', q: 'The toll keeper is watching.', k: 'My chair stays right here.' })[type];
+  else if (cues.includes('Mate')) line = 'Checkmate. Their king has no safe reply.';
+  else if (cues.includes('Promotion')) line = 'A new piece, ready for the next step.';
+  else if (cues.includes('Double check')) line = 'Two pieces check their king at once!';
+  else if (cues.includes('Fork')) line = 'Check, and another piece under attack!';
+  else if (cues.includes('Check')) line = 'Check. Their king must answer.';
+  else if (cues.includes('Capture')) line = 'Got you!';
+  else line = { p: 'One step closer.', n: 'Hop to it!', b: 'Along the diagonal.', r: 'Slow and steady.', q: 'Watch closely.', k: 'Steady now.' }[type];
+  return { side, type, name: side === 'ally' ? SPECIES[type] : FACTION_SPECIES.bog[type], line };
+}
+
+const REACTIONS: Record<StarterType, { win: string; miss: string; wave: string }> = {
+  n: { win: 'Every board cleared! That calls for a victory hop.', miss: 'Even a brave knight stops to look again.', wave: 'A fine leap forward. Ready for the next board?' },
+  b: { win: 'Well observed. A good plan survives the reply.', miss: 'A useful question: what did their reply change?', wave: 'An idea understood. Shall we test it again?' },
+  r: { win: 'Well played. One sound move after another.', miss: 'No hurry. Settle, look, then move.', wave: 'Good work. Keep that steady pace.' },
+};
+export const companionReaction = (starter: StarterType, event: 'win' | 'miss' | 'wave') => companionSpeaker(starter, REACTIONS[starter][event]);
+
+const OPENING: Record<string, string> = {
+  'r1-loose-pieces': 'All these shiny things belong to the ferry now!',
+  'r1-safe-captures': 'A bargain! One shiny for all your shinies!',
+  'r1-answer-check': 'The marsh lookout sees everything. Almost everything.',
+  'r1-back-rank': 'Every door bolted. Very safe. Very snug.',
+  'r1-promotion': 'Little travellers? Hardly worth watching!',
+  'r1-bog-review': 'Grubnak has four boards. And a very large chair!',
+  'r2-knight-forks': 'Two guards, one crossing. The toll is double.',
+  'r2-double-attacks': 'Two strongboxes. An excellent day for business.',
+  'r2-two-at-once': 'Two tolls today. The banner says so.',
+  'r2-remove-defender': 'You can speak to the guard behind the guard.',
+  'r2-mate-in-two': 'I have already counted your next move.',
+  'r2-road-review': 'Four boards. Let us settle the account.',
+};
+const INTRO: Record<StarterType, string> = {
+  n: 'Hop to it! I’ll show you, then it’s your turn.',
+  b: 'Let us look carefully. What does the board allow?',
+  r: 'One board at a time. We have time to look.',
+};
+export function courseStoryBefore(lesson: CourseLesson, starter: StarterType) {
+  return lesson.before.map(line => line.replace(/Sir Hob|Old Brick/g, STARTERS[starter].name));
+}
+export function courseIntro(lesson: CourseLesson, starter: StarterType): SpeakerInfo[] {
+  const chief = lesson.id === 'r1-bog-review';
+  return [{ side: 'foe', type: chief ? 'k' : 'p', name: chief ? 'Grubnak, the Toad Chief' : lesson.regionId === 'r1' ? 'Bog Rat Pawn' : 'Road challenger', line: OPENING[lesson.id] ?? 'Your turn, traveller.' },
+    companionSpeaker(starter, lesson.review ? 'Your turn. Read each board and choose your plan.' : INTRO[starter])];
+}
+
+/** Lessons retain a single journal across the example, waves, and retries. */
+export class CourseDialogueLog {
+  private log: DialogueLog;
+  private labels: string[] = [];
+  constructor(private readonly cap = 120) { this.log = new DialogueLog(cap); }
+  add(info: SpeakerInfo, scope: string, plies = 0) {
+    this.log.add(info, plies);
+    this.labels.push(`${scope} · ${moveLabel(plies)}`);
+    if (this.labels.length > this.cap) this.labels.splice(0, this.labels.length - this.cap);
+  }
+  get all() { return this.log.all.map((entry, i) => ({ ...entry, label: this.labels[i] })); }
+  get last() { return this.log.last?.info; }
+}
+
+export function coursePortrait(info: SpeakerInfo, extra = '') {
+  return `<span class="course-portrait ${info.side} ${extra}" style="${portraitStyle(info.type, info.side === 'ally' ? 'ally' : 'bog')}" aria-hidden="true"></span>`;
+}
+export function courseDialogueRow(info: SpeakerInfo, extra = '') {
+  return `<div class="course-dialogue ${info.side} ${extra}">${coursePortrait(info)}<div><strong>${esc(info.name)}</strong><p>${esc(info.line)}</p></div></div>`;
+}
+export function captureLine(move: Move) {
+  return `${SPECIES[move.promotion ?? move.piece]} takes their ${pieceName(move.captured!)}!`;
+}
+
+/** Cancellable wall-clock holds survive a layout rebuild, and release all waiters on exit. */
+export class CourseHolds {
+  private pending = new Map<ReturnType<typeof setTimeout>, () => void>();
+  wait(ms: number) {
+    return new Promise<void>(resolve => {
+      const timer = setTimeout(() => { this.pending.delete(timer); resolve(); }, ms);
+      this.pending.set(timer, resolve);
+    });
+  }
+  clear() {
+    for (const [timer, resolve] of this.pending) { clearTimeout(timer); resolve(); }
+    this.pending.clear();
+  }
+}

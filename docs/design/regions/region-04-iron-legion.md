@@ -10,9 +10,9 @@ This is tactical coordination and defensive calculation. It is not a complete op
 | Field | Chapter decision |
 | --- | --- |
 | Region and faction | The Iron March; Iron Legion |
-| Place and leader | Flintwatch; General Flint, a Lion King |
+| Place and leader | Flintwatch; General Flint, the lion general |
 | Prerequisites | R1 safe captures and exchanges; R2 forcing replies, forks, defender removal, mate; R3 absolute pins and line tactics |
-| New skills | Bishop development with check; file access for mate; exposed-king checking sequences; guard deflection; checking captures before recaptures; stopping mate-in-one threats |
+| New skills | Bishop development with check; file access for mate; exposed-king checking sequences; guard deflection; checking captures before recaptures; captures that stop mate-in-one threats and win material |
 | Revisited skills | Three file positions exploit absolute pins before deflection. Intermediate moves revisit R1 exchange counting and R2 defender removal. |
 | Capability | Existing published-line runner; one to three solver moves; original FEN, setup, replies, and endpoints |
 | Companion | The selected companion coaches every lesson; no named companion is substituted for a board piece |
@@ -49,7 +49,9 @@ This deliberately returns to counting both sides’ captures before choosing an 
 Defence starts with an actual mate-in-one threat while the solver is not in check.
 Every first answer is a non-checking capture that removes all immediate mating continuations.
 The opponent then gives the published check; the solver’s final answer completes the source line.
-This teaches stopping a visible immediate threat and answering the next check, not comprehensive defensive planning.
+This teaches capturing to stop a visible mate threat, gaining material, then answering the next check. It does not cover comprehensive defensive planning.
+Other moves may stop the immediate threat. In OhR2Q, Rf1 is a sound defence, but it does not win the rook.
+The objective asks for both defence and material gain; it does not call every other defence unsound.
 For example, dRoKV threatens Qf1#; Qxf7 guards f1. The lesson does not incorrectly call the rook the mating piece.
 
 ## Map and sequence
@@ -66,24 +68,27 @@ Previously completed lessons remain replayable; retries and optional stars retai
 | 3 | Beyond the shields | Two rooks pursue a king to h6, then mate on h8 | Rook and queen sequences; escaping kings and interpositions | Count escapes at every check |
 | 4 | Draw the guard away | Re8+ draws a rook off d8; Qxd2 wins the queen | Rook, bishop, and knight offers; rook, king, and queen defenders | Know what the guard leaves behind |
 | 5 | Before taking back | Bxc6+ removes the knight guarding d4 before Qxd4 | Guard removal, higher-value capture, and extra rook capture | Check before recapturing; count the full trade |
-| 6 | Hold the last gate | Qxf7 prevents Qf1#; Kg2 answers Qd1+ | Threat removal by rook, queen, and knight; block or move after check | Answer their mating threat first |
+| 6 | Hold the last gate | Qxf7 prevents Qf1#; Kg2 answers Qd1+ | Threat removal by rook, queen, and knight; block or move after check | Stop the mating threat with a capture that gains material |
 | 7 | Flint’s decision | Neutral stored example; direct review entry | Six fresh main/backup pairs mapped below | Recognise a taught idea without its label |
 
 ## Mixed review
 
 | Wave | Assessed skill | Main | Backup | Recognition requirement |
 | --- | --- | --- | --- | --- |
-| 1 | Coordination through developing check | aY6xO | d9mXL | Find the bishop’s entry and calculate the blocking reply |
-| 2 | Exposed-king attack | skBmI | d2U43 | Follow checks and the king’s escapes |
-| 3 | Deflection | CeqlU | ascNK | Identify the guard’s duty before drawing it away |
-| 4 | Intermediate checking capture | IXyqT | sxdTZ | Notice the recapture, then find a useful check first |
-| 5 | Meet an immediate mating threat | vmFkF | jUB61 | Read the opponent’s existing threat before moving |
-| 6 | Earlier absolute pin | jSgsg | X7FgN | Notice that the apparent pawn guard cannot capture the mating knight |
+| 1 | File entry and earlier absolute pin | 31XQ9 | 0lrXr | Use the file and notice why the apparent guard cannot capture |
+| 2 | Intermediate checking capture | IXyqT | sxdTZ | Notice the recapture, then find a useful check first |
+| 3 | Coordination through developing check | aY6xO | d9mXL | Find the bishop’s entry and calculate the blocking reply |
+| 4 | Deflection | CeqlU | ascNK | Identify the guard’s duty before drawing it away |
+| 5 | Exposed-king attack | skBmI | d2U43 | Follow checks and the king’s escapes |
+| 6 | Meet an immediate mating threat | ERCLb | x4f2j | Stop the threat with a capture that wins material and answer the next check |
 
 The stored example R3q4o is fresh but not shown before assessment by the current interface.
 Titles, objectives, introductions, and coaching remain neutral. Requested hints follow existing help settings.
 Each backup assesses the same mechanism as its main source and lies within 200 rating points.
 Retries are supported practice; they are not described as unseen assessment.
+The review interleaves lesson skills. File entries also revisit absolute pins, so all six chapter skills receive fresh main and backup positions.
+The defence pair is rated 1085/1028, below the guided lesson’s hardest main position at 1088. It replaces the former 1199/1201 stretch.
+The 683-rated development position remains a familiar recognition check within the mixed review; ratings are selection aids, not a learning measure.
 
 ## Sources and board evidence
 
@@ -103,8 +108,8 @@ The table’s quality column gives rating / deviation / popularity / plays. SAN 
 | r4-develop · backup 1 | [jACYs](https://lichess.org/training/jACYs) | 945 / 78 / 100 / 632 | mate, mateIn2, opening, short | Kd8 Bg5+ Be7 Qxe7# | The bishop develops from c1 to g5 with Bg5+. The reply Be7 allows Qxe7#. |
 | r4-develop · main 2 | [LmMyq](https://lichess.org/training/LmMyq) | 948 / 89 / 91 / 361 | advantage, fork, opening, short | Bxc5 Bb5+ Bd7 Bxa4 | The bishop develops from f1 to b5 with Bb5+. The reply Bd7 allows Bxa4. |
 | r4-develop · backup 2 | [XPVsm](https://lichess.org/training/XPVsm) | 943 / 88 / 95 / 2848 | advantage, opening, short | Be2 Bf5+ Ka1 Nc2+ | The bishop develops from c8 to f5 with Bf5+. The reply Ka1 allows Nc2+. |
-| r4-develop · main 3 | [yl1Zp](https://lichess.org/training/yl1Zp) | 918 / 78 / 98 / 668 | bodenMate, mate, mateIn1, oneMove, opening | Qxd4 Bb5# | The bishop develops from f1 to b5 with Bb5#. The reply is unavailable: checkmate allows the immediate mate. |
-| r4-develop · backup 3 | [XyPoE](https://lichess.org/training/XyPoE) | 924 / 89 / 88 / 360 | balestraMate, mate, mateIn1, oneMove, opening | Rb1 Bg4# | The bishop develops from c8 to g4 with Bg4#. The reply is unavailable: checkmate allows the immediate mate. |
+| r4-develop · main 3 | [yl1Zp](https://lichess.org/training/yl1Zp) | 918 / 78 / 98 / 668 | bodenMate, mate, mateIn1, oneMove, opening | Qxd4 Bb5# | The bishop develops from f1 to b5 with Bb5#. The line ends at checkmate. |
+| r4-develop · backup 3 | [XyPoE](https://lichess.org/training/XyPoE) | 924 / 89 / 88 / 360 | balestraMate, mate, mateIn1, oneMove, opening | Rb1 Bg4# | The bishop develops from c8 to g4 with Bg4#. The line ends at checkmate. |
 | r4-file · example | [sYZgM](https://lichess.org/training/sYZgM) | 803 / 78 / 97 / 808 | master, mate, mateIn1, middlegame, oneMove, pin | bxc6 Re8# | The rook travels from e1 to e8 along the clear e-file with check. The guard on g7 is pinned to the king on g8. The published line ends in Re8#. |
 | r4-file · main 1 | [IVjmt](https://lichess.org/training/IVjmt) | 610 / 80 / 100 / 371 | mate, mateIn1, middlegame, oneMove, pin | Bxe8 Rd8# | The rook travels from d1 to d8 along the clear d-file with check. The guard on b7 is pinned to the king on c8. The published line ends in Rd8#. |
 | r4-file · backup 1 | [OZPY8](https://lichess.org/training/OZPY8) | 737 / 85 / 100 / 950 | mate, mateIn1, middlegame, oneMove, pin | Rxf8 Rxf8# | The rook travels from f1 to f8 along the clear f-file with check. The guard on e7 is pinned to the king on d8. The published line ends in Rxf8#. |
@@ -141,18 +146,18 @@ The table’s quality column gives rating / deviation / popularity / plays. SAN 
 | r4-defend · main 3 | [y7n8E](https://lichess.org/training/y7n8E) | 1088 / 81 / 90 / 457 | advantage, defensiveMove, endgame, short | f8=Q Nxf8 Be5+ Ka7 | The displayed position threatens Rxc8# if the opponent moves next. Nxf8 removes every immediate mating move without giving check. Then Be5+ is answered by Ka7; stop at that source endpoint. |
 | r4-defend · backup 3 | [a325i](https://lichess.org/training/a325i) | 1179 / 79 / 93 / 1222 | advantage, defensiveMove, middlegame, short | Rxf4 Qxf4 Qxc5+ Kg8 | The displayed position threatens Qxf7# if the opponent moves next. Qxf4 removes every immediate mating move without giving check. Then Qxc5+ is answered by Kg8; stop at that source endpoint. |
 | r4-legion-review · example | [R3q4o](https://lichess.org/training/R3q4o) | 890 / 77 / 100 / 524 | kingsideAttack, mate, mateIn2, opening, short | Kg8 Bc4+ Be6 Bxe6# | The bishop develops from f1 to c4 with Bc4+. The reply Be6 allows Bxe6#. |
-| r4-legion-review · main 1 | [aY6xO](https://lichess.org/training/aY6xO) | 683 / 88 / 85 / 321 | bodenMate, mate, mateIn2, opening, short | Bxd5 Bb5+ Bc6 Bxc6# | The bishop develops from f1 to b5 with Bb5+. The reply Bc6 allows Bxc6#. |
-| r4-legion-review · backup 1 | [d9mXL](https://lichess.org/training/d9mXL) | 832 / 84 / 85 / 317 | mate, mateIn2, opening, short | Ke2 Bg4+ Nf3 Bxf3# | The bishop develops from c8 to g4 with Bg4+. The reply Nf3 allows Bxf3#. |
-| r4-legion-review · main 2 | [skBmI](https://lichess.org/training/skBmI) | 918 / 76 / 88 / 499 | endgame, exposedKing, long, mate, mateIn3 | Kf6 Qf7+ Kg5 Qf5+ Kh6 Qh5# | Against the king on f6, Qf7+ starts 3 consecutive checks: Qf7+, Qf5+, Qh5#. The source replies are Kg5, Kh6; the last check leaves no legal escape. |
-| r4-legion-review · backup 2 | [d2U43](https://lichess.org/training/d2U43) | 909 / 85 / 94 / 519 | exposedKing, long, mate, mateIn3, middlegame, swallowstailMate | Qc6 Qh3+ Bh4 Qxh4+ Kg7 Qh7# | Against the king on h6, Qh3+ starts 3 consecutive checks: Qh3+, Qxh4+, Qh7#. The source replies are Bh4, Kg7; the last check leaves no legal escape. |
-| r4-legion-review · main 3 | [CeqlU](https://lichess.org/training/CeqlU) | 915 / 81 / 92 / 662 | advantage, deflection, discoveredAttack, endgame, short | Rc1 Ne2+ Qxe2 Rxc1+ | The defender on d2 guards c1. Ne2+ draws it to e2 with Qxe2; Rxc1+ then takes its former charge. The published exchange gains 2 material points. |
-| r4-legion-review · backup 3 | [ascNK](https://lichess.org/training/ascNK) | 917 / 87 / 95 / 411 | advantage, deflection, discoveredAttack, kingsideAttack, middlegame, short | Rh3 Nf2+ Qxf2 Qxd1+ | The defender on d2 guards d1. Nf2+ draws it to f2 with Qxf2; Qxd1+ then takes its former charge. The published exchange gains 2 material points. |
-| r4-legion-review · main 4 | [IXyqT](https://lichess.org/training/IXyqT) | 814 / 89 / 96 / 3054 | advantage, endgame, intermezzo, short | Rxf6 Bxg2+ Kxg2 Kxf6 | After Rxf6, Kxf6 is legal. First play Bxg2+ to take the queen on g2 with check. After Kxg2, Kxf6 captures the original attacker. This line gains 11 material points from the displayed position. |
-| r4-legion-review · backup 4 | [sxdTZ](https://lichess.org/training/sxdTZ) | 913 / 84 / 90 / 412 | crushing, endgame, hangingPiece, intermezzo, master, short | Nxd5 Rxe8+ Kh7 cxd5 | After Nxd5, cxd5 is legal. First play Rxe8+ to take the bishop on e8 with check. After Kh7, cxd5 captures the original attacker. This line gains 6 material points from the displayed position. |
-| r4-legion-review · main 5 | [vmFkF](https://lichess.org/training/vmFkF) | 1199 / 75 / 96 / 549 | crushing, defensiveMove, endgame, hangingPiece, short | Kg7 Kxg2 Qg5+ Kf1 | The displayed position threatens Qxf2# if the opponent moves next. Kxg2 removes every immediate mating move without giving check. Then Qg5+ is answered by Kf1; stop at that source endpoint. |
-| r4-legion-review · backup 5 | [jUB61](https://lichess.org/training/jUB61) | 1201 / 78 / 91 / 3425 | crushing, defensiveMove, endgame, pin, short | hxg3 Rxg3 Ra1+ Kg2 | The displayed position threatens Rxh2# if the opponent moves next. Rxg3 removes every immediate mating move without giving check. Then Ra1+ is answered by Kg2; stop at that source endpoint. |
-| r4-legion-review · main 6 | [jSgsg](https://lichess.org/training/jSgsg) | 814 / 86 / 99 / 888 | mate, mateIn1, middlegame, oneMove, pin | Nc3 Ng5# | The guard on h6 attacks g5, but moving it exposes its king on h7 to h5. Ng5# exploits that absolute pin; the guard cannot capture the mating piece. |
-| r4-legion-review · backup 6 | [X7FgN](https://lichess.org/training/X7FgN) | 825 / 81 / 90 / 413 | endgame, mate, mateIn1, oneMove, pin | Qxd5 Nf6# | The guard on g7 attacks f6, but moving it exposes its king on g8 to g1. Nf6# exploits that absolute pin; the guard cannot capture the mating piece. |
+| r4-legion-review · main 1 | [31XQ9](https://lichess.org/training/31XQ9) | 901 / 82 / 95 / 1287 | endgame, mate, mateIn1, oneMove, pin | Qxe7 Rxd8# | The rook travels from d1 to d8 along the clear d-file with check. The guard on e7 is pinned to the king on f8. The published line ends in Rxd8#. |
+| r4-legion-review · backup 1 | [0lrXr](https://lichess.org/training/0lrXr) | 921 / 83 / 96 / 327 | endgame, mate, mateIn1, oneMove, pin | Rxe1 Rxe1# | The rook travels from e8 to e1 along the clear e-file with check. The guard on f2 is pinned to the king on g1. The published line ends in Rxe1#. |
+| r4-legion-review · main 2 | [IXyqT](https://lichess.org/training/IXyqT) | 814 / 89 / 96 / 3054 | advantage, endgame, intermezzo, short | Rxf6 Bxg2+ Kxg2 Kxf6 | After Rxf6, Kxf6 is legal. First play Bxg2+ to take the queen on g2 with check. After Kxg2, Kxf6 captures the original attacker. This line gains 11 material points from the displayed position. |
+| r4-legion-review · backup 2 | [sxdTZ](https://lichess.org/training/sxdTZ) | 913 / 84 / 90 / 412 | crushing, endgame, hangingPiece, intermezzo, master, short | Nxd5 Rxe8+ Kh7 cxd5 | After Nxd5, cxd5 is legal. First play Rxe8+ to take the bishop on e8 with check. After Kh7, cxd5 captures the original attacker. This line gains 6 material points from the displayed position. |
+| r4-legion-review · main 3 | [aY6xO](https://lichess.org/training/aY6xO) | 683 / 88 / 85 / 321 | bodenMate, mate, mateIn2, opening, short | Bxd5 Bb5+ Bc6 Bxc6# | The bishop develops from f1 to b5 with Bb5+. The reply Bc6 allows Bxc6#. |
+| r4-legion-review · backup 3 | [d9mXL](https://lichess.org/training/d9mXL) | 832 / 84 / 85 / 317 | mate, mateIn2, opening, short | Ke2 Bg4+ Nf3 Bxf3# | The bishop develops from c8 to g4 with Bg4+. The reply Nf3 allows Bxf3#. |
+| r4-legion-review · main 4 | [CeqlU](https://lichess.org/training/CeqlU) | 915 / 81 / 92 / 662 | advantage, deflection, discoveredAttack, endgame, short | Rc1 Ne2+ Qxe2 Rxc1+ | The defender on d2 guards c1. Ne2+ draws it to e2 with Qxe2; Rxc1+ then takes its former charge. The published exchange gains 2 material points. |
+| r4-legion-review · backup 4 | [ascNK](https://lichess.org/training/ascNK) | 917 / 87 / 95 / 411 | advantage, deflection, discoveredAttack, kingsideAttack, middlegame, short | Rh3 Nf2+ Qxf2 Qxd1+ | The defender on d2 guards d1. Nf2+ draws it to f2 with Qxf2; Qxd1+ then takes its former charge. The published exchange gains 2 material points. |
+| r4-legion-review · main 5 | [skBmI](https://lichess.org/training/skBmI) | 918 / 76 / 88 / 499 | endgame, exposedKing, long, mate, mateIn3 | Kf6 Qf7+ Kg5 Qf5+ Kh6 Qh5# | Against the king on f6, Qf7+ starts 3 consecutive checks: Qf7+, Qf5+, Qh5#. The source replies are Kg5, Kh6; the last check leaves no legal escape. |
+| r4-legion-review · backup 5 | [d2U43](https://lichess.org/training/d2U43) | 909 / 85 / 94 / 519 | exposedKing, long, mate, mateIn3, middlegame, swallowstailMate | Qc6 Qh3+ Bh4 Qxh4+ Kg7 Qh7# | Against the king on h6, Qh3+ starts 3 consecutive checks: Qh3+, Qxh4+, Qh7#. The source replies are Bh4, Kg7; the last check leaves no legal escape. |
+| r4-legion-review · main 6 | [ERCLb](https://lichess.org/training/ERCLb) | 1085 / 81 / 88 / 671 | advantage, defensiveMove, endgame, short | Re8 Rxe5 Rc1+ Ke2 | The displayed position threatens Qxe1# if the opponent moves next. Rxe5 captures material and removes every immediate mating move without check. Answer Rc1+ with Ke2; the source line gains 9 material points. |
+| r4-legion-review · backup 6 | [x4f2j](https://lichess.org/training/x4f2j) | 1028 / 76 / 94 / 2962 | crushing, defensiveMove, endgame, hangingPiece, master, short | Qxf5 Qxh6 Qc8+ Kg7 | The displayed position threatens Qxh7# if the opponent moves next. Qxh6 captures material and removes every immediate mating move without check. Answer Qc8+ with Kg7; the source line gains 5 material points. |
 
 ## Story and presentation
 
@@ -172,11 +177,12 @@ These fixed source lines do not claim that capability.
 
 ## Verification and handoff
 
-- 2026-10-24: npx vitest run src/game/course/region4.test.ts passes all three content tests, covering all 55 sources.
+- 2026-10-24: npx vitest run src/game/course/region4.test.ts passes all four content tests, covering all 55 sources.
 - 2026-10-24: npx tsc --noEmit passes at the content handoff.
 - Mechanism tests recompute bishop starting squares, file movement, checking lines, guard displacement, recapture availability, mate threats, and absolute pins.
 - Tests cover examples, every main position, every backup, review coverage, quality, legal replays, distinct IDs, and nearby backup ratings.
-- 2026-10-24: node data/raw/r4-verify.mjs verified all 55 original FENs, moves, themes, ratings, and quality records against the local database.
+- 2026-10-24: `node scripts/select-curriculum.mjs --verify-shipped` verified 200 unchanged sources, including all 55 Region 4 positions, against the local database.
+- 2026-10-24 review fixes: `npm run ci` passed type-check, production build, and 399 tests in 27 files. No legacy engine dependencies changed.
 - Parent integration owns shared runner completion/retry/save tests, independent teaching/code review, four viewports, WebKit touch emulation, CI, and full legacy regressions.
 - No human playtest or measured learning improvement is claimed here. Public staging verification and production release remain separate records.
 

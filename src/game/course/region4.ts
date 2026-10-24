@@ -49,12 +49,12 @@ export const region4Seeds: LessonSeed[] = [
   },
   {
     id: 'r4-defend', title: 'Hold the last gate', theme: 'Meet a mating threat', tag: 'defensiveMove',
-    objective: 'Spot an existing mate-in-one threat and stop it before pursuing your own plan.',
-    takeaway: 'Check the opponent’s threat first. A move without check can remove a mating threat without giving check yourself.',
+    objective: 'Stop an existing mate-in-one threat with a capture that also wins material. Calculate the next check.',
+    takeaway: 'Check their threat first. Capture the attacker or its helper, or win material while guarding the mating square.',
     before: 'The last gate is under pressure. Your companion checks the king’s safety before planning another advance.',
     after: 'The gate holds. A scout runs ahead to Flint’s command tent.',
     demo: 'Their queen threatens mate on f1. Take the rook on f7 to guard f1; after the check on d1, escape to g2.',
-    coaching: 'If they moved next, could they give checkmate? Find a move that stops the threat, then calculate their reply.',
+    coaching: 'Which capture stops their mate and wins material? Look at the attacker, its helpers, and the mating square; calculate their reply.',
   },
   {
     id: 'r4-legion-review', title: 'Flint’s decision', theme: 'Mixed review', tag: 'mixed', review: true,

@@ -103,8 +103,7 @@ Use the [voice guide](story.md#voice-and-dialogue), respect reduced motion, and 
 
 ## Future technique practice
 
-The [syllabus](syllabus.md) and [Region 3 brief](regions/region-03-shadow-cult.md) plan later teaching.
-They do not describe shipped lessons.
+The [syllabus](syllabus.md) and chapter briefs distinguish shipped tactical lessons from future technique practice.
 
 Lichess Practice is a source for a future dedicated technique capability, such as mating methods and endgame procedures.
 Published tactical lines alone do not teach every valid continuation of those methods.

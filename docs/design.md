@@ -39,16 +39,18 @@ Chapter reviews use fresh positions and neutral prompts, so the player must reco
 Completion opens the next encounter; clean and no-hint stars reward optional replay.
 Scheduled refreshers and dedicated technique exercises are planned, not part of the current release.
 
-## Built and next
+## Production scope and next
 
 Regions 1–5 and the Lich King finale are implemented, using 273 distinct published positions.
 The first two chapters have five lessons each. Regions 3–5 have six lessons each, with seven-, six-, and six-wave reviews.
-The review build is published on [staging](https://unformedideas.com/staging-chess-rpg/).
-The original game at `/chess-rpg/` remains separate until an explicit production release.
+The owner published the accepted curriculum at [production](https://unformedideas.com/chess-rpg/) on 2026-10-24.
+[Staging](https://unformedideas.com/staging-chess-rpg/) remains the preview destination.
+The original game is archived at [alpha](https://unformedideas.com/alpha-chess-rpg/) as an [original-game reference](alpha-reference.md).
 
 The complete path has 28 lessons, five chapter reviews, and two final mixed encounters.
 Dedicated technique exercises and adaptive refreshers remain future work in the [syllabus](design/syllabus.md).
-Release checks and staging evidence are recorded in [progress](progress.md).
+Release checks and deployment evidence are recorded in [progress](progress.md) and the [release record](complete-journey-release.md).
+The owner accepted the major feedback and deferred follow-ups #53–62. The owner accepted 393×852 WebKit emulation for this check; no physical-device coverage is claimed.
 Faction-specific art can improve each chapter without blocking its teaching content.
 
 ## Detailed design

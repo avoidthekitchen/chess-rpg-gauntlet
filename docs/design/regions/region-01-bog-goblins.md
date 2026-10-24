@@ -4,7 +4,7 @@
 
 ## Design status
 
-Built and accepted by the owner as part of PR #37. Play the [staging journey](https://unformedideas.com/staging-chess-rpg/).
+Built and accepted by the owner as part of PR #37. Play the [production journey](https://unformedideas.com/chess-rpg/).
 The five lessons and Grubnak's mixed review use unchanged Lichess positions, with a shared lesson runner and separate journey save.
 
 ## Lessons and map

@@ -4,7 +4,7 @@
 
 ## Design status
 
-Built and accepted by the owner as part of PR #37. Play the [staging journey](https://unformedideas.com/staging-chess-rpg/).
+Built and accepted by the owner as part of PR #37. Play the [production journey](https://unformedideas.com/chess-rpg/).
 This implementation supersedes the former custom-battle and hired-army spec in #8 and the standalone pilot in #34/#35.
 
 ## Lessons and map
@@ -21,7 +21,7 @@ This implementation supersedes the former custom-battle and hired-army spec in #
 Exact display titles, sources, and coaching are authoritative in `src/game/curriculum.ts` and `curriculumPuzzles.json`.
 Five lessons lead in order to Ashfang's four-position review. Normal lessons have three practice positions, an example, and backups.
 Clearing Ashfang opens the Shadow Cult chapter. Earlier lessons remain replayable.
-Region 3 must extend this transition without losing existing completion or stars.
+The transition into Region 3 preserves existing completion and stars.
 
 ## Story and cast
 
@@ -30,13 +30,14 @@ Ashfang is smooth, mocking, and interested in coin. Tadwell is a formal, dutiful
 Waymeet and the Broken Wheel remain established place names, without requiring a shop or tavern UI.
 Recovering banners advances the story; it does not change the pieces supplied by published positions.
 Tadwell can join the travelling cast without hiring, XP, or roster replacement.
-The paymaster's crystal provides the planned transition into the Shadow Cult chapter.
-Missing interludes and ally scenes are content work, not a claim of completed implementation.
+The paymaster's crystal leads into the Shadow Cult chapter.
+The built chapter ending includes Tadwell, Ashfang, the crystal, and the selected companion.
 
 ## Art
 
 The planned faction species remain raccoon pawn, hare knight, magpie bishop, badger rook, stoat queen, and Ashfang the wolf king.
-The current chapter reuses earlier assets. Distinct tokens, portraits, and backgrounds are an optional follow-up tracked in #10.
+The current chapter reuses earlier assets. Distinct Bandit Riders art remains tracked in [#10](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/10).
+Related art and naming for Regions 3–5 and the finale are deferred in [#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60).
 Identity text must match the art actually shown; board colors remain distinct from ally/opponent identity.
 
 ## Verification and playtest

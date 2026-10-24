@@ -1,6 +1,6 @@
 # Pawnshire: notes for agents and contributors
 
-Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is at https://unformedideas.com/staging-chess-rpg/; the original game remains live at https://unformedideas.com/chess-rpg/. Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
+Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is live at https://unformedideas.com/chess-rpg/, with previews at https://unformedideas.com/staging-chess-rpg/. The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](docs/alpha-reference.md). Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
 
 ## Rules that never bend
 
@@ -53,7 +53,8 @@ Short, specific and plain: lead with the point, use numbers and names, keep sent
 
 ## Current scope
 
-Build the basic curriculum through the Lich King before adding armies, powers, economy, faction AI, or custom puzzles.
+The basic curriculum through the Lich King is shipped. Maintain this production direction before adding armies, powers, economy, faction AI, or custom puzzles.
+The owner accepted the major feedback and deferred follow-ups #53–62. They do not block the current release.
 Preserve story, cast, voice, art direction, and responsive presentation. These belong to the core experience.
 Use independent subagents for code review and teaching critique before delivering each Region.
 User-approved model preference: GPT-6.1 Sol for implementation; GPT-6 Astra for adversarial review and critique.

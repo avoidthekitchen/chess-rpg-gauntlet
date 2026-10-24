@@ -1,8 +1,10 @@
 # Curriculum first: accepted Regions 1 and 2 baseline
 
 This document records the delivered baseline. The active [design overview](design.md), [campaign](design/campaign.md),
-[syllabus](design/syllabus.md), and [Region 3 brief](design/regions/region-03-shadow-cult.md) govern the next expansion.
-The owner approved extending this direction through the remaining Regions and reconciling earlier plans on 2026-10-24.
+[syllabus](design/syllabus.md), and chapter briefs govern the complete production journey.
+The owner approved extending this direction through the remaining Regions on 2026-10-24. All five Regions and the finale are shipped.
+Play the [accepted curriculum](https://unformedideas.com/chess-rpg/); the original is saved as an [alpha archive and reference](alpha-reference.md).
+The two-chapter sequence and acceptance checklist below preserve the delivered baseline, not an unfinished release plan.
 
 ## Approved direction
 
@@ -31,7 +33,7 @@ Deferring RPG mechanics does not mean removing the characters, celebrations, or 
 Wrong moves that will be taken back receive no tactical celebration. Reviews must not reveal the answer before the move.
 Speaking identity follows the puzzle's player color. A companion is not automatically every piece of its type on the board.
 Teaching text takes priority over flavor dialogue. Never put a full speaking portrait ahead of advice inside the lesson's scroll area.
-On phones, use temporary speech cards and a compact portrait button for history. Keep cards away from teaching text and controls.
+On phones, use temporary speech cards and a compact portrait button for history. Cards may overlay advice, but keep board squares and controls clear.
 On roomy desktops, keep the last speaker in a separate panel. Short landscape screens use the phone treatment.
 Check that the full current advice fits without scrolling on iPhone-sized views, including Gentle and the longest lesson text.
 Respect reduced motion and cancel presentation work when an encounter ends.
@@ -43,7 +45,7 @@ This release assumes players know how pieces move. Say so at entry rather than p
 The companion teaches tactical ideas, while the classic-piece option supports players who prefer standard chess symbols.
 
 This document takes precedence over conflicting earlier campaign, economy, Region, and playbook requirements for the new basic campaign.
-Earlier documents remain useful records of the live legacy game and possible later features.
+Earlier documents remain useful records of the archived original game and possible later features.
 Chess movement rules, source licensing, truthful teaching, and technical validation still apply.
 
 ## Checkpoint and reuse
@@ -51,8 +53,8 @@ Chess movement rules, source licensing, truthful teaching, and technical validat
 - [Issue #34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) records the pilot decisions, feedback, and handoff.
 - [Historical PR #35](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/35) preserves the accepted standalone pilot; PR #37 supersedes it.
 - Remote branch `codex/checkpoint-approved-ambush` preserves commit `051ad26` before this campaign expansion.
-- Continue on `codex/regions1-2-curriculum`, preserved in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37).
-- Preview the completed basic campaign at <https://unformedideas.com/staging-chess-rpg/>.
+- The two-chapter implementation is preserved in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37) and `codex/regions1-2-curriculum`.
+- The complete campaign is live at <https://unformedideas.com/chess-rpg/>; <https://unformedideas.com/staging-chess-rpg/> hosts previews.
 
 Reuse the pilot's published-line runner, board, demonstrations, hints, retry rules, and settlement protections.
 Adapt its screen to accept lesson content and return to campaign progression.
@@ -125,8 +127,8 @@ Reloads and exits during moves must settle an attempt consistently, without dupl
 
 ## Acceptance checks
 
-These are planned release checks, not a claim that implementation has passed them.
-Record actual results in [build progress](progress.md).
+These checks record the baseline acceptance contract.
+Actual results and remaining checks belong in [build progress](progress.md) and the [release record](complete-journey-release.md).
 
 - A fresh player can choose a companion and difficulty, then finish both chapters through normal navigation.
 - Every lesson has a demonstration, playable waves, useful feedback, retry, and a route back to the map.
@@ -138,11 +140,11 @@ Record actual results in [build progress](progress.md).
 - A separate reviewer checks code and teaching claims. Fix critical findings before handoff.
 - Run `npm run ci`. Legacy engine benchmarks are optional diagnostics following the owner’s 2026-10-24 deprecation decision. Published puzzle lessons need no engine tournaments.
 - Complete a deployed staging journey and check browser errors, asset loading, and saved completion.
-- The normal production build opens the basic campaign when merged and deployed. This work deploys staging only.
+- The normal production build opens the basic campaign. The owner published the complete journey on 2026-10-24; the baseline’s staging-only restriction is superseded.
 
 ## Deferred work
 
 Recruitment and hired-army purpose, faction AI habits, Scrying Orb and other powers, live boss games, shops, XP, and levels are deferred.
 So are expanded library features, adaptive ratings, refresher scheduling, and additional human pilot testing.
 Retain useful legacy code, but do not expose unfinished systems as requirements for learning.
-Regions 3–5 and the finale follow after this two-chapter foundation is complete.
+Regions 3–5 and the finale have since shipped on this two-chapter foundation.

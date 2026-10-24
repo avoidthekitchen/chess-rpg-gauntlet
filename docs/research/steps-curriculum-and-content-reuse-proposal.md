@@ -3,6 +3,9 @@
 **Status:** Research proposal for discussion, not an approved design change.  
 **Date:** 2026-10-22
 
+Historical research: the accepted [syllabus](../design/syllabus.md) now governs the shipped curriculum.
+This proposal’s unapproved details and reuse questions are not current release blockers.
+
 [Current design](../design.md) · [Current curriculum](../design/campaign.md) · [Region 2 brief](../design/regions/region-02-bandit-riders.md)
 
 ## Recommendation

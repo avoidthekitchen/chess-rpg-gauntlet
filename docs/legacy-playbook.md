@@ -1,10 +1,10 @@
 # Legacy playbook: custom battles and army bosses
 
-[Current playbook](legacy-playbook.md) · [Legacy systems](design/legacy-systems.md)
+[Current playbook](playbook.md) · [Legacy systems](design/legacy-systems.md)
 
 This archive preserves the earlier custom-battle workflow and its historical design gates.
 It does not require armies, gold, paid powers, or live bosses in the current journey.
-The active [playbook](legacy-playbook.md) states today’s workflow and retains the engine regression bars.
+The active [playbook](playbook.md) states today’s workflow. Legacy engine benchmarks are optional historical diagnostics, not release gates.
 “Today” and “approved” below refer to the earlier campaign checkpoint.
 
 How Region 1 was built and checked, written as the steps and quality bars every Region should meet. The design documents say *what* the game is; this says *how* to add to it without drift. Where a rule can be a test, it should be one; the commands are in the [README](../README.md#run-it).

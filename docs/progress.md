@@ -1,6 +1,17 @@
 # Build progress
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
+Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
+
+## 2026-10-24 — Merge the accepted production curriculum
+
+- Merged #47 → #48 → #49 → #50 → #51 into main with merge commits, ending at `814140e`.
+- The owner confirmed the curriculum as production direction and published it at `/chess-rpg/`; the original is archived at `/alpha-chess-rpg/`.
+- The owner accepted remaining feedback as deferred work and accepted iPhone 15-sized WebKit testing without a physical device.
+- Current CI passed all 496 tests; all 273 published sources verified. Live production JS and CSS match the merged production build byte for byte.
+- Local and public recovery checks passed with labeled fixtures. Desktop and phone WebKit each completed all 35 encounters and 231 solver moves.
+- Promotion, ending/replay and reload passed. The release record retains native keyboard limits and minor promotion-dialog border clipping.
+- Reconciled current docs, roadmap, PR descriptions, completed milestones, retired benchmark issues, and deferred backlog statuses.
 
 ## 2026-10-24 — Retire the legacy benchmark gate
 

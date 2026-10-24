@@ -27,6 +27,9 @@ Their rules, source files, saves, and engine regressions remain available for de
 `npm run build` type-checks and builds the production output in `dist/`.
 `npm run deploy` stages it under `dist-worker/chess-rpg/` and deploys https://unformedideas.com/chess-rpg/.
 `npm run deploy:staging` builds `dist-staging/`, stages `dist-worker-staging/staging-chess-rpg/`, and deploys https://unformedideas.com/staging-chess-rpg/.
+The accepted curriculum is live at the production route after the owner’s 2026-10-24 deployment.
+The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](../alpha-reference.md).
+The current deployment commands target production or staging; the alpha archive is separate from those deployment targets.
 Cloudflare’s configured HTML handling supplies the trailing-slash redirect.
 Use the deployment destination authorized for the work, and keep generated output out of commits.
 

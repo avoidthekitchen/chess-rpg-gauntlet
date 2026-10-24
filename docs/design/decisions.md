@@ -4,23 +4,35 @@
 
 ## Current scope
 
-The accepted two-chapter journey is the foundation for all remaining Regions.
+The complete five-Region curriculum and Lich King finale is the accepted production direction.
+The owner published it at https://unformedideas.com/chess-rpg/ on 2026-10-24.
+The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](../alpha-reference.md).
+PRs #47–51 are merged. The owner accepted the major feedback and deferred follow-ups #53–62.
 The owner authorizes routine curriculum and implementation choices with best judgment; no repeated design approval is required.
 Independent review, source verification, applicable CI, and browser checks remain required.
 The owner retired the legacy battle benchmark gate on 2026-10-24 because new material replaces that campaign.
 
-## Open TODOs
+## Deferred follow-ups
+
+These items remain future work. They do not block the accepted production curriculum.
 
 - [x] Implement [Region 3 issue #39](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/39), following [Region 3](regions/region-03-shadow-cult.md), including source selection, progression, truthful teaching, and story transitions.
 - [x] Deliver the basic five-Region journey and finale, preserving prerequisites and revisits. Technique and refresher extensions remain below.
 - [ ] [Technique support #40](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/40): add a technique runner before claiming opposition, Lucena, or Philidor are taught and assessed.
 - [ ] [Refreshers #41](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/41): add refresher scheduling and optional repeated practice without gold or bounty dependencies.
 - [x] Add chapter transitions, named ally appearances, the finale interlude, and a saved ending.
-- [ ] Add position-specific wrong-move explanations, including promotion alternatives, and optional solution review after a failed attempt. This needs a teaching design beyond #40/#41.
-- [ ] Explain repaired or unreadable saves to the player and offer a clear recovery path; keep the preserved raw backup.
-- [ ] Audit startup loading: lazy chapter artwork and splitting legacy code need re-entry, failure and offline checks.
-- [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
-- [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
+- [ ] [Feedback and solution review #53](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/53): add position-specific wrong-move explanations and optional solution review.
+- [ ] [Save recovery notice #59](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/59): explain repaired or unreadable saves and offer a recovery path; keep the raw backup.
+- [ ] [Loading and bundle size #57](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/57): measure startup and lazy chapter artwork; check re-entry, failure, and offline behavior.
+- [ ] [Faction art and naming #60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60): expand artwork for Regions 3–5 and the finale; keep tokens readable and identity text accurate.
+- [ ] [Teaching-claim tests #54](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/54): consolidate shared checks.
+- [ ] [Legacy AI test cleanup #55](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/55): address flaky historical AI coverage as P3 work.
+- [ ] [Save, rollback, and keyboard checks #56](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/56): preserve save and rollback safeguards; complete native keyboard validation.
+  The owner accepted 393×852 WebKit emulation for this release check. No physical device is available; physical-device coverage is not claimed or required.
+- [ ] [Review source #58](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/58): replace weak fdj22 review backup with a stronger non-recapture defence source.
+- [ ] [Promotion choices #61](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/61): improve icons and order.
+- [ ] [Occluded tokens #62](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/62): improve visibility. The owner explicitly deferred this P2 item with the other follow-ups.
+- [x] Record the owner’s production release and original-game archive. Preserve legacy saves.
 
 - [x] Retire the legacy battle benchmark as a merge and release gate, per the owner’s 2026-10-24 instruction. Preserve results and optional diagnostics; replacement curriculum checks remain required.
 
@@ -39,11 +51,14 @@ Earlier implementation TODOs and tuning questions are preserved in [legacy decis
 
 Rows below preserve the sequence of decisions. Newer approved scope replaces conflicting older army, warm-up, economy, and live-boss decisions.
 The active overview, campaign, systems, and syllabus are the implementation contract.
+Earlier staging-only instructions and unmerged-stack blockers below are historical; the owner’s production decision supersedes them.
+Historical test counts, interrupted runs, and failures remain evidence of those revisions.
 
 ## Decision log
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-24 | The owner confirmed the complete curriculum as production direction, accepted the major feedback, and authorized merging PRs #47–51. All five are merged. The owner published the curriculum at `/chess-rpg/` and saved the original at `/alpha-chess-rpg/` as an archive and reference. Follow-ups #53–62 can wait. The owner accepted 393×852 WebKit emulation for this validation because no physical device is available. No physical-device coverage is claimed; it is not a release blocker. See the [release record](../complete-journey-release.md). |
 | 2026-10-24 | The owner retired legacy battle benchmarks as release gates because new material will replace them. CI requires explicit `--legacy` opt-in for historical engine diagnostics. This clears the benchmark blocker without changing its results or authorizing merge or production deployment. |
 | 2026-10-24 | Superseded by the owner’s later deprecation decision: review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
 | 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |

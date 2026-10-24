@@ -2,7 +2,7 @@ import { type Chess, type Color, type Move } from 'chess.js';
 import { isDoubleCheck } from '../game/ambush';
 import type { StarterType } from '../game/campaign';
 import { STARTERS } from '../game/campaign';
-import type { CourseLesson } from '../game/curriculum';
+import { courseRegion, type CourseLesson } from '../game/curriculum';
 import { DialogueLog, holdMs, moveLabel } from './dialogue';
 import { esc } from './overlay';
 import { portraitStyle } from './portrait';
@@ -45,7 +45,14 @@ export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly Cour
   const side = move.color === solver ? 'ally' : 'foe';
   const type = move.promotion ?? move.piece;
   let line: string;
-  if (side === 'foe') line = (regionId === 'r1' ? { p: 'Squelch, squelch!', n: 'Sploosh! Gills first!', b: 'Peering through the reeds…', r: 'Mud shell coming through!', q: 'Out of the mist I come!', k: 'Guards! Guards!' } : { p: 'A little farther down the road.', n: 'Over the wall I go!', b: 'A long road from here.', r: 'Make way. Heavy luggage.', q: 'The toll keeper is watching.', k: 'My chair stays right here.' })[type];
+  if (side === 'foe') {
+    const voices: Record<string, Record<string, string>> = {
+      r1: { p: 'Squelch, squelch!', n: 'Sploosh! Gills first!', b: 'Peering through the reeds…', r: 'Mud shell coming through!', q: 'Out of the mist I come!', k: 'Guards! Guards!' },
+      r2: { p: 'A little farther down the road.', n: 'Over the wall I go!', b: 'A long road from here.', r: 'Make way. Heavy luggage.', q: 'The toll keeper is watching.', k: 'My chair stays right here.' },
+      r3: { p: 'Stay close. Nothing need be lost.', n: 'A quiet step through the shadows.', b: 'The crystal remembers.', r: 'These walls hold our promises.', q: 'Every promise has its price.', k: 'Leave the ledger closed.' },
+    };
+    line = (voices[regionId] ?? voices.r2)[type];
+  }
   else if (cues.includes('Mate')) line = 'Checkmate. Their king has no safe reply.';
   else if (cues.includes('Promotion')) line = 'A new piece, ready for the next step.';
   else if (cues.includes('Double check')) line = 'Two pieces check their king at once!';
@@ -53,7 +60,7 @@ export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly Cour
   else if (cues.includes('Check')) line = 'Check. Their king must answer.';
   else if (cues.includes('Capture')) line = 'Got you!';
   else line = { p: 'One step closer.', n: 'Hop to it!', b: 'Along the diagonal.', r: 'Slow and steady.', q: 'Watch closely.', k: 'Steady now.' }[type];
-  return { side, type, name: side === 'ally' ? SPECIES[type] : FACTION_SPECIES.bog[type], line };
+  return { side, type, name: side === 'ally' ? SPECIES[type] : regionId === 'r1' ? FACTION_SPECIES.bog[type] : `${courseRegion(regionId)?.title ?? 'Challenger'} · ${pieceName(type)}`, line };
 }
 
 const REACTIONS: Record<StarterType, { win: string; miss: string; wave: string }> = {
@@ -86,8 +93,9 @@ export function courseStoryBefore(lesson: CourseLesson, starter: StarterType) {
   return lesson.before.map(line => line.replace(/Sir Hob|Old Brick/g, STARTERS[starter].name));
 }
 export function courseIntro(lesson: CourseLesson, starter: StarterType): SpeakerInfo[] {
-  const chief = lesson.id === 'r1-bog-review';
-  return [{ side: 'foe', type: chief ? 'k' : 'p', name: chief ? 'Grubnak, the Toad Chief' : lesson.regionId === 'r1' ? 'Bog Rat Pawn' : 'Road challenger', line: OPENING[lesson.id] ?? 'Your turn, traveller.' },
+  const region = courseRegion(lesson.regionId);
+  const opening = lesson.regionId === 'r3' ? lesson.review ? 'Leave the ledger closed. Keep your crown.' : 'Stay where you are. Nothing need be lost.' : 'Your turn, traveller.';
+  return [{ side: 'foe', type: lesson.review ? 'k' : 'p', name: lesson.review ? region?.bossName ?? 'The challenger' : lesson.regionId === 'r1' ? 'Bog Rat Pawn' : `${region?.title ?? 'Challenger'} · pawn`, line: OPENING[lesson.id] ?? opening },
     companionSpeaker(starter, lesson.review ? 'Your turn. Read each board and choose your plan.' : INTRO[starter])];
 }
 

@@ -1,7 +1,7 @@
 // Selection aid: scan the local, unmodified Lichess database once for all course themes.
 // node scripts/select-curriculum.mjs writes an ignored shortlist, never shipped content.
 // --verify-shipped checks every selected FEN, line and quality value against the source download.
-import { createReadStream, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { createReadStream, readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { createInterface } from 'node:readline';
 import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
@@ -10,8 +10,8 @@ const excluded = new Set(['mateIn1', 'hangingPiece'].flatMap(t =>
   JSON.parse(readFileSync(`public/puzzles/region1/${t}.json`, 'utf8')).map(p => p.id)));
 const tags = ['hangingPiece', 'defensiveMove', 'backRankMate', 'promotion', 'fork', 'doubleCheck', 'capturingDefender', 'mateIn2'];
 const verify = process.argv.includes('--verify-shipped');
-const shipped = verify ? new Map(Object.values(JSON.parse(readFileSync('src/game/curriculumPuzzles.json', 'utf8')))
-  .flat().map(p => [p.id, p])) : new Map();
+const courseFiles = ['src/game/curriculumPuzzles.json', ...(existsSync('src/game/course') ? readdirSync('src/game/course').filter(name => /^region[3-5]Puzzles\.json$|^finalePuzzles\.json$/.test(name)).map(name => `src/game/course/${name}`) : [])];
+const shipped = verify ? new Map(courseFiles.flatMap(file => Object.values(JSON.parse(readFileSync(file, 'utf8'))).flat()).map(p => [p.id, p])) : new Map();
 let verified = 0;
 const pools = new Map();
 const counts = Object.fromEntries(tags.map(t => [t, 0]));

@@ -16,7 +16,7 @@ function win(save: JourneySave, id: string) {
 }
 
 describe('curriculum journey', () => {
-  it('requires each preceding lesson and opens Region 2 after the Region 1 review', () => {
+  it('requires each preceding lesson and opens each chapter after its review', () => {
     const save = newJourney();
     expect(lessonUnlocked(save, ids[0])).toBe(true);
     expect(beginJourneyLesson(save, ids[1])).toBe(false);
@@ -26,7 +26,11 @@ describe('curriculum journey', () => {
     expect(regionUnlocked(save, COURSE_REGIONS[1].id)).toBe(true);
     expect(save.currentRegion).toBe(COURSE_REGIONS[1].id);
     expect(journeyComplete(save)).toBe(false);
-    for (const id of COURSE_REGIONS[1].lessons) win(save, id);
+    for (const region of COURSE_REGIONS.slice(1)) {
+      expect(regionUnlocked(save, region.id)).toBe(true);
+      expect(save.currentRegion).toBe(region.id);
+      for (const id of region.lessons) win(save, id);
+    }
     expect(journeyComplete(save)).toBe(true);
     expect(save.attempts).toBe(ids.length);
     expect(save.completed).toEqual(ids);

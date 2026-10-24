@@ -1,132 +1,128 @@
 # Region 3: Shadow Cult
 
-[Syllabus](../syllabus.md) · [Curriculum-first scope](../../curriculum-first.md) · [Story](../story.md) · [Playbook](../../playbook.md)
+[Syllabus](../syllabus.md) · [Story](../story.md) · [Playbook](../../playbook.md)
 
-## Design status
+## Implemented content
 
-Ready for content selection, 2026-10-23. This is the first published-puzzle plan for Region 3; no source pack or implementation is claimed.
-The owner approved continuing the basic learning journey. No further design approval or human pilot is required to begin.
+The source pack contains six guided lessons and a seven-wave mixed review, curated on 2026-10-24.
+It preserves 57 published Lichess puzzles, including every setup move, reply, and endpoint.
+The chosen companion remains the coach. The Cult Leader hosts the review; no new named character or recruitment mechanic is introduced.
 
-| Field | Plan |
+| Field | Content |
 | --- | --- |
-| Faction | Shadow Cult; purple hoods and crystals, keeping the established storybook direction. |
-| Headline | Pins, escaping pins, skewers, x-rays, and discovered attacks. |
-| Earlier skills | Safe captures, answering check, forks, removing defenders, mate in two, and double check. |
-| Course shape | Six sequential lessons, then a seven-wave mixed chapter review. Every lesson is required; stars are optional. |
-| Confrontation | The cult leader frames the mixed review. No live army boss, faction habit, army budget, power, or economy is required. |
-| Coach | The player's chosen companion throughout; Sage Ollie does not replace Sir Hob or Old Brick. |
-| Story turn | Break the villages' binding. The cult's records identify the Lich King and point to the Iron Legion's traitor general. |
-| Technique | Opposition and key squares remain a separate capability, not a release dependency. |
+| Faction | Shadow Cult; hooded keepers, crystals, and quiet promises. |
+| Map | Shadow Cult; the town label is the descriptive “Bound villages.” |
+| Prerequisite | Complete Ashfang’s review. Earlier lessons and completion records remain available. |
+| Path | Pins → Capture the pinning piece → Skewers → X-ray exchanges → Discovered attacks → Double-check revisit → Mixed review. |
+| Story turn | Free the villages. Read the former Lion King’s identity and the Iron Legion general’s betrayal in the ledger. |
+| Completion | Finishing the review opens the Iron Legion. Stars remain optional. |
+| Scope | Published tactics only. No altered chess rules, live boss, powers, economy, or sustained endgame technique. |
 
-Use existing faction and character names. New personal, species, and place names must be recorded in the shared glossary when implementation needs them.
-The brief does not require naming a new hero or producing a complete army art set before its lessons can ship.
-A later hero can join through dialogue; joining must not imply an unimplemented recruitment or power system.
+The main content lives in `src/game/course/region3.ts` and `region3Puzzles.json`.
+`region3Evidence.json` records each slot, actual mechanism, decisive squares, full SAN replay, original game URL, and source-row digest.
+`region3.test.ts` checks those mechanisms on the board instead of trusting theme tags.
+Integration, browser checks, full CI, and staging results belong in the shared build-progress record.
 
-## Path and prerequisites
+## Teaching sequence
 
-Ashfang's completed review opens Region 3. Preserve every earlier completion record and keep earlier lessons available for practice.
+Each guided lesson has an optional example, three main waves, and one backup per wave.
+The review stores a neutral example and seven main/backup pairs. Its entry remains a direct challenge.
+All 57 source IDs are distinct from each other and the earlier curriculum, bounty, and retained ambush packs.
 
-`Pins → Escape a pin → Skewers → X-rays → Discovered attacks → Double-check revisit → Mixed review → Iron Legion`
+| Lesson | Concrete teaching claim | Variation and prerequisite |
+| --- | --- | --- |
+| Held in place | A king-pinned defender cannot capture off the pin line. Pressure on a material-pinned rook wins it after its queen retreats. | Rook and bishop pins; mating moves, a checking knight fork, and pawn pressure. Reuses safe captures and reply checking. |
+| Capture the pinning piece | The solver starts king-pinned and captures its pinning attacker along the same line. | Rook, bishop, and queen captures; each leaves the solver’s king safe. Follow-up exchanges remain part of the source. |
+| Behind the first target | Check a king in front of another piece, then capture that rear piece after the king moves. | Rook and bishop skewers; rear rooks, a queen, and a knight. Reuses forcing checks. |
+| Through the line | A rear slider sees an exchange square through an enemy blocker. That blocker recaptures, then the rear piece captures it. | Rook files, rook ranks, and bishop diagonals. Includes material gains and familiar back-rank mates. |
+| The hidden attacker | A pawn, knight, or bishop checks while uncovering another piece’s attack. The rear piece then collects its target. | Rook and bishop discoveries; the reply includes king moves and a blocking pawn move. No new sacrifice technique is required. |
+| Two checks, seen again | A discovery and the moving piece check together. The king must move before the solver’s finish. | Knight–rook and bishop–rook geometry; both mating finishes and knight-fork captures. Reuses R2 double check. |
+| The sealed ledger | Recognize the needed idea without a tactic label or a revealing initial prompt. | Seven fresh pairs cover the chapter and two earlier strands. |
 
-The story's binding is an image for attacks along lines. It never prevents a legal move or changes chess rules.
-No positional indicator may announce the review's tactic before the player chooses a move.
+A king pin only forbids moves that expose the king. A pinned piece can move along its line or capture its attacker.
+A material pin can legally be broken. The material-pin source `c2Bgp` shows queen retreat followed by capture of the abandoned rook.
+The other focused pin sources establish the specific forbidden capture that makes the solver’s move work.
 
-## Lesson sequence and source selection
+## Pin-escape scope decision
 
-Each lesson has one optional shown example, three practice waves, and one backup per wave: seven distinct published puzzles.
-Prefer one or two solver moves in introductions. Use three only when the published continuation remains clear and uses taught ideas.
-Keep every source position, setup move, reply, and endpoint unchanged. No puzzle IDs are selected in this brief.
+The original plan searched for captures, rear-piece moves, and interpositions. This release teaches only **capturing the pinning piece**.
+Every focused source begins with the solver’s own piece pinned to its king. That very piece captures the pinning attacker.
+The tests establish the initial line, attacker, pinned piece, king, capture, and king safety after the move.
+They do not infer defence from a `pin` or `defensiveMove` label.
 
-| Order · working title | Objective and prerequisite | Published source search | Required teaching fit and wave progression |
-| --- | --- | --- | --- |
-| 1 · Held in place | Exploit a pin. Requires safe captures, king safety, and checking replies. | `pin` | Show the attacker, front piece, and piece behind. Start with a king pin; then vary the attacking piece and include a clear material pin. The line must depend on the pin. |
-| 2 · Break the binding | Escape an existing pin safely. Requires lesson 1 and answering check. | `pin` with `defensiveMove`; inspect broader `defensiveMove` candidates if needed. | The solver's piece starts pinned or faces a concrete loss from it. First remove the pinning attacker; then move the piece behind or block the line where legal. Use only methods present in verified sources. |
-| 3 · Behind the first target | Use a skewer: a valuable front target moves and exposes the piece behind. Requires forcing checks and safe captures. | `skewer` | Start with a checking skewer, then vary rook, bishop, or queen where suitable. The published reply clears the line and the solver collects the rear target. |
-| 4 · Through the line | Use an x-ray attack or defence through an intervening piece. Requires pins, skewers, and defender removal. | `xRayAttack` | Name the rear piece and the line before calculating the exchange. Start with an exchange exposing that line, then vary the blocker. Exclude a line whose only teaching point is an ordinary skewer. |
-| 5 · The hidden attacker | Move one piece to uncover another piece's attack. Requires two targets and reply checking. | `discoveredAttack` | The moving piece clears a bishop, rook, or queen line. The uncovered attack matters in the published solution. Vary the moving piece; do not require an untaught sacrifice or quiet combination. |
-| 6 · Two checks, seen again | Explain R2 double check through a discovery, then calculate the finish. Requires lesson 5 and R2 double check. | `doubleCheck`, with a verified discovered checking line. | Recall the familiar R2 idea, identify both checking pieces, then vary their geometry. Use fresh sources. This deepens an existing skill rather than introducing double check again. |
+This is a deliberate narrow claim, not evidence that other escape methods lack published sources.
+The bounded selection found 523 eligible initial pin-attacker captures before manual selection; no rating or quality filter was relaxed.
+Moving the rear piece, blocking the pin line, counterattacking, and complete pin-defence technique remain unclaimed.
 
-A king pin makes moving the pinned piece illegal only when it would expose its king.
-A material pin can be broken legally, sometimes profitably. Never say that every pinned piece cannot move.
-A pinned piece can sometimes move along the pin line or capture its attacker. Coaching must describe the actual position.
-A skewer attacks the front target first. An x-ray concerns a line through a blocker; explain its specific role rather than treating both labels as synonyms.
-In double check the king must move; capturing a checking piece with the king may be one legal king move.
+## Source manifest
 
-For lesson 2, the table lists search goals, not three guaranteed methods in the database.
-If only one method has enough suitable sources, narrow the title and objective to that method and record the missing methods.
-Do not ship attack-only positions under an escaping-pins claim or fabricate defensive lines to complete a quota.
+Each row lists the example, then three `main / backup` pairs. Review pairs are listed separately below.
+The full FENs, source URLs, quality values, reasons, and unchanged moves live in the JSON pack.
 
-## Revisits and assessment
+| Lesson | Example | Wave 1 | Wave 2 | Wave 3 |
+| --- | --- | --- | --- | --- |
+| Pins | lEVc5 | NTSrF / cgSdL | 39Kko / c2Bgp | xrCYx / iAkmt |
+| Capture the pinning piece | Wt8Fa | fUMrZ / oflAC | un3fn / 3Y0i6 | xPgdI / 6v7d9 |
+| Skewers | rXvX8 | BUkzB / EilYs | 3JWRi / u3dY2 | 6zDkm / irsYW |
+| X-rays | BCAna | i2R8M / QBWhJ | 6yvcu / 6rHtJ | ZelWm / BIy4S |
+| Discoveries | NYamc | E4Paq / K7icn | 9AjZo / llvLx | HqQGf / 3I8Uk |
+| Double check | Hmyzf | xr0Kq / oZknu | uUWLR / uXx5w | cHM5O / 9pocB |
 
-Coaching recalls earlier lessons when their skills matter. Keep the newly taught mechanism central in focused lessons.
+The review example is `KDrse`. Its stored demonstration text is neutral and does not forecast a wave.
 
-| Point | Earlier skill and purpose |
+| Review slot | Main / backup | Verified coverage |
+| --- | --- | --- |
+| 1 | 3iPpu / NWZHe | King-pinned pawn cannot capture the mating piece. |
+| 2 | 6HOpv / 9ztkq | Capture the pinning piece, then complete the source’s exchange. |
+| 3 | Q4BuY / 6wYzF | Bishop checks a king and takes the rook behind it. |
+| 4 | KUSTl / 9SvxP | Enemy rook blocks the rear slider before the exchange. |
+| 5 | lAFvE / WOWAY | Ordinary discovery / double check. Both expose a previously blocked line. |
+| 6 | ZvWIQ / HKkJ1 | Checking knight fork followed by a rook capture. A familiar pin prevents a pawn recapture. |
+| 7 | i7TIO / KPo9X | Mate in two, using already taught double check or a pin. |
+
+Review title, introduction, objective, and coaching do not name any tactic.
+Main and backup address the same slot; slot 5 deliberately spans ordinary discovery and double check.
+Replaying these known positions remains practice, not a fresh assessment.
+
+## Provenance and quality
+
+Source: the [Lichess puzzle database](https://database.lichess.org/#puzzles), distributed under CC0.
+No Lichess instructional prose was copied. Demonstrations, objectives, coaching, and story text are original.
+
+The local compressed database was streamed with Node’s Zstandard decoder. Raw downloads and curation scripts remain under ignored `data/raw/`.
+For parallel curation, Region 3 reserved IDs whose first character code modulo 3 equals zero.
+That partition supplied enough sources; there was no source-yield gap or relaxed quality floor.
+
+| Check | Result for the pack |
 | --- | --- |
-| Pins | Count the capture and opponent's reply, as at the bridge in The Bog. |
-| Escape a pin | Check the opponent's threat before launching your own attack; answer check first where present. |
-| X-rays | Reuse removing a defender. Explain which line or guarding piece changes after the exchange. |
-| Discoveries | Reuse a fork's two-target scan. The moved piece and uncovered piece may create separate threats. |
-| Double-check revisit | Recall Two at once from The Kingsroad, now with the discovered line explained. |
+| Rating | 601–1296; allowed range 400–1300. |
+| Rating deviation | At most 90. |
+| Popularity | At least 86; required minimum 85. |
+| Plays | At least 328; required minimum 300. |
+| Length | One or two solver moves; every source endpoint preserved. |
+| Backup distance | Every backup is within 200 rating points of its main. |
+| Source identity | Original FEN, setup, moves, rating, themes, and quality values retained. |
+| Review coverage | Every required slot has both a main and backup; ordinary discovery and double check are both represented. |
 
-The cult leader’s review stores one neutral example, seven fresh main waves, and seven fresh backups: fifteen distinct puzzles.
-Match the current direct challenge entry: the stored review example has no player-facing demonstration button.
-The whole Region therefore targets 57 distinct sources. Keep them separate from R1/R2, bounties, and warm-ups.
-
-The seven review slots cover: a pin; escaping a pin; a skewer; an x-ray; a discovery or double check; an earlier fork or defender removal; an earlier check response or mating finish.
-Main and backup must assess the same slot. Across discovery main and backup, include both ordinary discovery and double check.
-Keep each continuation short. These extra review slots cover the wider chapter without forcing several new mechanisms into one puzzle.
-
-Use a neutral title such as “The sealed ledger.” Do not label a wave “Find the pin” or identify its moving piece before a hint.
-The stored review example uses generic checks, captures, threats, and reply calculation without forecasting the next wave.
-Adding a player-facing review demonstration is separate UI work, not required for this chapter.
-After solving, name the mechanism and explain its decisive move. Correct tactical banners may appear only after that move is accepted.
-Known-position replay supports practice; a repeated review is not a fresh assessment.
+Quality scores and legal replay establish source reliability, not measured teaching effectiveness or transfer to complete games.
 
 ## Story and voice
 
-Preserve the [main arc](../story.md#main-story-arc). The cult promises followers they will never lose anything again.
-The companion shows why fearing a loss can leave pieces tied to one another. The player learns how to break those ties.
-The cult speaks in quiet promises and careful bargains. Keep lines short and avoid mocking mistakes.
+The cult promises followers they will never lose anything again. Its quiet guards confuse safety with keeping everything fixed.
+The companion traces the lines and shows that a pin is not a spell or a change to chess rules.
+The villages regain their freedom as the path reaches the sealed ledger.
 
-| Beat | Purpose and sample original line |
-| --- | --- |
-| Arrival | Ashfang's crystal leads to bound villages. Companion: “They promise safety. Look what their pieces must guard.” |
-| Pins and escape | Show fear becoming a binding. Cult voice: “Stay where you are. Nothing need be lost.” |
-| Hidden lines | Open the route to the cult's records. Sage Ollie: “Move the front piece. See who was waiting behind.” |
-| Review | The leader offers one last bargain. “Leave the ledger closed. Keep your crown.” |
-| Turn | The records confirm the former Lion King became the Lich King after refusing checkmate. Companion: “He was a Lion King. He could not bear to lose.” |
-| Next chapter | The records name the Iron Legion's traitor general. Keep the full revelation to this chapter's short closing scene. |
-| Lich interlude | Cold and courtly: “A loss is only final when one accepts it.” |
+The ledger names the former Lion King as the Lich King, then identifies the Iron Legion’s traitor general.
+Keep this revelation short. The player remains mostly silent and the chosen companion remains the tutor.
+The Cult Leader is a role label; no new species or personal name is introduced.
 
-Sample Sage Ollie text illustrates his voice; supply suitable Sir Hob and Old Brick lines without changing their roles.
-Keep the player mostly silent. The starter remains the tutor; other characters add brief flavor around accurate instruction.
-New art can follow the existing hood-and-crystal direction. Readability, accurate chess colors, and phone layouts take precedence over a complete faction roster.
+## Validation and limits
 
-## Technique capability and scope
+`npx vitest run src/game/course/region3.test.ts` passes 115 tests for the content pack.
+They cover every legal replay, unchanged SAN record, quality floor, source identity, nearby backup, neutral review prompt, and claimed mechanism.
+The source comparison script also checks all stored fields against the local database; record its final result in shared build progress.
+Independent teaching review, integrated course completion, responsive layouts, and release CI remain separate checks.
 
-Opposition and key squares belong in the longer curriculum, but the current journey runner follows one fixed published line.
-A short `pawnEndgame` or `zugzwang` puzzle does not establish practice of either technique.
-
-Before adding a technique node, identify a specific reusable published source, its replies, acceptable alternatives, and the required win or draw goal.
-Verify that the runner teaches and checks that goal, rather than merely accepting a memorized move sequence.
-Track the missing capability in the [syllabus ledger](../syllabus.md#technique-capability-ledger).
-Ship the verified line-tactic chapter first if that work is not ready. No custom puzzle composition or engine exercise is required for this release.
-
-## Implementation acceptance
-
-- All six lessons and the review are playable through the existing course flow; no unfinished chapter appears playable.
-- Add source manifests, original coaching, and narrow objectives only after inspecting every board and published continuation.
-- Preserve the current quality floor: rating deviation at most 90, popularity at least 85, and at least 300 plays.
-- Begin selection in the existing 400–1300 course range. Prioritize clear positions over forcing a higher regional rating band.
-- Keep backups within the existing 200-point tolerance. Store the reason each source and backup fits its slot.
-- Replay every source and compare it with the database. Check setup perspective, solver color, legality, promotions, endpoint, and duplicate reservations.
-- Assert pins, escapes, skewers, x-rays, and discoveries on the actual decisive positions. Tags alone do not pass these checks.
-- Lesson 2 tests must establish an existing pin and a legal escape that addresses its threat. Never assert success from the tag alone.
-- Verify double-check claims with the existing checker. Any new detection or completion rule needs unit tests in `src/game`.
-- Preserve the established alternative immediate mates, hints, retries, completion, stars, saves, and exit settlement.
-- Generalize `Journey.ts` map coordinates for seven nodes; its current six-entry arrays cannot render this chapter.
-- Replace hard-coded chapter/encounter totals, completion text, and reset copy. Test navigation and layout beyond two Regions.
-- Remove R1/R2-only count assumptions from integration tests while retaining their existing content and save guarantees.
-- Independently review teaching accuracy and neutral assessment presentation. Check all playbook viewport sizes and reduced motion.
-- Run `npm run ci` for the implementation PR and `npm run ci -- --full` before shipping. Published puzzles need no new engine tournaments.
-- Record implementation, verification, deployment, and any remaining source gaps in build progress. These checks are not yet completed.
+The chapter does not teach opposition, key squares, general pin defence, or sustained endgame conversion.
+Those require broader source coverage or a technique runner that accepts multiple sound continuations.
+Do not credit a short endgame-tagged puzzle as evidence that those capabilities are implemented.

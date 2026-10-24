@@ -1,5 +1,19 @@
 # Build progress
 
+## 2026-10-24 — Region 3: Shadow Cult (#39)
+
+- Six focused lessons and a seven-wave mixed review add 57 unchanged Lichess sources.
+- Independent Astra review matched every source field and checked every teaching mechanism, including backups.
+- Pin escape covers capturing the pinning attacker. Wider escape methods remain unclaimed.
+- Maps and progress totals now follow registered chapters. Old version-1 saves retain completion and stars.
+- Added a compact chapter picker, replayable chapter endings, Cult dialogue, and an illustrated Cult landscape.
+- `npm run ci` passed: type-check, build, and 405 tests at that checkpoint, including concurrently prepared content tests.
+- Independent Chromium checks at 375×553 and 844×390 showed complete current advice and 44×44 history targets.
+- Full baseline regression was started before implementation. Legacy `r1-guard` failed its Brave flawless bonus: 11/23 wins, below 50%.
+- Boss checks were still running at this checkpoint. No threshold was lowered and no legacy waiver was assumed.
+- Complete normal-UI desktop/WebKit runs and public staging verification continue in the integration record.
+
+
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
 ## Reconciled foundation and Region 3 handoff

@@ -52,6 +52,9 @@ The opponent then gives the published check; the solver’s final answer complet
 This teaches capturing to stop a visible mate threat, gaining material, then answering the next check. It does not cover comprehensive defensive planning.
 Other moves may stop the immediate threat. In OhR2Q, Rf1 is a sound defence, but it does not win the rook.
 The objective asks for both defence and material gain; it does not call every other defence unsound.
+All nine sources have exactly one non-checking capture that removes every immediate mating reply. Tests enumerate all legal captures to verify this.
+The review also checks that the capturing piece cannot be recaptured at the endpoint, and its gain survives the opponent’s largest immediate capture.
+These are bounded board checks, not an engine proof of every later continuation.
 For example, dRoKV threatens Qf1#; Qxf7 guards f1. The lesson does not incorrectly call the rook the mating piece.
 
 ## Map and sequence
@@ -80,14 +83,15 @@ Previously completed lessons remain replayable; retries and optional stars retai
 | 3 | Coordination through developing check | aY6xO | d9mXL | Find the bishop’s entry and calculate the blocking reply |
 | 4 | Deflection | CeqlU | ascNK | Identify the guard’s duty before drawing it away |
 | 5 | Exposed-king attack | skBmI | d2U43 | Follow checks and the king’s escapes |
-| 6 | Meet an immediate mating threat | ERCLb | x4f2j | Stop the threat with a capture that wins material and answer the next check |
+| 6 | Meet an immediate mating threat | x4f2j | fdj22 | Stop the threat with a capture that wins material and answer the next check |
 
 The stored example R3q4o is fresh but not shown before assessment by the current interface.
 Titles, objectives, introductions, and coaching remain neutral. Requested hints follow existing help settings.
 Each backup assesses the same mechanism as its main source and lies within 200 rating points.
 Retries are supported practice; they are not described as unseen assessment.
 The review interleaves lesson skills. File entries also revisit absolute pins, so all six chapter skills receive fresh main and backup positions.
-The defence pair is rated 1085/1028, below the guided lesson’s hardest main position at 1088. It replaces the former 1199/1201 stretch.
+The defence pair is rated 1028/1093. Its harder position is five points above the guided lesson’s hardest main position at 1088.
+It replaces the former 1199/1201 stretch. ERCLb was removed because its source endpoint stopped before a rook and knight could be regained.
 The 683-rated development position remains a familiar recognition check within the mixed review; ratings are selection aids, not a learning measure.
 
 ## Sources and board evidence
@@ -156,8 +160,8 @@ The table’s quality column gives rating / deviation / popularity / plays. SAN 
 | r4-legion-review · backup 4 | [ascNK](https://lichess.org/training/ascNK) | 917 / 87 / 95 / 411 | advantage, deflection, discoveredAttack, kingsideAttack, middlegame, short | Rh3 Nf2+ Qxf2 Qxd1+ | The defender on d2 guards d1. Nf2+ draws it to f2 with Qxf2; Qxd1+ then takes its former charge. The published exchange gains 2 material points. |
 | r4-legion-review · main 5 | [skBmI](https://lichess.org/training/skBmI) | 918 / 76 / 88 / 499 | endgame, exposedKing, long, mate, mateIn3 | Kf6 Qf7+ Kg5 Qf5+ Kh6 Qh5# | Against the king on f6, Qf7+ starts 3 consecutive checks: Qf7+, Qf5+, Qh5#. The source replies are Kg5, Kh6; the last check leaves no legal escape. |
 | r4-legion-review · backup 5 | [d2U43](https://lichess.org/training/d2U43) | 909 / 85 / 94 / 519 | exposedKing, long, mate, mateIn3, middlegame, swallowstailMate | Qc6 Qh3+ Bh4 Qxh4+ Kg7 Qh7# | Against the king on h6, Qh3+ starts 3 consecutive checks: Qh3+, Qxh4+, Qh7#. The source replies are Bh4, Kg7; the last check leaves no legal escape. |
-| r4-legion-review · main 6 | [ERCLb](https://lichess.org/training/ERCLb) | 1085 / 81 / 88 / 671 | advantage, defensiveMove, endgame, short | Re8 Rxe5 Rc1+ Ke2 | The displayed position threatens Qxe1# if the opponent moves next. Rxe5 captures material and removes every immediate mating move without check. Answer Rc1+ with Ke2; the source line gains 9 material points. |
-| r4-legion-review · backup 6 | [x4f2j](https://lichess.org/training/x4f2j) | 1028 / 76 / 94 / 2962 | crushing, defensiveMove, endgame, hangingPiece, master, short | Qxf5 Qxh6 Qc8+ Kg7 | The displayed position threatens Qxh7# if the opponent moves next. Qxh6 captures material and removes every immediate mating move without check. Answer Qc8+ with Kg7; the source line gains 5 material points. |
+| r4-legion-review · main 6 | [x4f2j](https://lichess.org/training/x4f2j) | 1028 / 76 / 94 / 2962 | crushing, defensiveMove, endgame, hangingPiece, master, short | Qxf5 Qxh6 Qc8+ Kg7 | The displayed position threatens Qxh7# if the opponent moves next. Qxh6 captures material and removes every immediate mating move without check. Answer Qc8+ with Kg7; the source line gains 5 material points. |
+| r4-legion-review · backup 6 | [fdj22](https://lichess.org/training/fdj22) | 1093 / 77 / 93 / 464 | advantage, defensiveMove, middlegame, short | Rxh8 Qxh8 Qg3+ Kf8 | Qxh8 captures the rook supporting Qh6# and removes the mating threat without check. Answer Qg3+ with Kf8. The queen cannot be recaptured at the published endpoint; the gain stays positive even after White’s largest immediate capture, Nxd7+. |
 
 ## Story and presentation
 
@@ -177,12 +181,12 @@ These fixed source lines do not claim that capability.
 
 ## Verification and handoff
 
-- 2026-10-24: npx vitest run src/game/course/region4.test.ts passes all four content tests, covering all 55 sources.
+- 2026-10-24: npx vitest run src/game/course/region4.test.ts passes all five content tests, covering all 55 sources.
 - 2026-10-24: npx tsc --noEmit passes at the content handoff.
 - Mechanism tests recompute bishop starting squares, file movement, checking lines, guard displacement, recapture availability, mate threats, and absolute pins.
 - Tests cover examples, every main position, every backup, review coverage, quality, legal replays, distinct IDs, and nearby backup ratings.
 - 2026-10-24: `node scripts/select-curriculum.mjs --verify-shipped` verified 200 unchanged sources, including all 55 Region 4 positions, against the local database.
-- 2026-10-24 review fixes: `npm run ci` passed type-check, production build, and 399 tests in 27 files. No legacy engine dependencies changed.
+- 2026-10-24 review fixes: `npm run ci` passed type-check, production build, and 400 tests in 27 files. No legacy engine dependencies changed.
 - Parent integration owns shared runner completion/retry/save tests, independent teaching/code review, four viewports, WebKit touch emulation, CI, and full legacy regressions.
 - No human playtest or measured learning improvement is claimed here. Public staging verification and production release remain separate records.
 

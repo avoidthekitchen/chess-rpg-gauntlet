@@ -16,6 +16,7 @@ This entry supersedes the older handoff below that kept Region 1 unchanged and r
 - Each source records its Lichess ID, URL, rating, quality fields, published line, and teaching rationale.
 - Ratings range from 407 to 1163. Backups remain within 200 points of their main position.
 - Six content tests check legal lines, real tactical meaning, quality, source uniqueness, mixed reviews, and completion through every backup.
+- A seventh content test checks every capture in the loose-pieces lesson, including final moves and backups, for legal recaptures.
 - `node scripts/select-curriculum.mjs --verify-shipped` confirmed all 88 FENs, lines, ratings, themes, and quality values against the local database.
 - Bounty regeneration reserves the curriculum IDs. Raw database files stay uncommitted.
 
@@ -33,6 +34,9 @@ This entry supersedes the older handoff below that kept Region 1 unchanged and r
 **Independent review and browser validation**
 
 - The separate code reviewer cleared the final implementation after correcting stale positional advice during reply animations and completed waves.
+- A separate curriculum critic found that backup `Gb8He` ended with a capturable bishop, contradicting the safe-capture lesson.
+- It was replaced by unchanged source `YgiAw`. The new endpoint test failed on the old puzzle and passes on the replacement.
+- The critic replayed the replacement and cleared all remaining teaching claims and mixed-review prompts.
 - The separate UX/art critic checked all four required viewports and played the first lesson through actual board clicks.
 - Phone onboarding now resets map scroll position. The sticky navigation header is opaque so scrolled text cannot bleed through.
 - The painted backgrounds, piece animation, and classic-piece option remain. Region 2 currently reuses existing background and enemy art.
@@ -40,16 +44,24 @@ This entry supersedes the older handoff below that kept Region 1 unchanged and r
 - That run exercised promotion, hints, a miss, chapter unlocks, and reload after completion. It earned the expected 34 stars with no runtime errors.
 - A separate browser pass checked all four miss budgets, retries, failed-wave backups, repeated reloads, replay stars, journal exits, and isolated reset.
 - Those edge checks passed with no console errors or warnings. Legacy and pilot sentinel saves remained unchanged.
-- The final quick check passed TypeScript, the production build, and all 210 tests across 22 files.
+- Exiting during the accepted winning animation preserved the win and newly earned stars. Exiting during a reply settled one retreat.
+- Reloading after either animation exit added no extra attempt. No stale-callback runtime errors appeared.
+- The final quick check passed TypeScript, the production build, and all 211 tests across 22 files.
 - The deployed phone-sized build completed all 12 encounters through board clicks, earned 36 stars, and retained completion after reload.
 - That deployed run reported no runtime errors, failed requests, or engine requests. Development hooks were absent.
-- Full legacy engine regression is recorded below when complete.
+- After the content correction, a deployed replay failed wave two, reached `YgiAw`, and completed the lesson through board clicks.
+- The corrected backup's win survived reload, with no duplicate completion or runtime errors.
+- The plain staging URL also played a full journal demonstration with normal animation timing and no query parameters.
+- `npm run ci -- --full` passed, including all 11 legacy engine tests across 960 short-battle and 384 boss games.
+- The engine suite took 1,644 seconds. Its 210-test quick pass preceded the backup correction; the final quick pass contains 211 tests.
+- The correction changed only curriculum data and its tests. The engine code remained unchanged throughout the full regression run.
 
 **Deployment and limits**
 
 Staging: <https://unformedideas.com/staging-chess-rpg/>. No query string is needed.
+Review: [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37), branch `codex/regions1-2-curriculum`.
 Only the `chess-rpg-staging` Worker and its staging routes were deployed. Existing live-site JavaScript and CSS references remained unchanged.
-The final deployment version is `0e894b3b-201d-40d1-a061-4d9411a489b4`.
+The final deployment version is `c85cd7c3-4d26-4d41-9158-990f293f87e3`.
 
 This is a basic tactics journey for players who know how pieces move. It includes a movement reminder and links to Lichess Learn.
 Champion and Grandmaster currently share the same help and miss rules; the selection screen says so.

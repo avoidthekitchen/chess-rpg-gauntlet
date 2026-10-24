@@ -23,7 +23,7 @@ Chess movement rules, source licensing, truthful teaching, and technical validat
 - [Issue #34](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/34) records the pilot decisions, feedback, and handoff.
 - [Draft PR #35](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/35) preserves the accepted standalone pilot.
 - Remote branch `codex/checkpoint-approved-ambush` preserves commit `051ad26` before this campaign expansion.
-- Continue implementation on `codex/regions1-2-curriculum`, then open a separate review PR.
+- Continue on `codex/regions1-2-curriculum`, preserved in [PR #37](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/37).
 - Preview the completed basic campaign at <https://unformedideas.com/staging-chess-rpg/>.
 
 Reuse the pilot's published-line runner, board, demonstrations, hints, retry rules, and settlement protections.

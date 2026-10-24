@@ -49,8 +49,14 @@ The launch path is development-only and is absent from the production bundle.
 - The WANTED label appears before setup and clears before input. Its position was checked after canvas rendering on desktop and phone.
 - Desktop checks at 1280×800, portrait checks at 375×553 and 375×812, and landscape checks at 844×390 passed without runtime errors.
 - Action buttons remain within the viewport on the three phone layouts. Short panels scroll to expose coaching and result details.
-- Type checking, the production build and all 195 unit tests passed after the final polish.
-- The shared economy change selects the existing boss engine regression. Its final result is recorded below when complete.
+- Type checking, the production build and all 196 unit tests passed after the final polish and history-count fix.
+- All three companion demonstrations, piece-style switches and free teaching exits passed browser checks.
+- The first CI run was stopped after roughly 55 minutes, still in the first boss batch.
+- Profiling found repeated SAN history reconstruction in `Battle.snapshot` and `rewind`, called heavily by the existing simulated player.
+- Those methods now count committed player and enemy moves. They retain the same chess.js undo operations and repetition history.
+- A new test covers pending turns, completed turns, branching and a later starting move number. Existing repetition tests still pass.
+- The independent reviewer also checked this optimization and found no issues. All 26 battle unit tests pass.
+- The fresh CI run selects both battle and boss engine suites. Game counts and pass criteria are unchanged; final results follow below.
 
 **Human evaluation still needed**
 

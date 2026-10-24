@@ -22,9 +22,9 @@ const move = (uci: string) => ({
 const WINNING_LINES: Record<string, string[]> = {
   // Ne7+ dodges the pawn with check and forks the c8 rook; then the knight picks off b7 and a5.
   'r1-reeds': ['d5e7', 'g8f8', 'e7c8', 'h5g4', 'c8d6', 'a7a5', 'd6b7', 'f7f6', 'b7a5', 'g4c8'],
-  // Be5 takes on c3 when the knight comes in. Both pawns land on a village (c4, then e3), and the
-  // guard there takes each one at once. gxh3 removes the knight raider, and the villages hold for 8 turns.
-  'r1-guard': ['b2e5', 'a4c3', 'e5c3', 'g8h8', 'h2h4', 'c5c4', 'd2c4', 'f7f5', 'c4d6', 'g5h3', 'g2h3', 'e4e3', 'e1e3', 'f5f4', 'd6f7', 'h8h7'],
+  // Ba1 saves the bishop and still covers b2. c5-c4 lands on a village and Nxc4 takes it at once.
+  // gxh3 removes the knight raider, Re4 keeps guarding e3 while it blocks the f-pawn, and the villages hold for 9 turns.
+  'r1-guard': ['b2a1', 'c5c4', 'd2c4', 'f6f5', 'g1f1', 'g5h3', 'g2h3', 'h6h5', 'a1d4', 'f5f4', 'e1e4', 'a4c3', 'e4e8', 'g8f7', 'c4d6', 'f7g6', 'e8f8', 'c3d5'],
   // e4 adds a third attacker to the pinned knight; exd5 cxd5, then d5 is attacked twice and
   // defended once: Bxd5 Bxd5 Nxd5, and Nxb6 takes the loose pawn.
   'r1-trades': ['e3e4', 'h7h6', 'e4d5', 'c6d5', 'b3d5', 'b7d5', 'c3d5', 'h6h5', 'd5b6', 'h5h4'],

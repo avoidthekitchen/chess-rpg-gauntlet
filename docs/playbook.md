@@ -3,13 +3,13 @@
 [Design overview](design.md) · [Region template](design/regions/region-template.md) · [Syllabus](design/syllabus.md) · [Build progress](progress.md)
 
 Build a clear learning path from unchanged published Lichess puzzles, with Pawnshire’s storybook presentation.
-Regions 1 and 2 provide the built examples: five guided lessons followed by a mixed review in each.
-Future chapters follow teaching prerequisites; they need not repeat that exact lesson count.
+The built journey contains five Regions and a two-encounter finale.
+Chapters follow teaching prerequisites; they need not repeat the same lesson count.
 
 The [curriculum-first direction](curriculum-first.md) records the approved scope.
 Armies, gold, recruitment, faction AI, paid powers, and live bosses are deferred.
 The [legacy playbook](legacy-playbook.md) preserves their earlier content workflow.
-Retained engine battles still meet the regression bars below.
+Retained engine battles remain subject to the regression bars below. Record failures explicitly; do not infer a pass from new curriculum tests.
 
 ## Order of work
 
@@ -27,12 +27,13 @@ Work in small, reviewable steps and log material changes in [build progress](pro
 
 ## Lesson content rules
 
-`src/game/curriculum.ts` defines lessons. `src/game/curriculumPuzzles.json` stores their published positions and metadata.
+`src/game/curriculum.ts` registers lessons. `curriculumPuzzles.json` and the chapter packs under `src/game/course/` preserve published positions and metadata.
 Use the shared runner in `src/game/ambush.ts` for tactical lines.
 
 - Preserve each published FEN, setup move, solution, and reply. Stop at the source endpoint.
 - Each current guided lesson has one optional example, three waves, and one backup per wave.
-- Each current chapter review has four waves drawn from taught ideas, its own example in content, and backups.
+- Reviews have four waves in Regions 1–2, seven in Region 3, and six in Regions 4–5. Each has a stored example and backups.
+- The finale has two four-wave reviews. Its stored examples do not add demonstration buttons.
 - A source contains 1–3 solver moves after setup. Choose positions that show the exact lesson, not just its tag.
 - Preserve source id, URL, rating, themes, rating deviation, popularity, plays, and the reason it belongs.
 - Apply the [current quality and rating checks](design/systems.md#tuning-values). Do not copy the standalone pilot’s tighter rating limits.
@@ -53,7 +54,8 @@ Each lesson opens after every earlier lesson is complete. Completed encounters r
 Each Region ends with a mixed review of taught skills. Finishing that review opens the next built Region.
 Stars mark completion, no misses, and no hints; only completion gates the route.
 
-The current journey reaches the Bone Wardens’ review. The Lich King capstone remains unbuilt.
+The current journey reaches the Lich King’s actual checkmate, a saved ending, credits, and replay.
+The finale follows the five Regions; it is not a sixth teaching chapter.
 Region briefs distinguish implemented content from pending browser and release checks.
 
 Keep the winding painted route and short story encounters.
@@ -124,6 +126,9 @@ A screen or documentation change may skip engine work; a shared dependency chang
 Run `npm run ci -- --full` before a Region ships, and when a rule changes how battles end.
 Published lesson content does not remove this full-suite release requirement.
 Record the command and actual outcome; a planned check is not a pass.
+The legacy harness uses a fixed `VERIFY_SEED` corpus, with separate game seeds for scenario, difficulty, player, and index.
+Failed cells print replay moves and seeds. Wilson intervals describe sample uncertainty; they do not replace the existing pass thresholds.
+Changing the seed after seeing a failure is not a release fix.
 
 ## Browser and mobile checks
 

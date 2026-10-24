@@ -1,5 +1,21 @@
 # Build progress
 
+## 2026-10-24 — First complete journey integration (#46)
+
+The complete review build has 35 encounters, 28 learned journal ideas, and 273 distinct published sources.
+See the [release record](complete-journey-release.md) for stacked PRs, validation, staging, and future save-compatible rollback.
+
+- A fresh independent reviewer checked 529 solver states, 1,860 save round trips, and 72 alternate-mate recovery cases. No critical code finding remained.
+- Corrected a misleading retry promise: repeated failure uses the same backup, rather than promising a fresh board every time.
+- A real browser check found the completed-example takeaway clipped at 375×553. It now replaces the redundant demonstration advice.
+- The existing demonstration remains in conversation history. Main practice advice and the fixed 44px controls are preserved.
+- The final full command, `npm run ci -- --full`, passed type-check/build and 465 tests across 30 files. Its engine stage is running.
+- The original full baseline finished: boss passed, battles passed nine of ten tests, with guard Brave flawless 11/23 below 50%.
+- The regression harness now seeds both shout planning and enemy choices. Game identities survive pool/filter changes; failed cells print replay traces.
+- Thresholds, sample sizes, content, and simulator heuristics are unchanged. The first seeded battle run exposed trades Brave 21/24, below 90%.
+- Full desktop Brave and phone Gentle playthroughs, final viewport checks, and public staging verification are underway.
+
+
 ## 2026-10-24 — Lich King finale (#45)
 
 - Two direct four-wave mixed encounters use 18 fresh published sources. No new required technique enters through a backup.

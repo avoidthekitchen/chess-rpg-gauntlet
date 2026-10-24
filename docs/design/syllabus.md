@@ -4,8 +4,8 @@
 
 ## Status and promise
 
-Implementation baseline, 2026-10-24. Regions 1–5 are registered; later chapters remain proposed until their implementation PRs land.
-The owner approved completing the published-puzzle journey. These plans need implementation and verification, not another design-approval gate.
+Implementation baseline, 2026-10-24. Regions 1–5 and the Lich King finale are registered in the complete review build.
+The owner approved completing the published-puzzle journey. The chapter briefs record source fit and validation; the release record distinguishes built content from pending checks.
 
 Players must already know how pieces move. The core teaches tactical recognition, calculation, defensive resources, and short endgame decisions.
 It does not yet promise complete opening play, sustained endgame technique, or competence in full games.

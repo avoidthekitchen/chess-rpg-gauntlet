@@ -182,7 +182,7 @@ export class CoursePlayScene extends BaseScene {
     else if (this.phase === 'won') actions = this.btn('home', def.id === 'finale-last-board' ? 'See the ending' : def.id === 'finale-threshold' ? 'Continue story' : 'Continue journey', true) + this.btn('begin', def.review ? 'Practise again' : 'Replay lesson');
     else if (this.phase === 'lost') actions = this.btn('begin', 'Try again', true) + this.btn('home', 'Back to map');
     const title = teaching ? 'Learn the idea' : this.phase === 'won' ? (def.id === 'finale-threshold' ? 'First table complete' : def.id === 'finale-last-board' ? 'Pawnshire is free' : def.review ? `${region.title} complete` : 'Lesson complete') : this.phase === 'lost' ? 'Take another look' : `Position ${(run?.wave ?? 0) + 1} of ${def.waves.length}`;
-    const coach = teaching ? def.showLines[this.save.starter]
+    const coach = this.phase === 'taught' ? def.takeaway : teaching ? def.showLines[this.save.starter]
       : this.phase === 'solving' && run && !def.review && (help.coaching === 'all' || help.coaching === 'first' && run.wave === 0)
         ? run.step === 0 ? def.waves[run.wave].line
           : this.chess.isCheck() ? 'Your king is in check. Find a safe reply that finishes the line.'
@@ -201,7 +201,7 @@ export class CoursePlayScene extends BaseScene {
     const result = this.phase === 'won' ? `<div class="ambush-result course-victory">${courseDialogueRow(companionReaction(this.save.starter, 'win'), 'course-victory-voice')}
       <div class="course-stars" aria-label="Lesson stars">${[['Finished', this.save.completed.includes(def.id)], ['No misses', stars?.clean], ['No hints', stars?.noHint]].map(([label, earned]) => `<span role="img" aria-label="${label}: ${earned ? 'earned' : 'not earned'}${this.earnedStars.includes(String(label)) ? ', new star' : ''}" class="${earned ? 'earned' : ''} ${this.earnedStars.includes(String(label)) ? 'new-star' : ''}"><b aria-hidden="true">${earned ? '★' : '☆'}</b>${label}${this.earnedStars.includes(String(label)) ? '<small>New star</small>' : ''}</span>`).join('')}</div>
       <p>${esc(def.takeaway)}</p>${def.after.map(s => `<p>${esc(s)}</p>`).join('')}</div>`
-      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1; the position you missed gets a fresh board.</p></div>` : '';
+      : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1. The missed position uses its backup.</p></div>` : '';
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);

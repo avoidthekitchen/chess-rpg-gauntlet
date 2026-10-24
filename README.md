@@ -1,10 +1,10 @@
 # Pawnshire
 
-A storybook chess tactics journey. **The rules of chess never change on the board.** Learn from published Lichess positions with a companion, then put each idea into practice. See [the accepted baseline](docs/curriculum-first.md), [remaining syllabus](docs/design/syllabus.md), [Region 3 handoff](docs/design/regions/region-03-shadow-cult.md), [design overview](docs/design.md), [playbook](docs/playbook.md), [AGENTS.md](AGENTS.md), and [build progress](docs/progress.md).
+A storybook chess tactics journey. **The rules of chess never change on the board.** Learn from published Lichess positions with a companion, then put each idea into practice. See [the accepted baseline](docs/curriculum-first.md), [curriculum syllabus](docs/design/syllabus.md), [Region 3 brief](docs/design/regions/region-03-shadow-cult.md), [design overview](docs/design.md), [playbook](docs/playbook.md), [AGENTS.md](AGENTS.md), and [build progress](docs/progress.md).
 
 Play it: https://unformedideas.com/chess-rpg/
 
-Preview the new two-chapter journey: https://unformedideas.com/staging-chess-rpg/.
+Preview the complete five-Region journey and Lich King finale: https://unformedideas.com/staging-chess-rpg/.
 The live site keeps the earlier campaign until this change is merged and deployed there.
 
 ## Run it
@@ -29,9 +29,13 @@ The journey, legacy campaign, and pilot use separate saves. Resetting the journe
 
 - **The Bog:** loose pieces, safe captures, answering check, back-rank mate, promotion, and Grubnak's mixed review.
 - **The Kingsroad:** knight forks, double attacks, double check, removing defenders, mate in two, and Ashfang's mixed review.
-- **Published puzzles:** 88 distinct positions across demonstrations, practice waves, review challenges, and retry backups. Source lines remain unchanged.
+- **Shadow Cult:** pins, escapes by capturing the pinning attacker, skewers, x-rays, discoveries, and a double-check revisit.
+- **The Iron March:** bishop development with check, file tactics, exposed-king checks, deflection, intermediate moves, and mate-threat defence.
+- **Bone Wardens:** passed pawns, pawn races, safe king routes, rook support, endgame skewers, and knight promotion mate.
+- **The Lich King:** two mixed encounters, a saved ending, credits, and replay. Both final variants end in actual checkmate.
+- **Published puzzles:** 273 distinct positions across demonstrations, practice waves, review challenges, and retry backups. Source lines remain unchanged.
 - **Guidance:** three companions, full demonstrations, four help settings, hints, and a journal of learned ideas.
-- **Progress:** sequential unlocks, saved completion, three stars per encounter, and unlimited retries. Replays can earn missed stars.
+- **Progress:** sequential unlocks, saved completion, three optional stars per encounter, and unlimited retries. There are 28 guided lessons and seven mixed encounters. Replays can earn missed stars.
 - **Presentation:** Continue/New journey title, painted route maps, portrait introductions, talking pieces, conversation history, accurate move banners, and victory stars.
 - **Board feel:** animated animal pieces, classic-piece controls, and phone layouts.
 
@@ -52,7 +56,7 @@ scripts/      art generation, puzzle pipeline, engine copy, deploy staging, veri
 
 ## Adding curriculum
 
-Add source-backed content to `src/game/curriculum.ts` and `curriculumPuzzles.json`.
+Register source-backed content in `src/game/curriculum.ts`. Chapter modules, published positions, and mechanism evidence live under `src/game/course/`.
 The curation script is `scripts/select-curriculum.mjs`; raw downloads stay in ignored `data/raw/`.
 Run `node scripts/select-curriculum.mjs --verify-shipped` to compare every shipped puzzle with the local Lichess database.
 Read [curriculum rules](docs/curriculum-first.md#learning-and-content-rules) before selecting positions or writing prompts.
@@ -61,6 +65,8 @@ Content tests verify legal lines, lesson claims, quality fields, distinct source
 ## Adding a legacy battle
 
 Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in `src/game/region1.ts`. The player is White and moves first. `npm test` checks every position is legal (including that the enemy isn't already in check, which chess.js doesn't catch), and `npm run verify:battles` plays it out against the real enemy AI with shouts.
+
+The [release record](docs/complete-journey-release.md) tracks review PRs, validation, staging, and future promotion safeguards.
 
 ## Deploying
 

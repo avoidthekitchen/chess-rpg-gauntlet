@@ -47,8 +47,11 @@ It commits solver/reply pairs before screen animation. `src/game/journey.ts` set
 `src/journeySave.ts` validates loaded progress and rebuilds the active position from the published source line.
 An unfinished load becomes an interrupted attempt; an already accepted victory remains complete.
 Journey, legacy, and pilot save keys stay isolated, including resets.
+Version-1 saves without `finaleComplete` load as unfinished. Actual final checkmate sets the flag before presentation.
+Earlier replay attempts cannot unset it. The ending checks this flag; the first finale encounter only unlocks the interlude.
+See the [release record](../complete-journey-release.md) for shared-origin staging saves and future rollback behavior.
 
-`src/scenes/Journey.ts` owns the title, setup, map, and settings flow.
+`src/scenes/Journey.ts` owns the title, setup, map, journal, settings, interludes, and ending.
 `src/scenes/CoursePlay.ts` owns teaching and play presentation, calling rules through small interfaces.
 The shared board draws positions, animates moves, highlights squares, and reports input.
 Async scene work checks the active session after each await. Exit cancels holds, speech, celebrations, and pending presentation.
@@ -60,7 +63,7 @@ The [playbook](../playbook.md#browser-and-mobile-checks) defines viewport and br
 
 ## Future technique capability
 
-The [syllabus](syllabus.md) and [Region 3 brief](regions/region-03-shadow-cult.md) describe planning beyond the built two chapters.
+The [syllabus](syllabus.md) records the five built Regions and finale, including their deliberately narrow technique claims.
 Lichess Practice techniques need a dedicated exercise capability when a method has several valid continuations or a procedural goal.
 The tactical runner follows one published line and stops at its endpoint; it does not implement general technique assessment.
 

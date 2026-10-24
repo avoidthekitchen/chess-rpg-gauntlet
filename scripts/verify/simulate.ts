@@ -199,7 +199,7 @@ export async function playGame(
   for (let guard = 0; guard < 80 && b.status === 'playing'; guard++) {
     let shout: string | null;
     if (!def.shouts) shout = null; // e.g. the Goblin Chief, who keeps his plans to himself
-    else shout = await book.plan(b, eng.asEngine(), profile);
+    else shout = await book.plan(b, eng.asEngine(), profile, rng);
     const shoutFen = b.fen;
     const w =
       player === 'competent'
@@ -213,7 +213,7 @@ export async function playGame(
     moves.push(w);
     if (b.status !== 'playing') break;
     const stands = shout !== null && shoutStands(b.fen, shout, shoutFen);
-    const reply = await chooseEnemyMove(b, eng.asEngine(), profile, Math.random, replyHabits(!!def.shouts, shout, b.fen, shoutFen));
+    const reply = await chooseEnemyMove(b, eng.asEngine(), profile, rng, replyHabits(!!def.shouts, shout, b.fen, shoutFen));
     if (stands && reply === shout) shoutsKept++;
     b.enemyMove(reply);
     moves.push(reply);

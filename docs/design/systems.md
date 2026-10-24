@@ -58,8 +58,9 @@ Grubnak and Ashfang host mixed reviews in the story; those reviews are published
 
 `src/game/journey.ts` owns unlocks, attempt settlement, and completion records.
 Each lesson opens after all preceding lessons are complete. Completed lessons stay available for practice.
-Clearing Grubnak’s review opens The Kingsroad. Clearing Ashfang’s review completes the current two-chapter journey.
-Later Regions are planning, not playable destinations.
+Each regional review opens the next destination, through all five Regions.
+The first Lich King encounter opens the second. Actual checkmate in the final encounter saves finale completion and opens the ending.
+Earlier lessons and the ending remain replayable. Stars, help settings, and perfect play never gate progress.
 
 Each lesson has three practice goals:
 

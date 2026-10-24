@@ -15,13 +15,13 @@ Further human pilot testing is not required. Code review and automated/browser c
 
 ### Legacy design status
 
-Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. Two pieces of work are in flight: the faction's new species art, and Grubnak no longer shouting. This page describes both as decided. A third is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
+Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-rpg/)); not yet playtested with people. The goblins' shout change is built (they decide again after your move); the battles are being re-verified against it, and the faction's new species art is in flight. Another is approved but not specced: the [guided path](#planned-guided-path) revision. This is the worked example for every later Region: it follows the [Region template](region-template.md), and the [playbook](../../playbook.md) describes how it was built and checked. Implementation history is in the [build progress](../../progress.md).
 
 | | |
 | --- | --- |
 | Faction | Bog Goblins: their own swamp creatures (bog rats, salamanders, crows, snapping turtles, vipers and Grubnak the Toad Chief) in muddy rags, wearing the same chess headgear as ours ([Art](../art.md)) |
 | Headline theme | Threat awareness, protection, safe trades, basic checkmates; revisits pawn promotion basics |
-| AI habit | **Shouting:** before your move the goblins announce the move they'd play if you passed, and must play it if it's still legal ([details](#ai-habit-shouting-goblins)) |
+| AI habit | **Shouting:** before your move the goblins announce the move they'd play if you passed, then decide again after your move ([details](#ai-habit-shouting-goblins)) |
 | Battles | 5 on a branching map; the boss opens after any 4 wins |
 | Academy | Rook and queen checkmates (Lichess Practice: Piece Checkmates I) |
 | Bounty tags | `hangingPiece`, `mateIn1` |
@@ -31,11 +31,11 @@ Built, deployed and engine-verified ([play it](https://unformedideas.com/chess-r
 
 ## AI habit: shouting goblins
 
-Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`). It's drawn as a green arrow and spoken by the piece's portrait. If the announced move is still legal after your move, they must play it ("Told you I would!"). If you made it illegal, a "Foiled!" banner shows. A rewind hears the same shout again.
+Before each of your moves, the goblins announce the move they would play if you passed (`src/ai/shout.ts`, using `planIfPassed` in `src/ai/intent.ts`). It's drawn as a green arrow and spoken by the piece's portrait. The status line says "Your move can change it."
 
-**Changing (approved 2026-10-23, [#4](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/4)):** the must-play rule breaks the [tell or tilt](../systems.md#ai-habits-by-faction) rule, because it teaches that opponents walk into traps. Goblins will keep announcing, then decide again after your move. The shouted move gets a capped weight bonus in the enemy's [one weighted pick](../systems.md#ai-habits-by-faction), so goblins usually keep a plan that's still fine and usually drop one that's become bait, but players can't count on either. When they switch because you guarded or moved the target, they say so ("Oi! You've guarded it!"). The rule is introduced as "They shout their plan. Your move can change it.", and the companion adds that the arrow is one plan: other threats still count. A rewind still hears the same shout. The battles below were built around the must-play rule, so they're re-verified and redesigned where a trap only worked because the shout was forced.
+After your move they decide again. The enemy's [one weighted pick](../systems.md#ai-habits-by-faction) gives the shouted move a x3 bonus (`SHOUT_BONUS` in `src/ai/enemy.ts`), so they usually keep a plan that's still fine and often drop one that has become bait. Players can't count on either. If your move made the shout impossible, a "Foiled!" banner shows. That includes moving away the piece they shouted they'd capture. If they drop a shout that still stands, they say why: "Oi! You've guarded it!" when the shout was a capture you guarded, otherwise "Changed my mind!". If they keep it, they say "Told you I would!". A rewind hears the same shout again. The map intro tells the player: "They shout their plan before they move, and your move can change it." The companion adds: "Their arrow shows one plan. Other threats still count, so keep looking!"
 
-It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins are committed, you can also set traps, such as guarding the piece they promised to take. That makes battles feel like Into the Breach turns, where each turn is a small puzzle.
+It teaches the first rung of the ladder in [Powers and rewind](../systems.md#powers-and-rewind): the enemy says its plan out loud. Because the goblins decide again, a trap isn't certain. You can guard the piece they promised to take, or make bait less attractive, but they may take it or walk away. That keeps each turn a small puzzle, like Into the Breach, without teaching that opponents walk into traps.
 
 On Gentle, your companion reads each shout for you a moment later. It says whether the target is guarded, whether the trade is fair, or that a village or your king is the target. Brave leaves it to you ([help that fades](../../design.md#vision-and-pillars)).
 
@@ -56,15 +56,15 @@ The first skirmish opens both paths, so one battle can be skipped (`src/game/reg
 
 ## Battles
 
-All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 96–100% of the time on Gentle and Brave, and careless play wins 0–17% ([verification](#verification)).
+All five are in `src/game/region1Battles.ts`, which includes a comment per battle explaining the position. A strong simulated player wins each 92–100% of the time on Gentle and Brave, and careless play wins 0–33% ([verification](#verification)).
 
 | # | Battle | Kind · theme | Goal | The idea | Moves (strong player) | Reward · bonus goals |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Trouble in the Reeds (Goblin Scouts) | Skirmish · threat awareness | Win 6 points of material within 8 moves | Two threats at once (a pawn on your bishop, a bishop on your knight); the shout says which is coming. Dodge to a square that hits something loose, then handle a second wave | 4–5 | 15g · flawless, no rewind |
-| 2 | Lanterns at Mossbridge (Mudfoot Raiders) | Siege · protection | Keep villages c3 and f3 safe for 7 enemy turns | Raiders (the village-hunting AI) aim at the villages' guards first. Keep each village guarded at least as often as it's attacked, and capture every raider that lands | about 7 | 20g · flawless, no rewind |
-| 3 | The Swap Meet (Goblin Hagglers) | Skirmish · safe trades | Win 8 points within 9 moves | The shout grabs a loose knight. Move it somewhere that still guards the square, so the promised capture loses a rook. Then count attackers and defenders before each trade | 4–5 | 20g · within 6 moves, no rewind |
-| 4 | Behind the Mud Wall (Bogwall Sentries) | Skirmish · basic checkmates | Checkmate within 8 moves | Two guards watch the back rank. Remove them one at a time (or let a shout drag one away), then mate on the back rank | 4–6 | 20g · within 5 moves, no rewind |
-| 5 | The Pawn's Plunge (Puddle Runners) | Promotion run · promotion basics | Promote safely within 10 moves | A knight blocks your passed pawn while goblin pawns race toward your king. Clear the path, answer the shouts that matter, and only promote where the new piece is safe | about 6 | 25g · flawless, within 7 moves |
+| 1 | Trouble in the Reeds (Goblin Scouts) | Skirmish · threat awareness | Win 7 points of material within 10 moves | The shout says a pawn will take your knight. Move it where it bites back: Ne7+ forks the king and the loose rook. Then pick up two more loose pawns while the goblins guard what they can | 5 | 15g · flawless, no rewind |
+| 2 | Lanterns at Mossbridge (Mudfoot Raiders) | Siege · protection | Keep villages c4 and e3 safe for 9 enemy turns | The raiders shout Nxb2. Save the bishop first, or their knight joins the attack on c4. Then both pawns march onto the villages, and only the knight and rook guard them. Keep each guard at its post, count guards against attackers (including pawns that can step up) after every move, and capture every raider that lands | about 9 | 20g · flawless, no rewind |
+| 3 | The Swap Meet (Goblin Hagglers) | Skirmish · safe trades | Win 4 points within 10 moves | Their knight is pinned, attacked twice and guarded twice, so taking it loses material. The shout is usually the king stepping out of the pin. Add the cheapest third attacker (e4) first, then count again before each trade | about 5 | 20g · within 6 moves, no rewind |
+| 4 | Behind the Mud Wall (Bogwall Sentries) | Skirmish · basic checkmates | Checkmate within 8 moves | One rook guards the back rank. Check along it so the rook must block and is pinned, then check with the bishop and take each blocker with check until the rook falls with mate. The shout (a bishop grab) is real, but checks come first | 4–5 | 20g · within 5 moves, no rewind |
+| 5 | The Pawn's Plunge (Puddle Runners) | Promotion run · promotion basics | Promote safely within 10 moves | Two pawns side by side face a goblin pawn on a7 and a knight blocking the c-pawn. Push b6: if they take, cxb6 leaves a passed pawn the knight can't stop on b8. Answer the knight's checks and the goblin pawns' pushes on the way | 4–5 | 25g · within 6 moves, no rewind |
 
 Lineups are set by the scenario: your hired pieces stand in as named characters (starter first), and the rest are unnamed militia ([rule](../systems.md#battles)). Across the five battles, White has a knight, a bishop and a rook in at least three each, so every starter usually appears named.
 
@@ -133,14 +133,14 @@ The Bog Goblin token and portrait set (their species and in-game names are in [A
 
 | Battle | Strong player wins (Gentle / Brave) | Strong player's average moves | Careless player wins (Gentle / Brave) |
 | --- | --- | --- | --- |
-| Trouble in the Reeds | 100% / 100% | 4.2 / 5.0 | 4% / 8% |
-| Lanterns at Mossbridge | 100% / 100% | 7.3 / 7.2 | 17% / 13% |
-| The Swap Meet | 100% / 100% | 4.2 / 4.2 | 0% / 0% |
-| Behind the Mud Wall | 100% / 100% | 5.5 / 4.6 | 4% / 4% |
-| The Pawn's Plunge | 100% / 100% | 5.9 / 6.1 | 8% / 0% |
-| Boss duel | Passed the boss bar when the no-shout boss merged (about 92% wins); the full table is to be recorded on the next run | — | — |
+| Trouble in the Reeds | 96% / 96% | 5.8 / 5.7 | 0% / 0% |
+| Lanterns at Mossbridge | 100% / 100% | 9.0 / 9.0 | 21% / 33% |
+| The Swap Meet | 92% / 100% | 3.8 / 4.9 | 4% / 0% |
+| Behind the Mud Wall | 100% / 100% | 4.4 / 4.6 | 0% / 0% |
+| The Pawn's Plunge | 100% / 100% | 4.2 / 5.0 | 0% / 4% |
+| Boss duel | Passed the boss bar when the no-shout boss merged (about 92% wins). Not re-run for the shout change: the boss doesn't shout or raid, so its AI is unchanged (a one-army spot check matched `main`). The full check takes over an hour | — | — |
 
-A simulated "greedy" player (always grabs the biggest capture) wins Trouble in the Reeds and The Pawn's Plunge fairly often (about 33–67% across runs). That's worth watching in playtests.
+A simulated "greedy" player (always grabs the biggest capture, else pushes a pawn) wins The Pawn's Plunge often (about 80%), because its breakthrough push is also the greedy move. Mossbridge runs 9 turns, so its average moves sit above the 4–7 target. Both are worth watching in playtests.
 
 ## Playtest
 

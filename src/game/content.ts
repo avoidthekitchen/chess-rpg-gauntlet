@@ -37,7 +37,7 @@ export interface BattleDef extends Scenario {
   after: Line[];
   /** The companion's one-line tip, shown in the talking-head card when the battle starts. */
   tip: string;
-  /** Bog Goblins shout the move they plan next and must play it if it's still legal. */
+  /** Bog Goblins shout the move they'd play if you passed, then prefer it (never must) after your move. */
   shouts: boolean;
   /** Enemy strength for this battle by difficulty, replacing the difficulty's usual profile (e.g. a softer boss). */
   ai?: Partial<Record<DifficultyId, AiProfile>>;

@@ -43,7 +43,7 @@ Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their 
 ```
 src/game/     curriculum (published content), journey (progress/stars), ambush (published-line rules),
               plus legacy battle, campaign, economy, boss, region1*, tactics and threats
-src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), shout.ts (shouting goblins)
+src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), intent.ts (if-I-passed helper), shout.ts (shouting goblins)
 src/scenes/   Boot, Journey (title/map/journal/settings), CoursePlay (lesson runner), and retained legacy screens
 src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
 src/flow.ts   campaign flow between screens (briefings, launching battles, results)

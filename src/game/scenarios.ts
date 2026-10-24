@@ -10,7 +10,7 @@ export type Objective =
   /** Promote a pawn safely within `maxMoves`. */
   | { kind: 'promote'; maxMoves: number };
 
-/** How the enemy picks moves. `raider` goes after villages before anything else. */
+/** How the enemy picks moves. `raider` favours moves that pressure villages (a capped bonus in its weighted pick). */
 export type Personality = 'standard' | 'raider';
 
 export interface Scenario {

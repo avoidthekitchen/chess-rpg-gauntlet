@@ -16,21 +16,22 @@ const move = (uci: string) => ({
 });
 
 /**
- * One winning line per battle, White and Black alternating. Every Black move is the goblins'
- * shout (they must keep it) or a forced reply, as seen in verification games.
+ * One winning line per battle, White and Black alternating, taken from strong-player wins in
+ * verification games (the goblins decide freely; their shout is only a preference).
  */
 const WINNING_LINES: Record<string, string[]> = {
-  // They shout Bxf3: Ng5 dodges and hits f7, Bxf7+ and Nxf3 win two pawns and the bishop,
-  // then the second wave: Bd5 pins the knight to the rook and Bxc6 collects it.
-  'r1-reeds': ['f3g5', 'g4f3', 'c4f7', 'g8f8', 'g5f3', 'h7h6', 'f7d5', 'a8c8', 'd5c6', 'f8e7'],
-  // The goblins promised Nxb2, so Bxg7 is safe: the knight lands on b2 and is taken back.
-  'r1-guard': ['b2g7', 'a4b2', 'g7b2', 'e4e3', 'd2f3', 'e3e2', 'd1b1', 'e2e1q', 'b1e1', 'c5c4', 'e1e5', 'c4c3', 'b2c3', 'f7f6'],
-  // Na4 keeps c3 guarded, so the shouted Rc3 drops the rook; then f4 chases the knight
-  // and the cheapest attacker, a pawn, takes it.
-  'r1-trades': ['c3a4', 'c8c3', 'a4c3', 'a7a6', 'f2f4', 'd6d5', 'f4e5', 'g8h8'],
-  // Bf5 and Bxc8 remove the rook guard, Rd8 forces the knight to block, and Rxe8 mates.
-  'r1-backrank': ['d3f5', 'a7a6', 'f5c8', 'b6b5', 'c8f5', 'c5c4', 'd1d8', 'f6e8', 'd8e8'],
-  'r1-squire': ['d3g6', 'c6b8', 'c5c6', 'h5h4', 'c6c7', 'h4h3', 'g2g3', 'g8g7', 'c7c8q'],
+  // Ne7+ dodges the pawn with check and forks the c8 rook; then the knight picks off b7 and a5.
+  'r1-reeds': ['d5e7', 'g8f8', 'e7c8', 'h5g4', 'c8d6', 'a7a5', 'd6b7', 'f7f6', 'b7a5', 'g4c8'],
+  // Ba1 saves the bishop and still covers b2. c5-c4 lands on a village and Nxc4 takes it at once.
+  // gxh3 removes the knight raider, Re4 keeps guarding e3 while it blocks the f-pawn, and the villages hold for 9 turns.
+  'r1-guard': ['b2a1', 'c5c4', 'd2c4', 'f6f5', 'g1f1', 'g5h3', 'g2h3', 'h6h5', 'a1d4', 'f5f4', 'e1e4', 'a4c3', 'e4e8', 'g8f7', 'c4d6', 'f7g6', 'e8f8', 'c3d5'],
+  // e4 adds a third attacker to the pinned knight; exd5 cxd5, then d5 is attacked twice and
+  // defended once: Bxd5 Bxd5 Nxd5, and Nxb6 takes the loose pawn.
+  'r1-trades': ['e3e4', 'h7h6', 'e4d5', 'c6d5', 'b3d5', 'b7d5', 'c3d5', 'h6h5', 'd5b6', 'h5h4'],
+  // Re8+ forces Rd8 (now pinned); Bh3+ makes them block twice, the bishop takes each blocker with check, and Rxd8 mates.
+  'r1-backrank': ['e1e8', 'd7d8', 'g2h3', 'd1g4', 'h3g4', 'f6f5', 'g4f5', 'c8b8', 'e8d8'],
+  // b6 breaks the wall: axb6 cxb6, and the knight can't cover b8. Kh1 steps out of the knight check, then b8=Q.
+  'r1-squire': ['b5b6', 'a7b6', 'c5b6', 'c7d5', 'b6b7', 'd5f4', 'g2h1', 'h8g7', 'b7b8q'],
 };
 
 describe('Region 1 battles', () => {

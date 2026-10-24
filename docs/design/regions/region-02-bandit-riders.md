@@ -64,7 +64,7 @@ Approved 2026-10-22 ([AI habits](../systems.md#ai-habits-by-faction)). Details s
 - **Rewind.** A rewind shows the same poster again, from the stored pick, as Region 1 does with shouts.
 - **Worked positions.** The tests in [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12) use a small position for each case: a capture; a single new attack; a fork of a rook and a bishop (rook wins); a fork of two knights (square order wins); a piece that was already attacked (no poster); a quiet move (no poster); a check only (no poster); the target moved, and the bonus goes to moves that hit it on its new square; a poster plus a raider in a siege, capped at ×3; and a weighted pick that differs from the engine's best move, where the poster and the Orb still agree.
 - **Battle review.** No special case. The enemy isn't committed, so your move is judged the normal way. The builder confirms this holds in practice.
-- **Simulation.** `npm run verify:battles` needs a strong player that sees the poster, as `scripts/verify/simulate.ts` sees shouts.
+- **Simulation.** `npm run verify:battles` must give the bandits' replies the poster bonus, as `scripts/verify/simulate.ts` does for shouts. The strong simulated player assumes good replies and doesn't rely on the poster.
 - **Ladder.** The second rung in [Powers and rewind](../systems.md#powers-and-rewind): you know what they want, not how. Forks and double attacks are how the target gets hit.
 
 ## Scrying Orb

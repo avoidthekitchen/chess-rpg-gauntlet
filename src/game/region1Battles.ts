@@ -60,7 +60,8 @@ export const REGION1_BATTLES: BattleDef[] = [
     // isn't a village guard, but if it falls the b2 knight joins the attack on c4 and Nd2 is
     // outnumbered. So step it away first (Be5 or Ba1). Then the pawns walk onto the villages,
     // c5-c4 and e4-e3, and each one must be taken at once. Don't lure Nd2 or Re1 off their
-    // posts: count each village's guards against its attackers after every enemy move.
+    // posts: count each village's guards against its attackers after every enemy move. A knight
+    // that retreats to b6 also hits c4, so c5-c4 then needs a second guard. Hold for 8 turns.
     id: 'r1-guard',
     kind: 'siege',
     theme: 'Protection',
@@ -71,7 +72,7 @@ export const REGION1_BATTLES: BattleDef[] = [
     lesson:
       'A square is safe when you guard it at least as many times as the enemy attacks it. When a guard is attacked, move it to a square where it still guards, or protect it, before doing anything else. A piece that isn’t a guard still matters: whatever takes it may join the attack. Count again after every enemy move.',
     fen: '6k1/5pp1/7p/2p3n1/n3p3/8/1B1N2PP/4R1K1 w - - 0 1',
-    objective: { kind: 'survive', turns: 7 },
+    objective: { kind: 'survive', turns: 8 },
     villages: ['c4', 'e3'],
     reward: 20,
     bonuses: [

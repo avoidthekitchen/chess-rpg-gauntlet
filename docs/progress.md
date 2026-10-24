@@ -2,6 +2,13 @@
 
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 
+## 2026-10-24 — Retire the legacy benchmark gate
+
+- The owner confirmed that new material replaces the legacy campaign, so its battle benchmark no longer blocks merges or releases.
+- CI now requires explicit `--legacy` opt-in for historical engine diagnostics. The existing selector, thresholds, logs and tests remain available.
+- Current curriculum validation remains required. Updated contributor instructions and the five PRs; no merge or application deployment is part of this change.
+- `npm run ci -- --full` passed type-check, build and 496 tests. The plan check confirms explicit `--legacy --full` still selects both historical suites.
+
 ## 2026-10-24 — Follow-up review corrections
 
 - Corrected Kp2Gw's queen-defender explanation and strengthened its board-based checks.

@@ -7,6 +7,7 @@
 The accepted two-chapter journey is the foundation for all remaining Regions.
 The owner authorizes routine curriculum and implementation choices with best judgment; no repeated design approval is required.
 Independent review, source verification, applicable CI, and browser checks remain required.
+The owner retired the legacy battle benchmark gate on 2026-10-24 because new material replaces that campaign.
 
 ## Open TODOs
 
@@ -21,7 +22,7 @@ Independent review, source verification, applicable CI, and browser checks remai
 - [ ] Expand faction art when useful; current art must remain readable and identity text accurate.
 - [ ] Plan the explicit production release separately from merging. Preserve legacy saves.
 
-- [ ] Resolve the unwaived legacy trades Brave 21/24 failure before merge or production release ([#42](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/42)). The earlier unseeded guard 11/23 failure is retained as history. Only the owner may waive a release bar.
+- [x] Retire the legacy battle benchmark as a merge and release gate, per the owner’s 2026-10-24 instruction. Preserve results and optional diagnostics; replacement curriculum checks remain required.
 
 ## Open questions
 
@@ -43,7 +44,8 @@ The active overview, campaign, systems, and syllabus are the implementation cont
 
 | Date | Decision |
 | --- | --- |
-| 2026-10-24 | Review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
+| 2026-10-24 | The owner retired legacy battle benchmarks as release gates because new material will replace them. CI requires explicit `--legacy` opt-in for historical engine diagnostics. This clears the benchmark blocker without changing its results or authorizing merge or production deployment. |
+| 2026-10-24 | Superseded by the owner’s later deprecation decision: review builds may be playtested on staging; the five-PR stack stays draft and unmerged while the full legacy gate fails. No waiver is inferred from staging authorization. See [release evidence](../complete-journey-release.md). |
 | 2026-10-24 | Staging now uses its own normal-journey save key, copying older shared progress once. Production progress is never overwritten by staging. Rejected raw saves are preserved for recovery. |
 | 2026-10-24 | Use faction plus chess-role labels while borrowing Bog artwork. Display species names only with matching art. The earlier canonical-label exception is superseded; future species concepts need art and naming review. |
 | 2026-10-24 | The finale revisits ideas rather than enforcing a rising rating at every wave. Its opening offers a foothold; actual checkmate is the closing payoff. Published ratings are selection guidance, not a difficulty guarantee. |

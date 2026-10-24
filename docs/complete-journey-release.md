@@ -19,6 +19,15 @@ The complete curriculum has 28 guided lessons, five regional reviews, and two fi
 All earlier source positions and completion IDs remain unchanged. Stars and help settings never gate the story.
 Four new painted landscapes distinguish the Cult, Legion, Wardens, and keep. Dedicated faction portraits remain future work.
 
+## Current release policy (2026-10-24)
+
+The owner retired the legacy battle benchmark as a merge and release gate because new material will replace that campaign.
+The historical failures below remain accurate but no longer block this stack.
+Current curriculum tests, source verification, code review, and browser checks remain required.
+`npm run ci` and `npm run ci -- --full` exclude the retired benchmarks.
+Optional diagnostics remain available through `npm run ci -- --legacy --full` and `npm run verify:battles`.
+This decision does not merge the PRs or deploy production. Staging remains at application `e473d2a`.
+
 ## Second review follow-up (2026-10-24)
 
 The regional corrections are `fdf741b` (R3), `bd35714` (R4), `b9b236d` (R5), and `76854cc` (finale table).
@@ -54,7 +63,7 @@ Application revision `27a3a9c` uses staging bundle `index-DhffRnHC.js`. Publicat
 - Reproduce with `npm run verify:battles` on application revision `27a3a9c36d456e9ac36abcfe77cb71527023fce5`.
 - [Raw full-run output](verification/legacy-full-27a3a9c.log) retains all cells and the failure trace. The run began on the working candidate; its engine files match that revision.
 - This full engine stage and the separate 492-test `npm run check` are recorded explicitly; no green full-CI result is claimed.
-- The legacy failure remains an unwaived release gate. No thresholds, corpus seeds or simulator heuristics were changed.
+- At this checkpoint the legacy failure remained a release gate. The owner later retired that gate; thresholds, seeds and results remain unchanged.
 
 ## Original integration validation (`1859ee8`)
 
@@ -93,7 +102,7 @@ The Goblin Chief suite passed. Battle checks passed ten of eleven tests, includi
 The only final failure was the same trades Brave cell: 21/24 wins, below 90%.
 The command exited 1. Its quick stage passed 465 tests; integration revision `1859ee8` passed the separate 470-test check.
 The final UI patch did not change engine inputs or behavior. No full engine result is claimed for a different engine implementation.
-These failures are not waived by earlier release decisions. All five PRs remain draft pending review and resolution of the release bar.
+At this checkpoint the five PRs remained draft because of these failures. The owner later retired this benchmark gate; see the current policy above.
 
 ### Reproduce the retained legacy failure
 

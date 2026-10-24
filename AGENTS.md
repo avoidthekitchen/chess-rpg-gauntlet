@@ -6,7 +6,7 @@ Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, c
 
 - **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Published positions and replies stay unchanged. Faction voices do not imply new board rules.
 - **`src/game` has no screen code.** Rules, journey progress and content live there with unit tests; scenes talk to them through small interfaces.
-- **Every new rule gets a test, and every battle is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). `npm run ci` before each PR reruns the engine playtests whenever a change can reach them; `npm run ci -- --full` reruns all of them before a Region ships.
+- **Every new rule gets a test, and every lesson is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). Run `npm run ci` before each PR. Legacy battle benchmarks are retired as release gates; use `npm run ci -- --legacy --full` only for optional historical diagnostics.
 - **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), current help and progression numbers from [Tuning values](docs/design/systems.md#tuning-values).
 - **Design calls the docs don't settle** go in [decisions](docs/design/decisions.md): a decision-log row, or an open TODO when it needs the owner.
 
@@ -17,9 +17,9 @@ npm run dev              # http://localhost:5173 (?loop=timeout keeps it running
 npm test                 # unit tests
 npx tsc --noEmit         # type-check
 npm run check            # type-check, build and unit tests (under a minute)
-npm run ci               # check, plus only the engine playtests your branch can affect
-npm run ci -- --full     # check, plus every engine playtest (before a Region ships)
-npm run verify:battles   # engine playtests of every battle and the boss (15 minutes or more)
+npm run ci               # current release checks: type-check, build and unit tests
+npm run ci -- --legacy --full # optional historical engine diagnostics after current checks
+npm run verify:battles   # optional legacy benchmark only (15 minutes or more)
 npm run puzzles          # rebuild bounty puzzles from the Lichess database (download goes to data/raw/)
 npm run deploy:staging   # preview deployment for review
 npm run deploy           # production deployment; separate release decision

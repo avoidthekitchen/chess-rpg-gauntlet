@@ -9,7 +9,8 @@ Chapters follow teaching prerequisites; they need not repeat the same lesson cou
 The [curriculum-first direction](curriculum-first.md) records the approved scope.
 Armies, gold, recruitment, faction AI, paid powers, and live bosses are deferred.
 The [legacy playbook](legacy-playbook.md) preserves their earlier content workflow.
-Retained engine battles remain subject to the regression bars below. Record failures explicitly; do not infer a pass from new curriculum tests.
+The owner retired legacy battle benchmarks as release gates on 2026-10-24 because the curriculum replaces that material.
+Their scripts and results remain available as optional historical diagnostics.
 
 ## Order of work
 
@@ -96,11 +97,12 @@ Verify these current behaviors:
 - Journey reset and play leave legacy campaign and pilot saves unchanged.
 - Truthful banners, player-color speaking identity, companion identity, reduced motion, and cancellation after exit.
 
-### Legacy engine regressions
+### Optional legacy engine diagnostics
 
 Keep the existing selector and all retained engine checks intact.
 `npm run verify:battles` exercises custom battles and the legacy boss with real enemy AI and simulated players in `scripts/verify/`.
-These checks can take 15 minutes or more; `npm run ci` selects them by changed dependencies.
+These checks can take 15 minutes or more. `npm run ci -- --legacy` opts into dependency-based selection.
+Their historical thresholds below do not block curriculum merges or releases.
 
 For a retained custom battle:
 
@@ -118,14 +120,14 @@ The [legacy playbook](legacy-playbook.md) preserves custom battle and warm-up au
 ## CI before a PR and release
 
 Run `npm run ci` before each PR. Keep the existing checks before each commit too.
-It runs type-check, build, and unit tests through `npm run check`, then selected engine regressions.
-The selector follows each check’s imports and includes changed dependencies across the branch.
-A screen or documentation change may skip engine work; a shared dependency change may select it.
-`npm run ci -- --plan` reports what would run and why. Do not weaken selection to avoid legacy checks.
+It runs type-check, build, and unit tests through `npm run check`.
+`npm run ci -- --full` runs the same current checks; it does not re-enable retired benchmarks.
+Source verification and the browser checks below remain required for affected lessons and flows.
 
-Run `npm run ci -- --full` before a Region ships, and when a rule changes how battles end.
-Published lesson content does not remove this full-suite release requirement.
-Record the command and actual outcome; a planned check is not a pass.
+For optional historical diagnostics, use `npm run ci -- --legacy` to select affected engine checks by dependency.
+Use `npm run ci -- --legacy --full` or `npm run verify:battles` to run the whole historical engine suite.
+`npm run ci -- --legacy --plan` reports selection without running checks.
+Record actual outcomes; the retired benchmark's failure is neither a curriculum blocker nor a passing result.
 The legacy harness uses a fixed `VERIFY_SEED` corpus, with separate game seeds for scenario, difficulty, player, and index.
 Failed cells print replay moves and seeds. Wilson intervals describe sample uncertainty; they do not replace the existing pass thresholds.
 Changing the seed after seeing a failure is not a release fix.

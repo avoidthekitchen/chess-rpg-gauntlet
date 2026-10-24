@@ -5,7 +5,7 @@ Following "First implementation: Region 1" in `docs/design.md`. One entry per bu
 ## Region 2 ambush pilot — Two at once (#34)
 
 Built on 2026-10-23 in `codex/region2-ambush-pilot`, after the owner approved the revised issue.
-This is one standalone encounter. It does not ship Region 2 or decide the future curriculum.
+This is one standalone encounter. It does not ship Region 2. The owner subsequently approved wider adoption under D9.
 
 **Try it locally**
 
@@ -32,7 +32,7 @@ Phone checks at 375×812, 375×553 and 844×390 passed with no runtime errors or
 - Content work comprised those selections, three teaching lines, four coaching lines, briefing and victory text.
 - Selection and writing were not timed separately from implementation. The count of discarded positions inspected was also not recorded.
 - The shortlist size is measured; it is not a claim that all 166 positions received manual review.
-- A timing comparison with a Region 1 battle still needs the owner's baseline and a separately timed follow-up encounter.
+- Authoring-time savings were not measured. The owner waived further pilot evaluation; timing work is not a delivery gate.
 
 **Implementation choices**
 
@@ -68,12 +68,18 @@ Phone checks at 375×812, 375×553 and 844×390 passed with no runtime errors or
 - Short-battle competent win rates were 96–100%. Full-budget boss armies met their separate win and loss bars; the unexpanded starting army remains report-only.
 - This validates the shared-code changes. Future ambush-only content still uses legal-line and rule checks, rather than engine tournaments.
 
-**Human evaluation still needed**
+**Owner evaluation and handoff**
 
-Three human playtesters should try Gentle and Brave, report completion times, and comment on the example and poster.
-Ask whether it feels like a battle or a set of bounties with a story.
-Automated solutions do not measure human difficulty, enjoyment or the 3–5 minute target.
-D9 remains open until the owner reviews that evidence.
+The owner found the pilot fun, guided, and useful for learning real chess skills.
+They evaluated learning, guidance, fairness, pacing, battle feel and phone usability, and approved D9 in #34.
+No additional pilot playtesting is required. Wanted presentation polish is deferred. Normal implementation checks and code review still apply.
+Keep the four difficulties and shared puzzle positions. Separate difficulty pools remain deferred.
+Reuse the rules, content, tests, candidate tooling and board presentation. Adapt the scene to accept encounter data and campaign state.
+The standalone launcher, seeded purse and separate pilot save are development tools, not the future campaign flow.
+Preserve this feature branch in a draft PR while the Region 2 spec and dependency list are revised.
+Next, integrate the pilot through the Region registry, real saves, map unlocks and rewards, then expand Region 2's curriculum and boss.
+Existing Region 1 encounters stay for now. A wholesale conversion is not implied; its correctness fixes remain relevant.
+The owner feedback is qualitative. Human completion times, learning gains and authoring-time savings were not measured.
 
 ## Step 1: Phaser game with the battle screen ported
 

@@ -36,8 +36,8 @@ The one place to track unfinished design work. When one is resolved, move the an
 
 ## Open questions
 
-- [ ] Ambush pilot: tune miss limits, wave ratings, rewards and the 3–5 minute target after human playtests.
-- [ ] Ambush adoption (D9): three human playtesters on Gentle and Brave, then the owner's decision. Automated solves do not count.
+- [ ] Ambush tuning: keep the approved pilot settings for now. Revisit them if campaign integration exposes a problem; further pilot playtests are not required.
+- [x] Ambush adoption (D9): the owner approved wider adoption after evaluating the staging pilot. The three-playtester gate is waived; Wanted polish is deferred.
 
 - [ ] Brave difficulty loses a tenth of your gold on a lost battle: first guess, tune in playtests.
 - [ ] Boss budgets of about 10, 16, 22, 28, 34 and 39 points: tune in playtests.
@@ -57,7 +57,7 @@ The one place to track unfinished design work. When one is resolved, move the an
 | 2026-10-23 | Ambush D6: the poster marks the opening attack before setup and disappears afterwards. It never predicts a later reply. |
 | 2026-10-23 | Ambush D7: first win pays 20g; clean and no hints pay 5g each once. No tactic gold. Double-check banners appear on actual double checks. |
 | 2026-10-23 | Ambush D8: legal replay, rule tests and browser checks replace ambush engine tournaments. Custom battles and bosses retain their distinct bars. Shared changes run CI-selected regressions. |
-| 2026-10-23 | Ambush D9: wider adoption and Practice technique nodes wait for human evaluation and the owner's decision. Delivery of this pilot is a separate milestone. |
+| 2026-10-23 | Ambush D9: the owner approved published-puzzle ambushes for most new teaching encounters after evaluating the staging pilot. Further pilot playtesting is waived. Wanted polish is deferred. Custom battles and live bosses remain where useful. Region 1 conversion and Practice technique nodes remain separate planning choices. |
 | 2026-10-23 | Pilot storage is separate, seeded with 100g and a small roster. Reset affects only pilot data. An interrupted active attempt settles once as a retreat on reload. Leaving teaching is free. The owner approved a separate staging deployment for phone testing. Normal production builds exclude the pilot. |
 | 2026-10-23 | Ambush and warm-up flows share puzzle mechanics, not necessarily a state machine. Rewards share the existing payout ledger through a small economy helper; battle stats and bonus kinds stay unchanged. |
 | 2026-10-23 | The wanted poster comes from the same stored "if I passed" pick the Scrying Orb shows, not the engine's best line, so the Orb always shows the route to the marked piece. The target is the piece that one move captures, or else newly attacks; forks go to the highest value, then square order. The mark follows the piece through your move, and a move that hits it gets a ×3 bonus, capped with other habits ([brief](regions/region-02-bandit-riders.md#ai-habit-wanted-poster), [#12](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/12)) |

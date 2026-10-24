@@ -104,6 +104,21 @@ describe('Shadow Cult published positions', () => {
         expect(after.moves({ verbose: true }).some(m => m.from === e.front && m.to === first.to)).toBe(false);
       }
     }
+    if (e.id === 'Kp2Gw') {
+      // The queen, not the recapturing pawn, is the bishop's sole defender.
+      expect(start.get('e6')).toMatchObject({ type: 'b', color: enemy });
+      expect(start.attackers('e6', enemy)).toEqual(['e5']);
+      const premature = new Chess(start.fen());
+      expect(premature.move('Rxe6').captured).toBe('b');
+      expect(premature.move('Qxe6')).toMatchObject({ from: 'e5', captured: 'r' });
+      expect(first).toMatchObject({ to: 'e5', captured: 'q' });
+      expect(after.attackers('e6', enemy)).toEqual([]);
+      const beforeFinish = new Chess(after.fen());
+      expect(beforeFinish.move(uciMove(p.moves[2]))).toMatchObject({ from: 'd6', to: 'e5', piece: 'p' });
+      expect(beforeFinish.attackers('e6', enemy)).toEqual([]);
+      expect(finish).toMatchObject({ to: 'e6', captured: 'b' });
+      expect(completed.moves({ verbose: true }).some(m => m.to === 'e6' && m.captured)).toBe(false);
+    }
     if (e.kind === 'create-pin') {
       // The bishop creates an absolute pin; the queen still defends the rook.
       blockedLine(after, e.attacker, e.front, e.rear);

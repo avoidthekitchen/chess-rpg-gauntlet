@@ -391,11 +391,6 @@
     "decisiveMove": "d3d4",
     "explanation": "The white king safely captures d4 and then d5. Neither target is protected by the distant black king."
   },
-  "kuWwt": {
-    "kind": "king-use",
-    "decisiveMove": "d3e3",
-    "explanation": "Ke3 waits for Kd5 to open f4. Kf4 then reaches g4 after Kd4. This tests the published replies, not a general zugzwang method."
-  },
   "2RsIw": {
     "kind": "rook-support",
     "decisiveMove": "g8a8",
@@ -514,5 +509,10 @@
     "kind": "back-rank",
     "decisiveMove": "g3b8",
     "explanation": "Qb8# mates along the back rank. Black’s f7, g7 and h7 pawns close the king’s escape squares."
+  },
+  "VIy5h": {
+    "kind": "king-use",
+    "decisiveMove": "d7e6",
+    "explanation": "Ke6 and Kf5 follow the shortest open route to g5. Each step is the only legal king move that shortens that route."
   }
 }

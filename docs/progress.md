@@ -56,7 +56,11 @@ The launch path is development-only and is absent from the production bundle.
 - Those methods now count committed player and enemy moves. They retain the same chess.js undo operations and repetition history.
 - A new test covers pending turns, completed turns, branching and a later starting move number. Existing repetition tests still pass.
 - The independent reviewer also checked this optimization and found no issues. All 26 battle unit tests pass.
-- The fresh CI run selects both battle and boss engine suites. Game counts and pass criteria are unchanged; final results follow below.
+- A normal Region 1 browser run confirmed that Rewind restores a full move pair and spends one charge.
+- `npm run ci` passed: 196 unit tests and all 11 engine tests across both suites.
+- The engine run completed 960 short-battle games and 384 boss games in 1,653 seconds, about 28 minutes. Counts and pass criteria were unchanged.
+- Short-battle competent win rates were 96–100%. Full-budget boss armies met their separate win and loss bars; the unexpanded starting army remains report-only.
+- This validates the shared-code changes. Future ambush-only content still uses legal-line and rule checks, rather than engine tournaments.
 
 **Human evaluation still needed**
 

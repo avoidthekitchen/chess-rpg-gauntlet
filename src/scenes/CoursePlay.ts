@@ -1,5 +1,5 @@
 import { COURSE_FOE_ART } from '../game/courseCast';
-import { Chess, type Move, type Square } from 'chess.js';
+import { Chess, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
@@ -11,7 +11,7 @@ import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phas
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
-import { captureLine, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
+import { companionReaction, courseBanner, type CourseBanner, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore } from '../ui/coursePresentation';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
@@ -44,7 +44,8 @@ export class CoursePlayScene extends BaseScene {
   private scope = 'Introduction';
   private attemptNumber = 0;
   private exampleNumber = 0;
-  private cue: { info: SpeakerInfo; labels: CourseCue[]; title: string; capture: boolean } | null = null;
+  private cue: CourseBanner | null = null;
+  private bannerElement: HTMLElement | null = null;
   private earnedStars: string[] = [];
   private style: PieceStyle = 'tokens';
   private exampleOnly = false;
@@ -94,6 +95,7 @@ export class CoursePlayScene extends BaseScene {
       settleJourney(this.save, true);
       persistJourney(this.save);
       this.valid = false; this.speech.clear(); this.speechElement = null;
+      this.bannerElement = null;
       this.speechLayer?.remove(); this.speechLayer = null;
       this.hud.remove();
       closeModal();
@@ -105,8 +107,7 @@ export class CoursePlayScene extends BaseScene {
     // The board rebuild waits for an in-flight move; hide feedback until both agree again.
     this.feedbackLayoutPending = true;
     if (this.speechElement) this.speechElement.hidden = true;
-    const moment = this.hud?.querySelector<HTMLElement>('.course-moment');
-    if (moment) moment.hidden = true;
+    this.bannerElement?.remove(); this.bannerElement = null;
     this.cueHolds.clear(); this.cue = null;
     super.requestLayout();
   }
@@ -114,9 +115,10 @@ export class CoursePlayScene extends BaseScene {
   protected canRebuild() { return !this.busy && !this.board?.busy; }
 
   private layout() {
-    const top = 68 + this.safe.top;
+    // The header is 52px; the board's own headroom sits just under it.
+    const top = 54 + this.safe.top;
     if (this.W >= 640 && this.W > this.H) {
-      const width = Math.min(650, (this.H - top - 24) * BOARD_SPAN / BOARD_TALL, this.W * .57);
+      const width = Math.min(690, (this.H - top - 24) * BOARD_SPAN / BOARD_TALL, this.W * .57);
       const panelWidth = Math.min(380, this.W - width - 64);
       const x = Math.max(16, (this.W - width - panelWidth - 32) / 2);
       return { x, y: top, width, panelX: x + width + 28, panelY: top + 12, panelWidth };
@@ -124,7 +126,8 @@ export class CoursePlayScene extends BaseScene {
     // Reserve room for the instruction and actions before sizing the phone board.
     const panelSpace = this.H < 650 ? 234 : 246;
     const width = Math.min(this.W - 8, (this.H - top - panelSpace - this.safe.bottom) * BOARD_SPAN / BOARD_TALL);
-    return { x: (this.W - width) / 2, y: top, width, panelX: 12, panelY: top + width * BOARD_TALL / BOARD_SPAN + 2, panelWidth: this.W - 24 };
+    const y = top - 6;
+    return { x: (this.W - width) / 2, y, width, panelX: 12, panelY: y + width * BOARD_TALL / BOARD_SPAN + 2, panelWidth: this.W - 24 };
   }
 
   protected build() {
@@ -214,7 +217,6 @@ export class CoursePlayScene extends BaseScene {
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);
-    const moment = this.cue ? `<div class="course-moment ${this.cue.capture ? 'capture' : ''}" hidden role="status">${coursePortrait(this.cue.info)}<div><small>${esc(this.cue.labels.join(' · '))}</small><strong>${esc(this.cue.title)}</strong></div></div>` : '';
     this.hud.innerHTML = `<header class="ambush-top">${this.btn('leave', '← Map')}<div><span class="journey-kicker">${esc(region.title)}</span><strong>${esc(def.title)}</strong></div>${this.btn('style', this.style === 'tokens' ? 'Classic pieces' : 'Animal pieces')}</header>
       <section class="ambush-panel" style="left:${l.panelX}px;top:${l.panelY}px;width:${l.panelWidth}px;max-height:${panelHeight}px" aria-label="Lesson controls">
       <div class="ambush-panel-scroll" tabindex="0" aria-label="Lesson status and companion advice">
@@ -224,9 +226,7 @@ export class CoursePlayScene extends BaseScene {
       ${guidance.status ? `<p class="ambush-status" role="status">${esc(guidance.status)}</p>` : ''}${result}
       ${run && !teaching && !['won', 'lost'].includes(this.phase) ? `<p class="ambush-bonuses">${run.misses === 0 ? '☆' : '–'} No misses &nbsp; ${run.hintsUsed === 0 ? '☆' : '–'} No hints</p>` : ''}
       <p class="ambush-source">Published Lichess position${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? ` · <a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">${esc(this.puzzle.id)}</a>` : ''}</p>
-      </div><div class="ambush-actions">${actions}</div></section>${moment}`;
-    const momentElement = this.hud.querySelector<HTMLElement>('.course-moment');
-    if (momentElement) this.positionFeedback(momentElement, persistentSpeech);
+      </div><div class="ambush-actions">${actions}</div></section>`;
     this.renderSpeech();
   }
 
@@ -323,20 +323,47 @@ export class CoursePlayScene extends BaseScene {
       const cues = courseMoveCues(this.chess, move, accepted, this.puzzle.id, publishedIndex);
       const info = courseMoveSpeaker(move, this.solver, cues, this.lesson.regionId);
       this.journal.add(info, this.scope, Math.max(0, Math.ceil(publishedIndex / 2) * 2 - (move.color === this.solver ? 1 : 0)));
-      if (accepted && cues.length) {
-        await this.moveMoment(move, info, cues, token); if (token !== this.session) return;
+      // The opponent's setup move (index 0) stays quiet; later replies can earn a banner.
+      const foeReply = move.color !== this.solver && publishedIndex > 0;
+      const banner = accepted ? courseBanner(move, cues, this.solver)
+        : foeReply ? courseBanner(move, courseMoveCues(this.chess, move, true, this.puzzle.id, -1), this.solver) : null;
+      if (banner) {
+        await this.moveMoment(banner, info, token); if (token !== this.session) return;
       }
       this.speech.show(info);
     }
     this.busy = false; this.flushLayout(); this.refresh();
   }
 
-  private async moveMoment(move: Move, info: SpeakerInfo, labels: CourseCue[], token: number) {
-    this.cue = { info, labels, capture: !!move.captured, title: move.captured ? captureLine(move) : labels.join(' · ') + '!' };
-    this.refresh();
-    await this.cueHolds.wait(matchMedia('(prefers-reduced-motion: reduce)').matches ? 450 : move.captured ? 1200 : 900);
+  /**
+   * The move lands first, then its banner fills the board's centre. The next move waits
+   * until the banner fades. A tap on the board skips it.
+   */
+  private async moveMoment(banner: CourseBanner, info: SpeakerInfo, token: number) {
+    if (!this.speechLayer || this.feedbackLayoutPending) return;
+    const l = this.layout();
+    const height = l.width * BOARD_TALL / BOARD_SPAN;
+    const el = document.createElement('div');
+    el.className = `course-banner ${banner.kind} ${banner.side}`;
+    el.setAttribute('role', 'status');
+    Object.assign(el.style, { left: `${l.x}px`, top: `${l.y}px`, width: `${l.width}px`, height: `${height}px` });
+    el.style.setProperty('--band-height', `${Math.round(Math.min(150, height * .36))}px`);
+    const detail = banner.detail ? `<small>${esc(banner.detail)}</small>` : '';
+    el.innerHTML = banner.kind === 'capture'
+      ? `<div class="course-banner-band">${coursePortrait(info)}<div class="course-banner-copy">${detail}<strong>${esc(banner.title)}</strong></div></div>`
+      : `<div class="course-banner-copy"><strong>${esc(banner.title)}</strong>${detail}</div>`;
+    el.addEventListener('pointerdown', () => this.cueHolds.clear());
+    this.bannerElement?.remove();
+    this.bannerElement = el; this.cue = banner;
+    this.speechLayer.appendChild(el);
+    this.renderSpeech();
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    await this.cueHolds.wait(still ? 600 : banner.kind === 'capture' ? 1300 : 1000);
+    if (token === this.session && el.isConnected) { el.classList.add('leaving'); await this.cueHolds.wait(220); }
+    el.remove();
+    if (this.bannerElement === el) { this.bannerElement = null; this.cue = null; }
     if (token !== this.session) return;
-    this.cue = null; this.refresh();
+    this.refresh();
   }
 
   /** Separate from lesson scrolling. Renders never restart the reading-time clock. */
@@ -365,10 +392,13 @@ export class CoursePlayScene extends BaseScene {
       });
     }
     const element = this.speechElement;
-    element.className = `course-speech ${persistent ? 'persistent' : 'toast'}`;
+    element.classList.add('course-speech'); element.classList.toggle('persistent', persistent); element.classList.toggle('toast', !persistent);
     const content = courseDialogueRow(info!, 'course-speech-voice') + (persistent ? '' : '<button data-dismiss-speech title="Dismiss dialogue" aria-label="Dismiss dialogue">×</button>');
     // Preserve the node and a reader's focus across ordinary board/HUD updates.
-    if (element.dataset.line !== content) { element.innerHTML = content; element.dataset.line = content; }
+    if (element.dataset.line !== content) {
+      element.innerHTML = content; element.dataset.line = content;
+      element.classList.remove('entering'); void element.offsetWidth; element.classList.add('entering');
+    }
     this.positionFeedback(element, persistent);
     if (this.speechLayer && element.parentElement !== this.speechLayer) this.speechLayer.appendChild(element);
   }
@@ -377,6 +407,8 @@ export class CoursePlayScene extends BaseScene {
     showModal({ title: 'What was said', eyebrow: this.lesson.title,
       html: `<div class="course-history" tabindex="0" aria-label="Lesson conversation">${this.journal.all.map(entry => `<p class="course-history-label">${esc(entry.label)}</p>${courseDialogueRow(entry.info)}`).join('')}</div>`,
       buttons: [{ label: 'Back to the lesson', kind: 'primary', onClick: () => {} }], onDismiss: () => {} });
+    // Open at the newest line, like the original game.
+    for (const el of document.querySelectorAll<HTMLElement>('#overlay .ov-body, #overlay .ov-dialog')) el.scrollTop = el.scrollHeight;
   }
 
   private onSquare(square: Square) {

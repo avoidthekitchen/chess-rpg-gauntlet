@@ -92,6 +92,10 @@ Roomy desktops retain the last speaker in a separate panel; phones and short lan
 The 44px portrait button opens a conversation history grouped by example and practice position.
 
 Celebrate accepted captures, checks, verified forks, double checks, promotions, and checkmates.
+The move lands first. Then one banner fills the board's centre, and the next move waits until it fades. A tap on the board skips it.
+Checkmate, forks, double checks and promotions get a large word banner. They outrank a capture close-up, which outranks a plain check.
+A capture close-up shows the capturing piece's portrait in a band across the board. Pawn captures alone get no banner.
+The opponent's replies within the published line can also earn a capture close-up or check banner. The setup move stays quiet.
 Wrong moves being taken back receive no tactical celebration.
 A source tag alone does not prove that the current move deserves a banner.
 Fork cues use reviewed source moves plus a board check in `src/ui/coursePresentation.ts`.
@@ -130,6 +134,7 @@ Ratings guide selection; they do not promise how difficult a position feels to a
 | Retries | Unlimited on every difficulty | `beginJourneyLesson` in `src/game/journey.ts` |
 | Practice goals | Completion, no misses, no hints; recorded once per lesson | `settleJourney` in `journey.ts` |
 | Gold reward | 0; no gold bonuses | `COURSE_LESSONS` in `curriculum.ts` |
+| Move banner hold | Word banner 1s; capture close-up 1.3s; 0.6s with reduced motion; 0.22s fade before the next move | `moveMoment` in `src/scenes/CoursePlay.ts` |
 | Speech reading time | 1.2s + 60ms per character, clamped to 3.2–9s | `holdMs` in `src/ui/dialogue.ts` |
 | History capacity | Last 120 lines per encounter | `CourseDialogueLog` in `src/ui/coursePresentation.ts` |
 | History portrait button | At least 44×44 CSS pixels | `src/ui/coursePresentation.css` |

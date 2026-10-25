@@ -15,6 +15,8 @@ export interface JourneySave {
   version: 1;
   finaleComplete: boolean;
   endingSeen?: boolean;
+  /** Chapters whose first-visit introduction has been shown. */
+  introsSeen?: string[];
   difficulty: DifficultyId;
   starter: StarterType;
   currentRegion: string;
@@ -27,7 +29,7 @@ export interface JourneySave {
 }
 
 export function newJourney(difficulty: DifficultyId = 'knight', starter: StarterType = 'n'): JourneySave {
-  return { version: 1, finaleComplete: false, endingSeen: false, difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
+  return { version: 1, finaleComplete: false, endingSeen: false, introsSeen: [], difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
     stars: {}, attempts: 0, retryWaves: {}, active: null, lastResult: null };
 }
 

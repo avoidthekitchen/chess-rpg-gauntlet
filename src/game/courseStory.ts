@@ -1,4 +1,5 @@
 import { STARTERS, type StarterType } from './campaign';
+import { courseRegion } from './curriculum';
 
 export interface StoryLine { speaker: string; line: string }
 /** Chapter endings are replayable narrative; completion alone unlocks the next chapter. */
@@ -65,4 +66,26 @@ export function journeyEnding(starter: StarterType): StoryLine[] {
       r: 'We held the Legion’s gate. Now we can open this one.',
     }[starter] },
   ];
+}
+
+/** The companion's first words, shown when the player picks them. */
+export const COMPANION_GREETINGS: Record<StarterType, string> = {
+  n: 'Sir Hob, at your service! I hop where others can’t, and I’ll show you how one jump can hit two goblins at once.',
+  b: 'Sage Ollie. I see far down the diagonals, and I’ll teach you to look before you leap. Mostly.',
+  r: 'Old Brick. Slow? Yes. But nothing gets past me on an open line. Stick with me and we’ll hold.',
+};
+
+export interface IntroLine { who: 'narrator' | 'companion' | 'boss'; speaker: string; line: string }
+
+/** Shown once, the first time a chapter's map opens. Lines describe story, never board rules. */
+export function chapterIntro(regionId: string, starter: StarterType): IntroLine[] {
+  const region = courseRegion(regionId);
+  if (!region) return [];
+  const companion: IntroLine = { who: 'companion', speaker: STARTERS[starter].name, line: region.intro };
+  if (regionId === 'r1') return [
+    { who: 'narrator', speaker: '', line: 'The Bog Goblins have crept out of the marsh, stealing pots, pies and the occasional village.' },
+    companion,
+    { who: 'boss', speaker: region.bossName, line: 'GRUBNAK HEARS YOU, LITTLE KING. Come to my camp and lose your crown in the mud!' },
+  ];
+  return [companion];
 }

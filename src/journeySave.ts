@@ -90,6 +90,11 @@ export function loadJourney(): JourneySave | null {
     const save = value as unknown as JourneySave;
     save.finaleComplete ??= false;
     save.endingSeen = value.endingSeen === true;
+    // Older saves predate intros: treat chapters already begun as introduced.
+    const regionIds = new Set(COURSE_REGIONS.map(region => region.id));
+    save.introsSeen = Array.isArray(value.introsSeen)
+      ? [...new Set(value.introsSeen.filter((id): id is string => typeof id === 'string' && regionIds.has(id)))]
+      : COURSE_REGIONS.filter(region => region.lessons.some(id => save.completed.includes(id))).map(region => region.id);
     if (!save.completed.every(id => lessonUnlocked(save, id)) || !regionUnlocked(save, save.currentRegion)) return reject();
     for (const [id, stars] of Object.entries(value.stars)) {
       if (!save.completed.includes(id) || !object(stars) || typeof stars.clean !== 'boolean' || typeof stars.noHint !== 'boolean') return reject();

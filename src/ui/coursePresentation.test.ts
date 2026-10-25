@@ -4,7 +4,7 @@ import { Chess, type PieceSymbol } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
 import { uciMove } from '../game/ambush';
-import { COURSE_FORK_MOVES, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, coursePortrait, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
+import { COURSE_FORK_MOVES, courseBanner, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, coursePortrait, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
 
 const positions = COURSE_LESSONS.flatMap(lesson => [lesson.show, ...lesson.waves.flatMap(wave => [wave.main, wave.backup])]);
 
@@ -229,5 +229,25 @@ describe('honest portrait identity and compact advice', () => {
   });
   it('does not invent an opponent reply in missed-move feedback', () => {
     expect(companionReaction('b', 'miss').line).not.toContain('their reply');
+  });
+});
+
+describe('move banners', () => {
+  const play = (fen: string, san: string) => { const chess = new Chess(fen); const move = chess.move(san); return { chess, move }; };
+  it('keeps pawn captures quiet and gives other captures a close-up', () => {
+    const pawn = play('4k3/8/8/3p4/4P3/8/8/4K3 w - - 0 1', 'exd5');
+    expect(courseBanner(pawn.move, courseMoveCues(pawn.chess, pawn.move, true, 'x', 1), 'w')).toBeNull();
+    const rook = play('4k3/8/8/3r4/8/2N5/8/4K3 w - - 0 1', 'Nxd5');
+    expect(courseBanner(rook.move, ['Capture'], 'w')).toMatchObject({ kind: 'capture', side: 'ally' });
+    expect(courseBanner(rook.move, ['Capture'], 'b')).toMatchObject({ kind: 'capture', side: 'foe', title: 'Their knight takes your rook!' });
+  });
+  it('ranks tactics above a capture, and a capture above a plain check', () => {
+    const { move } = play('4k3/8/8/3r4/8/2N5/8/4K3 w - - 0 1', 'Nxd5');
+    expect(courseBanner(move, ['Capture', 'Check', 'Fork'], 'w')).toMatchObject({ kind: 'tactic', title: 'Fork!', detail: 'Capture · Check' });
+    expect(courseBanner(move, ['Capture', 'Check'], 'w')).toMatchObject({ kind: 'capture', detail: 'Check' });
+    expect(courseBanner(move, ['Capture', 'Mate'], 'w')).toMatchObject({ title: 'Checkmate!' });
+    const pawnCheck = play('8/4k3/3p4/4P3/8/8/8/4K3 w - - 0 1', 'exd6');
+    expect(courseBanner(pawnCheck.move, ['Capture', 'Check'], 'w')).toMatchObject({ kind: 'tactic', title: 'Check!' });
+    expect(courseBanner(move, [], 'w')).toBeNull();
   });
 });

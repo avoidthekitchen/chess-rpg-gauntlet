@@ -8,11 +8,12 @@ import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/journey.css';
-import { chapterStory, finaleInterlude, journeyEnding } from '../game/courseStory';
+import { chapterIntro, chapterStory, COMPANION_GREETINGS, finaleInterlude, journeyEnding } from '../game/courseStory';
+import { portraitStyle } from '../ui/portrait';
 import { journeyRoute, journeyTrail } from '../ui/journeyLayout';
 import { previewRegion } from '../journeyPreview';
 
-type Page = 'title' | 'setup' | 'map' | 'journal' | 'settings' | 'story' | 'interlude' | 'ending';
+type Page = 'title' | 'setup' | 'moves' | 'difficulty' | 'companion' | 'map' | 'journal' | 'settings' | 'story' | 'interlude' | 'ending';
 const ART = { n: 'knight', b: 'bishop', r: 'rook' };
 const HELP: Record<DifficultyId, string> = {
   squire: 'Unlimited tries, hints and advice before every position.',
@@ -35,6 +36,7 @@ export class JourneyScene extends BaseScene {
   init(data: { page?: Page; storyRegion?: string } = {}) {
     this.save = loadJourney();
     this.page = data.page ?? 'title';
+    if (this.page === 'setup') this.page = 'moves';
     this.storyRegion = data.storyRegion ?? '';
     if (this.page === 'story' && !courseRegion(this.storyRegion)?.lessons.every(id => this.save?.completed.includes(id))) this.page = 'map';
     if (this.page === 'interlude' && (!this.save || !finaleInterludeUnlocked(this.save))) this.page = 'map';
@@ -59,7 +61,9 @@ export class JourneyScene extends BaseScene {
   protected build() {
     const backdrop = this.page === 'ending' || this.page === 'interlude' ? 'finale' : this.page === 'story' ? this.storyRegion : this.save?.currentRegion ?? '';
     const mapArt = courseRegion(backdrop)?.mapArt ?? 'map-region1';
-    coverImage(this, this.page === 'title' || this.page === 'setup' ? 'bg-title' : `bg-${mapArt}`, this.page === 'title' ? .3 : .18);
+    const onboarding = ['moves', 'difficulty'].includes(this.page) && !this.save;
+    if (this.page === 'companion' && !this.save) coverImage(this, 'bg-town', .55);
+    else coverImage(this, this.page === 'title' || onboarding ? 'bg-title' : `bg-${mapArt}`, this.page === 'title' ? .3 : onboarding ? .45 : this.page === 'map' ? .1 : .18);
     this.render();
   }
 
@@ -72,6 +76,57 @@ export class JourneyScene extends BaseScene {
       <fieldset><legend>Who will guide you?</legend><div class="journey-companions">${(['n', 'b', 'r'] as const).map(t => `<button data-action="starter:${t}" aria-pressed="${this.starter === t}"><img src="${import.meta.env.BASE_URL}sprites/${ART[t]}-ally.webp" alt=""/><span><strong>${STARTERS[t].name}</strong><small>${STARTERS[t].species}</small></span></button>`).join('')}</div></fieldset>`;
   }
 
+  /** New journeys ask one question at a time, like the original game. */
+  private onboarding() {
+    if (this.page === 'difficulty') {
+      return `<div class="journey-welcome"><section class="journey-setup journey-step" aria-label="Choose your help">
+        <p class="journey-eyebrow">Difficulty</p><h1>How much help would you like?</h1>
+        <div class="journey-choices">${Object.values(DIFFICULTIES).map(d => `<button class="journey-choice" data-action="pick:${d.id}" ${this.difficulty === d.id ? 'aria-current="true"' : ''}><strong>${esc(d.label)}</strong><span>${esc(HELP[d.id])}</span></button>`).join('')}</div>
+        <p class="journey-help">Every level uses the same puzzles. You can change this anytime in Settings.</p>
+        ${this.btn('page:moves', 'Back', 'quiet')}</section></div>`;
+    }
+    if (this.page === 'companion') {
+      return `<section class="journey-companion-pick" aria-label="Choose your companion"><p class="journey-eyebrow">Choose your companion</p><h1>Who rides out with you?</h1>
+        <p class="journey-companion-lead">Your companion is your tutor through every chapter.</p>
+        <div class="journey-companion-cards">${(['n', 'b', 'r'] as const).map(t => `<article class="journey-companion-card"><button class="journey-companion-art" data-action="choose:${t}" tabindex="-1" aria-hidden="true"><img src="${import.meta.env.BASE_URL}sprites/${ART[t]}-ally.webp" alt=""/></button><div class="journey-companion-text"><h2>${esc(STARTERS[t].name)}</h2><p class="journey-eyebrow">${esc(STARTERS[t].species)}</p><p>${esc(STARTERS[t].blurb)}</p></div>${this.btn(`choose:${t}`, `Choose ${STARTERS[t].name}`, 'primary')}</article>`).join('')}</div>
+        ${this.btn('page:difficulty', 'Back', 'quiet journey-companion-back')}</section>`;
+    }
+    return `<div class="journey-welcome"><section class="journey-setup journey-step" aria-label="Start your journey">
+      <p class="journey-eyebrow">Before we begin</p><h1>Do you know how the pieces move?</h1>
+      <p>Pawnshire is for players who know the moves and want to spot tactics.</p>
+      <div class="journey-actions journey-actions-stack">${this.btn('knows', 'Yes, I know the moves', 'primary')}${this.btn('teach', 'Not yet, show me')}</div>
+      <p class="journey-help">Progress saves on this device.</p>${this.btn('page:title', 'Back to title', 'quiet')}</section></div>`;
+  }
+
+  private dialogueRow(line: { who: 'narrator' | 'companion' | 'boss'; speaker: string; line: string }) {
+    if (line.who === 'narrator') return `<p class="journey-narration">${esc(line.line)}</p>`;
+    const foe = line.who === 'boss';
+    const pic = foe ? portraitStyle('k', 'bog') : portraitStyle(this.save?.starter ?? this.starter, 'ally');
+    return `<div class="dlg ${foe ? 'foe' : 'ally'} journey-dlg"><div class="dlg-pic" style="${pic}"></div><div><p class="who ${foe ? 'foe' : ''}">${esc(line.speaker)}</p><p>${esc(line.line)}</p></div></div>`;
+  }
+
+  /** The first visit to a chapter opens with its story, once per journey. */
+  private maybeIntro() {
+    const save = this.save;
+    if (!save || this.page !== 'map' || isModalOpen() || previewRegion) return;
+    const region = courseRegion(save.currentRegion);
+    if (!region || save.introsSeen?.includes(region.id)) return;
+    save.introsSeen = [...(save.introsSeen ?? []), region.id]; persistJourney(save);
+    const lines = chapterIntro(region.id, save.starter);
+    if (!lines.length) return;
+    showModal({ eyebrow: region.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(region) + 1}`, title: region.title, wide: true,
+      html: `<div class="journey-intro">${lines.map(line => this.dialogueRow(line)).join('')}</div>`,
+      buttons: [{ label: 'Onward', kind: 'primary', onClick: () => {} }] });
+  }
+
+  private toast(text: string) {
+    this.hud.querySelector('.journey-toast')?.remove();
+    const el = document.createElement('p');
+    el.className = 'journey-toast'; el.setAttribute('role', 'status'); el.textContent = text;
+    this.hud.appendChild(el);
+    window.setTimeout(() => el.remove(), 2200);
+  }
+
   private render() {
     this.hud.className = `journey-hud journey-${this.page}`;
     if (this.page === 'title') {
@@ -79,7 +134,7 @@ export class JourneyScene extends BaseScene {
       return;
     }
     if (!this.save) {
-      this.hud.innerHTML = `<div class="journey-welcome"><section class="journey-setup" aria-label="Start your journey"><h1>Your road begins here</h1><p>Follow the road through Pawnshire. Let a companion show you an idea, then discover it for yourself.</p><p>For players who know how the pieces move and want to spot tactics.</p>${this.options()}<div class="journey-actions">${this.btn('start', 'Begin the journey', 'primary')}${this.btn('moves', 'Remind me of the moves')}</div><p class="journey-help">Progress saves on this device. Change your help level anytime.</p>${this.btn('page:title', 'Back to title', 'quiet')}</section></div>`;
+      this.hud.innerHTML = this.onboarding();
       return;
     }
     const save = this.save;
@@ -118,15 +173,13 @@ export class JourneyScene extends BaseScene {
         const l = courseLesson(id)!, done = save.completed.includes(id), unlocked = lessonUnlocked(save, id), earned = save.stars[id];
         const isNext = id === next?.id;
         const status = done ? `${1 + Number(earned?.clean ?? false) + Number(earned?.noHint ?? false)} of 3 stars. Completed. Revisit lesson.` : unlocked ? 'Next lesson. Begin.' : 'Locked. Finish the previous lesson.';
-        return `<li class="${done ? 'done' : unlocked ? 'available' : 'locked'} ${l.review ? 'review' : ''}" style="--x:${desktop[i][0]}%;--y:${desktop[i][1]}%;--phone-x:${phone[i][0]}%;--phone-y:${phone[i][1]}%"><button data-action="lesson:${id}" aria-label="${esc(`${i + 1}. ${l.title}. ${l.review ? current.kind === 'finale' ? 'Final encounter.' : 'Mixed chapter review.' : l.theme + '.'} ${status}`)}" ${isNext ? 'aria-current="step"' : ''} ${unlocked ? '' : 'disabled'}><span class="journey-stop" aria-hidden="true">${l.review && current.id === 'r1' ? `<img src="${import.meta.env.BASE_URL}sprites/king-bog.webp" alt=""/>` : done ? '✓' : i + 1}</span><span class="journey-node-copy"><strong>${esc(l.title)}</strong><span>${esc(l.review ? current.kind === 'finale' ? 'Final encounter' : 'Mixed chapter review' : l.theme)}</span></span>${done ? `<span class="journey-node-stars" aria-label="${1 + Number(earned?.clean ?? false) + Number(earned?.noHint ?? false)} of 3 stars">★${earned?.clean ? '★' : '☆'}${earned?.noHint ? '★' : '☆'}</span>` : `<span class="journey-node-state">${isNext ? 'Next lesson' : 'Locked'}</span>`}</button></li>`;
+        return `<li class="${done ? 'done' : unlocked ? 'available' : 'locked'} ${l.review ? 'review' : ''}" style="--x:${desktop[i][0]}%;--y:${desktop[i][1]}%;--phone-x:${phone[i][0]}%;--phone-y:${phone[i][1]}%"><button data-action="lesson:${id}" aria-label="${esc(`${i + 1}. ${l.title}. ${l.review ? current.kind === 'finale' ? 'Final encounter.' : 'Mixed chapter review.' : l.theme + '.'} ${status}`)}" ${isNext ? 'aria-current="step"' : ''} ${unlocked ? '' : 'aria-disabled="true"'}><span class="journey-stop" aria-hidden="true">${l.review && current.id === 'r1' ? `<img src="${import.meta.env.BASE_URL}sprites/king-bog.webp" alt=""/>` : done ? '✓' : i + 1}</span><span class="journey-node-copy"><strong>${esc(l.title)}</strong><span>${esc(l.review ? current.kind === 'finale' ? 'Final encounter' : 'Mixed chapter review' : l.theme)}</span></span>${done ? `<span class="journey-node-stars" aria-label="${1 + Number(earned?.clean ?? false) + Number(earned?.noHint ?? false)} of 3 stars">★${earned?.clean ? '★' : '☆'}${earned?.noHint ? '★' : '☆'}</span>` : `<span class="journey-node-state">${isNext ? 'Next lesson' : 'Locked'}</span>`}</button></li>`;
       }).join('');
       const chapterDone = completedHere === current.lessons.length;
-      // Custom-property URLs resolve beside the built stylesheet, so make the map URL absolute.
-      const mapArt = new URL(`${import.meta.env.BASE_URL}backgrounds/${current.mapArt ?? 'map-region1'}.webp`, document.baseURI).href;
       body = `<section class="journey-map-heading"><div><p class="journey-kicker">${current.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(current) + 1}`}</p><h1>${esc(current.title)}</h1><p>${esc(current.subtitle)}</p></div><div class="journey-map-navigation"><label class="journey-region-picker">Travel the journey<select data-region-picker aria-label="Choose a chapter">${COURSE_REGIONS.map((r, i) => `<option value="${esc(r.id)}" ${r.id === current.id ? 'selected' : ''} ${regionUnlocked(save, r.id) ? '' : 'disabled'}>${r.kind === 'finale' ? 'Finale ·' : `${i + 1}.`} ${esc(r.title)}${regionUnlocked(save, r.id) ? '' : ' · Locked'}</option>`).join('')}</select></label>${next ? this.btn(`lesson:${next.id}`, `Continue: ${next.title}`, 'primary journey-continue') : this.btn('page:journal', 'Open your journal', 'primary')}</div></section>
       ${finished && current.kind === 'finale' ? `<section class="journey-finale" role="status"><span aria-hidden="true">✦ ★ ✦</span><h2>Pawnshire is free.</h2><p>${COURSE_REGIONS.filter(region => region.kind !== 'finale').length} Regions and the Lich King’s final boards are complete. Every lesson remains open for practice.</p>${this.btn('ending', save.endingSeen ? 'See the ending again' : 'See the ending')}</section>` : save.lastResult?.won && courseLesson(save.lastResult.lessonId)?.review && courseRegion(courseLesson(save.lastResult.lessonId)!.regionId)?.kind !== 'finale' ? `<section class="journey-chapter-complete" role="status"><strong>★ ${esc(courseRegion(courseLesson(save.lastResult.lessonId)!.regionId)!.title)} complete!</strong> The next chapter is open.</section>` : ''}
       ${save.lastResult?.interrupted ? '<p class="journey-notice" role="status">Your unfinished attempt ended when you left. Completed lessons and stars are safe; you can retry.</p>' : ''}
-      <div class="journey-map" style="--map-art:url('${esc(mapArt)}');--phone-map-height:${phoneHeight}px"><svg class="journey-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><polyline class="journey-route-wide" points="${journeyRoute(desktop)}"/><polyline class="journey-route-phone" points="${journeyRoute(phone)}"/></svg><ol class="journey-trail" aria-label="${esc(current.title)} lessons in order">${nodes}</ol><p class="journey-map-caption">${completedHere} of ${current.lessons.length} encounters complete · ${DIFFICULTIES[save.difficulty].label}</p></div>
+      <div class="journey-map" style="--phone-map-height:${phoneHeight}px"><svg class="journey-route" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><polyline class="journey-route-wide" points="${journeyRoute(desktop)}"/><polyline class="journey-route-phone" points="${journeyRoute(phone)}"/></svg><ol class="journey-trail" aria-label="${esc(current.title)} lessons in order">${nodes}</ol><p class="journey-map-caption">${completedHere} of ${current.lessons.length} encounters complete · ${DIFFICULTIES[save.difficulty].label}</p></div>
       <footer class="journey-map-footer"><div class="journey-companion-note"><img src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt=""/><p><strong>${esc(STARTERS[save.starter].name)}</strong><br>${chapterDone ? esc(current.outro) : esc(current.intro)}</p></div><div class="journey-stars-note">${current.kind === 'finale' ? (!save.finaleComplete && finaleInterludeUnlocked(save) ? this.btn('interlude', 'Read the story so far') : '') : chapterDone ? this.btn(`story:${current.id}`, 'Read the chapter ending') : ''}<p class="journey-help">Stars: complete a lesson, solve cleanly, and solve without hints. Revisit to earn any you missed.</p></div></footer>`;
     }
     const normalUrl = new URL(location.href);
@@ -134,18 +187,23 @@ export class JourneyScene extends BaseScene {
     const previewNotice = previewRegion ? `<p class="journey-notice" role="status"><strong>Region preview.</strong> Earlier chapters are marked complete for testing. Test progress saves separately. <a href="${esc(normalUrl.href)}">Return to normal journey</a>.</p>` : '';
     this.hud.innerHTML = `${header}<div class="journey-content">${previewNotice}${body}</div>`;
     if (this.page === 'ending' && !save.endingSeen) { save.endingSeen = true; persistJourney(save); }
+    this.maybeIntro();
+  }
+
+  private showMoves(label: string, then: () => void = () => {}) {
+    showModal({ title: 'The pieces, at a glance', html: `<div class="journey-moves"><p><strong>King:</strong> one square in any direction. Never move into check.</p><p><strong>Queen:</strong> any distance along a rank, file or diagonal.</p><p><strong>Rook:</strong> any distance straight along a rank or file.</p><p><strong>Bishop:</strong> any distance diagonally.</p><p><strong>Knight:</strong> two squares one way, then one sideways. It can jump over pieces.</p><p><strong>Pawn:</strong> forward one square, or two from its starting square if clear. Capture one square diagonally forward. Reach the last rank to promote.</p><p>Except the knight, pieces cannot jump over other pieces. When your king is in check, your move must make it safe.</p><p>For castling, en passant and interactive practice, visit <a href="https://lichess.org/learn" target="_blank" rel="noopener">Lichess Learn</a>.</p></div>`, buttons: [{ label, kind: 'primary', onClick: then }], onDismiss: then });
   }
 
   private openSetup() {
     clearJourney();
     this.save = null;
-    this.page = 'setup';
+    this.page = 'moves';
     this.rebuild();
     this.hud.scrollTop = 0;
   }
 
   private confirmNew() {
-    if (!this.save) { this.page = 'setup'; this.rebuild(); this.hud.scrollTop = 0; return; }
+    if (!this.save) { this.page = 'moves'; this.rebuild(); this.hud.scrollTop = 0; return; }
     showModal({ title: 'Start a new journey?', html: '<p>This clears all lessons and stars in this journey. Earlier campaign and pilot saves are kept.</p>', buttons: [{ label: 'Keep my journey', kind: 'primary', onClick: () => {} }, { label: 'Start a new journey', onClick: () => this.openSetup() }], onDismiss: () => {} });
   }
 
@@ -154,7 +212,28 @@ export class JourneyScene extends BaseScene {
     if (action === 'continue' && this.save) { this.page = endingPending(this.save) ? 'ending' : 'map'; this.rebuild(); this.hud.scrollTop = 0; return; }
     if (action.startsWith('page:')) {
       const page = action.split(':')[1] as Page;
-      if (['title', 'setup', 'map', 'journal', 'settings'].includes(page)) { this.page = !this.save && page !== 'title' ? 'setup' : page; this.rebuild(); this.hud.scrollTop = 0; }
+      const setup = ['moves', 'difficulty', 'companion'];
+      if (['title', 'setup', 'map', 'journal', 'settings', ...setup].includes(page)) {
+        this.page = this.save ? (setup.includes(page) || page === 'setup' ? 'map' : page) : page === 'title' || setup.includes(page) ? page : 'moves';
+        this.rebuild(); this.hud.scrollTop = 0;
+      }
+      return;
+    }
+    if (action === 'knows') { this.page = 'difficulty'; this.rebuild(); this.hud.scrollTop = 0; return; }
+    if (action === 'teach') { this.showMoves('Got it', () => { this.page = 'difficulty'; this.rebuild(); this.hud.scrollTop = 0; }); return; }
+    if (action.startsWith('pick:') && !this.save) {
+      const d = action.slice(5) as DifficultyId;
+      if (!(d in DIFFICULTIES)) return;
+      this.difficulty = d; this.page = 'companion'; this.rebuild(); this.hud.scrollTop = 0; return;
+    }
+    if (action.startsWith('choose:') && !this.save) {
+      const t = action.slice(7) as StarterType;
+      if (!(t in STARTERS)) return;
+      this.starter = t;
+      showModal({ eyebrow: STARTERS[t].species, title: STARTERS[t].name,
+        html: `<div class="dlg ally journey-greeting"><div class="dlg-pic" style="${portraitStyle(t, 'ally')}"></div><div><p>${esc(COMPANION_GREETINGS[t])}</p></div></div>`,
+        buttons: [{ label: `Ride out with ${STARTERS[t].name}`, kind: 'primary', onClick: () => { window.setTimeout(() => { if (this.hud.isConnected && !this.save) this.action('start'); }); } }, { label: 'Choose again', kind: 'ghost', onClick: () => {} }],
+        onDismiss: () => {} });
       return;
     }
     if (action === 'start') {
@@ -171,9 +250,7 @@ export class JourneyScene extends BaseScene {
       if (!(s in STARTERS)) return;
       this.starter = s; if (this.save) { this.save.starter = s; persistJourney(this.save); } this.render(); return;
     }
-    if (action === 'moves') {
-      showModal({ title: 'The pieces, at a glance', html: `<div class="journey-moves"><p><strong>King:</strong> one square in any direction. Never move into check.</p><p><strong>Queen:</strong> any distance along a rank, file or diagonal.</p><p><strong>Rook:</strong> any distance straight along a rank or file.</p><p><strong>Bishop:</strong> any distance diagonally.</p><p><strong>Knight:</strong> two squares one way, then one sideways. It can jump over pieces.</p><p><strong>Pawn:</strong> forward one square, or two from its starting square if clear. Capture one square diagonally forward. Reach the last rank to promote.</p><p>Except the knight, pieces cannot jump over other pieces. When your king is in check, your move must make it safe.</p><p>For castling, en passant and interactive practice, visit <a href="https://lichess.org/learn" target="_blank" rel="noopener">Lichess Learn</a>.</p></div>`, buttons: [{ label: 'Ready', kind: 'primary', onClick: () => {} }], onDismiss: () => {} }); return;
-    }
+    if (action === 'moves') { this.showMoves('Ready'); return; }
     if (!this.save) return;
     if (action === 'ending' || action === 'interlude') {
       if (action === 'ending' ? !this.save.finaleComplete : !finaleInterludeUnlocked(this.save)) return;
@@ -206,7 +283,8 @@ export class JourneyScene extends BaseScene {
       return;
     }
     if (action.startsWith('lesson:') || action.startsWith('example:')) {
-      const id = action.split(':')[1]; if (!lessonUnlocked(this.save, id)) return;
+      const id = action.split(':')[1];
+      if (!lessonUnlocked(this.save, id)) { this.toast('Finish the lesson before this one to open this path.'); return; }
       goTo(this.game, 'course-play', { lessonId: id, exampleOnly: action.startsWith('example:') }); return;
     }
   }

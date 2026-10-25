@@ -5,9 +5,15 @@ import { createReadStream, readFileSync, writeFileSync, mkdirSync, readdirSync, 
 import { createInterface } from 'node:readline';
 import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
+import { candidates as shortlistCandidates } from './puzzle-candidates.mjs';
 
-const excluded = new Set(['mateIn1', 'hangingPiece'].flatMap(t =>
-  JSON.parse(readFileSync(`public/puzzles/region1/${t}.json`, 'utf8')).map(p => p.id)));
+if (process.argv.includes('--candidates')) {
+  await shortlistCandidates('data/raw/lichess_db_puzzle.csv.zst', { maxRd: 90, minPop: 85, minPlays: 300 }, process.argv.slice(2));
+  process.exit(0);
+}
+
+const retired = JSON.parse(readFileSync(new URL('../data/retired-puzzle-ids.json', import.meta.url), 'utf8'));
+const excluded = new Set([...retired.bountyIds, ...retired.lessonIds]);
 const tags = ['hangingPiece', 'defensiveMove', 'backRankMate', 'promotion', 'fork', 'doubleCheck', 'capturingDefender', 'mateIn2'];
 const verify = process.argv.includes('--verify-shipped');
 const courseFiles = ['src/game/curriculumPuzzles.json', ...(existsSync('src/game/course') ? readdirSync('src/game/course').filter(name => /^region[3-5]Puzzles\.json$|^finalePuzzles\.json$/.test(name)).map(name => `src/game/course/${name}`) : [])];

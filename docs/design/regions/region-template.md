@@ -81,7 +81,7 @@ A named chief can host the review through story and portraits without a live eng
 Use this section only when the syllabus calls for a method beyond a short published tactical line.
 Name the Lichess Practice study and chapter, intended goal, useful feedback, and multiple-valid-move needs.
 Mark the dedicated technique capability as future work until implemented and tested.
-Do not present the tactical runner or retained legacy academy as a completed general technique system.
+Do not present the tactical runner or archived legacy academy as a completed general technique system.
 Link capability decisions and define validation before making the chapter depend on them.
 
 ## Story beats and voices

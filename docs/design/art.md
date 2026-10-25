@@ -137,7 +137,7 @@ Portraits (detailed figurines) don't carry chess color: the card's gold or red f
 
 ## 3D exploration (deferred)
 
-Decided: the game stays 2D. The prototype's 2D board, tokens and talking-head portraits already look good, and 2D keeps art cheap and iteration fast. The 3D work below is kept in the repo for reference, in case a 3D version is wanted later.
+Decided: the game stays 2D. The prototype's 2D board, tokens and talking-head portraits already look good, and 2D keeps art cheap and iteration fast. The 3D implementation and models were removed in #55. [Legacy retirement](../legacy-retirement.md) links their Git references.
 
 **What was tried**
 
@@ -166,7 +166,7 @@ Decided: the game stays 2D. The prototype's 2D board, tokens and talking-head po
 **If 3D is revisited:** use Rodin (Hunyuan3D as backup), generate from front-facing art, and keep simplified pieces on the board with the detailed models for close-ups and portraits. Bandit versions need their own models; the mockup only tints the ally models. The Three.js board would sit on its own canvas layered with Phaser's (see [Tech stack](technical.md#tech-stack-and-deployment)).
 
 **Deployment exclusion:** the mockups are not part of the game. `scripts/stage-deploy.mjs` excludes `models` and `mockups` from deployed assets.
-Local Vite builds may still contain `public/models/`; that does not mean the deployment ships them.
+The tracked models were removed. Existing checkouts may retain old assets; deployment excludes those directories.
 
 ## Chapter landscapes, October 2026
 

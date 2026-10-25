@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import { FACTIONS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
-import { pilotEnabled, legacyEnabled } from '../pilotMode';
 import { prepareJourneyPreview } from '../journeySave';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
@@ -34,7 +33,7 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     document.getElementById('boot')?.remove();
-    const preview = !pilotEnabled && !legacyEnabled && prepareJourneyPreview();
-    goTo(this.game, pilotEnabled ? 'ambush' : legacyEnabled ? 'title' : 'journey', preview ? { page: 'map' } : undefined);
+    const preview = prepareJourneyPreview();
+    goTo(this.game, 'journey', preview ? { page: 'map' } : undefined);
   }
 }

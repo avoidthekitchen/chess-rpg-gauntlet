@@ -3,7 +3,7 @@ import { createInterface } from 'node:readline';
 import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
 
-/** Read-only selection aid: never rewrites the shipped bounty packs. */
+/** Selection aid: writes an ignored shortlist without changing published curriculum. */
 export async function candidates(raw, quality, args) {
   const arg = (name, fallback) => args[args.indexOf(name) + 1] ?? fallback;
   const tag = arg('--candidates', 'doubleCheck');

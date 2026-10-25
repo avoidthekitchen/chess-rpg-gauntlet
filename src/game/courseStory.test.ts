@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { STARTERS } from './campaign';
+import { STARTERS } from './companions';
 import { COURSE_REGIONS } from './curriculum';
 import { chapterIntro, chapterStory, COMPANION_GREETINGS, finaleInterlude, journeyEnding } from './courseStory';
 

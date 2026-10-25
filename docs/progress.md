@@ -3,6 +3,24 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Remove unused legacy code (#55)
+
+- Removed legacy campaign/pilot screens, economy, AI, engine benchmarks, bounty packs and unused 3D prototypes.
+- Extracted unchanged companion identities and puzzle legality; kept shared chess, board, dialogue, faction and save coverage.
+- Preserved all 273 published positions and evidence files. A small ledger retains 288 bounty IDs and nine pilot IDs.
+- Removed 25 lockfile package entries, including Stockfish, Three.js, GSAP and GLTF tooling. Build/dev no longer copy an engine.
+- Both deployment staging paths exclude retired assets, including ignored engine files left in older workspaces.
+- `npm run ci` passed: 292 tests in 24 files. Baseline was 506 tests in 37 files.
+- One local timing comparison: CI wall time 7.03s → 5.25s; combined user/system CPU 21.95s → 14.42s.
+  These are single-run observations, not a stable performance benchmark.
+- Production and staging builds passed. Real local database verification confirmed all 273 unchanged published sources.
+- Added CLI checks for source verification, deliberate mismatch rejection, theme shortlisting, CI options and both staging destinations.
+- Chromium dev smoke passed normal onboarding, Sir Hob's demonstration, all three first-lesson positions through pointer input, classic pieces, completion and reload.
+- Checked lesson advice/actions at 1280×800, 375×812, 375×553 and 844×390 with reduced motion. These are desktop viewport checks.
+- Local production preview ignored retired/preview query parameters, exposed no development fixture, and reported no browser errors.
+- GPT-6 Astra independently reviewed the diff and tested it. Shared-source, metadata, dependency and storage boundaries passed; documentation findings were fixed.
+- No application deployment occurred. [Retirement record](legacy-retirement.md) preserves technique references for #40 and build-output limitations.
+
 ## 2026-10-24 — Merge the accepted production curriculum
 
 - Merged #47 → #48 → #49 → #50 → #51 into main with merge commits, ending at `814140e`.

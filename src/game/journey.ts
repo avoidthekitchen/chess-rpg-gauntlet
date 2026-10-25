@@ -1,6 +1,6 @@
 import { Chess } from 'chess.js';
 import { startAmbush, type AmbushRun } from './ambush';
-import type { StarterType } from './campaign';
+import type { StarterType } from './companions';
 import { COURSE_REGIONS, courseLesson } from './curriculum';
 import type { DifficultyId } from './difficulty';
 

@@ -57,7 +57,57 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Stoat | Stoat Queen |
 | King | Wolf (Ashfang) | Wolf King |
 
-Later factions sketched in the [campaign](campaign.md#regions-and-factions), such as the Bone Wardens' skeleton animals, follow the same rules: their own creatures, the shared headgear, and ivory and ebony from the pipeline.
+**Shadow Cult (Region 3, not generated yet).** Hooded followers in violet and charcoal robes, each wearing a small amber crystal pendant. Their headgear is draped in cloth but keeps the shared shape. Keep the crystals amber or violet, never blue or teal, or the cyan key will repaint them.
+
+| Piece | Species | Name in the game |
+| --- | --- | --- |
+| Pawn | Moth, fuzzy with feathered antennae | Moth Pawn |
+| Knight | Bat | Bat Knight |
+| Bishop | Spider, with a large head and eyes so the mitre fits | Spider Bishop |
+| Rook | Snail, the tower grown from its shell | Snail Rook |
+| Queen | Black cat | Cat Queen |
+| King | Goat, short horns kept behind the crown | Goat King |
+
+**Iron Legion (Region 4, not generated yet).** Disciplined soldiers in polished steel plate with red-and-gold tabards, matching `map-region4.webp`. Their headgear is forged steel in the shared shape. Paint the steel warm grey, with no blue sheen.
+
+| Piece | Species | Name in the game |
+| --- | --- | --- |
+| Pawn | Hedgehog | Hedgehog Pawn |
+| Knight | Boar, with tusks | Boar Knight |
+| Bishop | Heron | Heron Bishop |
+| Rook | Armadillo, the tower grown from its shell | Armadillo Rook |
+| Queen | Eagle | Eagle Queen |
+| King | Lion (General Flint) | Legion Lion King |
+
+The Legion's lion is a grey-maned veteran in steel. Make him clearly not our young lion: older, scarred, with a red-and-gold tabard.
+
+**Bone Wardens (Region 5 and the finale, not generated yet).** Skeleton copies of our six species, the one faction that reuses them. The Lich King was a Lion King of Pawnshire, so his army mirrors ours. Bones are aged and yellow-grey with dark eye sockets, wrapped in tattered grave cloth. Any eye glow is warm amber, never blue. Bone must stay visibly darker than the ivory headgear, so check every token in grayscale.
+
+| Piece | Species | Name in the game |
+| --- | --- | --- |
+| Pawn | Skeleton mouse | Skeleton Mouse Pawn |
+| Knight | Skeleton frog | Skeleton Frog Knight |
+| Bishop | Skeleton owl | Skeleton Owl Bishop |
+| Rook | Skeleton tortoise | Skeleton Tortoise Rook |
+| Queen | Skeleton fox | Skeleton Fox Queen |
+| King | Skeleton lion (an unnamed warden) | Skeleton Lion King |
+
+The finale reuses these six tokens and portraits. It adds one portrait, the Lich King: a skeleton lion in tattered royal robes wearing the old crown. It replaces the warden king's portrait in the finale only.
+
+### Faction art plan and budget
+
+Decided 2026-10-24 in [#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60). **The total spend for all of it is capped at $16.**
+
+| Order | Set | Images | Estimate |
+| --- | --- | --- | --- |
+| 1 | Bandit Riders: 6 tokens, 6 portraits, Tadwell portrait | 13 | $1.82 |
+| 2 | Bone Wardens: 6 tokens, 6 portraits, Lich King portrait | 13 | $1.82 |
+| 3 | Shadow Cult: mock-board species trial, then 6 tokens and 6 portraits | 12 + trial | $3.20 |
+| 4 | Iron Legion: mock-board species trial, then 6 tokens and 6 portraits | 12 + trial | $3.20 |
+| 5 | `map-region2.webp`, the Kingsroad map | 1–2 | $0.30 |
+| | Retries | | $5.66 |
+
+Track spend as you go. If retries would push the total past $16, stop and ask the owner before generating more.
 
 ### Token pipeline
 
@@ -78,7 +128,7 @@ Portraits (detailed figurines) don't carry chess color: the card's gold or red f
 
 ### Adding a faction
 
-1. **Pick species.** Choose one per piece, fitting the region's theme and not reused from our army or another faction. Check that each body works with its headgear (a shell for the tower, a head that can wear a crown).
+1. **Pick species.** Choose one per piece, fitting the region's theme and not reused from our army or another faction. Skeleton factions are the one exception (see the Bone Wardens). Check that each body works with its headgear (a shell for the tower, a head that can wear a crown).
 2. **Describe them.** Add the faction to `FACTIONS` in `scripts/generate-art.mjs` (species and outfit), plus a look block for its portraits like `BOG_LOOK`.
 3. **Generate and check the tokens.** Run `node scripts/generate-art.mjs token-pawn-<faction> …`, then `node scripts/process-art.mjs`. Look at each token's check sheet in `art/raw/check/`, then at every token in both colors at 45 px and in grayscale. Regenerate any that lost the species, the headgear shape or the key.
 4. **Generate the portraits** once the tokens are final. Check them in the game's portrait card; framing is per piece type, in `FRAMING` in `src/ui/speaker.ts`.

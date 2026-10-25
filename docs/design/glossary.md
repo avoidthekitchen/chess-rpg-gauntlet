@@ -14,7 +14,7 @@ See [campaign](campaign.md) and [systems](systems.md) for current behavior.
 
 ## Pieces
 
-Ally pieces. Each enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md).
+Ally pieces. Each living enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md). The skeleton factions are the one exception: they are undead copies of these species.
 
 | Chess piece | Species name (portraits, tavern, starter screen) | Short name (status text, banners, advice) |
 | --- | --- | --- |
@@ -27,6 +27,7 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 
 - **Every species name is the animal plus the chess piece** (decided 2026-10-22), for our army and every enemy faction ("Bog Rat Pawn"). The game teaches chess, so the piece's real name is always in view. Flavor lives in the art and in character names.
 - **Short names are the plain chess names**, for both sides: "Your rook takes their pawn on d5." No faction gets its own short names.
+- **"Lion King" alone means only the player.** Every other lion king carries its faction's prefix: General Flint is a Legion Lion King, and the Bone Wardens' king and the Lich King are Skeleton Lion Kings.
 - **Characters** show as name, then species: "Sage Ollie · Owl Bishop". Heroes and bosses may keep a title ("Saffron, the Fox Queen", "Grubnak, the Toad Chief").
 - A pawn that reaches the far rank is **promoted**, as in real chess, whatever it becomes. Don't call it "knighted", which suggests it must become a knight.
 - The code keeps these in `SPECIES` and `FACTION_SPECIES` (`src/ui/speaker.ts`), `STARTERS` (`src/game/campaign.ts`) and `pieceName` for short names.
@@ -54,15 +55,15 @@ Ally pieces. Each enemy faction has its own species and in-game names, listed wi
 | --- | --- | --- |
 | Bog Goblins | 1 | Their own species names, in [Art direction](art.md); in battle, the king speaks as the battle's commander |
 | Bandit Riders | 2 | Their own species names, in [Art direction](art.md) and the [Region 2 brief](regions/region-02-bandit-riders.md) |
-| Shadow Cult | 3 | Cult Mouse Pawn, Cult Hare Knight, Cult Owl Bishop, Cult Tortoise Rook, Cult Fox Queen, Cult Lion King |
-| Iron Legion | 4 | Legion Mouse Pawn, Legion Horse Knight, Legion Owl Bishop, Legion Tortoise Rook, Legion Fox Queen, Legion Lion King |
-| Bone Wardens | 5 | Skeleton Mouse Pawn, Skeleton Horse Knight, Skeleton Owl Bishop, Skeleton Tortoise Rook, Skeleton Fox Queen, Skeleton Lion King |
-| The Lich King's army | Final | The Bone Wardens’ skeleton species names |
+| Shadow Cult | 3 | Moth Pawn, Bat Knight, Spider Bishop, Snail Rook, Cat Queen, Goat King |
+| Iron Legion | 4 | Hedgehog Pawn, Boar Knight, Heron Bishop, Armadillo Rook, Eagle Queen, Legion Lion King (General Flint) |
+| Bone Wardens | 5 | Skeleton Mouse Pawn, Skeleton Frog Knight, Skeleton Owl Bishop, Skeleton Tortoise Rook, Skeleton Fox Queen, Skeleton Lion King |
+| The Lich King's army | Final | The Bone Wardens' names and art; the king's portrait is the Lich King |
 
-The new species rows are provisional art concepts, not current portrait labels. Recheck distinctness from companion species before producing dedicated art.
-Until then, Regions 2–5 and the finale use faction plus chess-role labels, without claiming the borrowed portrait depicts those species.
-
-General Flint is the lion general and Iron Legion review host. He is a king chess piece, not a former ruler of Pawnshire.
+Decided 2026-10-24 ([#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60)). Living factions never reuse our species or another faction's.
+The Bone Wardens copy our six species on purpose: the Lich King was a Lion King of Pawnshire.
+The Region 5 king is an unnamed warden. The Lich King appears only in the finale.
+Until a faction's art ships, its chapters show faction plus chess-role labels ("Iron Legion · Pawn"), not these species names.
 
 ## Places
 

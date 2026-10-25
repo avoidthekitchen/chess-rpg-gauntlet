@@ -1,3 +1,4 @@
+import retired from '../../../data/retired-puzzle-ids.json';
 import { describe, expect, it } from 'vitest';
 import { Chess, type Color, type Square } from 'chess.js';
 import pack from './finalePuzzles.json';
@@ -63,9 +64,7 @@ describe('Lich King mixed capstone content', () => {
   it('reserves every source apart from all earlier chapters, legacy ambushes, bounties, and warm-ups', () => {
     const chapters = import.meta.glob('./region*Puzzles.json', { eager: true, import: 'default' });
     const core = import.meta.glob('../*Puzzles.json', { eager: true, import: 'default' });
-    const bounties = import.meta.glob('../../../public/puzzles/**/*.json', { eager: true, import: 'default' });
-    const warmups = import.meta.glob('../**/*[wW]arm*.{ts,json}', { eager: true });
-    const reserved = JSON.stringify([chapters, core, bounties, warmups]);
+    const reserved = JSON.stringify([chapters, core, retired.lessonIds, retired.bountyIds]);
     for (const p of puzzles) expect(reserved, p.id).not.toContain(`"${p.id}"`);
   });
 

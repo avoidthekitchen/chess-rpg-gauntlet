@@ -63,7 +63,9 @@ body {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 22px;
-  max-width: 440px;
+  /* Border-box keeps the border inside the backdrop on phones; widths include padding and border. */
+  box-sizing: border-box;
+  max-width: 486px;
   width: 100%;
   max-height: 100%;
   overflow: auto;
@@ -72,7 +74,7 @@ body {
   animation: ov-rise 0.22s ease-out;
 }
 .ov-dialog.wide {
-  max-width: 560px;
+  max-width: 606px;
 }
 @keyframes ov-rise {
   from {
@@ -182,7 +184,7 @@ body {
   background: var(--surface-2);
   border-radius: 8px;
   padding: 9px 16px;
-  min-height: 40px;
+  min-height: 44px;
 }
 .ov-btn:hover {
   border-color: var(--gold);
@@ -207,6 +209,8 @@ body {
   margin: 10px 0 0;
 }
 .promo button {
+  min-width: 0;
+  min-height: 44px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -222,10 +226,24 @@ body {
 .promo button:hover {
   border-color: var(--gold);
 }
+.promo button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
 .promo img {
   width: 56px;
+  max-width: 100%;
   height: 56px;
   object-fit: contain;
+}
+.promo-glyph {
+  font-size: 44px;
+  line-height: 56px;
+}
+/* Match the board's classic black pieces: dark ink with a light outline. */
+.promo-glyph.b {
+  color: #22172b;
+  -webkit-text-stroke: 1px #e8d5aa;
 }
 .promo small {
   color: var(--muted);

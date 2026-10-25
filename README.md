@@ -13,12 +13,10 @@ The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as a
 ```bash
 npm install
 npm run dev              # http://localhost:5173
-npm test                 # rules, campaign, economy, bounty, boss and AI tests
+npm test                 # journey, teaching, shared chess and tooling tests
 npm run check            # type-check, build and unit tests (under a minute)
-npm run ci               # current release checks; --legacy opts into historical engine diagnostics
-npm run verify:battles   # optional legacy battle/boss benchmark (15 minutes or more)
+npm run ci               # type-check, production build and current unit tests
 npm run build            # static site in dist/
-npm run puzzles          # rebuild the bounty puzzles from the Lichess database (downloads ~250 MB to data/raw/)
 ```
 
 In dev, `?loop=timeout` keeps the game running in a hidden browser tab (handy for automated testing).
@@ -26,7 +24,7 @@ The default entry opens the new journey. No query parameter is needed on staging
 For testing, append `?region=3` to jump to Region 3. Values `1`–`5` and `finale` work in staging and development only.
 Each shortcut has separate saved test progress. Earlier chapters are marked complete; the requested chapter starts unsolved.
 Reload keeps test progress and returns to the requested chapter. Remove the parameter to return to your normal journey.
-Development-only entries preserve the earlier campaign (`?legacy=1`) and approved pilot (`?ambush=r2-two-at-once`).
+The earlier campaign and pilot entry points were removed in [legacy retirement](docs/legacy-retirement.md).
 The journey, legacy campaign, and pilot use separate saves. Resetting the journey leaves the others intact.
 
 ## What's in it
@@ -44,31 +42,26 @@ The journey, legacy campaign, and pilot use separate saves. Resetting the journe
 - **Board feel:** animated animal pieces, classic-piece controls, and phone layouts.
 
 This journey assumes players know piece movement. The entry screen includes a reminder and links to Lichess Learn.
-Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their existing code remains available in the legacy development entry.
+Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their earlier implementation remains available in Git history.
 
 ## Layout
 
 ```
-src/game/     curriculum (published content), journey (progress/stars), ambush (published-line rules),
-              plus legacy battle, campaign, economy, boss, region1*, tactics and threats
-src/ai/       engine.ts (Stockfish over a Web Worker), enemy.ts (move choice), intent.ts (if-I-passed helper), shout.ts (shouting goblins)
-src/scenes/   Boot, Journey (title/map/journal/settings), CoursePlay (lesson runner), and retained legacy screens
-src/ui/       board, portraits, widgets, HTML overlay for long text, responsive/high-DPI screen helpers
-src/flow.ts   campaign flow between screens (briefings, launching battles, results)
-scripts/      art generation, puzzle pipeline, engine copy, deploy staging, verify/ (engine playtests)
+src/game/     curriculum, journey progress, published-line rules, companions and shared chess helpers
+src/scenes/   Boot, Journey (title/map/journal/settings), CoursePlay (lesson runner)
+src/ui/       board, portraits, widgets, HTML overlays and responsive screen helpers
+data/         retired source reservations; ignored raw puzzle downloads
+scripts/      art generation, source selection/verification and deployment staging
 ```
 
 ## Adding curriculum
 
 Register source-backed content in `src/game/curriculum.ts`. Chapter modules, published positions, and mechanism evidence live under `src/game/course/`.
 The curation script is `scripts/select-curriculum.mjs`; raw downloads stay in ignored `data/raw/`.
+Use `node scripts/select-curriculum.mjs --candidates defensiveMove --min 930 --max 1130` to shortlist a theme from the local database.
 Run `node scripts/select-curriculum.mjs --verify-shipped` to compare every shipped puzzle with the local Lichess database.
 Read [curriculum rules](docs/curriculum-first.md#learning-and-content-rules) before selecting positions or writing prompts.
 Content tests verify legal lines, lesson claims, quality fields, distinct sources, and backup completion.
-
-## Adding a legacy battle
-
-Add a `BattleDef` to `src/game/region1Battles.ts` and a node to `REGION1_MAP` in `src/game/region1.ts`. The player is White and moves first. `npm test` checks every position is legal (including that the enemy isn't already in check, which chess.js doesn't catch), and `npm run verify:battles` plays it out against the real enemy AI with shouts.
 
 The [release record](docs/complete-journey-release.md) tracks merged review PRs, validation, deployment, and save safeguards.
 The owner accepted the major feedback and deferred follow-ups #53–62. The owner accepted 393×852 WebKit emulation for this check; no physical-device coverage is claimed.
@@ -80,7 +73,7 @@ npm run deploy   # build, stage dist/ into dist-worker/chess-rpg/, wrangler depl
 npm run deploy:staging # publish a preview at /staging-chess-rpg/
 ```
 
-The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. The 3D model comparison files are left out of the deploy. The largest file is the 1.8 MB engine `.wasm`.
+The game is an assets-only Cloudflare Worker (free tier) on the zone routes `unformedideas.com/chess-rpg*` and `www.unformedideas.com/chess-rpg*` (`wrangler.jsonc`), so the site's own Worker keeps everything else. `/chess-rpg` redirects to `/chess-rpg/`. The build uses relative paths, so it works under any subpath and inside Capacitor. Retired engine, puzzle-pack, model and mockup directories are excluded from deployment, including stale generated files.
 
 ## Board, tokens and art
 
@@ -114,19 +107,6 @@ node scripts/generate-art.mjs bg-title bg-map-region1 bg-town bg-battle-bog
 node scripts/process-art.mjs
 ```
 
-In dev, `__gsap.globalTimeline.timeScale(0.1)` in the console plays animations in slow motion.
-
-## 3D mockup
-
-`mockups/models.html` compares AI-generated 3D models of the frog knight and tortoise rook from three fal.ai services (Hunyuan3D v3, TRELLIS 2, Rodin) next to the original art. To regenerate:
-
-```bash
-node scripts/generate-3d.mjs           # needs FAL_AI (or FAL_KEY); raw GLBs → art/3d/raw/ (not committed)
-node scripts/optimize-3d.mjs           # ≤30k triangles, 1K WebP textures, meshopt → public/models/
-```
-
-`mockups/three.html` (open `/mockups/three.html` on the dev server) is a standalone Three.js mockup, not part of the game build. Its Style button cycles through procedural toys, painted cutouts and the three AI model sets. It shows two scripted captures in 3D, with either procedural toy figurines or the painted sprites as upright cutouts: a frog knight flip, a tortoise rook stomp, a kill-cam swoop with slow motion, a flash and shockwave, and the captured piece breaking apart.
-
 ## License
 
-Stockfish is GPL-3.0 (`public/engine/COPYING-stockfish.txt` ships with the build). Distributing a build that includes it means releasing this game's source under a GPL-compatible license. chess.js is BSD-2.
+The project retains its GPL-3 license decision. Stockfish was removed from current builds; historical distributions retain their license obligations. chess.js is BSD-2.

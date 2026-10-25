@@ -68,7 +68,7 @@ The owner retired the legacy battle benchmark as a merge and release gate becaus
 The historical failures below remain accurate but no longer block this stack.
 Current curriculum tests, source verification, code review, and browser checks remain required.
 `npm run ci` and `npm run ci -- --full` exclude the retired benchmarks.
-Optional diagnostics remain available through `npm run ci -- --legacy --full` and `npm run verify:battles`.
+Issue #55 later removed those diagnostics. [Legacy retirement](legacy-retirement.md) links their last revision.
 The owner later authorized the merges and confirmed production promotion. Staging’s recorded application remains `e473d2a`.
 
 ## Historical second review follow-up (2026-10-24)

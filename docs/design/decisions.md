@@ -26,11 +26,11 @@ These items remain future work. They do not block the accepted production curric
 - [ ] [Loading and bundle size #57](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/57): measure startup and lazy chapter artwork; check re-entry, failure, and offline behavior.
 - [ ] [Faction art and naming #60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60): expand artwork for Regions 2–5 and the finale; keep tokens readable and identity text accurate.
 - [ ] [Teaching-claim tests #54](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/54): consolidate shared checks.
-- [ ] [Legacy AI test cleanup #55](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/55): address flaky historical AI coverage as P3 work.
+- [x] [Legacy cleanup #55](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/55): remove unused runtime, benchmarks, dependencies and prototypes; preserve shared curriculum helpers and source reservations.
 - [ ] [Save, rollback, and keyboard checks #56](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/56): preserve save and rollback safeguards; complete native keyboard validation.
   The owner accepted 393×852 WebKit emulation for this release check. No physical device is available; physical-device coverage is not claimed or required.
 - [ ] [Review source #58](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/58): replace weak fdj22 review backup with a stronger non-recapture defence source.
-- [ ] [Promotion choices #61](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/61): improve icons and order.
+- [x] [Promotion choices #61](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/61): piece pictures in the current style, queen first, Cancel focused by default. The dialog border now fits phone screens (#64).
 - [ ] [Occluded tokens #62](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/62): improve visibility. The owner explicitly deferred this P2 item with the other follow-ups.
 - [x] Record the owner’s production release and original-game archive. Preserve legacy saves.
 
@@ -59,6 +59,7 @@ Historical test counts, interrupted runs, and failures remain evidence of those 
 | Date | Decision |
 | --- | --- |
 | 2026-10-25 | The owner approved completing all #60 assets in draft PR #66. Native OpenAI generation provides all four new faction sets, Tadwell, the Lich King, and the Kingsroad map. The finale shares Warden tokens but alone shows the royal Lich portrait. Flint is the named lion exception to living-species uniqueness. Independent art and code reviews passed; no deployment is included. |
+| 2026-10-24 | Owner approved removing unused legacy code and tests in #55. Keep shared journey functionality, source reservations and immutable technique references. Old engine commands are retired. |
 | 2026-10-24 | Trial Bandit Riders production art with native OpenAI generation in a draft PR for #60. Show colour-pipeline tokens on the real phone-size board before portraits. Independent art and code reviews check consistency. The owner reviews the finished assets before other Regions join the same PR. OpenRouter spend remains $0. |
 | 2026-10-24 | Bring back the original game's presentation around the curriculum: one-question-at-a-time onboarding, the full companion screen and greeting, a full-screen map with pulsing stops, a first-visit chapter introduction, slim headers, and original portrait sizes. Move banners return to the board's centre: the move lands, the banner shows, and the next move waits until it fades. A tap skips it. Capturing a pawn alone stays quiet. Supersedes the earlier rule that banners never cover board squares. |
 | 2026-10-24 | Faction naming for [#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60): living factions never reuse our species or another faction's. Shadow Cult: Moth Pawn, Bat Knight, Spider Bishop, Snail Rook, Cat Queen, Goat King. Iron Legion: Hedgehog Pawn, Boar Knight, Heron Bishop, Armadillo Rook, Eagle Queen, Legion Lion King. See the [glossary](glossary.md#factions). |

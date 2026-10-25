@@ -1,12 +1,12 @@
 # Pawnshire: notes for agents and contributors
 
-Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is live at https://unformedideas.com/chess-rpg/, with previews at https://unformedideas.com/staging-chess-rpg/. The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](docs/alpha-reference.md). Stockfish powers retained legacy modes. Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
+Pawnshire is a storybook chess learning journey (Phaser 4 + TypeScript + Vite, chess.js). The accepted curriculum is live at https://unformedideas.com/chess-rpg/, with previews at https://unformedideas.com/staging-chess-rpg/. The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](docs/alpha-reference.md). The retired campaign and technique references remain in [Git history](docs/legacy-retirement.md). Start with the [design overview](docs/design.md), then the [playbook](docs/playbook.md) for how a Region is built and checked.
 
 ## Rules that never bend
 
 - **The rules of chess never change on the board.** No terrain, extra moves or rule-bending powers. Published positions and replies stay unchanged. Faction voices do not imply new board rules.
 - **`src/game` has no screen code.** Rules, journey progress and content live there with unit tests; scenes talk to them through small interfaces.
-- **Every new rule gets a test, and every lesson is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). Run `npm run ci` before each PR. Legacy battle benchmarks are retired as release gates; use `npm run ci -- --legacy --full` only for optional historical diagnostics.
+- **Every new rule gets a test, and every lesson is verified** to the bars in the [playbook](docs/playbook.md#verification-bars). Run `npm run ci` before each PR. Legacy runtime and benchmarks were removed in #55; current CI validates the shipped journey.
 - **Names come from [Names and terms](docs/design/glossary.md)**, dialogue from the [voice guide](docs/design/story.md#voice-and-dialogue), current help and progression numbers from [Tuning values](docs/design/systems.md#tuning-values).
 - **Design calls the docs don't settle** go in [decisions](docs/design/decisions.md): a decision-log row, or an open TODO when it needs the owner.
 
@@ -18,9 +18,6 @@ npm test                 # unit tests
 npx tsc --noEmit         # type-check
 npm run check            # type-check, build and unit tests (under a minute)
 npm run ci               # current release checks: type-check, build and unit tests
-npm run ci -- --legacy --full # optional historical engine diagnostics after current checks
-npm run verify:battles   # optional legacy benchmark only (15 minutes or more)
-npm run puzzles          # rebuild bounty puzzles from the Lichess database (download goes to data/raw/)
 npm run deploy:staging   # preview deployment for review
 npm run deploy           # production deployment; separate release decision
 ```
@@ -32,9 +29,9 @@ Never commit `data/raw/`, `art/raw/`, `dist/`, `dist-staging/`, `dist-worker/` o
 The [README layout](README.md#layout) lists the folders. The ones you'll touch most:
 
 - `src/game/curriculum.ts` and `curriculumPuzzles.json`: current chapter content and source positions. New Regions follow the [syllabus](docs/design/syllabus.md) and [Region template](docs/design/regions/region-template.md).
-- `src/game/journey.ts` and `ambush.ts`: progression and published-line rules. `region1*.ts` retains legacy content.
+- `src/game/journey.ts` and `ambush.ts`: progression and published-line rules. `companions.ts` and `puzzle.ts` preserve shared identities and chess validation.
 - `src/scenes/`: one Phaser scene per screen.
-- `src/scenes/Journey.ts` and `CoursePlay.ts`: current map, journal, settings, and lessons. `src/flow.ts` retains legacy navigation.
+- `src/scenes/Journey.ts` and `CoursePlay.ts`: current map, journal, settings, and lessons. Retired screens are linked from `docs/legacy-retirement.md`.
 - `src/ui/phaserBoard.ts`: the board and its animations.
 
 ## Phaser 4 pitfalls we hit
@@ -45,7 +42,7 @@ The [README layout](README.md#layout) lists the folders. The ones you'll touch m
 - In scale mode NONE, `scale.resize()` skips the CSS size when zoom is 1. `fitGame` sets it explicitly.
 - Use `goTo()` (`src/ui/screen.ts`) to change screens from callbacks. `this.scene.start()` only stops the scene it's called on.
 - Start a move animation before redrawing the board, or pieces jump to their new squares.
-- Async work (engine searches, animations) must check the scene's session after each `await`, so a battle you left stops.
+- Async work (animations) must check the scene's session after each `await`, so a battle you left stops.
 
 ## Writing style for docs and in-game text
 

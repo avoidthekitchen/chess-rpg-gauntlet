@@ -3,6 +3,15 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Review fixes for #66 and merge with main
+
+- Grubnak now has a chapter-end story portrait. Story portraits follow each chapter's `bossName`.
+- Unknown chapter ids fall back to Bog art. Faction species and Bandit move lines come from `COURSE_CAST` and `COURSE_VOICES`.
+- Boot loads ally and Bog art only. Each later chapter loads its 12 tokens when its first lesson opens.
+- Review screenshots moved from `output/` (42 PNGs, 40 MB) to `docs/review/` (26 WebPs, 2.6 MB). `output/` is ignored.
+- Merged main after #67, #68 and #69. CoursePlay keeps the header tuck, promotion chooser and per-chapter art.
+- `npm run ci` passed: type-check, build and 312 tests.
+
 ## 2026-10-25 — Complete faction art for #60 in the same draft PR
 
 - The owner approved expanding PR #66 to Bone Wardens/finale, Shadow Cult, and Iron Legion after the Bandit checkpoint.
@@ -14,6 +23,40 @@ Earlier draft, staging-only, and unwaived-benchmark statements describe those ch
 - Independent code/teaching review found no blockers. `npm run ci` passed type-check, build, and 513 tests.
 - Chromium accepted a published move in every remaining chapter. WebKit passed all 16 Gentle viewport checks, keyboard history, touch input, and classic pieces.
 - [The complete review](faction-art-review.md) records prompts, screenshots, fixtures, and device-emulation limits. The PR remains draft; nothing was deployed.
+
+## 2026-10-25 — Integrate cleanup with the newer board and promotion UI
+
+- Merged main at `e50094f` into #68 before the approved merge.
+- Kept the obsolete Puzzle scene deleted and retained both progress records.
+- Live CoursePlay, board geometry, knight jumps, promotion choices and CSS match main exactly.
+- Independent adversarial integration review found no remaining issue. Full CI passed 304 tests in 27 files, type-check and production build.
+
+## 2026-10-25 — Remove unused legacy code (#55)
+
+- Removed legacy campaign/pilot screens, economy, AI, engine benchmarks, bounty packs and unused 3D prototypes.
+- Extracted unchanged companion identities and puzzle legality; kept shared chess, board, dialogue, faction and save coverage.
+- Preserved all 273 published positions and evidence files. A small ledger retains 288 bounty IDs and nine pilot IDs.
+- Removed 25 lockfile package entries, including Stockfish, Three.js, GSAP and GLTF tooling. Build/dev no longer copy an engine.
+- Both deployment staging paths exclude retired assets, including ignored engine files left in older workspaces.
+- `npm run ci` passed: 292 tests in 24 files. Baseline was 506 tests in 37 files.
+- One local timing comparison: CI wall time 7.03s → 5.25s; combined user/system CPU 21.95s → 14.42s.
+  These are single-run observations, not a stable performance benchmark.
+- Production and staging builds passed. Real local database verification confirmed all 273 unchanged published sources.
+- Added CLI checks for source verification, deliberate mismatch rejection, theme shortlisting, CI options and both staging destinations.
+- Chromium dev smoke passed normal onboarding, Sir Hob's demonstration, all three first-lesson positions through pointer input, classic pieces, completion and reload.
+- Checked lesson advice/actions at 1280×800, 375×812, 375×553 and 844×390 with reduced motion. These are desktop viewport checks.
+- Local production preview ignored retired/preview query parameters, exposed no development fixture, and reported no browser errors.
+- GPT-6 Astra independently reviewed the diff and tested it. Shared-source, metadata, dependency and storage boundaries passed; documentation findings were fixed.
+- No application deployment occurred. [Retirement record](legacy-retirement.md) preserves technique references for #40 and build-output limitations.
+
+## 2026-10-25 — Keep knight jumps below the header (PR #67)
+
+- Bound each flight frame using the rendered piece rectangle, including stretch, rotation, texture rims, and classic glyphs.
+- Reserve 8px above the piece because compact boards begin just behind the header. The shadow follows the remaining lift.
+- Four regression tests exercise the actual animation callback across both orientations, two piece styles, three square sizes, and both jump directions.
+- All four tests fail on the original PR animation and pass with the correction. `npm run ci` passes 39 files and 514 tests.
+- Chromium checked 40 fixture jumps through landing at 390×844, 1280×800, 375×812, 375×553, and 844×390.
+- Both piece styles and orientations kept visible pixels below the header. This is desktop viewport testing, not physical-device coverage.
 
 ## 2026-10-24 — Bandit Riders art draft for #60
 

@@ -49,7 +49,7 @@
 
 .course-play .course-advice { margin:8px 0; color:#c9bca1; font:15px/1.3 Alegreya,Georgia,serif; }
 .course-play .course-advice strong { color:#e4cd9e; }
-.ov-dialog:has(.course-history) { box-sizing:border-box; display:flex; flex-direction:column; overflow:hidden; max-height:calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+.ov-dialog:has(.course-history) { box-sizing:border-box; max-width:440px; display:flex; flex-direction:column; overflow:hidden; max-height:calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
 .ov-dialog:has(.course-history) > h2,.ov-dialog:has(.course-history) > .ov-eyebrow,.ov-dialog:has(.course-history) > .ov-row { flex-shrink:0; }
 .ov-dialog:has(.course-history) > .ov-body { min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
 .course-history:focus-visible { outline:1px solid #e0ab45; outline-offset:-1px; }

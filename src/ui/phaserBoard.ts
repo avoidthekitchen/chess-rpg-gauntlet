@@ -1,6 +1,7 @@
 import type { Chess, Color, Move, PieceSymbol, Square } from 'chess.js';
 import Phaser from 'phaser';
 import type { ThreatMap } from '../game/threats';
+import { BOARD_BOTTOM, BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TOP, DEPTH, GROUND, TOKEN_ABOVE_BASE, TOKEN_BOX } from './boardGeometry';
 import type { BaseScene } from './screen';
 import type { Faction } from './speaker';
 import { GLYPH_FONT, SERIF } from './theme';
@@ -38,16 +39,6 @@ export function queueTokens(load: Phaser.Loader.LoaderPlugin, textures: Phaser.T
 /** Transparent padding around every token sprite, in texture px (RIM_PX + 1 in scripts/process-art.mjs). */
 const TOKEN_PAD = 8;
 
-/** The box a token is fitted into, in squares (width x height). Pawns are a little smaller. */
-const TOKEN_BOX: Record<PieceSymbol, [number, number]> = {
-  p: [0.8, 0.86],
-  n: [0.92, 1.02],
-  b: [0.92, 1.02],
-  r: [0.95, 0.98],
-  q: [0.92, 1.04],
-  k: [0.95, 1.08],
-};
-
 // U+FE0E asks for the text glyph, so iOS doesn't swap the pawn for an emoji.
 const GLYPH: Record<PieceSymbol, string> = { k: '♚︎', q: '♛︎', r: '♜︎', b: '♝︎', n: '♞︎', p: '♟︎' };
 export const glyph = (t: PieceSymbol) => GLYPH[t];
@@ -70,11 +61,7 @@ const COLORS = {
   hint: 0x5fd17a,
 };
 
-/** Board depth: squares are drawn shorter than wide, as if seen from a low angle. */
-const DEPTH = 0.78;
-/** Board width and height in squares, frame included. A phone (about 390 px wide) gets 45 px squares. */
-export const BOARD_SPAN = 8.6;
-export const BOARD_TALL = 1.05 + 8 * DEPTH + 0.75;
+export { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL } from './boardGeometry';
 
 export interface BoardView {
   chess: Chess;
@@ -164,8 +151,8 @@ export class PhaserBoard {
     this.W = width / BOARD_SPAN;
     this.H = this.W * DEPTH;
     this.m = this.W * 0.32;
-    this.top = this.W * 1.05;
-    this.height = Math.round(this.top + 8 * this.H + this.W * 0.75);
+    this.top = this.W * BOARD_TOP;
+    this.height = Math.round(this.top + 8 * this.H + this.W * BOARD_BOTTOM);
 
     const s = scene;
     this.root = s.add.container(x, y);
@@ -324,7 +311,7 @@ export class PhaserBoard {
   /** Where a token's base sits: a little below the square's middle, for depth. */
   private ground(sq: Square): Point {
     const c = this.center(sq);
-    return { x: c.x, y: c.y + this.H * 0.28 };
+    return { x: c.x, y: c.y + this.H * GROUND };
   }
 
   private squareAt(x: number, y: number): Square | null {
@@ -519,7 +506,7 @@ export class PhaserBoard {
       const img = this.scene.add.image(0, 0, key);
       const iw = img.width - 2 * TOKEN_PAD;
       const ih = img.height - 2 * TOKEN_PAD;
-      img.setOrigin(0.5, (TOKEN_PAD + 0.97 * ih) / img.height);
+      img.setOrigin(0.5, (TOKEN_PAD + TOKEN_ABOVE_BASE * ih) / img.height);
       img.setScale(Math.min((bw * W) / iw, (bh * W) / ih));
       return img;
     }
@@ -607,7 +594,13 @@ export class PhaserBoard {
           p.node.setPosition(a.x + (b.x - a.x) * k, a.y + (b.y - a.y) * k);
           p.pose.y = -h;
           p.pose.rotation = dir * 0.2 * Math.sin(Math.PI * k);
-          const s = 1 - 0.5 * (h / peak);
+          // Phone boards start just behind the header. Bound every frame, including
+          // stretch, rotation and texture rims; the arc's midpoint is not its highest point.
+          // Never push the knight below its square: at rest it may already sit above the ceiling.
+          const ceiling = this.root.y + BOARD_HEADER_TUCK + 2;
+          p.pose.y = Math.min(0, p.pose.y + Math.max(0, ceiling - p.body.getBounds().top));
+          const lift = Math.max(0, -p.pose.y);
+          const s = 1 - 0.5 * (lift / peak);
           p.shadow.setScale(s);
           p.shadow.alpha = 0.4 + 0.6 * s;
         },

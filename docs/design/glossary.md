@@ -30,7 +30,7 @@ Ally pieces. Each living enemy faction has its own species and in-game names, li
 - **"Lion King" alone means only the player.** Every other lion king carries its faction's prefix: General Flint is a Legion Lion King, and the Bone Wardens' king and the Lich King are Skeleton Lion Kings.
 - **Characters** show as name, then species: "Sage Ollie · Owl Bishop". Heroes and bosses may keep a title ("Saffron, the Fox Queen", "Grubnak, the Toad Chief").
 - A pawn that reaches the far rank is **promoted**, as in real chess, whatever it becomes. Don't call it "knighted", which suggests it must become a knight.
-- The code keeps these in `SPECIES` and `FACTION_SPECIES` (`src/ui/speaker.ts`), `STARTERS` (`src/game/campaign.ts`) and `pieceName` for short names.
+- The code keeps these in `SPECIES` and `FACTION_SPECIES` (`src/ui/speaker.ts`), `STARTERS` (`src/game/companions.ts`) and `pieceName` for short names.
 
 ## Difficulty levels
 

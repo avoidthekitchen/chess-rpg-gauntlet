@@ -1,6 +1,5 @@
 // Copies the Vite build into dist-worker/chess-rpg/ so Cloudflare serves it at
-// unformedideas.com/chess-rpg/. Leaves out the 3D model comparison files, which
-// aren't part of the game (see the design doc's "Housekeeping before launch").
+// unformedideas.com/chess-rpg/. Retired assets never enter deployment output.
 import { cp, mkdir, rm, stat } from 'node:fs/promises';
 import { relative, sep } from 'node:path';
 
@@ -13,7 +12,8 @@ const target = new URL(`./${SUBPATH}/`, root);
 await stat(new URL('index.html', source)); // fail early if there's no build
 await rm(root, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
-const skip = ['models', 'mockups'];
+// Older checkouts may retain ignored engine files or retired public assets.
+const skip = ['models', 'mockups', 'engine', 'puzzles'];
 await cp(source, target, {
   recursive: true,
   filter: (path) => {

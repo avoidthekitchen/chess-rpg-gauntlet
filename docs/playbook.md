@@ -11,7 +11,7 @@ The [curriculum-first direction](curriculum-first.md) records the approved scope
 Armies, gold, recruitment, faction AI, paid powers, and live bosses are deferred.
 The [legacy playbook](legacy-playbook.md) preserves their earlier content workflow.
 The owner retired legacy battle benchmarks as release gates on 2026-10-24 because the curriculum replaces that material.
-Their scripts and results remain available as optional historical diagnostics.
+Their results and implementation remain in [Git history](legacy-retirement.md).
 
 ## Order of work
 
@@ -79,7 +79,7 @@ A theme tag is useful selection metadata, not proof that the solver performs tha
 The [syllabus](design/syllabus.md) may call for Lichess Practice techniques that cannot fit a short published tactical line.
 Plan those exercises separately: source study and chapter, technique goal, accepted continuations, feedback, and completion checks.
 The required technique capability is future work, distinct from the current tactical runner.
-Retained academy exercises are reference code, not proof that the future curriculum capability is complete.
+Archived academy exercises are [reference code](legacy-retirement.md#technique-references-for-40), not proof that the future capability is complete.
 Do not force a technique into a single answer line or substitute custom tactical positions without an approved design change.
 
 ## Verification bars
@@ -98,26 +98,6 @@ Verify these current behaviors:
 - Journey reset and play leave legacy campaign and pilot saves unchanged.
 - Truthful banners, player-color speaking identity, companion identity, reduced motion, and cancellation after exit.
 
-### Optional legacy engine diagnostics
-
-Keep the existing selector and all retained engine checks intact.
-`npm run verify:battles` exercises custom battles and the legacy boss with real enemy AI and simulated players in `scripts/verify/`.
-These checks can take 15 minutes or more. `npm run ci -- --legacy` opts into dependency-based selection.
-Their historical thresholds below do not block curriculum merges or releases.
-
-For a retained custom battle:
-
-- A strong player wins at least 90% on Gentle and Brave, earning each bonus in at least half its wins.
-- A careless player, choosing randomly from a shallow search’s top five, wins at most 40%.
-- Read the average-move report: the design target is 4–7 moves. The test reports this without enforcing it.
-- Every win ends for a reason that fits the goal; a material battle must not award a win for a draw.
-
-For the legacy boss, test each starter’s typical army at the budget.
-A strong player loses, including draws, at most 15% and wins at least 60%.
-Games reaching the simulator’s 80-move cap count as unfinished. Report the greedy player’s rate too.
-Faction habits must be modeled in the simulated enemy’s replies; the strong player must not depend on a forced reply.
-The [legacy playbook](legacy-playbook.md) preserves custom battle and warm-up authoring rules.
-
 ## CI before a PR and release
 
 Run `npm run ci` before each PR. Keep the existing checks before each commit too.
@@ -125,13 +105,7 @@ It runs type-check, build, and unit tests through `npm run check`.
 `npm run ci -- --full` runs the same current checks; it does not re-enable retired benchmarks.
 Source verification and the browser checks below remain required for affected lessons and flows.
 
-For optional historical diagnostics, use `npm run ci -- --legacy` to select affected engine checks by dependency.
-Use `npm run ci -- --legacy --full` or `npm run verify:battles` to run the whole historical engine suite.
-`npm run ci -- --legacy --plan` reports selection without running checks.
-Record actual outcomes; the retired benchmark's failure is neither a curriculum blocker nor a passing result.
-The legacy harness uses a fixed `VERIFY_SEED` corpus, with separate game seeds for scenario, difficulty, player, and index.
-Failed cells print replay moves and seeds. Wilson intervals describe sample uncertainty; they do not replace the existing pass thresholds.
-Changing the seed after seeing a failure is not a release fix.
+Legacy runtime and benchmark commands were removed in #55. Historical results remain unchanged in their records.
 
 ## Browser and mobile checks
 
@@ -185,9 +159,6 @@ On the deployed destination:
 - Start or continue a journey, solve lessons and reviews, and check progress after reload.
 - Check desktop, portrait phone, short phone, and landscape layouts.
 - Confirm build-only pilot and legacy entry modes are absent from the production build.
-
-For work that affects retained engine modes, also verify the `.wasm` loads and Stockfish answers in the development legacy mode.
-The current journey’s published reply does not prove that Stockfish works.
 
 ## Records
 

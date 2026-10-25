@@ -3,8 +3,8 @@ import { createInterface } from 'node:readline';
 import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
 
-/** Read-only selection aid: never rewrites the shipped bounty packs. */
-export async function candidates(raw, quality, args) {
+/** Selection aid: writes an ignored shortlist without changing published curriculum. */
+export async function candidates(raw, quality, args, skip = new Set()) {
   const arg = (name, fallback) => args[args.indexOf(name) + 1] ?? fallback;
   const tag = arg('--candidates', 'doubleCheck');
   if (!/^[a-zA-Z0-9]+$/.test(tag)) throw new Error('Use a Lichess theme name.');
@@ -16,7 +16,7 @@ export async function candidates(raw, quality, args) {
   const input = createInterface({ input: createReadStream(raw).pipe(createZstdDecompress()), crlfDelay: Infinity });
   for await (const line of input) {
     const [id, fen, moves, rating, rd, pop, plays, themes] = line.split(',');
-    if (!themes?.split(' ').includes(tag) || +rating < min || +rating > max || +rd > quality.maxRd || +pop < quality.minPop || +plays < quality.minPlays) continue;
+    if (skip.has(id) || !themes?.split(' ').includes(tag) || +rating < min || +rating > max || +rd > quality.maxRd || +pop < quality.minPop || +plays < quality.minPlays) continue;
     const mv = moves.split(' ');
     if (mv.length % 2 || mv.length < 2 || mv.length > 6) continue;
     try {

@@ -1,5 +1,5 @@
 import { courseCast } from '../game/courseCast';
-import { STARTERS, type StarterType } from '../game/campaign';
+import { STARTERS, type StarterType } from '../game/companions';
 import { COURSE_LESSONS, COURSE_REGIONS, courseLesson, courseRegion } from '../game/curriculum';
 import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
 import { markIntroSeen, pendingIntro, endingPending, finaleInterludeUnlocked, finalEncounter, journeyComplete, lessonUnlocked, regionUnlocked, type JourneySave } from '../game/journey';

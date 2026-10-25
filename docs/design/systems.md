@@ -113,7 +113,7 @@ Lichess Practice is a source for a future dedicated technique capability, such a
 Published tactical lines alone do not teach every valid continuation of those methods.
 Technique practice needs its own exercise contract, completion checks, and tests before a Region can rely on it.
 Record the study and chapter, credit Lichess, and write coaching in Pawnshire’s voice.
-The retained legacy academy is useful reference code; it is not that completed curriculum capability.
+The [archived academy](../legacy-retirement.md#technique-references-for-40) is reference code, not a completed curriculum capability.
 
 ## Tuning values
 
@@ -142,7 +142,7 @@ Ratings guide selection; they do not promise how difficult a position feels to a
 ### Legacy tuning and deferred systems
 
 The [legacy systems archive](legacy-systems.md#tuning-values) preserves army prices, boss budgets, gold, rewinds, engine strength, and pilot values.
-Those numbers belong to retained legacy modes or deferred proposals, not the current journey.
+Those numbers belong to archived modes or deferred proposals, not the current journey.
 The standalone pilot’s four waves, purse, paid rewards, and Grandmaster removal rule do not apply here.
 Recruitment, faction AI habits, paid powers, live army bosses, adaptive ratings, and refresher scheduling remain deferred.
 The archive preserves their rationale without making them requirements for new curriculum Regions.

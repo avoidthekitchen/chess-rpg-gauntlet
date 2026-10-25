@@ -1,7 +1,7 @@
 import { Chess, type Square } from 'chess.js';
-import { checkPuzzleMove, puzzleStart, type Puzzle } from './bounty';
+import { checkPuzzleMove, puzzleStart, uciMove, type Puzzle } from './puzzle';
 import type { DifficultyId } from './difficulty';
-import type { StarterType } from './campaign';
+import type { StarterType } from './companions';
 
 export interface AmbushPuzzle extends Puzzle {
   source: string;
@@ -42,14 +42,8 @@ export interface AmbushRun {
   settled: boolean;
 }
 
-export const uciMove = (uci: string) => ({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] });
+export { uciMove };
 export const wavePuzzle = (def: AmbushDef, run: AmbushRun) => def.waves[run.wave][run.backupWave === run.wave ? 'backup' : 'main'];
-
-/** After the initial tactic, the remaining answer may be a quiet capture rather than another check. */
-export const ambushMissText = (run: AmbushRun) => run.status === 'lost'
-  ? 'Too many misses. Take a breath, then try a fresh position.'
-  : run.step === 0 ? 'Not quite. The move is taken back. Look for two checks.'
-  : 'Not quite. The move is taken back. Look for the finish.';
 
 export function startAmbush(def: AmbushDef, difficulty: DifficultyId, retryFromWave?: number): AmbushRun {
   const backupWave = retryFromWave !== undefined && Number.isInteger(retryFromWave) && retryFromWave >= 0 && retryFromWave < def.waves.length ? retryFromWave : null;
@@ -101,8 +95,4 @@ export function nextAmbushWave(def: AmbushDef, run: AmbushRun): AmbushRun {
 export function hintAmbush(def: AmbushDef, run: AmbushRun): { run: AmbushRun; square: Square | null } {
   if (run.status !== 'solving' || run.settled || !AMBUSH_HELP[run.difficulty].hints) return { run, square: null };
   return { run: { ...run, hintsUsed: run.hintsUsed + 1 }, square: wavePuzzle(def, run).moves[1 + 2 * run.step].slice(0, 2) as Square };
-}
-
-export function ambushBonuses(def: AmbushDef, run: AmbushRun) {
-  return run.status === 'won' ? def.bonuses.filter(b => b.kind === 'clean' ? run.misses === 0 : run.hintsUsed === 0) : [];
 }

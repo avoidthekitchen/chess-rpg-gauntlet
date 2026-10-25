@@ -1,5 +1,5 @@
 import { courseFoeArt } from '../game/courseCast';
-import { Chess, type Square } from 'chess.js';
+import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
@@ -7,16 +7,16 @@ import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, le
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
-import { BOARD_SPAN, BOARD_TALL, PhaserBoard, queueTokens, type PieceStyle } from '../ui/phaserBoard';
+import { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL, PhaserBoard, queueTokens, type PieceStyle } from '../ui/phaserBoard';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
 import { companionReaction, lineBanner, type CourseBanner, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore } from '../ui/coursePresentation';
+import { promotionChoicesHtml } from '../ui/promotionChoice';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
 type Phase = 'briefing' | 'teaching' | 'demonstrating' | 'taught' | 'setup' | 'solving' | 'replying' | 'waveWon' | 'won' | 'lost';
-const pieceNames = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
 /** The published puzzle runner: presentation only; progress and chess stay in game/. */
 export class CoursePlayScene extends BaseScene {
@@ -103,7 +103,7 @@ export class CoursePlayScene extends BaseScene {
     this.preparePuzzle(lesson.show);
   }
 
-  /** Boot loads only ally and Bog art; each chapter's tokens arrive when a lesson first opens. */
+  /** Boot loads only ally and Bog (chapter 1) art; each later chapter's tokens arrive when its first lesson opens. */
   preload() {
     if (this.valid) queueTokens(this.load, this.textures, courseFoeArt(this.lesson.regionId));
   }
@@ -131,7 +131,7 @@ export class CoursePlayScene extends BaseScene {
     // Reserve room for the instruction and actions before sizing the phone board.
     const panelSpace = this.H < 650 ? 234 : 246;
     const width = Math.min(this.W - 8, (this.H - top - panelSpace - this.safe.bottom) * BOARD_SPAN / BOARD_TALL);
-    const y = top - 6;
+    const y = top - BOARD_HEADER_TUCK;
     return { x: (this.W - width) / 2, y, width, panelX: 12, panelY: y + width * BOARD_TALL / BOARD_SPAN + 2, panelWidth: this.W - 24 };
   }
 
@@ -418,13 +418,26 @@ export class CoursePlayScene extends BaseScene {
     for (const el of document.querySelectorAll<HTMLElement>('#overlay .ov-body, #overlay .ov-dialog')) el.scrollTop = el.scrollHeight;
   }
 
+  private askPromotion(from: Square, to: Square, options: PieceSymbol[]) {
+    const token = this.session;
+    // Cancel takes the initial focus, so no piece is picked by a stray Enter.
+    showModal({ title: 'Choose your promotion', html: promotionChoicesHtml(options, this.style, this.solver, import.meta.env.BASE_URL),
+      buttons: [{ label: 'Cancel', kind: 'ghost', onClick: () => {} }], onDismiss: () => {} });
+    for (const el of document.querySelectorAll<HTMLButtonElement>('#overlay .promo button')) {
+      el.addEventListener('click', () => {
+        closeModal();
+        if (token === this.session && this.phase === 'solving' && !this.busy) void this.attempt(from + to + el.dataset.p);
+      });
+    }
+  }
+
   private onSquare(square: Square) {
     if (this.phase !== 'solving' || this.busy || isModalOpen()) return;
     if (this.selected) {
       const moves = this.chess.moves({ square: this.selected, verbose: true }).filter(m => m.to === square);
       if (moves.length) {
         const from = this.selected;
-        if (moves[0].promotion) showModal({ title: 'Choose your promotion', buttons: moves.map(m => ({ label: pieceNames[m.promotion!], onClick: () => { void this.attempt(from + square + m.promotion); } })), onDismiss: () => {} });
+        if (moves[0].promotion) this.askPromotion(from, square, moves.map(m => m.promotion!));
         else void this.attempt(from + square);
         return;
       }

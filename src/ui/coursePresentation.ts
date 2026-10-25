@@ -1,8 +1,8 @@
 import { COURSE_OPENINGS, COURSE_VOICES, courseFoeName, courseCast } from '../game/courseCast';
 import { type Chess, type Color, type Move } from 'chess.js';
 import { isDoubleCheck } from '../game/ambush';
-import type { StarterType } from '../game/campaign';
-import { STARTERS } from '../game/campaign';
+import type { StarterType } from '../game/companions';
+import { STARTERS } from '../game/companions';
 import { courseRegion, type CourseLesson } from '../game/curriculum';
 import { DialogueLog, holdMs, moveLabel } from './dialogue';
 import { esc } from './overlay';

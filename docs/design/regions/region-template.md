@@ -81,7 +81,7 @@ A named chief can host the review through story and portraits without a live eng
 Use this section only when the syllabus calls for a method beyond a short published tactical line.
 Name the Lichess Practice study and chapter, intended goal, useful feedback, and multiple-valid-move needs.
 Mark the dedicated technique capability as future work until implemented and tested.
-Do not present the tactical runner or retained legacy academy as a completed general technique system.
+Do not present the tactical runner or archived legacy academy as a completed general technique system.
 Link capability decisions and define validation before making the chapter depend on them.
 
 ## Story beats and voices
@@ -112,8 +112,7 @@ Record commands, dates, outcomes, and remaining issues. Follow the [verification
 - Desktop, phone portrait, short phone, and landscape checks, including Gentle and the longest advice.
 - Deployed navigation, asset loading, browser errors, and saved completion.
 
-Published tactical lessons need no engine tournaments. Legacy benchmarks are optional historical diagnostics, not merge or release gates.
-Use `npm run ci -- --legacy --full` only when those diagnostics are useful; preserve their actual results.
+Published tactical lessons need no engine tournaments. The legacy benchmarks were removed in #55; [Legacy retirement](../../legacy-retirement.md) links their last revision.
 Report whether mobile evidence came from a resized viewport, WebKit device emulation, or a physical iPhone.
 Do not describe emulation as a physical Safari playthrough.
 

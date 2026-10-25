@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 import { goTo } from '../ui/screen';
-import { pilotEnabled, legacyEnabled } from '../pilotMode';
 import { prepareJourneyPreview } from '../journeySave';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-// Legacy scenes use Bog art. Course chapters load their own tokens (CoursePlay.preload); course portraits are CSS images.
+// Chapter 1 (Bog) loads up front. Later chapters load their tokens in CoursePlay.preload; course portraits are CSS images.
 const SPRITE_SETS = ['ally', 'bog'];
 const COLORS = ['w', 'b'];
 export const BACKGROUNDS = ['title', 'map-region1', 'map-region2', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
@@ -34,7 +33,7 @@ export class BootScene extends Phaser.Scene {
 
   create() {
     document.getElementById('boot')?.remove();
-    const preview = !pilotEnabled && !legacyEnabled && prepareJourneyPreview();
-    goTo(this.game, pilotEnabled ? 'ambush' : legacyEnabled ? 'title' : 'journey', preview ? { page: 'map' } : undefined);
+    const preview = prepareJourneyPreview();
+    goTo(this.game, 'journey', preview ? { page: 'map' } : undefined);
   }
 }

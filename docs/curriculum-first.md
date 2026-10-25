@@ -138,7 +138,7 @@ Actual results and remaining checks belong in [build progress](progress.md) and 
 - The legacy campaign and pilot saves remain unchanged after a complete new journey.
 - Desktop, phone portrait, short-phone, and phone landscape layouts keep the board and actions usable.
 - A separate reviewer checks code and teaching claims. Fix critical findings before handoff.
-- Run `npm run ci`. Legacy engine benchmarks are optional diagnostics following the owner’s 2026-10-24 deprecation decision. Published puzzle lessons need no engine tournaments.
+- Run `npm run ci`. Legacy runtime and benchmarks were later removed in [#55](legacy-retirement.md). Published puzzle lessons need no engine tournaments.
 - Complete a deployed staging journey and check browser errors, asset loading, and saved completion.
 - The normal production build opens the basic campaign. The owner published the complete journey on 2026-10-24; the baseline’s staging-only restriction is superseded.
 

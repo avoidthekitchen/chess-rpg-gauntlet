@@ -3,6 +3,13 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Integrate cleanup with the newer board and promotion UI
+
+- Merged main at `e50094f` into #68 before the approved merge.
+- Kept the obsolete Puzzle scene deleted and retained both progress records.
+- Live CoursePlay, board geometry, knight jumps, promotion choices and CSS match main exactly.
+- Independent adversarial integration review found no remaining issue. Full CI passed 304 tests in 27 files, type-check and production build.
+
 ## 2026-10-25 — Remove unused legacy code (#55)
 
 - Removed legacy campaign/pilot screens, economy, AI, engine benchmarks, bounty packs and unused 3D prototypes.
@@ -20,6 +27,15 @@ Earlier draft, staging-only, and unwaived-benchmark statements describe those ch
 - Local production preview ignored retired/preview query parameters, exposed no development fixture, and reported no browser errors.
 - GPT-6 Astra independently reviewed the diff and tested it. Shared-source, metadata, dependency and storage boundaries passed; documentation findings were fixed.
 - No application deployment occurred. [Retirement record](legacy-retirement.md) preserves technique references for #40 and build-output limitations.
+
+## 2026-10-25 — Keep knight jumps below the header (PR #67)
+
+- Bound each flight frame using the rendered piece rectangle, including stretch, rotation, texture rims, and classic glyphs.
+- Reserve 8px above the piece because compact boards begin just behind the header. The shadow follows the remaining lift.
+- Four regression tests exercise the actual animation callback across both orientations, two piece styles, three square sizes, and both jump directions.
+- All four tests fail on the original PR animation and pass with the correction. `npm run ci` passes 39 files and 514 tests.
+- Chromium checked 40 fixture jumps through landing at 390×844, 1280×800, 375×812, 375×553, and 844×390.
+- Both piece styles and orientations kept visible pixels below the header. This is desktop viewport testing, not physical-device coverage.
 
 ## 2026-10-24 — Merge the accepted production curriculum
 

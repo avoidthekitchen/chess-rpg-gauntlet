@@ -30,7 +30,7 @@ These items remain future work. They do not block the accepted production curric
 - [ ] [Save, rollback, and keyboard checks #56](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/56): preserve save and rollback safeguards; complete native keyboard validation.
   The owner accepted 393×852 WebKit emulation for this release check. No physical device is available; physical-device coverage is not claimed or required.
 - [ ] [Review source #58](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/58): replace weak fdj22 review backup with a stronger non-recapture defence source.
-- [ ] [Promotion choices #61](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/61): improve icons and order.
+- [x] [Promotion choices #61](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/61): piece pictures in the current style, queen first, Cancel focused by default. The dialog border now fits phone screens (#64).
 - [ ] [Occluded tokens #62](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/62): improve visibility. The owner explicitly deferred this P2 item with the other follow-ups.
 - [x] Record the owner’s production release and original-game archive. Preserve legacy saves.
 

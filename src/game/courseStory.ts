@@ -1,4 +1,4 @@
-import { STARTERS, type StarterType } from './campaign';
+import { STARTERS, type StarterType } from './companions';
 import { courseRegion } from './curriculum';
 
 export interface StoryLine { speaker: string; line: string }

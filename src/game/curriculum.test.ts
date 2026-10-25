@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { Chess, type Square } from 'chess.js';
-import mateBounties from '../../public/puzzles/region1/mateIn1.json';
-import hangingBounties from '../../public/puzzles/region1/hangingPiece.json';
+import retired from '../../data/retired-puzzle-ids.json';
 import { COURSE_LESSONS, COURSE_REGIONS, courseLesson, courseRegion } from './curriculum';
 import { isDoubleCheck, moveAmbush, nextAmbushWave, startAmbush, uciMove, wavePuzzle } from './ambush';
-import { puzzleStart } from './bounty';
+import { puzzleStart } from './puzzle';
 
 const allPuzzles = COURSE_LESSONS.flatMap(l => [l.show, ...l.waves.flatMap(w => [w.main, w.backup])]);
 const value: Record<string, number> = { p: 1, n: 3, b: 3, r: 5, q: 9, k: 0 };
@@ -36,20 +35,15 @@ describe('published curriculum', () => {
     const original = COURSE_LESSONS.filter(l => ['r1', 'r2'].includes(l.regionId)).flatMap(l => [l.show, ...l.waves.flatMap(w => [w.main, w.backup])]);
     expect(original).toHaveLength(88);
     expect(new Set(allPuzzles.map(p => p.id)).size).toBe(allPuzzles.length);
-    const bountyIds = new Set([...mateBounties, ...hangingBounties].map(p => p.id));
+    const bountyIds = new Set(retired.bountyIds);
     for (const p of allPuzzles) expect(bountyIds.has(p.id), p.id).toBe(false);
   });
 
-  it('excludes actual legacy packs and bounty sources from every new chapter', () => {
-    const legacy = import.meta.glob('./{region1*,region2Ambush*,ambushPilot,academy}.{ts,json}', { eager: true, query: '?raw', import: 'default' });
-    const bounty = import.meta.glob('../../public/puzzles/**/*.json', { eager: true, import: 'default' });
-    expect(Object.keys(legacy).length).toBeGreaterThan(0);
-    expect(Object.keys(legacy).some(path => path.includes('region2AmbushPuzzles'))).toBe(true);
-    expect(Object.keys(legacy).some(path => path.endsWith('/academy.ts'))).toBe(true);
-    const reserved = Object.values(legacy).join(' ') + JSON.stringify(bounty);
+  it('keeps retired lesson and bounty sources reserved for new chapters', () => {
+    const reserved = new Set([...retired.lessonIds, ...retired.bountyIds]);
     for (const lesson of COURSE_LESSONS.filter(l => !['r1', 'r2'].includes(l.regionId))) {
       for (const p of [lesson.show, ...lesson.waves.flatMap(w => [w.main, w.backup])])
-        expect(reserved, p.id).not.toContain(p.id);
+        expect(reserved.has(p.id), p.id).toBe(false);
     }
   });
 

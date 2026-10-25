@@ -65,7 +65,7 @@ The current fixed-line runner does not provide that capability. Do not substitut
 Fresh mixed assessments must remain distinct from memorised practice sets.
 Tracking missed themes and scheduling refreshers is follow-up work, not an implemented feature.
 
-**Custom battles and live bosses — legacy.** Existing code remains for regression coverage and the development-only legacy entry.
+**Custom battles and live bosses — legacy.** The implementation remains in [Git history](../legacy-retirement.md), outside current development and CI.
 They are not required for new Regions. Historical details are in [legacy campaign](legacy-campaign.md).
 
 ## Battle outline by Region

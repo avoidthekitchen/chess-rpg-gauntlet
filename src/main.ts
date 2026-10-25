@@ -6,7 +6,6 @@ import './ui/overlay.css';
 import { BootScene } from './scenes/Boot';
 import { dpr, fitGame } from './ui/screen';
 import { C } from './ui/theme';
-import { pilotEnabled, legacyEnabled } from './pilotMode';
 import { JourneyScene } from './scenes/Journey';
 import { CoursePlayScene } from './scenes/CoursePlay';
 
@@ -22,16 +21,6 @@ async function start() {
   }
 
   const d = dpr();
-  // Keep this build-time guard beside the import so production drops the pilot chunk.
-  const pilotScenes = import.meta.env.DEV && pilotEnabled
-    ? [(await import('./scenes/Ambush')).AmbushScene] : [];
-  const legacyScenes = import.meta.env.DEV && legacyEnabled
-    ? [
-      (await import('./scenes/Title')).TitleScene, (await import('./scenes/Starter')).StarterScene,
-      (await import('./scenes/Map')).MapScene, (await import('./scenes/Town')).TownScene,
-      (await import('./scenes/Puzzle')).PuzzleScene, (await import('./scenes/Muster')).MusterScene,
-      (await import('./scenes/Battle')).BattleScene,
-    ] : [];
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
@@ -47,7 +36,7 @@ async function start() {
     input: { activePointers: 2, windowEvents: false },
     // Testing aid: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
-    scene: [BootScene, JourneyScene, CoursePlayScene, ...pilotScenes, ...legacyScenes],
+    scene: [BootScene, JourneyScene, CoursePlayScene],
   });
 
   // Size the canvas once Phaser has booted, and again whenever the window changes.

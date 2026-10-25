@@ -17,7 +17,7 @@ Those documents do not establish that every proposed army, economy, power, facti
 Those systems remain deferred in the production curriculum.
 
 The legacy documents’ old approval requirements and engine benchmarks are historical, not current merge or release gates.
-Historical results remain unchanged; optional engine diagnostics still use `npm run ci -- --legacy --full`.
+Historical results remain unchanged. [Legacy retirement](legacy-retirement.md) links the removed code and technique references at an immutable revision.
 The [decisions](design/decisions.md) and [release record](complete-journey-release.md) describe the accepted scope and current evidence.
 Routine deployments target production or staging through the documented commands.
 

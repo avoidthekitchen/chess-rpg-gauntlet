@@ -4,7 +4,7 @@
 
 ## Tech stack and deployment
 
-Pawnshire is a TypeScript web game using Phaser 4, Vite, chess.js, and a retained Stockfish Web Worker integration.
+Pawnshire is a TypeScript web game using Phaser 4, Vite, and chess.js.
 The default build opens the curriculum journey. Its published puzzle replies do not use live engine move selection.
 
 | Layer | Current implementation | Location or scope |
@@ -16,13 +16,12 @@ The default build opens the curriculum journey. Its published puzzle replies do 
 | Progression | Pure journey rules | `src/game/journey.ts` |
 | Persistence | Local storage through `store` | `src/journeySave.ts`; separate `pawnshire-journey-v1` key |
 | Presentation | Shared board and course presentation helpers | `src/ui/phaserBoard.ts`, `coursePresentation.ts`, related CSS |
-| Retained engine | Stockfish lite, single-threaded WASM in a Web Worker | `src/ai`; legacy battles and engine verification |
 | Hosting | Cloudflare static assets | `wrangler.jsonc`; separate production and staging routes |
 
 `src/main.ts` registers the curriculum scenes by default.
-Development builds can load the standalone pilot with `?ambush=r2-two-at-once` or the earlier campaign with `?legacy=1`.
-The build-time guards beside their imports exclude those entry scenes from production.
-Their rules, source files, saves, and engine regressions remain available for development and future reuse.
+Legacy campaign, pilot, engine, and 3D development entries were removed in #55.
+Shared companion identities, puzzle legality, board presentation, and chess helpers remain.
+[Legacy retirement](../legacy-retirement.md) records preserved references and source reservations.
 
 `npm run build` type-checks and builds the production output in `dist/`.
 `npm run deploy` stages it under `dist-worker/chess-rpg/` and deploys https://unformedideas.com/chess-rpg/.
@@ -33,17 +32,16 @@ The current deployment commands target production or staging; the alpha archive 
 Cloudflare’s configured HTML handling supplies the trailing-slash redirect.
 Use the deployment destination authorized for the work, and keep generated output out of commits.
 
-Build and dev commands run `scripts/copy-engine.mjs` first.
-It copies Stockfish’s lite-single JavaScript, WASM, and license notice into `public/engine/`.
-A source puzzle embedded in the built curriculum is separate from the retained bounty JSON under `public/puzzles/`.
-Do not infer engine health from the current journey’s scripted reply.
+Build and dev commands no longer copy an engine.
+Deployment staging excludes retired engine, puzzle packs, models and mockups, including stale files from older checkouts.
+Local Vite output may still copy ignored assets left in `public/`; deployment output is filtered separately.
 
 ## Rules, content, screens, and saves
 
 `src/game` contains rules and content without screen code.
 The curriculum defines `CourseLesson` and `CourseRegion`; each lesson uses the published-line runner’s `AmbushDef` shape.
 Current lessons set gold rewards to zero and use journey stars instead.
-`src/flow.ts` still coordinates the legacy campaign; it is not the current journey’s progression authority.
+Companion identities live in `src/game/companions.ts`; shared puzzle validation lives in `src/game/puzzle.ts`.
 
 `src/game/ambush.ts` checks legal moves and the expected line, advances waves, counts misses, and supplies permitted hints.
 It commits solver/reply pairs before screen animation. `src/game/journey.ts` settles the attempt once and updates completion and stars.
@@ -72,12 +70,12 @@ The tactical runner follows one published line and stops at its endpoint; it doe
 
 Before a future chapter relies on technique practice, define its content contract, legal continuations, success checks, assistance, and persistence.
 Add rules and tests independently of its screen. Identify each study and chapter and write our own teaching text.
-The legacy academy and engine interfaces can inform implementation, but do not establish that this capability is shipped.
+The [archived academy and engine references](../legacy-retirement.md#technique-references-for-40) can inform implementation, but do not establish a shipped capability.
 
 ## Retained architecture decisions
 
 Phaser supplies scenes, loading, input, animation, and the board within a single web stack.
-The earlier campaign also uses canvas town and battle screens.
+The archived campaign used canvas town and battle screens.
 TypeScript keeps chess tools and the game in the same language; the earlier design rejected Godot’s export and bridging overhead.
 
 The game remains 2D. Earlier [3D exploration](art.md#3d-exploration-deferred) proposed a second Three.js canvas for a diorama or model board.
@@ -88,14 +86,14 @@ Historical engine file-size estimates and hosting limits were implementation not
 
 ## Licensing
 
-The project’s recorded license decision is GPL-3, with Stockfish distributed alongside it.
+The project retains its recorded GPL-3 license decision. Current builds no longer distribute Stockfish.
 Keep required notices and source obligations intact when changing dependencies or deployment.
 
 | Source or dependency | Recorded license or clearance | Project handling |
 | --- | --- | --- |
 | Lichess puzzle database | CC0 | Preserve source identity and credit Lichess; keep published data unchanged |
 | chess.js | BSD-2 | Keep its notice |
-| Stockfish | GPL-3 | Keep the license file and published source obligations; build copies `COPYING-stockfish.txt` |
+| Historical Stockfish distributions | GPL-3 | Archived distributions retain their notices and source obligations; current builds do not copy the engine |
 | Lichess Practice studies | Owner confirmed clearance on 2026-10-22 | Record study and chapter; write teaching text in our voice; credit Lichess |
 | Published courses, including Steps Method, Bain, Silman, Polgar, and Yusupov | Copyrighted | Use topic order as inspiration; do not copy their exercises or text |
 

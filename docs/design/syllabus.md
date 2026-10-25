@@ -78,7 +78,7 @@ Track each missing capability separately; do not count an ending tag as completi
 
 | Capability | Intended place | Present status and implementation requirement |
 | --- | --- | --- |
-| Rook and queen mates against a lone king | Optional foundation practice | Legacy exercises exist. Verify their integration and acceptable moves before crediting the new journey with technique practice. |
+| Rook and queen mates against a lone king | Optional foundation practice | [Archived exercise references](../legacy-retirement.md#technique-references-for-40) exist. Verify sources and acceptable moves before implementing technique practice. |
 | Opposition and key squares | Optional introduction from R3; deeper work in R5 | Not provided by the current journey. Needs a specific verified published teaching source and a runner that accepts valid choices and checks the technique's goal. |
 | King activity, pawn races, rook support | R5 core tactical decisions | Short published lines are suitable when inspected. Sustained conversion against varied defence remains unimplemented. |
 | Lucena and Philidor | Optional R5 extension | Not provided. Needs verified source chapters, branching defensive play, valid alternative moves, and win or draw completion rules. |

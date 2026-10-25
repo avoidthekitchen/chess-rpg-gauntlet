@@ -1,15 +1,15 @@
 import Phaser from 'phaser';
-import { FACTIONS, CHARACTER_PORTRAITS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
 import { pilotEnabled, legacyEnabled } from '../pilotMode';
 import { prepareJourneyPreview } from '../journeySave';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-const SPRITE_SETS = ['ally', ...FACTIONS];
+// Legacy scenes use Bog art. Course chapters load their own tokens (CoursePlay.preload); course portraits are CSS images.
+const SPRITE_SETS = ['ally', 'bog'];
 const COLORS = ['w', 'b'];
 export const BACKGROUNDS = ['title', 'map-region1', 'map-region2', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
 
-/** Loads every sprite and painted background (progress shows in the HTML boot note), then starts the title. */
+/** Loads the ally and Bog sprites and every painted background (progress shows in the HTML boot note), then starts the title. */
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('boot');
@@ -23,7 +23,6 @@ export class BootScene extends Phaser.Scene {
         this.load.image(`${p}-${f}`, `sprites/${p}-${f}.webp`);
       }
     }
-    for (const character of CHARACTER_PORTRAITS) this.load.image(character, `sprites/${character}.webp`);
     for (const b of BACKGROUNDS) this.load.image(`bg-${b}`, `backgrounds/${b}.webp`);
     // A missing sprite isn't fatal: the board and portraits fall back to tokens or glyphs.
     this.load.on(Phaser.Loader.Events.FILE_LOAD_ERROR, (f: Phaser.Loader.File) => console.info(`Optional art missing: ${f.key}`));

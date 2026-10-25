@@ -7,7 +7,7 @@ import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, le
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
-import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
+import { BOARD_SPAN, BOARD_TALL, PhaserBoard, queueTokens, type PieceStyle } from '../ui/phaserBoard';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
@@ -101,6 +101,11 @@ export class CoursePlayScene extends BaseScene {
       closeModal();
     });
     this.preparePuzzle(lesson.show);
+  }
+
+  /** Boot loads only ally and Bog art; each chapter's tokens arrive when a lesson first opens. */
+  preload() {
+    if (this.valid) queueTokens(this.load, this.textures, courseFoeArt(this.lesson.regionId));
   }
 
   requestLayout() {

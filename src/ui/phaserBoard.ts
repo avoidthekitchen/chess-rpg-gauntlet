@@ -27,6 +27,14 @@ export type PieceStyle = 'tokens' | 'classic';
 export const tokenKey = (type: PieceSymbol, color: Color, faction: Faction, ally: Color = 'w') =>
   `token-${PIECE_FILE[type]}-${color === ally ? 'ally' : faction}-${color}`;
 
+/** Queues a sprite set's board tokens (both colours) that aren't loaded yet. */
+export function queueTokens(load: Phaser.Loader.LoaderPlugin, textures: Phaser.Textures.TextureManager, set: 'ally' | Faction) {
+  for (const piece of Object.values(PIECE_FILE)) for (const c of ['w', 'b']) {
+    const key = `token-${piece}-${set}-${c}`;
+    if (!textures.exists(key)) load.image(key, `${import.meta.env.BASE_URL}sprites/${key}.webp`);
+  }
+}
+
 /** Transparent padding around every token sprite, in texture px (RIM_PX + 1 in scripts/process-art.mjs). */
 const TOKEN_PAD = 8;
 

@@ -567,7 +567,9 @@ export class PhaserBoard {
   private hop(p: PieceNode, from: Square, to: Square): Promise<void> {
     const a = this.ground(from);
     const b = this.ground(to);
-    const peak = this.W * 0.95;
+    // A lower arc near the back rank, so the stretched knight stays below the header above the board.
+    const head = this.W * TOKEN_BOX.n[1] * TOKEN_ABOVE_BASE * 1.14;
+    const peak = Math.max(this.W * 0.5, Math.min(this.W * 0.95, (a.y + b.y) / 2 - head - this.W * 0.05));
     const dir = Math.sign(b.x - a.x) || 1;
     this.drawKnightPath(from, to);
     p.node.setDepth(1e6); // fly over everything

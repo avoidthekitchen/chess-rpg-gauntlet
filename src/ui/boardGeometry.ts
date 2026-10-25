@@ -9,6 +9,8 @@ import type { PieceSymbol } from 'chess.js';
 export const DEPTH = 0.84;
 /** Room above the top edge for the back rank's heads and the "!" badge. */
 export const BOARD_TOP = 0.6;
+/** On phones the board starts this many px behind the screen header, which hides part of the empty room above it. */
+export const BOARD_HEADER_TUCK = 6;
 /** Room below the bottom edge for the frame and file letters. */
 export const BOARD_BOTTOM = 0.75;
 /** Board width and height in squares, frame included. A phone (about 390 px wide) gets 45 px squares. */

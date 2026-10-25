@@ -1,7 +1,7 @@
 import type { Chess, Color, Move, PieceSymbol, Square } from 'chess.js';
 import Phaser from 'phaser';
 import type { ThreatMap } from '../game/threats';
-import { BOARD_BOTTOM, BOARD_SPAN, BOARD_TOP, DEPTH, GROUND, TOKEN_ABOVE_BASE, TOKEN_BOX } from './boardGeometry';
+import { BOARD_BOTTOM, BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TOP, DEPTH, GROUND, TOKEN_ABOVE_BASE, TOKEN_BOX } from './boardGeometry';
 import type { BaseScene } from './screen';
 import type { Faction } from './speaker';
 import { GLYPH_FONT, SERIF } from './theme';
@@ -53,7 +53,7 @@ const COLORS = {
   hint: 0x5fd17a,
 };
 
-export { BOARD_SPAN, BOARD_TALL } from './boardGeometry';
+export { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL } from './boardGeometry';
 
 export interface BoardView {
   chess: Chess;
@@ -588,8 +588,9 @@ export class PhaserBoard {
           p.pose.rotation = dir * 0.2 * Math.sin(Math.PI * k);
           // Phone boards start just behind the header. Bound every frame, including
           // stretch, rotation and texture rims; the arc's midpoint is not its highest point.
-          const ceiling = this.root.y + 8;
-          p.pose.y += Math.max(0, ceiling - p.body.getBounds().top);
+          // Never push the knight below its square: at rest it may already sit above the ceiling.
+          const ceiling = this.root.y + BOARD_HEADER_TUCK + 2;
+          p.pose.y = Math.min(0, p.pose.y + Math.max(0, ceiling - p.body.getBounds().top));
           const lift = Math.max(0, -p.pose.y);
           const s = 1 - 0.5 * (lift / peak);
           p.shadow.setScale(s);

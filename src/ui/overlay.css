@@ -184,7 +184,7 @@ body {
   background: var(--surface-2);
   border-radius: 8px;
   padding: 9px 16px;
-  min-height: 40px;
+  min-height: 44px;
 }
 .ov-btn:hover {
   border-color: var(--gold);
@@ -239,6 +239,11 @@ body {
 .promo-glyph {
   font-size: 44px;
   line-height: 56px;
+}
+/* Match the board's classic black pieces: dark ink with a light outline. */
+.promo-glyph.b {
+  color: #22172b;
+  -webkit-text-stroke: 1px #e8d5aa;
 }
 .promo small {
   color: var(--muted);

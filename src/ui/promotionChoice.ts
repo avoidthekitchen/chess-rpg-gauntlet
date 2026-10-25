@@ -15,7 +15,7 @@ export function promotionChoicesHtml(options: readonly PieceSymbol[], style: 'to
     const name = NAME[p]!;
     const picture = style === 'tokens'
       ? `<img src="${base}sprites/token-${name.toLowerCase()}-ally-${color}.webp" alt="">`
-      : `<span class="promo-glyph" style='font-family:${GLYPH_FONT}' aria-hidden="true">${GLYPH[p]}</span>`;
+      : `<span class="promo-glyph ${color}" style='font-family:${GLYPH_FONT}' aria-hidden="true">${GLYPH[p]}</span>`;
     return `<button type="button" data-p="${p}">${picture}<small>${esc(name)}</small></button>`;
   }).join('')}</div>`;
 }

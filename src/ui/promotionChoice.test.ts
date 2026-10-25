@@ -21,5 +21,7 @@ describe('promotion chooser', () => {
     expect(html).not.toContain('<img');
     expect(html).toContain('♛');
     expect(html).toContain('♞');
+    expect(html).toContain('class="promo-glyph w"');
+    expect(promotionChoicesHtml(['q'], 'classic', 'b', '/')).toContain('class="promo-glyph b"');
   });
 });

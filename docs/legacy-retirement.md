@@ -38,6 +38,7 @@ node scripts/select-curriculum.mjs --candidates defensiveMove --min 930 --max 11
 ```
 
 They require the local database at `data/raw/lichess_db_puzzle.csv.zst`.
+`--candidates` also skips every published puzzle, so a shortlist offers only new positions.
 Shortlists stay under ignored `data/raw/`.
 
 ## Technique references for #40

@@ -38,7 +38,7 @@ it('verifies every shipped source without retired runtime packs', () => fixture(
   database(root, rows);
   const result = select(root, '--verify-shipped');
   expect(result.status, result.stderr).toBe(0);
-  expect(result.stdout).toContain('Verified 273 unchanged published puzzles');
+  expect(result.stdout).toContain(`Verified ${new Set(rows.map(row => row[0])).size} unchanged published puzzles`);
   rows[0][3] = String(Number(rows[0][3]) + 1);
   database(root, rows);
   const mismatch = select(root, '--verify-shipped');
@@ -46,10 +46,13 @@ it('verifies every shipped source without retired runtime packs', () => fixture(
   expect(mismatch.stderr).toContain(`Source mismatch: ${rows[0][0]}`);
 }));
 it('keeps theme shortlisting runnable after retiring the bounty-pack builder', () => fixture((root, rows) => {
-  database(root, rows);
+  const fresh = rows.find(row => row[7].split(' ').includes('doubleCheck'))!.slice();
+  fresh[0] = 'zzFresh';
+  database(root, [...rows, fresh]);
   const result = select(root, '--candidates', 'doubleCheck', '--min', '400', '--max', '1300');
   expect(result.status, result.stderr).toBe(0);
   const shortlist = JSON.parse(readFileSync(join(root, 'data/raw/candidates-doubleCheck.json'), 'utf8'));
-  expect(shortlist.candidates.length).toBeGreaterThan(0);
   expect(shortlist.tag).toBe('doubleCheck');
+  // Published puzzles are never offered again; only the unpublished copy remains.
+  expect(shortlist.candidates.map((p: { id: string }) => p.id)).toEqual(['zzFresh']);
 }));

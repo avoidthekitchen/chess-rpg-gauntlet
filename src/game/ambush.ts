@@ -1,5 +1,5 @@
 import { Chess, type Square } from 'chess.js';
-import { checkPuzzleMove, puzzleStart, type Puzzle } from './puzzle';
+import { checkPuzzleMove, puzzleStart, uciMove, type Puzzle } from './puzzle';
 import type { DifficultyId } from './difficulty';
 import type { StarterType } from './companions';
 
@@ -42,7 +42,7 @@ export interface AmbushRun {
   settled: boolean;
 }
 
-export const uciMove = (uci: string) => ({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] });
+export { uciMove };
 export const wavePuzzle = (def: AmbushDef, run: AmbushRun) => def.waves[run.wave][run.backupWave === run.wave ? 'backup' : 'main'];
 
 export function startAmbush(def: AmbushDef, difficulty: DifficultyId, retryFromWave?: number): AmbushRun {

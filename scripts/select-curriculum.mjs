@@ -7,17 +7,22 @@ import { createZstdDecompress } from 'node:zlib';
 import { Chess } from 'chess.js';
 import { candidates as shortlistCandidates } from './puzzle-candidates.mjs';
 
+const retired = JSON.parse(readFileSync(new URL('../data/retired-puzzle-ids.json', import.meta.url), 'utf8'));
+const courseFiles = ['src/game/curriculumPuzzles.json', ...(existsSync('src/game/course') ? readdirSync('src/game/course').filter(name => name.endsWith('Puzzles.json')).map(name => `src/game/course/${name}`) : [])];
+const published = () => new Map(courseFiles.flatMap(file => Object.values(JSON.parse(readFileSync(file, 'utf8'))).flat()).map(p => [p.id, p]));
+
+// New themes skip retired bounties and anything already published.
 if (process.argv.includes('--candidates')) {
-  await shortlistCandidates('data/raw/lichess_db_puzzle.csv.zst', { maxRd: 90, minPop: 85, minPlays: 300 }, process.argv.slice(2));
+  const skip = new Set([...retired.bountyIds, ...retired.lessonIds, ...published().keys()]);
+  await shortlistCandidates('data/raw/lichess_db_puzzle.csv.zst', { maxRd: 90, minPop: 85, minPlays: 300 }, process.argv.slice(2), skip);
   process.exit(0);
 }
 
-const retired = JSON.parse(readFileSync(new URL('../data/retired-puzzle-ids.json', import.meta.url), 'utf8'));
-const excluded = new Set([...retired.bountyIds, ...retired.lessonIds]);
+// The Region 1–2 rebuild keeps its accepted overlap policy: only the old bounty packs are excluded.
+const excluded = new Set(retired.bountyIds);
 const tags = ['hangingPiece', 'defensiveMove', 'backRankMate', 'promotion', 'fork', 'doubleCheck', 'capturingDefender', 'mateIn2'];
 const verify = process.argv.includes('--verify-shipped');
-const courseFiles = ['src/game/curriculumPuzzles.json', ...(existsSync('src/game/course') ? readdirSync('src/game/course').filter(name => /^region[3-5]Puzzles\.json$|^finalePuzzles\.json$/.test(name)).map(name => `src/game/course/${name}`) : [])];
-const shipped = verify ? new Map(courseFiles.flatMap(file => Object.values(JSON.parse(readFileSync(file, 'utf8'))).flat()).map(p => [p.id, p])) : new Map();
+const shipped = verify ? published() : new Map();
 let verified = 0;
 const pools = new Map();
 const counts = Object.fromEntries(tags.map(t => [t, 0]));

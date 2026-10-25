@@ -11,12 +11,13 @@ export interface Puzzle {
   theme?: string;
 }
 
-const toMove = (uci: string) => ({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] });
+/** A UCI string such as e7e8q as a chess.js move. */
+export const uciMove = (uci: string) => ({ from: uci.slice(0, 2), to: uci.slice(2, 4), promotion: uci[4] });
 
 /** Position the solver sees (after moves[0]), the solver's color, and the solution plies. */
 export function puzzleStart(p: Puzzle): { fen: string; solver: 'w' | 'b'; solution: string[] } {
   const chess = new Chess(p.fen);
-  chess.move(toMove(p.moves[0]));
+  chess.move(uciMove(p.moves[0]));
   return { fen: chess.fen(), solver: chess.turn(), solution: p.moves.slice(1) };
 }
 
@@ -35,11 +36,11 @@ export function checkPuzzleMove(p: Puzzle, step: number, uci: string): 'correct'
   // Alternative mates: replay up to this step, then see whether both moves deliver checkmate.
   const chess = new Chess(p.fen);
   try {
-    for (let i = 0; i < idx; i++) chess.move(toMove(p.moves[i]));
+    for (let i = 0; i < idx; i++) chess.move(uciMove(p.moves[i]));
     const probe = new Chess(chess.fen());
-    probe.move(toMove(expected));
+    probe.move(uciMove(expected));
     if (!probe.isCheckmate()) return 'wrong';
-    chess.move(toMove(uci));
+    chess.move(uciMove(uci));
     return chess.isCheckmate() ? done : 'wrong';
   } catch {
     return 'wrong';

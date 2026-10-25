@@ -141,12 +141,12 @@ Decided: the game stays 2D. The prototype's 2D board, tokens and talking-head po
 
 **What was tried**
 
-| Experiment | Where | Finding |
+| Experiment | Where (revision 81e1f33) | Finding |
 | --- | --- | --- |
-| Three.js board mockup | `mockups/three.html`, `src/mockups/threeMockup.ts` | 3D makes captures more dramatic: a kill-cam swoop, slow motion, a flash and shockwave, and the captured piece knocked off the board. Its Style button cycles through every option below. |
+| Three.js board mockup | [`mockups/three.html`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/blob/81e1f33/mockups/three.html), [`src/mockups/threeMockup.ts`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/blob/81e1f33/src/mockups/threeMockup.ts) | 3D makes captures more dramatic: a kill-cam swoop, slow motion, a flash and shockwave, and the captured piece knocked off the board. Its Style button cycles through every option below. |
 | Procedural 3D toys | Same mockup, "3D toys" style | About one square tall, so they read on the board, but built from simple shapes, so they look like placeholder art. |
 | Painted cutouts in 3D | Same mockup, "Painted cutouts" style | The 2D art gets real lighting and shadows, but turns paper-thin when it flips or tumbles. |
-| AI-generated 3D models | `mockups/models.html`, `public/models/`, `scripts/generate-3d.mjs`, `scripts/optimize-3d.mjs` | Frog knight and tortoise rook from three fal.ai image-to-3D services, compared with the original art. |
+| AI-generated 3D models | [`mockups/models.html`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/blob/81e1f33/mockups/models.html), [`public/models/`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/tree/81e1f33/public/models), [`scripts/generate-3d.mjs`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/blob/81e1f33/scripts/generate-3d.mjs), [`scripts/optimize-3d.mjs`](https://github.com/avoidthekitchen/chess-rpg-gauntlet/blob/81e1f33/scripts/optimize-3d.mjs) | Frog knight and tortoise rook from three fal.ai image-to-3D services, compared with the original art. |
 
 **AI 3D model comparison**
 

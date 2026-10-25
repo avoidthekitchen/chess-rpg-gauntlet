@@ -126,12 +126,13 @@
   .journey-setup,.journey-paper { padding:22px 18px; }
   .journey-setup h1 { font-size:36px; }
   .journey-options { display:grid; grid-template-columns:1fr 1fr; }
-  .journey-header { gap:6px; padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left)); padding-top:calc(4px + env(safe-area-inset-top)); }
+  /* One row when it fits; otherwise the nav wraps to its own row instead of overflowing. */
+  .journey-header { flex-wrap:wrap; row-gap:4px; gap:6px; padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left)); padding-top:calc(4px + env(safe-area-inset-top)); }
   .journey-header .journey-menu { display:none; }
   .journey-header .journey-wordmark { font-size:23px; }
-  .journey-header nav { gap:4px; }
+  .journey-header nav { gap:4px; order:3; flex:1 0 auto; justify-content:flex-end; }
   .journey-header nav button { padding:5px 8px; font-size:13px; }
-  .journey-total { font-size:17px; }
+  .journey-total { font-size:17px; order:2; }
   .journey-content,.journey-map .journey-content { padding:12px 0 calc(18px + env(safe-area-inset-bottom)); }
   .journey-map-heading { display:block; padding:0 16px 12px; }
   .journey-map-heading h1 { font-size:40px; }
@@ -226,9 +227,4 @@
 @media(max-width:479px) {
   .journey-choices { grid-template-columns:1fr; }
   .journey-step h1 { font-size:30px; }
-}
-@media(max-width:359px) {
-  .journey-header { flex-wrap:wrap; }
-  .journey-header .journey-wordmark { font-size:20px; }
-  .journey-header nav button { padding:4px 6px; font-size:12px; }
 }

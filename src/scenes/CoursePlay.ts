@@ -1,5 +1,5 @@
 import { COURSE_FOE_ART } from '../game/courseCast';
-import { Chess, type Square } from 'chess.js';
+import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
 import { DIFFICULTIES } from '../game/difficulty';
@@ -12,11 +12,11 @@ import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
 import { companionReaction, lineBanner, type CourseBanner, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore } from '../ui/coursePresentation';
+import { promotionChoicesHtml } from '../ui/promotionChoice';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
 type Phase = 'briefing' | 'teaching' | 'demonstrating' | 'taught' | 'setup' | 'solving' | 'replying' | 'waveWon' | 'won' | 'lost';
-const pieceNames = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 
 /** The published puzzle runner: presentation only; progress and chess stay in game/. */
 export class CoursePlayScene extends BaseScene {
@@ -413,13 +413,26 @@ export class CoursePlayScene extends BaseScene {
     for (const el of document.querySelectorAll<HTMLElement>('#overlay .ov-body, #overlay .ov-dialog')) el.scrollTop = el.scrollHeight;
   }
 
+  private askPromotion(from: Square, to: Square, options: PieceSymbol[]) {
+    const token = this.session;
+    // Cancel takes the initial focus, so no piece is picked by a stray Enter.
+    showModal({ title: 'Choose your promotion', html: promotionChoicesHtml(options, this.style, this.solver, import.meta.env.BASE_URL),
+      buttons: [{ label: 'Cancel', kind: 'ghost', onClick: () => {} }], onDismiss: () => {} });
+    for (const el of document.querySelectorAll<HTMLButtonElement>('#overlay .promo button')) {
+      el.addEventListener('click', () => {
+        closeModal();
+        if (token === this.session && this.phase === 'solving' && !this.busy) void this.attempt(from + to + el.dataset.p);
+      });
+    }
+  }
+
   private onSquare(square: Square) {
     if (this.phase !== 'solving' || this.busy || isModalOpen()) return;
     if (this.selected) {
       const moves = this.chess.moves({ square: this.selected, verbose: true }).filter(m => m.to === square);
       if (moves.length) {
         const from = this.selected;
-        if (moves[0].promotion) showModal({ title: 'Choose your promotion', buttons: moves.map(m => ({ label: pieceNames[m.promotion!], onClick: () => { void this.attempt(from + square + m.promotion); } })), onDismiss: () => {} });
+        if (moves[0].promotion) this.askPromotion(from, square, moves.map(m => m.promotion!));
         else void this.attempt(from + square);
         return;
       }

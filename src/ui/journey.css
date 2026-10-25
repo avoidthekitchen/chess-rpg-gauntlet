@@ -158,7 +158,7 @@
   .journey-header { position:relative; }
 }
 @media(max-height:450px) and (min-width:840px) {
-  .journey-content > .journey-map { height:480px; }
+  .journey-hud.journey-map .journey-content > .journey-map { min-height:480px; }
 }
 @media(prefers-reduced-motion:reduce) { .journey-hud * { scroll-behavior:auto!important; transition:none!important; } .journey-hud *::after { animation:none!important; } .journey-toast { animation:none!important; } }
 
@@ -226,4 +226,9 @@
 @media(max-width:479px) {
   .journey-choices { grid-template-columns:1fr; }
   .journey-step h1 { font-size:30px; }
+}
+@media(max-width:359px) {
+  .journey-header { flex-wrap:wrap; }
+  .journey-header .journey-wordmark { font-size:20px; }
+  .journey-header nav button { padding:4px 6px; font-size:12px; }
 }

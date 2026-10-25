@@ -113,3 +113,12 @@ export function journeyMilestone(save: JourneySave, lessonId: string): 'chapter'
   if (lessonId === finalEncounter()) return journeyComplete(save) ? 'ending' : null;
   return lesson.regionId === finaleChapter()?.id ? 'interlude' : 'chapter';
 }
+
+/** The chapter whose introduction should open now, if any. Preview saves skip intros. */
+export function pendingIntro(save: JourneySave, preview: boolean): string | null {
+  if (preview || !regionUnlocked(save, save.currentRegion)) return null;
+  return save.introsSeen?.includes(save.currentRegion) ? null : save.currentRegion;
+}
+export function markIntroSeen(save: JourneySave, regionId: string) {
+  if (!save.introsSeen?.includes(regionId)) save.introsSeen = [...(save.introsSeen ?? []), regionId];
+}

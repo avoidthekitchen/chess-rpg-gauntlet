@@ -122,6 +122,13 @@ export function courseBanner(move: Move, cues: readonly CourseCue[], solver: Col
   return { kind: 'tactic', side, title: 'Check!', detail: '' };
 }
 
+/** Banner for any move in a published line: accepted solver moves, and opponent replies after the setup move. */
+export function lineBanner(chess: Chess, move: Move, solver: Color, accepted: boolean, puzzleId: string, publishedIndex: number): CourseBanner | null {
+  if (accepted) return courseBanner(move, courseMoveCues(chess, move, true, puzzleId, publishedIndex), solver);
+  if (move.color === solver || publishedIndex < 1) return null;
+  return courseBanner(move, courseMoveCues(chess, move, true, puzzleId, -1), solver);
+}
+
 export function captureLine(move: Move) {
   return `${SPECIES[move.promotion ?? move.piece]} takes their ${pieceName(move.captured!)}!`;
 }

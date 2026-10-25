@@ -4,7 +4,7 @@ import { Chess, type PieceSymbol } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
 import { uciMove } from '../game/ambush';
-import { COURSE_FORK_MOVES, courseBanner, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, coursePortrait, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
+import { COURSE_FORK_MOVES, courseBanner, lineBanner, companionReaction, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, coursePortrait, courseGuidance, courseIntro, courseMoveCues, courseMoveSpeaker, courseStoryBefore } from './coursePresentation';
 
 const positions = COURSE_LESSONS.flatMap(lesson => [lesson.show, ...lesson.waves.flatMap(wave => [wave.main, wave.backup])]);
 
@@ -249,5 +249,20 @@ describe('move banners', () => {
     const pawnCheck = play('8/4k3/3p4/4P3/8/8/8/4K3 w - - 0 1', 'exd6');
     expect(courseBanner(pawnCheck.move, ['Capture', 'Check'], 'w')).toMatchObject({ kind: 'tactic', title: 'Check!' });
     expect(courseBanner(move, [], 'w')).toBeNull();
+  });
+});
+
+describe('banners along a published line', () => {
+  it('quiets captures of pawns but not captures by pawns', () => {
+    const q = new Chess('4k3/8/8/3p4/8/8/3Q4/4K3 w - - 0 1'); const qxp = q.move('Qxd5');
+    expect(lineBanner(q, qxp, 'w', true, 'x', 1)).toBeNull();
+    const p = new Chess('4k3/8/8/3q4/4P3/8/8/4K3 w - - 0 1'); const pxq = p.move('exd5');
+    expect(lineBanner(p, pxq, 'w', true, 'x', 1)).toMatchObject({ kind: 'capture', side: 'ally' });
+  });
+  it('lets opponent replies earn banners after the setup move only', () => {
+    const chess = new Chess('4k3/8/8/3r4/8/8/3Q4/4K3 b - - 0 1'); const rxq = chess.move('Rxd2');
+    expect(lineBanner(chess, rxq, 'w', false, 'x', 0)).toBeNull();
+    expect(lineBanner(chess, rxq, 'w', false, 'x', 2)).toMatchObject({ kind: 'capture', side: 'foe', title: 'Their rook takes your queen!' });
+    expect(lineBanner(chess, rxq, 'b', false, 'x', 2)).toBeNull();
   });
 });

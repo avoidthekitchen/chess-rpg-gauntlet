@@ -2,7 +2,7 @@ import { courseCast } from '../game/courseCast';
 import { STARTERS, type StarterType } from '../game/campaign';
 import { COURSE_LESSONS, COURSE_REGIONS, courseLesson, courseRegion } from '../game/curriculum';
 import { DIFFICULTIES, type DifficultyId } from '../game/difficulty';
-import { endingPending, finaleInterludeUnlocked, finalEncounter, journeyComplete, lessonUnlocked, regionUnlocked, type JourneySave } from '../game/journey';
+import { markIntroSeen, pendingIntro, endingPending, finaleInterludeUnlocked, finalEncounter, journeyComplete, lessonUnlocked, regionUnlocked, type JourneySave } from '../game/journey';
 import { clearJourney, loadJourney, newJourneyForMode, persistJourney } from '../journeySave';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
 import { BaseScene, goTo } from '../ui/screen';
@@ -41,6 +41,7 @@ export class JourneyScene extends BaseScene {
     if (this.page === 'story' && !courseRegion(this.storyRegion)?.lessons.every(id => this.save?.completed.includes(id))) this.page = 'map';
     if (this.page === 'interlude' && (!this.save || !finaleInterludeUnlocked(this.save))) this.page = 'map';
     if (this.page === 'ending' && !this.save?.finaleComplete) this.page = 'map';
+    if (!this.save && !['title', 'moves', 'difficulty', 'companion'].includes(this.page)) this.page = 'moves';
     this.difficulty = this.save?.difficulty ?? 'knight';
     this.starter = this.save?.starter ?? 'n';
     this.hud = document.createElement('main');
@@ -108,10 +109,10 @@ export class JourneyScene extends BaseScene {
   /** The first visit to a chapter opens with its story, once per journey. */
   private maybeIntro() {
     const save = this.save;
-    if (!save || this.page !== 'map' || isModalOpen() || previewRegion) return;
-    const region = courseRegion(save.currentRegion);
-    if (!region || save.introsSeen?.includes(region.id)) return;
-    save.introsSeen = [...(save.introsSeen ?? []), region.id]; persistJourney(save);
+    if (!save || this.page !== 'map' || isModalOpen()) return;
+    const region = courseRegion(pendingIntro(save, !!previewRegion) ?? '');
+    if (!region) return;
+    markIntroSeen(save, region.id); persistJourney(save);
     const lines = chapterIntro(region.id, save.starter);
     if (!lines.length) return;
     showModal({ eyebrow: region.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(region) + 1}`, title: region.title, wide: true,
@@ -270,7 +271,7 @@ export class JourneyScene extends BaseScene {
     }
     if (action.startsWith('region:')) {
       const id = action.split(':')[1]; if (!regionUnlocked(this.save, id)) return;
-      this.save.currentRegion = id; persistJourney(this.save); this.rebuild(); this.hud.querySelector<HTMLSelectElement>('[data-region-picker]')?.focus(); this.hud.scrollTop = 0; return;
+      this.save.currentRegion = id; persistJourney(this.save); this.rebuild(); if (!isModalOpen()) this.hud.querySelector<HTMLSelectElement>('[data-region-picker]')?.focus(); this.hud.scrollTop = 0; return;
     }
     if (action.startsWith('journal:')) {
       const target = this.hud.querySelector<HTMLElement>(`[data-journal-region="${action.slice(8)}"]`);

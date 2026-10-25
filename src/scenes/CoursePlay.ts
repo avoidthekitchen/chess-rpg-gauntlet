@@ -11,7 +11,7 @@ import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phas
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
-import { companionReaction, courseBanner, type CourseBanner, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore } from '../ui/coursePresentation';
+import { companionReaction, lineBanner, type CourseBanner, companionSpeaker, CourseDialogueLog, CourseHolds, CourseSpeech, courseAllowsSpeech, courseGuidance, courseDialogueRow, courseIntro, courseMoveCues, courseMoveSpeaker, coursePortrait, courseStoryBefore } from '../ui/coursePresentation';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
 
@@ -236,8 +236,13 @@ export class CoursePlayScene extends BaseScene {
     const anchor = this.hud.querySelector<HTMLElement>(persistent ? '.ambush-panel' : '.ambush-panel-scroll');
     if (!anchor) { element.hidden = true; return; }
     const bounds = anchor.getBoundingClientRect();
-    const top = persistent ? bounds.bottom + 12 : bounds.top;
-    const height = persistent ? Math.min(156, this.H - this.safe.bottom - top - 8) : bounds.height;
+    // Tall phones have room under the panel, as in the original game; use it before covering advice.
+    const panel = persistent ? null : this.hud.querySelector<HTMLElement>('.ambush-panel')?.getBoundingClientRect();
+    const below = panel ? this.H - this.safe.bottom - panel.bottom - 16 : 0;
+    const roomBelow = !persistent && below >= 104;
+    const top = persistent ? bounds.bottom + 12 : roomBelow ? panel!.bottom + 8 : bounds.top;
+    const height = persistent ? Math.min(156, this.H - this.safe.bottom - top - 8) : roomBelow ? Math.min(132, below) : bounds.height;
+    element.classList.toggle('below-panel', roomBelow);
     element.hidden = height < 44;
     element.style.left = `${bounds.left}px`;
     element.style.top = `${top}px`;
@@ -323,10 +328,7 @@ export class CoursePlayScene extends BaseScene {
       const cues = courseMoveCues(this.chess, move, accepted, this.puzzle.id, publishedIndex);
       const info = courseMoveSpeaker(move, this.solver, cues, this.lesson.regionId);
       this.journal.add(info, this.scope, Math.max(0, Math.ceil(publishedIndex / 2) * 2 - (move.color === this.solver ? 1 : 0)));
-      // The opponent's setup move (index 0) stays quiet; later replies can earn a banner.
-      const foeReply = move.color !== this.solver && publishedIndex > 0;
-      const banner = accepted ? courseBanner(move, cues, this.solver)
-        : foeReply ? courseBanner(move, courseMoveCues(this.chess, move, true, this.puzzle.id, -1), this.solver) : null;
+      const banner = lineBanner(this.chess, move, this.solver, accepted, this.puzzle.id, publishedIndex);
       if (banner) {
         await this.moveMoment(banner, info, token); if (token !== this.session) return;
       }

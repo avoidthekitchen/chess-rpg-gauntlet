@@ -94,8 +94,8 @@ The 44px portrait button opens a conversation history grouped by example and pra
 Celebrate accepted captures, checks, verified forks, double checks, promotions, and checkmates.
 The move lands first. Then one banner fills the board's centre, and the next move waits until it fades. A tap on the board skips it.
 Checkmate, forks, double checks and promotions get a large word banner. They outrank a capture close-up, which outranks a plain check.
-A capture close-up shows the capturing piece's portrait in a band across the board. Pawn captures alone get no banner.
-The opponent's replies within the published line can also earn a capture close-up or check banner. The setup move stays quiet.
+A capture close-up shows the capturing piece's portrait in a band across the board. Capturing a pawn alone gets no banner.
+The opponent's replies within the published line follow the same rules. The setup move stays quiet.
 Wrong moves being taken back receive no tactical celebration.
 A source tag alone does not prove that the current move deserves a banner.
 Fork cues use reviewed source moves plus a board check in `src/ui/coursePresentation.ts`.

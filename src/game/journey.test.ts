@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { AMBUSH_HELP, moveAmbush, nextAmbushWave, wavePuzzle } from './ambush';
 import type { DifficultyId } from './difficulty';
 import { COURSE_REGIONS, courseLesson } from './curriculum';
-import { beginJourneyLesson, journeyComplete, lessonUnlocked, newJourney, regionUnlocked, settleJourney, type JourneySave } from './journey';
+import { beginJourneyLesson, journeyComplete, lessonUnlocked, markIntroSeen, newJourney, pendingIntro, regionUnlocked, settleJourney, type JourneySave } from './journey';
 
 const ids = COURSE_REGIONS.flatMap(region => region.lessons);
 function win(save: JourneySave, id: string, helped = false) {
@@ -140,5 +140,20 @@ describe('finale completion', () => {
     expect(journeyComplete(save)).toBe(true);
     save.completed.pop();
     expect(journeyComplete(save)).toBe(false);
+  });
+});
+
+describe('chapter introductions', () => {
+  it('opens each chapter intro once, never in preview', () => {
+    const save = newJourney();
+    expect(pendingIntro(save, true)).toBeNull();
+    expect(pendingIntro(save, false)).toBe(COURSE_REGIONS[0].id);
+    markIntroSeen(save, COURSE_REGIONS[0].id);
+    markIntroSeen(save, COURSE_REGIONS[0].id);
+    expect(save.introsSeen).toEqual([COURSE_REGIONS[0].id]);
+    expect(pendingIntro(save, false)).toBeNull();
+    save.completed = [...COURSE_REGIONS[0].lessons];
+    save.currentRegion = COURSE_REGIONS[1].id;
+    expect(pendingIntro(save, false)).toBe(COURSE_REGIONS[1].id);
   });
 });

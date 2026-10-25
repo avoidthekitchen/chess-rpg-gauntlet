@@ -1,0 +1,48 @@
+/* Sound controls and the "speaking" glow. Colours follow the journey's brass-and-plum theme. */
+
+.sound-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; min-width:40px; height:40px; min-height:40px!important; padding:0!important; flex-shrink:0; }
+.journey-hud .sound-toggle[aria-pressed=true],.ambush-hud .sound-toggle[aria-pressed=true] { background:#29212b; border-color:#69606d; box-shadow:none; color:#a99fae; }
+.sound-toggle svg { display:block; }
+.ambush-top .sound-toggle { width:38px; min-width:38px; height:38px; min-height:38px!important; }
+.ambush-launcher > .sound-toggle { position:fixed; z-index:2; top:calc(14px + env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right)); background:#19151cb8; backdrop-filter:blur(4px); }
+.journey-title-scene .sound-toggle { position:absolute; top:calc(14px + env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right)); background:#19151cb8; border-color:#75623e99; backdrop-filter:blur(4px); }
+
+.sound-settings .sound-master { display:flex; align-items:center; gap:10px; font:600 15px system-ui,sans-serif; margin-bottom:14px; cursor:pointer; }
+.sound-settings .sound-master input { width:20px; height:20px; accent-color:#e0ab45; }
+.sound-sliders { display:grid; gap:12px; max-width:520px; transition:opacity .2s; }
+.sound-sliders.muted { opacity:.45; }
+.sound-sliders label { display:grid; grid-template-columns:120px 1fr 34px; align-items:center; gap:12px; font:14px system-ui,sans-serif; color:#e6d9bd; }
+.sound-sliders output { text-align:right; font:600 13px system-ui,sans-serif; color:#d5c49e; font-variant-numeric:tabular-nums; }
+.sound-sliders input[type=range] { width:100%; height:28px; margin:0; background:transparent; accent-color:#e0ab45; cursor:pointer; }
+.sound-sliders input[type=range]::-webkit-slider-runnable-track { height:6px; border-radius:3px; background:linear-gradient(#5a4a37,#4a3c2e); border:1px solid #75623e; }
+.sound-sliders input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; margin-top:-8px; border-radius:50%; background:radial-gradient(circle at 35% 35%,#ffe2a0,#e0ab45 60%,#a77a2a); border:1px solid #f1c970; box-shadow:0 1px 4px #0008; }
+.sound-sliders input[type=range] { -webkit-appearance:none; appearance:none; }
+.sound-sliders input[type=range]::-moz-range-track { height:6px; border-radius:3px; background:#4a3c2e; border:1px solid #75623e; }
+.sound-sliders input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:#e0ab45; border:1px solid #f1c970; }
+.sound-sliders input[type=range]:focus-visible { outline:3px solid #ffe4a2; outline-offset:2px; border-radius:4px; }
+@media (max-width: 640px) { .sound-sliders label { grid-template-columns:96px 1fr 30px; gap:8px; } }
+
+/* Whoever is speaking: their portrait bobs gently and the line warms up. */
+@keyframes speaking-bob { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-2px) scale(1.035); } }
+@keyframes speaking-glow { 0%,100% { box-shadow:0 0 0 0 #f1c76a00,0 2px 8px #0005; } 50% { box-shadow:0 0 0 3px #f1c76a55,0 2px 12px #f1c76a44; } }
+.speaking .course-portrait,.speaking .dlg-pic,.speaking .journey-story-portrait,.speaking.journey-greeting .dlg-pic { animation:speaking-bob .42s ease-in-out infinite,speaking-glow 1.2s ease-in-out infinite; transform-origin:50% 90%; }
+.speaking p,.speaking.journey-narration,.journey-story-lead.speaking { color:#fff4dc; text-shadow:0 0 18px #f1c76a33; transition:color .3s,text-shadow .3s; }
+blockquote.speaking { border-left-color:#f1c76a!important; }
+.ambush-story p.speaking,.ambush-result p.speaking { color:#fff4dc; text-shadow:0 0 18px #f1c76a40; }
+.ambush-story:has(p.speaking) { border-left-color:#f1c76a; }
+@media (prefers-reduced-motion: reduce) {
+  .speaking .course-portrait,.speaking .dlg-pic,.speaking .journey-story-portrait { animation:speaking-glow 1.2s ease-in-out infinite; }
+}
+
+/* Read-aloud control on story pages, beside the chapter kicker. */
+.journey-story-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
+.journey-story-top .journey-kicker { margin:0!important; }
+.journey-hud button.read-aloud { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:5px 12px 5px 8px; border-radius:18px; font-size:13px; white-space:nowrap; flex-shrink:0; }
+.journey-hud button.read-aloud svg { width:18px; height:18px; }
+.journey-hud button.read-aloud[aria-pressed=true] { background:#55432c; border-color:#f1c76a; box-shadow:none; }
+
+/* Phones: the mute button sits at the end of the header's first row. */
+@media (max-width: 639px) {
+  .journey-header .journey-total { margin-left:auto; }
+  .journey-header .sound-toggle { order:2; width:36px; min-width:36px; height:36px; min-height:36px!important; }
+}

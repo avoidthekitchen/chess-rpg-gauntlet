@@ -1,0 +1,431 @@
+{
+ "sfx": {
+  "book": 1,
+  "check": 1,
+  "confetti": 1,
+  "fly": 2,
+  "hint": 1,
+  "hit": 2,
+  "hop": 1,
+  "lift": 2,
+  "nudge": 1,
+  "page": 1,
+  "place": 2,
+  "promote": 1,
+  "star": 1,
+  "sting-chapter": 1,
+  "sting-lost": 1,
+  "sting-mate": 1,
+  "sting-wave": 1,
+  "sting-win": 1,
+  "stomp": 1,
+  "stomp-land": 1,
+  "swish": 1,
+  "tap": 1,
+  "unswish": 1
+ },
+ "music": [
+  "ending",
+  "lesson-finale",
+  "lesson-r1",
+  "lesson-r2",
+  "lesson-r3",
+  "lesson-r4",
+  "lesson-r5",
+  "map-finale",
+  "map-r1",
+  "map-r2",
+  "map-r3",
+  "map-r4",
+  "map-r5",
+  "review-finale",
+  "review-r1",
+  "review-r2",
+  "review-r3",
+  "review-r4",
+  "review-r5",
+  "story",
+  "theme-main"
+ ],
+ "beds": [
+  "bed-finale",
+  "bed-home",
+  "bed-r1",
+  "bed-r2",
+  "bed-r3",
+  "bed-r4",
+  "bed-r5"
+ ],
+ "spots": [
+  "spot-armor",
+  "spot-bones",
+  "spot-cart",
+  "spot-chime",
+  "spot-crow",
+  "spot-door",
+  "spot-drip",
+  "spot-drum",
+  "spot-ember",
+  "spot-flag",
+  "spot-frog",
+  "spot-frogs",
+  "spot-gate",
+  "spot-gust",
+  "spot-heron",
+  "spot-hooves",
+  "spot-horn",
+  "spot-lark",
+  "spot-owl",
+  "spot-plop",
+  "spot-toll"
+ ],
+ "voices": {
+  "ally-b": [
+   "091fh1k",
+   "0w13ze2",
+   "11mfbnf",
+   "11p4x6b",
+   "1aq3i13",
+   "1siokac",
+   "1uakmp1"
+  ],
+  "ally-n": [
+   "07o9aox",
+   "0o8btsn",
+   "0odnf3w",
+   "0yi8zbz",
+   "19ymgc6",
+   "1ech4l2",
+   "1xmk8ps"
+  ],
+  "ally-p": [
+   "0jskscc",
+   "0n4e4ax",
+   "0s0tjbq",
+   "12js7gi",
+   "1afx0ai",
+   "1tn2yht"
+  ],
+  "ally-q": [
+   "00vpzzg",
+   "042zyxr",
+   "0c8mutn",
+   "0hujcv1",
+   "0ivuyq4",
+   "0kyt1js",
+   "0xftmc7"
+  ],
+  "ally-r": [
+   "0a1926j",
+   "0d69rz6",
+   "0pnjere",
+   "0t4fu8l",
+   "1dg68h0",
+   "1imcpqb",
+   "1puccxk"
+  ],
+  "ashfang": [
+   "1inpfn3",
+   "1kbrxx4",
+   "1xoclh2"
+  ],
+  "brick": [
+   "0241gor",
+   "07j9n2n",
+   "0a49jgk",
+   "0c1jck1",
+   "0c6tu2o",
+   "0f6mkzx",
+   "0f9sjr9",
+   "0v0py6o",
+   "0ysbflt",
+   "10zh54n",
+   "156e0n8",
+   "17y5u7k",
+   "18nrprx",
+   "196ib91",
+   "1as7izu",
+   "1cuu2hk",
+   "1nsbdn4",
+   "1qqdm28",
+   "1rx2sve",
+   "1tjltsa"
+  ],
+  "cult-leader": [
+   "0jlgas6",
+   "1129eb1",
+   "1a9eoiz"
+  ],
+  "finale-b": [
+   "1a2yi8c"
+  ],
+  "finale-n": [
+   "0zndf9n"
+  ],
+  "finale-p": [
+   "1qwvcq4"
+  ],
+  "finale-q": [
+   "1i3enp4"
+  ],
+  "finale-r": [
+   "0ht93zw"
+  ],
+  "flint": [
+   "00rfwvz",
+   "02pr8x8",
+   "1e6evyf"
+  ],
+  "grubnak": [
+   "19t0561",
+   "1hehmup",
+   "1rr2a55",
+   "1su37he"
+  ],
+  "hob": [
+   "00ndffn",
+   "03w8ubv",
+   "06pf0sx",
+   "081v1gp",
+   "0931wyk",
+   "09614m9",
+   "0bjgl2a",
+   "0e66ogf",
+   "0iszrho",
+   "0wlobvg",
+   "0zhtwc1",
+   "0zrf4n4",
+   "10dtczn",
+   "11zy70m",
+   "15rpxuk",
+   "1grizv7",
+   "1ktp1kk",
+   "1ld1qkm",
+   "1tg4z9w",
+   "1vt88fv"
+  ],
+  "lich": [
+   "0e68h5p",
+   "0ig4y2j",
+   "0n4n5vn",
+   "0ps9pav",
+   "0wgmbn4",
+   "1ao5p0n",
+   "1g2ccxz",
+   "1ttmgd9",
+   "1y3poyn"
+  ],
+  "narrator": [
+   "01ez6gm",
+   "02gvxe3",
+   "03onv74",
+   "041benp",
+   "0463c6z",
+   "04aahwf",
+   "05vovai",
+   "060sd0l",
+   "062dz0y",
+   "06mktep",
+   "08yfy2f",
+   "0917qe3",
+   "097u9rf",
+   "0b0ieiu",
+   "0baetfh",
+   "0bobqud",
+   "0d5vggl",
+   "0enpwyu",
+   "0eqmv03",
+   "0evbfke",
+   "0f32a8q",
+   "0f4hey5",
+   "0hfy95q",
+   "0hkj74w",
+   "0i383bz",
+   "0i487jh",
+   "0imp7wu",
+   "0jxbx9l",
+   "0lfytg2",
+   "0nfpww4",
+   "0nhaq6w",
+   "0pafrkb",
+   "0pbn1rf",
+   "0pcrn42",
+   "0phqrbr",
+   "0ra04dr",
+   "0rffhfw",
+   "0t6uq0j",
+   "0u0dv8l",
+   "0urqm6j",
+   "0uw7qqs",
+   "0whbu8h",
+   "0x4fomp",
+   "0z6cnl5",
+   "0zzdcau",
+   "104pcmn",
+   "11bv15t",
+   "11nhdtl",
+   "120glh9",
+   "12ic20g",
+   "13ffaox",
+   "14mlmsb",
+   "14wdfxt",
+   "17yovhi",
+   "188jib8",
+   "18b9rze",
+   "1achyd6",
+   "1afl5ch",
+   "1bk4o76",
+   "1byfwb9",
+   "1d3xg76",
+   "1fuyaal",
+   "1gp2vo9",
+   "1gzxa2b",
+   "1h7ru8s",
+   "1hcl8sv",
+   "1hn8tln",
+   "1i2o0c6",
+   "1i5v1ym",
+   "1ich151",
+   "1m2ijs3",
+   "1n4jgha",
+   "1o0uz9e",
+   "1pmq2yr",
+   "1pyo2u5",
+   "1tvusxt",
+   "1wyogus",
+   "1x8ek0d",
+   "1y5h10s",
+   "1ybcsaj",
+   "1yrw7si",
+   "1yzxtx7"
+  ],
+  "ollie": [
+   "06fcdrw",
+   "09znva7",
+   "0oa7p40",
+   "0qidhmn",
+   "0qpj9b3",
+   "0u1hr8i",
+   "0y1wbjn",
+   "10l4vqx",
+   "13cjw6x",
+   "148w34e",
+   "14bbtjs",
+   "15m910w",
+   "15tssqa",
+   "1aadk2i",
+   "1o7a4oa",
+   "1omid9r",
+   "1tftl3i",
+   "1w53efp",
+   "1w9jv2x",
+   "1xihkcm"
+  ],
+  "r1-b": [
+   "0y65whs"
+  ],
+  "r1-n": [
+   "0b12dga"
+  ],
+  "r1-p": [
+   "029nvny",
+   "08anfod",
+   "0a2yo3a",
+   "0chqq62",
+   "18yq8na",
+   "1nxxgch"
+  ],
+  "r1-q": [
+   "0i0ddor"
+  ],
+  "r1-r": [
+   "0oc7lys"
+  ],
+  "r2-b": [
+   "1kyf2j1"
+  ],
+  "r2-n": [
+   "01ubaxp"
+  ],
+  "r2-p": [
+   "0hyq1ga",
+   "0xwx4ew",
+   "17ibfqy",
+   "194qo8l",
+   "1glnx6k",
+   "1ruz68y"
+  ],
+  "r2-q": [
+   "1kc8kms"
+  ],
+  "r2-r": [
+   "0fk7c2g"
+  ],
+  "r3-b": [
+   "1ax1kr8"
+  ],
+  "r3-n": [
+   "14oc5ut"
+  ],
+  "r3-p": [
+   "0e2npx8",
+   "0uy64ru"
+  ],
+  "r3-q": [
+   "193v0pf"
+  ],
+  "r3-r": [
+   "08lnvlg"
+  ],
+  "r4-b": [
+   "1gqu5vz"
+  ],
+  "r4-n": [
+   "12nabet"
+  ],
+  "r4-p": [
+   "0ndpdkd",
+   "0p1y0sa",
+   "0qoyxps",
+   "14mn39n",
+   "14nd3ns",
+   "1g5ftxo",
+   "1wwylrp"
+  ],
+  "r4-q": [
+   "1tmp0h6"
+  ],
+  "r4-r": [
+   "1pt89cr"
+  ],
+  "r5-b": [
+   "18jk4my"
+  ],
+  "r5-n": [
+   "1abi55b"
+  ],
+  "r5-p": [
+   "0z7sykp",
+   "1prq1u3"
+  ],
+  "r5-q": [
+   "0wicvlb"
+  ],
+  "r5-r": [
+   "006vswf"
+  ],
+  "saffron": [
+   "1srs7ot",
+   "1svw5f1"
+  ],
+  "tadwell": [
+   "08vi8zi",
+   "1aid4mv"
+  ],
+  "wardens": [
+   "08vmvrs",
+   "0btmkut",
+   "1h9ul55"
+  ]
+ }
+}

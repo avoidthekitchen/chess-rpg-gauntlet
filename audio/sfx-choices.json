@@ -1,0 +1,314 @@
+{
+ "place": {
+  "takes": [
+   4,
+   6
+  ],
+  "length": 0.3
+ },
+ "lift": {
+  "takes": [
+   2,
+   1
+  ],
+  "gain": -6,
+  "length": 0.25
+ },
+ "stomp": {
+  "takes": [
+   1
+  ],
+  "gain": -2,
+  "length": 0.45
+ },
+ "stomp-land": {
+  "takes": [
+   1
+  ],
+  "length": 0.6
+ },
+ "hop": {
+  "takes": [
+   2
+  ],
+  "gain": -4,
+  "length": 0.6
+ },
+ "hit": {
+  "takes": [
+   1,
+   2
+  ],
+  "length": 0.6
+ },
+ "fly": {
+  "takes": [
+   2,
+   3
+  ],
+  "gain": -4,
+  "length": 0.7
+ },
+ "check": {
+  "takes": [
+   3
+  ],
+  "lowpass": 7000,
+  "gain": -3,
+  "length": 1.0
+ },
+ "promote": {
+  "takes": [
+   1
+  ],
+  "stereo": true
+ },
+ "hint": {
+  "takes": [
+   3
+  ],
+  "stereo": true,
+  "gain": -4,
+  "length": 1.1
+ },
+ "star": {
+  "takes": [
+   1
+  ],
+  "stereo": true,
+  "gain": -4,
+  "length": 1.3
+ },
+ "nudge": {
+  "takes": [
+   2
+  ],
+  "gain": -3,
+  "length": 0.7
+ },
+ "swish": {
+  "takes": [
+   2
+  ],
+  "gain": -5,
+  "length": 0.7
+ },
+ "unswish": {
+  "takes": [
+   2
+  ],
+  "highpass": 300,
+  "gain": -6,
+  "length": 0.6
+ },
+ "page": {
+  "takes": [
+   1
+  ],
+  "gain": -6,
+  "length": 1.0
+ },
+ "book": {
+  "takes": [
+   2
+  ],
+  "stereo": true,
+  "gain": -3
+ },
+ "tap": {
+  "takes": [
+   2
+  ],
+  "gain": -10,
+  "length": 0.15
+ },
+ "confetti": {
+  "takes": [
+   3
+  ],
+  "stereo": true,
+  "gain": -5,
+  "length": 1.6
+ },
+ "sting-wave": {
+  "takes": [
+   3
+  ],
+  "stereo": true,
+  "gain": -2
+ },
+ "sting-win": {
+  "takes": [
+   2
+  ],
+  "stereo": true
+ },
+ "sting-chapter": {
+  "takes": [
+   2
+  ],
+  "stereo": true
+ },
+ "sting-lost": {
+  "takes": [
+   2
+  ],
+  "stereo": true,
+  "gain": -2
+ },
+ "sting-mate": {
+  "takes": [
+   1
+  ],
+  "stereo": true
+ },
+ "bed-home": {
+  "takes": [
+   1
+  ]
+ },
+ "bed-r1": {
+  "takes": [
+   3
+  ],
+  "lowpass": 9000
+ },
+ "bed-r2": {
+  "takes": [
+   1
+  ]
+ },
+ "bed-r3": {
+  "takes": [
+   4
+  ]
+ },
+ "bed-r4": {
+  "takes": [
+   2
+  ]
+ },
+ "bed-r5": {
+  "takes": [
+   3
+  ]
+ },
+ "bed-finale": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-frog": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-frogs": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-plop": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-heron": {
+  "takes": [
+   1
+  ],
+  "gain": -3
+ },
+ "spot-hooves": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-crow": {
+  "takes": [
+   1
+  ],
+  "gain": -3
+ },
+ "spot-lark": {
+  "takes": [
+   1
+  ],
+  "gain": -3
+ },
+ "spot-cart": {
+  "takes": [
+   3
+  ]
+ },
+ "spot-chime": {
+  "takes": [
+   2
+  ],
+  "gain": -2
+ },
+ "spot-drip": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-door": {
+  "takes": [
+   3
+  ],
+  "gain": -2
+ },
+ "spot-flag": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-drum": {
+  "takes": [
+   2
+  ],
+  "gain": -3
+ },
+ "spot-armor": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-horn": {
+  "takes": [
+   3
+  ],
+  "gain": -4
+ },
+ "spot-owl": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-bones": {
+  "takes": [
+   1
+  ]
+ },
+ "spot-gate": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-toll": {
+  "takes": [
+   1
+  ],
+  "gain": -2
+ },
+ "spot-gust": {
+  "takes": [
+   2
+  ]
+ },
+ "spot-ember": {
+  "takes": [
+   2
+  ]
+ }
+}

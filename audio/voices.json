@@ -1,0 +1,203 @@
+{
+  "model": "google/gemini-3.8-flash-tts",
+  "style": "Voice acting for Pawnshire, a hand-painted storybook chess adventure with animal characters, for families. Warm, characterful, clearly spoken; never scary or mean. Speak only the given words.",
+  "say": {
+    "Got you!": "Got... you!"
+  },
+  "roles": {
+    "narrator": {
+      "voice": "Sulafat",
+      "direction": "The storybook narrator: a warm, gentle British storyteller reading a picture book aloud at bedtime. Unhurried, kind and softly expressive, with a smile in the voice."
+    },
+    "hob": {
+      "voice": "Puck",
+      "direction": "Sir Hob, a young frog knight: eager, brave and a little show-off, bouncy and quick, with a cheeky grin. Light British accent."
+    },
+    "ollie": {
+      "voice": "Sadaltager",
+      "direction": "Sage Ollie, an old owl scholar: patient and precise, with dry, gentle wit and a knowing smile. Calm, warm, slightly scholarly British accent."
+    },
+    "brick": {
+      "voice": "Schedar",
+      "direction": "Old Brick, an ancient tortoise: a deep, warm, steady voice, unhurried but never slow, few words, calm under pressure and quietly kind. Speaks at a natural pace."
+    },
+    "saffron": {
+      "voice": "Pulcherrima",
+      "direction": "Saffron, the Fox Queen: confident, quick and a bit vain, elegant and playful, with a sly smile."
+    },
+    "grubnak": {
+      "voice": "Algenib",
+      "direction": "Grubnak, the Toad Chief: a big, loud, greedy goblin toad, deep, croaky and gravelly. Pompous and boastful, talks about himself in the third person, a comic bully, never truly scary."
+    },
+    "ashfang": {
+      "voice": "Algieba",
+      "direction": "Ashfang, the Bandit Lord: a smooth, velvet-voiced wolf, mocking and amused, who counts everything in coin. A charming thief, not a brute."
+    },
+    "tadwell": {
+      "voice": "Iapetus",
+      "direction": "Tadwell, the Frog Captain: formal, dutiful and earnest, proud of the old army and a little stiff, with crisp military politeness."
+    },
+    "cult-leader": {
+      "voice": "Enceladus",
+      "direction": "The Cult Leader: hushed, serene and certain, a soft breathy near-whisper that never rises. Calm and a little unsettling, not frightening."
+    },
+    "flint": {
+      "voice": "Alnilam",
+      "direction": "General Flint, a proud old lion general: firm, clipped and commanding, gruff authority with dignity."
+    },
+    "wardens": {
+      "voice": "Umbriel",
+      "direction": "The Bone Wardens, skeleton guards who speak as one: low, slow and hollow, quiet and watchful, very few words."
+    },
+    "lich": {
+      "voice": "Charon",
+      "direction": "The Lich King, an ancient skeleton king: cold, quiet, courtly and measured, a dry, hollow voice with faded grandeur. Never raises his voice.",
+      "post": "hall"
+    },
+    "r1-p": {
+      "voice": "Zubenelgenubi",
+      "direction": "A sneaky little bog rat goblin: quick, squeaky and giggly, up to mischief."
+    },
+    "r1-n": {
+      "voice": "Fenrir",
+      "direction": "A slippery, splashy salamander goblin knight: excitable and showy."
+    },
+    "r1-b": {
+      "voice": "Rasalgethi",
+      "direction": "A beady-eyed crow goblin bishop: raspy, nosy and sly, peering about."
+    },
+    "r1-r": {
+      "voice": "Orus",
+      "direction": "A slow, grumpy snapping-turtle goblin rook: heavy, muddy and stubborn."
+    },
+    "r1-q": {
+      "voice": "Despina",
+      "direction": "A swamp viper goblin queen: sly, silky and theatrical, drawing out her s sounds."
+    },
+    "r2-p": {
+      "voice": "Zubenelgenubi",
+      "direction": "A street-smart raccoon bandit: nimble, cheeky and relaxed."
+    },
+    "r2-n": {
+      "voice": "Sadachbia",
+      "direction": "A fast, cocky hare bandit knight: breezy and daring."
+    },
+    "r2-b": {
+      "voice": "Leda",
+      "direction": "A chattering magpie bandit bishop: bright and greedy for shiny things."
+    },
+    "r2-r": {
+      "voice": "Orus",
+      "direction": "A burly badger bandit rook: gruff, slow and good-humoured."
+    },
+    "r2-q": {
+      "voice": "Kore",
+      "direction": "A sharp, cunning stoat bandit queen: cool and businesslike."
+    },
+    "r3-p": {
+      "voice": "Achernar",
+      "direction": "A soft moth cultist: a fluttery, hushed whisper, gentle and certain."
+    },
+    "r3-n": {
+      "voice": "Umbriel",
+      "direction": "A quiet bat cultist knight: low and secretive."
+    },
+    "r3-b": {
+      "voice": "Despina",
+      "direction": "A slow spider cultist bishop: silky, patient and mysterious."
+    },
+    "r3-r": {
+      "voice": "Schedar",
+      "direction": "A very slow snail cultist rook: drowsy, calm and solemn."
+    },
+    "r3-q": {
+      "voice": "Vindemiatrix",
+      "direction": "An elegant cat cultist queen: soft, purring and knowing."
+    },
+    "r4-p": {
+      "voice": "Achird",
+      "direction": "A young hedgehog soldier of the Iron Legion: eager, dutiful recruit."
+    },
+    "r4-n": {
+      "voice": "Fenrir",
+      "direction": "A bold boar cavalry knight of the Iron Legion: gruff, brave and hearty, speaking firmly at a normal volume, never shouting."
+    },
+    "r4-b": {
+      "voice": "Rasalgethi",
+      "direction": "A calm heron officer of the Iron Legion: precise and observant."
+    },
+    "r4-r": {
+      "voice": "Orus",
+      "direction": "A sturdy armadillo veteran of the Iron Legion: steady, proud and dry."
+    },
+    "r4-q": {
+      "voice": "Kore",
+      "direction": "A proud eagle commander of the Iron Legion: crisp and commanding."
+    },
+    "r5-p": {
+      "voice": "Achernar",
+      "direction": "A small skeleton mouse guard: quiet, hollow and watchful."
+    },
+    "r5-n": {
+      "voice": "Umbriel",
+      "direction": "A skeleton frog guard: soft, slow and hollow."
+    },
+    "r5-b": {
+      "voice": "Gacrux",
+      "direction": "A skeleton owl guard: old, quiet and solemn."
+    },
+    "r5-r": {
+      "voice": "Schedar",
+      "direction": "A skeleton tortoise guard: very slow, deep and hollow."
+    },
+    "r5-q": {
+      "voice": "Vindemiatrix",
+      "direction": "A skeleton fox guard: cool, quiet and hollow."
+    },
+    "finale-p": {
+      "voice": "Achernar",
+      "direction": "A skeleton mouse servant of the Lich King: hushed, polite and cold.",
+      "post": "hall"
+    },
+    "finale-n": {
+      "voice": "Umbriel",
+      "direction": "A skeleton frog knight of the Lich King: slow, courtly and cold.",
+      "post": "hall"
+    },
+    "finale-b": {
+      "voice": "Gacrux",
+      "direction": "A skeleton owl bishop of the Lich King: quiet, courtly and patient.",
+      "post": "hall"
+    },
+    "finale-r": {
+      "voice": "Schedar",
+      "direction": "A skeleton tortoise rook of the Lich King: deep, slow and solemn.",
+      "post": "hall"
+    },
+    "finale-q": {
+      "voice": "Vindemiatrix",
+      "direction": "A skeleton fox queen of the Lich King: elegant, cool and wistful.",
+      "post": "hall"
+    },
+    "ally-p": {
+      "voice": "Leda",
+      "direction": "A brave little mouse pawn of Pawnshire: small, plucky and determined."
+    },
+    "ally-n": {
+      "voice": "Sadachbia",
+      "direction": "A bold frog knight soldier of Pawnshire: lively and confident."
+    },
+    "ally-b": {
+      "voice": "Iapetus",
+      "direction": "A wise owl bishop of Pawnshire: clear, calm and pleased."
+    },
+    "ally-r": {
+      "voice": "Orus",
+      "direction": "A sturdy tortoise rook of Pawnshire: steady, warm and firm."
+    },
+    "ally-q": {
+      "voice": "Autonoe",
+      "direction": "A bright, confident fox queen of Pawnshire: quick and stylish."
+    }
+  }
+}

@@ -40,6 +40,7 @@ The journey, legacy campaign, and pilot use separate saves. Resetting the journe
 - **Progress:** sequential unlocks, saved completion, three optional stars per encounter, and unlimited retries. There are 28 guided lessons and seven mixed encounters. Replays can earn missed stars.
 - **Presentation:** Continue/New journey title, painted route maps, portrait introductions, talking pieces, conversation history, accurate move banners, and victory stars.
 - **Board feel:** animated animal pieces, classic-piece controls, and phone layouts.
+- **Sound:** music, ambience, and effects for every chapter, and 253 voiced lines. A speaker button mutes; Settings has four volume sliders. See [Sound](docs/design/audio.md).
 
 This journey assumes players know piece movement. The entry screen includes a reminder and links to Lichess Learn.
 Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their earlier implementation remains available in Git history.
@@ -50,8 +51,10 @@ Recruitment, gold, faction AI, powers, and live army bosses are deferred. Their 
 src/game/     curriculum, journey progress, published-line rules, companions and shared chess helpers
 src/scenes/   Boot, Journey (title/map/journal/settings), CoursePlay (lesson runner)
 src/ui/       board, portraits, widgets, HTML overlays and responsive screen helpers
+src/audio/    sound engine, soundscapes, voice script and roles, sound controls
+audio/        music, effect and voice direction, and chosen takes (raw takes stay local)
 data/         retired source reservations; ignored raw puzzle downloads
-scripts/      art generation, source selection/verification and deployment staging
+scripts/      art and audio generation, source selection/verification and deployment staging
 ```
 
 ## Adding curriculum

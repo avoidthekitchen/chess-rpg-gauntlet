@@ -8,11 +8,16 @@ import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/journey.css';
-import { chapterIntro, chapterStory, COMPANION_GREETINGS, finaleInterlude, journeyEnding } from '../game/courseStory';
+import { chapterIntro, chapterStory, COMPANION_GREETINGS, ENDING_LEAD, finaleInterlude, INTERLUDE_LEAD, journeyEnding } from '../game/courseStory';
 import { courseSpeakerArt, reviewPortraitFile, storyPortraitStyle } from '../ui/courseArt';
 import { portraitStyle } from '../ui/portrait';
 import { journeyRoute, journeyTrail } from '../ui/journeyLayout';
 import { previewRegion } from '../journeyPreview';
+import { audio } from '../audio/engine';
+import { soundscape, type SoundPlace } from '../audio/soundtrack';
+import { readAloudButton, setReadAloud, soundSettings, soundToggle, voiceAttr } from '../audio/ui';
+import { COMPANION_VOICES, NARRATOR, storyVoice } from '../audio/voiceRoles';
+import { introVoices, storyVoices, type VoiceLine } from '../audio/voiceScript';
 
 type Page = 'title' | 'setup' | 'moves' | 'difficulty' | 'companion' | 'map' | 'journal' | 'settings' | 'story' | 'interlude' | 'ending';
 const ART = { n: 'knight', b: 'bishop', r: 'rook' };
@@ -31,6 +36,8 @@ export class JourneyScene extends BaseScene {
   private difficulty: DifficultyId = 'knight';
   private starter: StarterType = 'n';
   private storyRegion = '';
+  private stopReading: (() => void) | null = null;
+  private shownPage = '';
 
   constructor() { super('journey'); }
 
@@ -39,6 +46,7 @@ export class JourneyScene extends BaseScene {
     this.page = data.page ?? 'title';
     if (this.page === 'setup') this.page = 'moves';
     this.storyRegion = data.storyRegion ?? '';
+    this.shownPage = ''; this.stopReading = null;
     if (this.page === 'story' && !courseRegion(this.storyRegion)?.lessons.every(id => this.save?.completed.includes(id))) this.page = 'map';
     if (this.page === 'interlude' && (!this.save || !finaleInterludeUnlocked(this.save))) this.page = 'map';
     if (this.page === 'ending' && !this.save?.finaleComplete) this.page = 'map';
@@ -57,7 +65,7 @@ export class JourneyScene extends BaseScene {
       const select = e.target as HTMLSelectElement;
       if (select.matches('[data-region-picker]') && !isModalOpen()) this.action(`region:${select.value}`);
     });
-    this.events.once('shutdown', () => { this.hud.remove(); closeModal(); });
+    this.events.once('shutdown', () => { this.stopReading?.(); audio.hush(); this.hud.remove(); closeModal(); });
   }
 
   protected build() {
@@ -100,18 +108,52 @@ export class JourneyScene extends BaseScene {
       <p class="journey-help">Progress saves on this device.</p>${this.btn('page:title', 'Back to title', 'quiet')}</section></div>`;
   }
 
-  private dialogueRow(line: { who: 'narrator' | 'companion' | 'boss'; speaker: string; line: string }, regionId: string) {
-    if (line.who === 'narrator') return `<p class="journey-narration">${esc(line.line)}</p>`;
+  private dialogueRow(line: { who: 'narrator' | 'companion' | 'boss'; speaker: string; line: string }, regionId: string, voice?: VoiceLine | null) {
+    const attr = voice ? voiceAttr(voice.role, voice.line) : '';
+    if (line.who === 'narrator') return `<p class="journey-narration"${attr}>${esc(line.line)}</p>`;
     const foe = line.who === 'boss';
     const art = courseSpeakerArt(regionId, 'k', 'foe');
     const pic = foe ? portraitStyle('k', art.faction!, art.character) : portraitStyle(this.save?.starter ?? this.starter, 'ally');
-    return `<div class="dlg ${foe ? 'foe' : 'ally'} journey-dlg"><div class="dlg-pic" style="${pic}"></div><div><p class="who ${foe ? 'foe' : ''}">${esc(line.speaker)}</p><p>${esc(line.line)}</p></div></div>`;
+    return `<div class="dlg ${foe ? 'foe' : 'ally'} journey-dlg"${attr}><div class="dlg-pic" style="${pic}"></div><div><p class="who ${foe ? 'foe' : ''}">${esc(line.speaker)}</p><p>${esc(line.line)}</p></div></div>`;
   }
 
   private storyLine(line: { speaker: string; line: string }, regionId: string) {
     const pic = storyPortraitStyle(line.speaker, regionId);
     const words = `<p>${esc(line.line)}</p><cite>${esc(line.speaker)}</cite>`;
-    return pic ? `<blockquote class="journey-story-illustrated"><span class="journey-story-portrait" style="${pic}" aria-hidden="true"></span><div>${words}</div></blockquote>` : `<blockquote>${words}</blockquote>`;
+    const attr = voiceAttr(storyVoice(line.speaker, this.save?.starter ?? this.starter), line.line);
+    return pic ? `<blockquote class="journey-story-illustrated"${attr}><span class="journey-story-portrait" style="${pic}" aria-hidden="true"></span><div>${words}</div></blockquote>` : `<blockquote${attr}>${words}</blockquote>`;
+  }
+
+  /** Reads a story page or dialog aloud, line by line. The page's Read aloud button follows along. */
+  private readAloud(lines: (VoiceLine | null)[]) {
+    this.stopReading?.();
+    audio.prefetch(lines);
+    const stop = audio.readAloud(lines, (i) => {
+      setReadAloud(this.hud, i !== null);
+      if (i === null && this.stopReading === stop) this.stopReading = null;
+    });
+    this.stopReading = stop;
+  }
+
+  /** The narrated lead and spoken lines of the story page on screen. */
+  private pageVoices(): (VoiceLine | null)[] {
+    const save = this.save;
+    if (!save) return [];
+    if (this.page === 'ending') return storyVoices(ENDING_LEAD, journeyEnding(save.starter), save.starter);
+    if (this.page === 'interlude') return storyVoices(INTERLUDE_LEAD, finaleInterlude(save.starter), save.starter);
+    if (this.page === 'story') return storyVoices(courseRegion(this.storyRegion)!.outro, chapterStory(this.storyRegion, save.starter), save.starter);
+    return [];
+  }
+
+  /** Music and ambience follow the page and the chapter on the map. */
+  private soundPlace(): { place: SoundPlace; region: string } {
+    const region = this.save?.currentRegion ?? 'r1';
+    if (this.page === 'title') return { place: 'title', region };
+    if (!this.save) return { place: 'setup', region };
+    if (this.page === 'ending') return { place: 'ending', region: 'finale' };
+    if (this.page === 'interlude') return { place: 'interlude', region: 'finale' };
+    if (this.page === 'story') return { place: 'story', region: this.storyRegion };
+    return { place: 'map', region };
   }
 
   /** The first visit to a chapter opens with its story, once per journey. */
@@ -123,9 +165,13 @@ export class JourneyScene extends BaseScene {
     markIntroSeen(save, region.id); persistJourney(save);
     const lines = chapterIntro(region.id, save.starter);
     if (!lines.length) return;
+    const voices = introVoices(region.id, save.starter);
     showModal({ eyebrow: region.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(region) + 1}`, title: region.title, wide: true,
-      html: `<div class="journey-intro">${lines.map(line => this.dialogueRow(line, region.id)).join('')}</div>`,
-      buttons: [{ label: 'Onward', kind: 'primary', onClick: () => {} }] });
+      html: `<div class="journey-intro">${lines.map((line, i) => this.dialogueRow(line, region.id, voices[i])).join('')}</div>`,
+      buttons: [{ label: 'Onward', kind: 'primary', onClick: () => this.stopReading?.() }], onDismiss: () => this.stopReading?.() });
+    audio.sfx('book', { vary: false });
+    // Let the book settle before the narrator begins.
+    window.setTimeout(() => { if (isModalOpen() && this.hud.isConnected) this.readAloud(voices); }, 700);
   }
 
   private toast(text: string) {
@@ -138,8 +184,17 @@ export class JourneyScene extends BaseScene {
 
   private render() {
     this.hud.className = `journey-hud journey-${this.page}`;
+    const { place, region } = this.soundPlace();
+    audio.setScape(soundscape(place, region));
+    const pageKey = `${this.page}:${this.page === 'story' ? this.storyRegion : this.save?.currentRegion ?? ''}`;
+    const newPage = pageKey !== this.shownPage;
+    if (newPage) {
+      this.stopReading?.();
+      if (this.shownPage && this.page !== 'title') audio.sfx('page', { gain: 0.8 });
+      this.shownPage = pageKey;
+    }
     if (this.page === 'title') {
-      this.hud.innerHTML = `<section class="journey-title-scene" aria-label="Pawnshire title screen"><div class="journey-title-copy"><h1>Pawnshire</h1><p class="journey-title-subtitle">A storybook chess tactics journey</p><div class="journey-title-actions">${this.save ? this.btn('continue', 'Continue', 'primary journey-continue') : ''}${this.btn('new', 'New journey', this.save ? '' : 'primary')}</div></div><p class="journey-title-footnote">The rules of chess never change on the board.</p></section>`;
+      this.hud.innerHTML = `<section class="journey-title-scene" aria-label="Pawnshire title screen">${soundToggle()}<div class="journey-title-copy"><h1>Pawnshire</h1><p class="journey-title-subtitle">A storybook chess tactics journey</p><div class="journey-title-actions">${this.save ? this.btn('continue', 'Continue', 'primary journey-continue') : ''}${this.btn('new', 'New journey', this.save ? '' : 'primary')}</div></div><p class="journey-title-footnote">The rules of chess never change on the board.</p></section>`;
       return;
     }
     if (!this.save) {
@@ -150,26 +205,26 @@ export class JourneyScene extends BaseScene {
     const current = courseRegion(save.currentRegion) ?? COURSE_REGIONS[0];
     const stars = save.completed.reduce((n, id) => n + 1 + Number(save.stars[id]?.clean ?? false) + Number(save.stars[id]?.noHint ?? false), 0);
     this.hud.classList.toggle('journey-road', current.id === 'r2');
-    const header = `<header class="journey-header"><button class="journey-menu" data-action="menu" aria-label="Open journey menu">☰</button><button class="journey-wordmark" data-action="page:map">Pawnshire</button><nav aria-label="Journey navigation">${this.btn('page:map', 'Map', this.page === 'map' ? 'selected' : '')}${this.btn('page:journal', 'Journal', this.page === 'journal' ? 'selected' : '')}${this.btn('page:settings', 'Settings', this.page === 'settings' ? 'selected' : '')}</nav><span class="journey-total" aria-label="${stars} stars earned">★ ${stars}</span></header>`;
+    const header = `<header class="journey-header"><button class="journey-menu" data-action="menu" aria-label="Open journey menu">☰</button><button class="journey-wordmark" data-action="page:map">Pawnshire</button><nav aria-label="Journey navigation">${this.btn('page:map', 'Map', this.page === 'map' ? 'selected' : '')}${this.btn('page:journal', 'Journal', this.page === 'journal' ? 'selected' : '')}${this.btn('page:settings', 'Settings', this.page === 'settings' ? 'selected' : '')}</nav><span class="journey-total" aria-label="${stars} stars earned">★ ${stars}</span>${soundToggle()}</header>`;
     let body = '';
     if (this.page === 'ending' || this.page === 'interlude') {
       const ending = this.page === 'ending';
       const lines = ending ? journeyEnding(save.starter) : finaleInterlude(save.starter);
-      body = `<section class="journey-paper journey-story journey-ending"><p class="journey-kicker">${ending ? 'The journey is complete' : 'The Lich King · Between the tables'}</p>
+      body = `<section class="journey-paper journey-story journey-ending"><div class="journey-story-top"><p class="journey-kicker">${ending ? 'The journey is complete' : 'The Lich King · Between the tables'}</p>${readAloudButton()}</div>
         <img class="journey-ending-companion" src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt="${esc(STARTERS[save.starter].name)}"/>
         <h1>${ending ? 'A crown worth carrying.' : 'One last table.'}</h1>
-        <p class="journey-story-lead">${ending ? 'The Lich King accepts checkmate. The gates open, the banners rise, and the road home belongs to Pawnshire again.' : 'The first encounter is settled. Your companion draws up a chair beside you.'}</p>
+        <p class="journey-story-lead"${voiceAttr(NARRATOR, ending ? ENDING_LEAD : INTERLUDE_LEAD)}>${ending ? ENDING_LEAD : INTERLUDE_LEAD}</p>
         <div class="journey-story-lines">${lines.map(line => this.storyLine(line, 'finale')).join('')}</div>
         <div class="journey-actions">${ending ? this.btn('page:map', 'Revisit the journey', 'primary') : this.btn(`lesson:${finalEncounter()}`,  'Take your place', 'primary')}${this.btn('page:journal', 'Read your journal')}${ending ? this.btn(`lesson:${finalEncounter()}`,  'Practise the last encounter') : this.btn('page:map', 'Back to the map')}</div>
-        ${ending ? `<footer class="journey-credits"><h2>Thank you for playing Pawnshire</h2><p>Keep looking, keep learning, and return whenever you like. Every earlier lesson and your earned stars are still here.</p><p>Published positions and solution lines: <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a>, shared under CC0. Original story and companion notes by Pawnshire.</p><p>Built with Phaser and chess.js. Storybook landscapes created with AI assistance.</p><p>Want to keep learning? <a href="https://lichess.org/practice" target="_blank" rel="noopener">Explore Lichess Practice</a>.</p></footer>` : ''}</section>`;
+        ${ending ? `<footer class="journey-credits"><h2>Thank you for playing Pawnshire</h2><p>Keep looking, keep learning, and return whenever you like. Every earlier lesson and your earned stars are still here.</p><p>Published positions and solution lines: <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a>, shared under CC0. Original story and companion notes by Pawnshire.</p><p>Built with Phaser and chess.js. Storybook landscapes, music, voices, and sound created with AI assistance.</p><p>Want to keep learning? <a href="https://lichess.org/practice" target="_blank" rel="noopener">Explore Lichess Practice</a>.</p></footer>` : ''}</section>`;
     } else if (this.page === 'story') {
       const chapter = courseRegion(this.storyRegion)!;
       const nextChapter = COURSE_REGIONS[COURSE_REGIONS.indexOf(chapter) + 1];
       const lines = chapterStory(chapter.id, save.starter);
       const heading = courseCast(chapter.id).endingTitle;
-      body = `<section class="journey-paper journey-story"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p><h1>${esc(heading)}</h1><p class="journey-story-lead">${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => this.storyLine(line, chapter.id)).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
+      body = `<section class="journey-paper journey-story"><div class="journey-story-top"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p>${readAloudButton()}</div><h1>${esc(heading)}</h1><p class="journey-story-lead"${voiceAttr(NARRATOR, chapter.outro)}>${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => this.storyLine(line, chapter.id)).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
     } else if (this.page === 'settings') {
-      body = `<section class="journey-paper journey-settings"><h1>Make yourself at home</h1><p>Adjust the help and choose your companion. Your lessons and stars stay earned.</p>${this.options()}<div class="journey-actions">${this.btn('page:map', 'Back to the journey', 'primary')}${this.btn('moves', 'Piece movement guide')}${this.btn('page:title', 'Title screen')}</div><hr><h2>A fresh start</h2><p>Reset all lessons and stars in this journey.</p>${this.btn('reset', 'Reset journey', 'quiet')}</section>`;
+      body = `<section class="journey-paper journey-settings"><h1>Make yourself at home</h1><p>Adjust the help, your companion and the sound. Your lessons and stars stay earned.</p>${this.options()}${soundSettings()}<div class="journey-actions">${this.btn('page:map', 'Back to the journey', 'primary')}${this.btn('moves', 'Piece movement guide')}${this.btn('page:title', 'Title screen')}</div><hr><h2>A fresh start</h2><p>Reset all lessons and stars in this journey.</p>${this.btn('reset', 'Reset journey', 'quiet')}</section>`;
     } else if (this.page === 'journal') {
       const learned = COURSE_LESSONS.filter(l => save.completed.includes(l.id) && !l.review);
       body = `<section class="journey-paper"><p class="journey-kicker">${esc(STARTERS[save.starter].name)}’s field notes</p><h1>Your chess journal</h1><p>Keep the ideas you have learned close at hand. Examples are free to revisit.</p><nav class="journey-journal-jump" aria-label="Journal chapters">${COURSE_REGIONS.filter(r => learned.some(l => l.regionId === r.id)).map(r => this.btn(`journal:${r.id}`, r.title)).join('')}</nav><div class="journey-notes">${learned.length ? learned.map(l => `<article data-journal-region="${l.regionId}"><p class="journey-kicker">${esc(courseRegion(l.regionId)!.title)}</p><h2>${esc(l.theme)}</h2><p>${esc(l.takeaway)}</p>${this.btn(`example:${l.id}`, 'Watch the example')}</article>`).join('') : `<p class="journey-empty">Finish your first lesson to add its idea here.</p>${this.btn('page:map', 'Find your first lesson', 'primary')}`}</div><footer class="journey-credits"><h2>From real games to your board</h2><p>Positions and solution lines come from the <a href="https://database.lichess.org/#puzzles" target="_blank" rel="noopener">Lichess open puzzle database</a> (CC0). The stories and companion notes are ours. Source links appear after each position.</p><p>Need the basics? <a href="https://lichess.org/learn" target="_blank" rel="noopener">Learn how the pieces move on Lichess</a>.</p></footer></section>`;
@@ -196,6 +251,11 @@ export class JourneyScene extends BaseScene {
     const previewNotice = previewRegion ? `<p class="journey-notice" role="status"><strong>Region preview.</strong> Earlier chapters are marked complete for testing. Test progress saves separately. <a href="${esc(normalUrl.href)}">Return to normal journey</a>.</p>` : '';
     this.hud.innerHTML = `${header}<div class="journey-content">${previewNotice}${body}</div>`;
     if (this.page === 'ending' && !save.endingSeen) { save.endingSeen = true; persistJourney(save); }
+    // Story pages read themselves aloud when they open; the button reads them again.
+    if (newPage && ['story', 'interlude', 'ending'].includes(this.page)) {
+      const voices = this.pageVoices();
+      window.setTimeout(() => { if (this.hud.isConnected && this.shownPage === pageKey && !isModalOpen()) this.readAloud(voices); }, 900);
+    }
     this.maybeIntro();
   }
 
@@ -240,9 +300,10 @@ export class JourneyScene extends BaseScene {
       if (!(t in STARTERS)) return;
       this.starter = t;
       showModal({ eyebrow: STARTERS[t].species, title: STARTERS[t].name,
-        html: `<div class="dlg ally journey-greeting"><div class="dlg-pic" style="${portraitStyle(t, 'ally')}"></div><div><p>${esc(COMPANION_GREETINGS[t])}</p></div></div>`,
-        buttons: [{ label: `Ride out with ${STARTERS[t].name}`, kind: 'primary', onClick: () => { window.setTimeout(() => { if (this.hud.isConnected && !this.save) this.action('start'); }); } }, { label: 'Choose again', kind: 'ghost', onClick: () => {} }],
-        onDismiss: () => {} });
+        html: `<div class="dlg ally journey-greeting"${voiceAttr(COMPANION_VOICES[t], COMPANION_GREETINGS[t])}><div class="dlg-pic" style="${portraitStyle(t, 'ally')}"></div><div><p>${esc(COMPANION_GREETINGS[t])}</p></div></div>`,
+        buttons: [{ label: `Ride out with ${STARTERS[t].name}`, kind: 'primary', onClick: () => { audio.hush(); window.setTimeout(() => { if (this.hud.isConnected && !this.save) this.action('start'); }); } }, { label: 'Choose again', kind: 'ghost', onClick: () => audio.hush() }],
+        onDismiss: () => audio.hush() });
+      void audio.speak(COMPANION_VOICES[t], COMPANION_GREETINGS[t]);
       return;
     }
     if (action === 'start') {
@@ -260,6 +321,11 @@ export class JourneyScene extends BaseScene {
       this.starter = s; if (this.save) { this.save.starter = s; persistJourney(this.save); } this.render(); return;
     }
     if (action === 'moves') { this.showMoves('Ready'); return; }
+    if (action === 'read') {
+      if (this.stopReading) this.stopReading();
+      else this.readAloud(this.pageVoices());
+      return;
+    }
     if (!this.save) return;
     if (action === 'ending' || action === 'interlude') {
       if (action === 'ending' ? !this.save.finaleComplete : !finaleInterludeUnlocked(this.save)) return;

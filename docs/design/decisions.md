@@ -38,6 +38,8 @@ These items remain future work. They do not block the accepted production curric
 
 ## Open questions
 
+- Confirm the terms for AI-generated music, voices, and effects (Google Lyria and Gemini TTS, ByteDance Seed Audio) before any app-store release. The web release credits them as AI-assisted.
+
 - Which published Practice chapters and goal checks are suitable for technique training? Verify sources and supported continuations during that task.
 - What amount of repeated practice helps without becoming tedious? Start small; no mandatory timer or mastery claim.
 - Champion and Grandmaster currently share assistance rules. Retain that disclosure until their behavior differs.
@@ -58,6 +60,7 @@ Historical test counts, interrupted runs, and failures remain evidence of those 
 
 | Date | Decision |
 | --- | --- |
+| 2026-10-25 | The owner approved adding sound within a $10 OpenRouter budget, aiming for $3–5. Each chapter gets map, lesson and review music, ambience, and effects. Every fixed line of dialogue is voiced; lesson-panel advice is not. The player's king stays silent. The first set cost $8.24. See [Sound](audio.md). |
 | 2026-10-25 | The owner approved completing all #60 assets in draft PR #66. Native OpenAI generation provides all four new faction sets, Tadwell, the Lich King, and the Kingsroad map. The finale shares Warden tokens but alone shows the royal Lich portrait. Flint is the named lion exception to living-species uniqueness. Independent art and code reviews passed; no deployment is included. |
 | 2026-10-24 | Owner approved removing unused legacy code and tests in #55. Keep shared journey functionality, source reservations and immutable technique references. Old engine commands are retired. |
 | 2026-10-24 | Trial Bandit Riders production art with native OpenAI generation in a draft PR for #60. Show colour-pipeline tokens on the real phone-size board before portraits. Independent art and code reviews check consistency. The owner reviews the finished assets before other Regions join the same PR. OpenRouter spend remains $0. |

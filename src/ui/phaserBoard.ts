@@ -109,6 +109,15 @@ export interface BoardOptions {
   /** The color drawn as your army. Defaults to White. */
   allyColor?: Color;
   onSquare: (sq: Square) => void;
+  /** Called at the exact moments a sound belongs to, so the scene can play it. */
+  onSound?: (sound: BoardSound) => void;
+}
+
+/** Moments in a move's animation that make a sound. */
+export interface BoardSound {
+  kind: 'land' | 'hop' | 'step' | 'step-land' | 'hit' | 'fly';
+  square: Square;
+  piece: PieceSymbol;
 }
 
 export class PhaserBoard {
@@ -199,7 +208,13 @@ export class PhaserBoard {
 
   /** Animates a move that was just played. Resolves when the board has settled. */
   async animateMove(m: Move): Promise<void> {
-    if (this.destroyed || this.reduced) return;
+    if (this.destroyed) return;
+    if (this.reduced) {
+      // No animation, but the move still sounds like a move.
+      this.sound('land', m.to, m.piece);
+      if (m.captured) this.sound('hit', m.to, m.captured);
+      return;
+    }
     const mover = this.pieces.get(m.from);
     if (!mover) return;
     this.busy = true;
@@ -214,7 +229,7 @@ export class PhaserBoard {
 
       const jobs: Promise<void>[] = [];
       const travel = m.piece === 'n' ? this.hop(mover, m.from, m.to) : m.piece === 'r' ? this.stomp(mover, m.from, m.to) : this.glide(mover, m.from, m.to);
-      jobs.push(travel.then(() => (victim ? this.knockOut(victim, m.from, m.to) : undefined)));
+      jobs.push(travel.then(() => (victim ? this.knockOut(victim, m.from, m.to, m.captured!) : undefined)));
 
       if (m.flags.includes('k') || m.flags.includes('q')) {
         const rank = m.from[1];
@@ -231,6 +246,10 @@ export class PhaserBoard {
       this.busy = false;
       this.apply();
     }
+  }
+
+  private sound(kind: BoardSound['kind'], square: Square, piece: PieceSymbol) {
+    if (!this.destroyed) this.opts.onSound?.({ kind, square, piece });
   }
 
   /** A quick shimmer for Rewind. */
@@ -580,6 +599,7 @@ export class PhaserBoard {
     this.drawKnightPath(from, to);
     p.node.setDepth(1e6); // fly over everything
     const air = 90;
+    this.after(air - 30, () => this.sound('hop', from, p.type));
     return new Promise((resolve) => {
       this.tween({ targets: p.pose, scaleX: 1.14, scaleY: 0.82, duration: 90, ease: 'Cubic.easeOut' }); // crouch
       this.tween({ targets: p.pose, scaleX: 0.9, scaleY: 1.14, duration: 120, delay: air, ease: 'Cubic.easeOut' });
@@ -611,6 +631,7 @@ export class PhaserBoard {
         p.pose.rotation = 0;
         p.pose.y = 0;
         resolve();
+        this.sound('land', to, p.type);
         this.dust(b, 8, 0.9);
         this.shake(3);
         // Land: squash, then wobble back.
@@ -648,6 +669,8 @@ export class PhaserBoard {
             p.node.setDepth(b.y);
             resolve();
           }
+          const df = FILES.indexOf(to[0]) - FILES.indexOf(from[0]), dr = Number(to[1]) - Number(from[1]);
+          this.sound(last ? 'step-land' : 'step', `${FILES[FILES.indexOf(from[0]) + Math.round((df * i) / steps)]}${Number(from[1]) + Math.round((dr * i) / steps)}` as Square, p.type);
           this.dust({ x, y }, last ? 12 : 4, last ? 1.1 : 0.6);
           this.shake(last ? 7 : 1.5);
         });
@@ -679,6 +702,7 @@ export class PhaserBoard {
       this.after(d, () => {
         p.node.setDepth(b.y);
         resolve();
+        this.sound('land', to, p.type);
         this.dust(b, 4, 0.6);
         this.tween({
           targets: p.pose,
@@ -692,7 +716,7 @@ export class PhaserBoard {
   }
 
   /** Capture: a freeze frame, a white flash, then the piece is knocked off the board. */
-  private async knockOut(v: PieceNode, from: Square, to: Square) {
+  private async knockOut(v: PieceNode, from: Square, to: Square, captured: PieceSymbol) {
     const a = this.center(from);
     const b = this.center(to);
     const dir = Math.sign(b.x - a.x) || (Math.random() < 0.5 ? -1 : 1);
@@ -703,6 +727,7 @@ export class PhaserBoard {
 
     // White flash: a solid fill tint that keeps the token's silhouette.
     v.body.setTint(0xffffff).setTintMode(Phaser.TintModes.FILL);
+    this.sound('hit', to, captured);
     this.sparks(this.ground(to), 14);
 
     // Hit stop: slow everything to a crawl for a beat.
@@ -713,6 +738,7 @@ export class PhaserBoard {
     tw.timeScale = speed;
     if (this.destroyed || !v.node.active) return;
     v.body.clearTint().setTintMode(Phaser.TintModes.MULTIPLY);
+    this.sound('fly', to, captured);
     this.shake(9);
 
     const W = this.W;

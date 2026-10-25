@@ -7,7 +7,7 @@ import { prepareJourneyPreview } from '../journeySave';
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
 const SPRITE_SETS = ['ally', ...FACTIONS];
 const COLORS = ['w', 'b'];
-export const BACKGROUNDS = ['title', 'map-region1', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
+export const BACKGROUNDS = ['title', 'map-region1', 'map-region2', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
 
 /** Loads every sprite and painted background (progress shows in the HTML boot note), then starts the title. */
 export class BootScene extends Phaser.Scene {

@@ -3,6 +3,17 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-24 — Bandit Riders art draft for #60
+
+- Added six keyed originals, twelve ivory/ebony board tokens, six faction portraits, Tadwell, and the Kingsroad map with native OpenAI generation.
+- OpenRouter spend is $0. Two native corrections fixed the queen's sharp crown and slim, black-tipped stoat tail.
+- Independent GPT-6 Astra review passed the real board at 45 px in both colours and grayscale, then the portraits and desktop integration.
+- Selected board and portrait sets per chapter. Species labels follow the matching assets; later Regions retain their honest faction labels.
+- Preserved published positions, replies, teaching, progression, and saves. Added asset-completeness and dialogue-identity regression checks.
+- Fixed the background compressor to write its checked encoding directly; the Kingsroad map fits its 250 KiB budget.
+- `npm run ci` passed type-check, production build, and 510 tests. [The review](bandit-art-review.md) includes prompts and screenshots.
+- The PR remains draft for owner review. Other factions and deployment wait.
+
 ## 2026-10-24 — Merge the accepted production curriculum
 
 - Merged #47 → #48 → #49 → #50 → #51 into main with merge commits, ending at `814140e`.

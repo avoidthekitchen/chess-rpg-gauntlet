@@ -9,7 +9,7 @@ import type { TacticTag } from '../game/tactics';
 
 export type Side = 'ally' | 'foe';
 /** Enemy factions, each with its own sprite set: Bog Goblins (`bog`), Region 1. Each region adds its own. */
-export const FACTIONS = ['bog'] as const;
+export const FACTIONS = ['bog', 'bandit'] as const;
 export type Faction = (typeof FACTIONS)[number];
 
 export const SPECIES: Record<PieceSymbol, string> = {
@@ -23,6 +23,7 @@ export const SPECIES: Record<PieceSymbol, string> = {
 
 /** Each enemy faction has its own species; only the chess headgear is shared with ours. */
 export const FACTION_SPECIES: Record<Faction, Record<PieceSymbol, string>> = {
+  bandit: { p: 'Raccoon Pawn', n: 'Hare Knight', b: 'Magpie Bishop', r: 'Badger Rook', q: 'Stoat Queen', k: 'Wolf King' },
   bog: {
     p: 'Bog Rat Pawn',
     n: 'Bog Salamander Knight',
@@ -48,6 +49,10 @@ export const FRAMING: Partial<Record<PieceSymbol, { size: number; x: number; y: 
   q: { size: 1.3, x: 0.5, y: 0.04 },
   p: { size: 1.25, x: 0.5, y: 0.06 },
 };
+
+/** The bandit rook stands upright; the original tortoise's centred crop clips its tower. */
+export const portraitFraming = (type: PieceSymbol, faction: 'ally' | Faction) =>
+  faction === 'bandit' && type === 'r' ? { ...FRAMING.r!, y: 0 } : FRAMING[type];
 
 /**
  * Texture keys: the detailed figurine, and the token used when a figurine is missing,
@@ -79,6 +84,11 @@ const ALLY: Lines = {
 };
 
 const ENEMY: Record<Faction, Lines> = {
+  bandit: {
+    checkmate: ['The account is settled.'], promotion: ['A change of trade.'],
+    fork: ['Two tolls today.'], check: ['Mind your crown.'], capture: ['A fair toll.'],
+    move: { p: ['A little farther down the road.'], n: ['Over the wall I go!'], b: ['A long road from here.'], r: ['Make way. Heavy luggage.'], q: ['The toll keeper is watching.'], k: ['My chair stays right here.'] },
+  },
   bog: {
     checkmate: ['The bog swallows your crown!'],
     promotion: ['Bigger! Muddier! Better!'],
@@ -101,6 +111,8 @@ const pick = (xs: string[]) => xs[Math.floor(Math.random() * xs.length)];
 
 export interface SpeakerInfo {
   side: Side;
+  /** Art identity travels with dialogue through speech, banners and history. */
+  faction?: Faction;
   name: string;
   line: string;
   type: PieceSymbol;

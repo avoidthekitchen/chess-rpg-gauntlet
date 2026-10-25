@@ -75,6 +75,17 @@ const HEADGEAR = {
 
 /** Token species and outfit per faction. A new region adds one entry here. */
 const FACTIONS = {
+  bandit: {
+    look: 'Masked highway thieves in dark olive and charcoal cloaks, brown leather neck ties and roadside gear. The raccoon has its natural eye mask; other species wear charcoal cloth eye masks. Keep every face visible. No blue or teal.',
+    species: {
+      pawn: 'a RACCOON with a natural black eye-mask, small rounded ears and grey-brown fur',
+      knight: 'a tawny HARE with long ears behind the horse-head helmet and a cream muzzle',
+      bishop: 'a black-and-white MAGPIE with a long straight beak and white throat patch',
+      rook: 'a stocky BADGER with black and cream lengthwise face stripes beneath a castle-tower helmet',
+      queen: 'a slim cinnamon-brown STOAT with small round ears and cream throat, not a fox; coronet has sharp spikes, no round finials',
+      king: 'ASHFANG, a mature grey WOLF with pointed ears, a long muzzle and a cheek ruff, not a lion',
+    },
+  },
   ally: {
     look: 'Clothing on the shoulders: cream with a small warm gold trim.',
     species: {
@@ -222,6 +233,22 @@ for (const [piece, look] of Object.entries(BOG_LOOK)) {
     refs: [`public/sprites/token-${piece}-bog-b.webp`, `public/sprites/${piece}-ally.webp`],
   };
 }
+
+// Bandit production art was made with native OpenAI imagegen; full prompts live in art/bandit-prompts.json.
+// These entries keep the optional OpenRouter generator aware of the same approved designs.
+const banditPrompts = JSON.parse(readFileSync(new URL('../art/bandit-prompts.json', import.meta.url), 'utf8'));
+for (const [piece, subject] of Object.entries(banditPrompts.portraits.subjects)) {
+  SPRITES[`${piece}-bandit`] = {
+    prompt: `${banditPrompts.portraits.common.replace('All background genuinely transparent', 'Background follows the magenta instruction below')}\nSubject: ${subject}`,
+    style: false,
+    refs: [`public/sprites/token-${piece}-bandit-b.webp`, `public/sprites/${piece}-ally.webp`],
+  };
+}
+SPRITES.tadwell = {
+  prompt: banditPrompts.tadwell.prompt.replace('Genuinely transparent background', 'Background follows the magenta instruction below'),
+  style: false, refs: ['public/sprites/knight-ally.webp'],
+};
+SPRITES['bg-map-region2'] = { prompt: banditPrompts.map.prompt, style: false, aspect: '4:3', refs: ['public/backgrounds/map-region1.webp'] };
 
 // ---- painted backgrounds (not cut out) ----
 SPRITES['bg-title'] = {

@@ -210,6 +210,9 @@
 .journey-companion-card > button.primary { margin-top:auto; width:100%; }
 .journey-companion-back { margin-top:10px; }
 .journey-greeting .dlg-pic,.journey-dlg .dlg-pic { width:76px; height:104px; }
+.journey-story-illustrated { display:flex; align-items:center; gap:16px; }
+.journey-story-illustrated > div { min-width:0; }
+.journey-story-portrait { display:block; flex:0 0 76px; width:76px; height:104px; border:2px solid #b18b45; border-radius:9px; background-color:#302632; background-repeat:no-repeat; }
 .journey-greeting p { font-size:19px; line-height:1.4; }
 .journey-intro .journey-narration { font-style:italic; color:#d9cdb4; }
 .journey-intro .journey-dlg p:last-child { font-size:18px; }

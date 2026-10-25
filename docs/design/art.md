@@ -8,7 +8,7 @@ The game is 2D. Storybook fantasy in an animal world, at least as polished as In
 
 **Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. Each token is a bust of the animal wearing its chess headgear on a round base, like a real chess piece, and stays about one square tall so it doesn't hide the piece behind it. The detailed figurines become talking-head portraits beside the board when a piece moves or captures: tall portrait cards in the side panel on desktop, and a card floating at the bottom of the screen on phones.
 
-**Status.** The board uses tokens for all six pieces of the ally and Bog Goblin factions, each in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Both factions have talking-head portraits for all six pieces (`public/sprites/<piece>-<faction>.webp`). Portrait lines and enemy names live in `src/ui/speaker.ts`. See [Pieces and factions](#pieces-and-factions) for how colors and factions are shown, and how to add a faction.
+**Status.** The asset set includes ally, Bog Goblin, and Bandit Rider tokens, each in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Each set has six talking-head portraits (`public/sprites/<piece>-<faction>.webp`). The Bandit Riders, Tadwell portrait, and Kingsroad map are in a draft review for [#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60); see [screenshots and checks](../bandit-art-review.md). Portrait lines and enemy names live in `src/ui/speaker.ts`.
 
 - **Classic pieces toggle.** Players can switch to standard chess pieces, so what they learn carries over to real chess.
 - **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the owl glides diagonally.
@@ -46,7 +46,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Swamp viper witch | Swamp Viper Queen |
 | King | Toad (Grubnak) | Toad King |
 
-**Bandit Riders (Region 2, not generated yet).** Masked highway thieves in dark cloaks and roadside gear. The raccoon's mask is its own; the others wear cloth masks.
+**Bandit Riders (Region 2).** Masked highway thieves in dark olive cloaks, brown leather ties, and roadside gear. The raccoon's mask is its own; the others wear cloth masks. Native OpenAI generation produced the draft set; [the manifest](../../art/bandit-prompts.json) records its prompts and references. OpenRouter spend is $0.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |

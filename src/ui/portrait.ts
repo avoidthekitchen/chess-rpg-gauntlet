@@ -1,13 +1,13 @@
 import type { Color, PieceSymbol } from 'chess.js';
 import type Phaser from 'phaser';
 import type { BaseScene } from './screen';
-import { FRAMING, pieceName, portraitKey, tokenPortraitKey, type Faction, type Side, type SpeakerInfo } from './speaker';
+import { portraitFraming, pieceName, portraitKey, tokenPortraitKey, type Faction, type Side, type SpeakerInfo } from './speaker';
 import { C, CSS, SANS, SERIF } from './theme';
 
 /** Inline CSS that frames a figurine's head in a small HTML portrait (dialogue in the overlay). */
-export function portraitStyle(type: PieceSymbol, side: 'ally' | Faction) {
-  const f = FRAMING[type] ?? { size: 1.3, x: 0.5, y: 0.04 };
-  return `background-image:url('${import.meta.env.BASE_URL}sprites/${pieceName(type)}-${side}.webp');background-size:${f.size * 100}%;background-position:${f.x * 100}% ${f.y * 100}%`;
+export function portraitStyle(type: PieceSymbol, side: 'ally' | Faction, character?: 'tadwell') {
+  const f = portraitFraming(type, side) ?? { size: 1.3, x: 0.5, y: 0.04 };
+  return `background-image:url('${import.meta.env.BASE_URL}sprites/${character ?? `${pieceName(type)}-${side}`}.webp');background-size:${f.size * 100}%;background-position:${f.x * 100}% ${f.y * 100}%`;
 }
 
 /**
@@ -32,7 +32,7 @@ export function portrait(
   const has = (k: string) => scene.textures.exists(k);
   // Missing art falls back to the board token.
   const key = portraitKey(type, side, faction);
-  const frame = FRAMING[type];
+  const frame = portraitFraming(type, side === 'ally' ? 'ally' : faction);
   if (frame && scene.textures.exists(key)) {
     const img = scene.add.image(0, 0, key).setOrigin(0, 0);
     const iw = img.width;

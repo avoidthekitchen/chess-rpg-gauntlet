@@ -3,6 +3,27 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Review fixes for #66 and merge with main
+
+- Grubnak now has a chapter-end story portrait. Story portraits follow each chapter's `bossName`.
+- Unknown chapter ids fall back to Bog art. Faction species and Bandit move lines come from `COURSE_CAST` and `COURSE_VOICES`.
+- Boot loads ally and Bog art only. Each later chapter loads its 12 tokens when its first lesson opens.
+- Review screenshots moved from `output/` (42 PNGs, 40 MB) to `docs/review/` (26 WebPs, 2.6 MB). `output/` is ignored.
+- Merged main after #67, #68 and #69. CoursePlay keeps the header tuck, promotion chooser and per-chapter art.
+- `npm run ci` passed: type-check, build and 312 tests.
+
+## 2026-10-25 — Complete faction art for #60 in the same draft PR
+
+- The owner approved expanding PR #66 to Bone Wardens/finale, Shadow Cult, and Iron Legion after the Bandit checkpoint.
+- Added 18 keyed originals, 36 coloured tokens, 18 portraits, and the separate royal Lich King. OpenRouter spend remains $0.
+- The full issue contains 51 original illustrations, three native corrections, 24 committed cutouts, and 75 runtime assets.
+- Independent art review passed each 45 px colour/grayscale board, portrait crops, and final desktop/phone scenes.
+- Corrected the moth's mammalian face and top-aligned the snail rook crop. Retained normal tortoise and armadillo framing.
+- Finale king identity follows dialogue, history, banners, map stops, and ending. Earlier chapter replays keep the Lich portrait hidden.
+- Independent code/teaching review found no blockers. `npm run ci` passed type-check, build, and 513 tests.
+- Chromium accepted a published move in every remaining chapter. WebKit passed all 16 Gentle viewport checks, keyboard history, touch input, and classic pieces.
+- [The complete review](faction-art-review.md) records prompts, screenshots, fixtures, and device-emulation limits. The PR remains draft; nothing was deployed.
+
 ## 2026-10-25 — Integrate cleanup with the newer board and promotion UI
 
 - Merged main at `e50094f` into #68 before the approved merge.
@@ -36,6 +57,17 @@ Earlier draft, staging-only, and unwaived-benchmark statements describe those ch
 - All four tests fail on the original PR animation and pass with the correction. `npm run ci` passes 39 files and 514 tests.
 - Chromium checked 40 fixture jumps through landing at 390×844, 1280×800, 375×812, 375×553, and 844×390.
 - Both piece styles and orientations kept visible pixels below the header. This is desktop viewport testing, not physical-device coverage.
+
+## 2026-10-24 — Bandit Riders art draft for #60
+
+- Added six keyed originals, twelve ivory/ebony board tokens, six faction portraits, Tadwell, and the Kingsroad map with native OpenAI generation.
+- OpenRouter spend is $0. Two native corrections fixed the queen's sharp crown and slim, black-tipped stoat tail.
+- Independent GPT-6 Astra review passed the real board at 45 px in both colours and grayscale, then the portraits and desktop integration.
+- Selected board and portrait sets per chapter. Species labels follow the matching assets; later Regions retain their honest faction labels.
+- Preserved published positions, replies, teaching, progression, and saves. Added asset-completeness and dialogue-identity regression checks.
+- Fixed the background compressor to write its checked encoding directly; the Kingsroad map fits its 250 KiB budget.
+- `npm run ci` passed type-check, production build, and 510 tests. [The review](bandit-art-review.md) includes prompts and screenshots.
+- The PR remains draft for owner review. Other factions and deployment wait.
 
 ## 2026-10-24 — Merge the accepted production curriculum
 

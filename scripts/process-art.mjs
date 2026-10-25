@@ -19,7 +19,7 @@
 // The background is found by flood-filling from the image border, so magenta-ish
 // colors inside a figure (plum cloaks, gems) are kept. Edge pixels get partial
 // alpha and have the magenta tint removed, so outlines don't glow pink.
-import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import sharp from 'sharp';
@@ -254,11 +254,13 @@ async function processBackground(file) {
     .toBuffer();
   let quality = 80;
   let buf;
-  for (; quality >= 50; quality -= 5) {
+  for (; quality >= 30; quality -= 5) {
     buf = await sharp(resized).webp({ quality, effort: 6 }).toBuffer();
     if (buf.length <= BG_MAX_BYTES) break;
   }
-  await sharp(buf).toFile(out);
+  if (buf.length > BG_MAX_BYTES) throw new Error(`${name}: background exceeds ${BG_MAX_BYTES} bytes at minimum quality`);
+  // Write the checked encoding directly; sharp(buf).toFile() would re-encode at its default quality.
+  writeFileSync(out, buf);
   const meta = await sharp(out).metadata();
   console.log(`${name}: ${meta.width}x${meta.height} q${quality} ${Math.round(buf.length / 1024)} KB → ${out}`);
 }

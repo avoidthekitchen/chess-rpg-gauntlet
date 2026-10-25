@@ -8,7 +8,7 @@ The game is 2D. Storybook fantasy in an animal world, at least as polished as In
 
 **Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. Each token is a bust of the animal wearing its chess headgear on a round base, like a real chess piece, and stays about one square tall so it doesn't hide the piece behind it. The detailed figurines become talking-head portraits beside the board when a piece moves or captures: tall portrait cards in the side panel on desktop, and a card floating at the bottom of the screen on phones.
 
-**Status.** The board uses tokens for all six pieces of the ally and Bog Goblin factions, each in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Both factions have talking-head portraits for all six pieces (`public/sprites/<piece>-<faction>.webp`). Portrait lines and enemy names live in `src/ui/speaker.ts`. See [Pieces and factions](#pieces-and-factions) for how colors and factions are shown, and how to add a faction.
+**Status.** Ally, Bog Goblin, Bandit Rider, Cult, Legion, and Warden sets have six tokens in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Each has six talking-head portraits (`public/sprites/<piece>-<faction>.webp`). Tadwell and the Lich King have separate portraits. Boot loads the ally and Bog sets; each lesson loads its chapter's tokens when it opens. See [screenshots and checks](../faction-art-review.md) for #60.
 
 - **Classic pieces toggle.** Players can switch to standard chess pieces, so what they learn carries over to real chess.
 - **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the owl glides diagonally.
@@ -20,7 +20,7 @@ The game is 2D. Storybook fantasy in an animal world, at least as polished as In
 Two questions must be answerable at a glance on a 45 px phone square: **which chess color is this piece**, and **whose side is it on**. Each question has its own channel, and they never mix.
 
 - **Chess color lives in the headgear and the base.** White pieces have ivory headgear and an ivory base. Black pieces have ebony headgear and an ebony base with a light rim, so they don't vanish on dark squares. The ivory and ebony are exact colors applied in code, identical for every faction.
-- **The faction lives in the creature.** Our army is the animals below, in cream with a little gold. Each enemy faction is **its own set of species** in its own outfit, never a recolor of ours. Different species give each region its own flavor and make "mine vs. theirs" obvious.
+- **The faction lives in the creature.** Living factions use their own species and outfits. General Flint deliberately remains a lion. Bone Wardens mirror our animals as skeletons. These exceptions keep distinct costumes and silhouettes; a faction is never just a recolour of ours.
 - **Every faction shares the headgear shapes.** Round helmet, horse-head helm, slit mitre, castle tower, spiked coronet, cross-topped crown. These teach the chess role, so a Bog Rat in a pot helmet still reads as a pawn. Keep each shape identical across factions, even when it's made of scavenged junk.
 - **Your side is always at the bottom.** When you play Black (some puzzles), the board flips. Pieces always stand upright; nothing is drawn upside down.
 
@@ -46,7 +46,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Swamp viper witch | Swamp Viper Queen |
 | King | Toad (Grubnak) | Toad King |
 
-**Bandit Riders (Region 2, not generated yet).** Masked highway thieves in dark cloaks and roadside gear. The raccoon's mask is its own; the others wear cloth masks.
+**Bandit Riders (Region 2).** Masked highway thieves in dark olive cloaks, brown leather ties, and roadside gear. The raccoon's mask is its own; the others wear cloth masks. Native OpenAI generation produced the set; [the manifest](../../art/bandit-prompts.json) records its prompts and references. OpenRouter spend is $0.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
@@ -57,7 +57,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Stoat | Stoat Queen |
 | King | Wolf (Ashfang) | Wolf King |
 
-**Shadow Cult (Region 3, not generated yet).** Hooded followers in violet and charcoal robes, each wearing a small amber crystal pendant. Their headgear is draped in cloth but keeps the shared shape. Keep the crystals amber or violet, never blue or teal, or the cyan key will repaint them.
+**Shadow Cult (Region 3).** Hooded followers in violet and charcoal robes, each wearing a small amber crystal pendant. Their headgear is draped in cloth but keeps the shared shape. Keep the crystals amber or violet, never blue or teal, or the cyan key will repaint them.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Black cat | Cat Queen |
 | King | Goat, short horns kept behind the crown | Goat King |
 
-**Iron Legion (Region 4, not generated yet).** Disciplined soldiers in polished steel plate with red-and-gold tabards, matching `map-region4.webp`. Their headgear is forged steel in the shared shape. Paint the steel warm grey, with no blue sheen.
+**Iron Legion (Region 4).** Disciplined soldiers in polished steel plate with red-and-gold tabards, matching `map-region4.webp`. Their headgear is forged steel in the shared shape. Paint the steel warm grey, with no blue sheen.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
@@ -81,7 +81,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 
 The Legion's lion is a grey-maned veteran in steel. Make him clearly not our young lion: older, scarred, with a red-and-gold tabard.
 
-**Bone Wardens (Region 5 and the finale, not generated yet).** Skeleton copies of our six species, the one faction that reuses them. The Lich King was a Lion King of Pawnshire, so his army mirrors ours. Bones are aged and yellow-grey with dark eye sockets, wrapped in tattered grave cloth. Any eye glow is warm amber, never blue. Bone must stay visibly darker than the ivory headgear, so check every token in grayscale.
+**Bone Wardens (Region 5 and the finale).** Skeleton copies of our six species, the one faction that reuses them. The Lich King was a Lion King of Pawnshire, so his army mirrors ours. Bones are aged and yellow-grey with dark eye sockets, wrapped in tattered grave cloth. Any eye glow is warm amber, never blue. Bone must stay visibly darker than the ivory headgear, so check every token in grayscale.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
@@ -92,7 +92,7 @@ The Legion's lion is a grey-maned veteran in steel. Make him clearly not our you
 | Queen | Skeleton fox | Skeleton Fox Queen |
 | King | Skeleton lion (an unnamed warden) | Skeleton Lion King |
 
-The finale reuses these six tokens and portraits. It adds one portrait, the Lich King: a skeleton lion in tattered royal robes wearing the old crown. It replaces the warden king's portrait in the finale only.
+The finale reuses these six tokens and portraits. Its king uses the separate Lich King portrait: a skeleton lion in tattered royal robes wearing the old crown. It replaces the warden king's portrait in the finale only.
 
 ### Faction art plan and budget
 
@@ -107,7 +107,8 @@ Decided 2026-10-24 in [#60](https://github.com/avoidthekitchen/chess-rpg-gauntle
 | 5 | `map-region2.webp`, the Kingsroad map | 1–2 | $0.30 |
 | | Retries | | $5.66 |
 
-Track spend as you go. If retries would push the total past $16, stop and ask the owner before generating more.
+The #60 art used native OpenAI generation: 51 originals and three targeted edits, with $0 OpenRouter spend.
+The estimates above describe the optional API route. Track any future API spend as you go. If retries would push the total past $16, stop and ask the owner before generating more.
 
 ### Token pipeline
 

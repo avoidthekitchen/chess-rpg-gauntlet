@@ -8,6 +8,9 @@ The capstone source pack was curated and verified on 2026-10-24.
 It contains two four-wave mixed encounters, each with one stored example and one backup per wave: 18 distinct published positions.
 This is the finale after five teaching Regions, not a sixth teaching Region. It introduces no new required motif.
 
+The finale shares Warden board tokens and ordinary portraits with Region 5, adding a separate royal Lich King portrait.
+The Lich portrait appears only in the finale. See the [art review](../../faction-art-review.md).
+
 | Field | Delivered content contract |
 | --- | --- |
 | Sequence | Bone Wardens review → Across the threshold → short story beat → The last board → ending and replay. |

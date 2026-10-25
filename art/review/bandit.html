@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Bandit Riders — art review</title>
+<style>
+  body { margin:0; padding:28px; background:#211c19; color:#eadcbd; font:17px Georgia,serif; }
+  main { max-width:850px; margin:auto; } h1 { margin:0 0 8px; color:#eadcbd; }
+  p { line-height:1.45; } h2 { color:#eadcbd; font-size:19px; margin:12px 0; }
+  .boards { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; }
+  .board { width:387px; height:362px; } .gray { filter:grayscale(1); }
+  canvas { display:block; } .tokens { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+  .tokens figure { margin:0; background:#e8d5aa; border-radius:8px; text-align:center; color:#302519; padding:6px; }
+  .tokens img { width:100%; height:100px; object-fit:contain; } figcaption { font-size:13px; }
+  .portraits { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .portraits figure { margin:0; padding:12px; border:1px solid #65503b; border-radius:8px; background:#30281f; }
+  .portraits img { display:block; height:245px; max-width:100%; margin:auto; object-fit:contain; }
+  .portraits figcaption { font-size:16px; margin:10px 0; color:#eadcbd; }
+  .crop { display:block; width:76px; height:104px; background-repeat:no-repeat; background-color:#201b17; border:2px solid #a75043; border-radius:9px; }
+  .portrait-pair { display:flex; gap:10px; align-items:start; }
+  .portrait-pair img { width:calc(100% - 90px); height:245px; }
+  a { color:#eadcbd; } @media(max-width:850px) { body {padding:12px;} main{width:850px;} }
+</style>
+<main>
+  <section id="board-proof">
+    <h1>Bandit Riders · production token proof</h1>
+    <p>The real PhaserBoard renderer, with 45 px square widths. Each enemy set is shown upright against the existing ally set.</p>
+    <div class="boards">
+      <article><h2>Ebony bandits · player is White</h2><div class="board" id="black"></div></article>
+      <article><h2>Ivory bandits · player is Black</h2><div class="board" id="white"></div></article>
+      <article><h2>Ebony bandits · grayscale</h2><div class="board gray" id="black-gray"></div></article>
+      <article><h2>Ivory bandits · grayscale</h2><div class="board gray" id="white-gray"></div></article>
+    </div>
+  </section>
+  <section id="token-comparison"><h1>Style comparison · enlarged</h1><p>Existing ally and Bog tokens, then the new Bandit Riders. Enlarged for inspecting outline, species and shared chess headgear.</p></section>
+  <section id="portrait-proof"><h1>Portraits · figurines and actual card crop</h1><p>Each detailed figurine is paired with its 76 × 104 px portrait framing. These are the game-ready WebP assets.</p><div class="portraits"></div></section>
+</main>
+<script type="module" src="./bandit.ts"></script>
+</html>

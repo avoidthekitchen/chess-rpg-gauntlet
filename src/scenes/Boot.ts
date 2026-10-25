@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
-import { FACTIONS } from '../ui/speaker';
 import { goTo } from '../ui/screen';
 import { prepareJourneyPreview } from '../journeySave';
 
 const PIECES = ['pawn', 'knight', 'bishop', 'rook', 'queen', 'king'];
-const SPRITE_SETS = ['ally', ...FACTIONS];
+// Chapter 1 (Bog) loads up front. Later chapters load their tokens in CoursePlay.preload; course portraits are CSS images.
+const SPRITE_SETS = ['ally', 'bog'];
 const COLORS = ['w', 'b'];
-export const BACKGROUNDS = ['title', 'map-region1', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
+export const BACKGROUNDS = ['title', 'map-region1', 'map-region2', 'map-region3', 'map-region4', 'map-region5', 'map-finale', 'town', 'battle-bog'];
 
-/** Loads every sprite and painted background (progress shows in the HTML boot note), then starts the title. */
+/** Loads the ally and Bog sprites and every painted background (progress shows in the HTML boot note), then starts the title. */
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('boot');

@@ -174,7 +174,7 @@ export const COURSE_REGIONS: CourseRegion[] = [
     lessons: seeds.filter(s => s.id.startsWith('r1-')).map(s => s.id),
   },
   {
-    id: 'r2', title: 'The Kingsroad', subtitle: 'Find two threats. Think one move further.', town: 'Waymeet',
+    id: 'r2', mapArt: 'map-region2', title: 'The Kingsroad', subtitle: 'Find two threats. Think one move further.', town: 'Waymeet',
     bossName: 'Ashfang, the Bandit Lord',
     intro: 'Bandit Riders demand tolls at every crossing. Recover the banners by seeing more than one threat.',
     outro: 'The banners are safe. Tadwell joins the journey. The paymaster’s crystal points toward the Shadow Cult; follow it to the bound villages.',

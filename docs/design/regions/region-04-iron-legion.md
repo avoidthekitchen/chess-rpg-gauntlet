@@ -172,7 +172,8 @@ Flint’s challenge ends with the Legion returning to Pawnshire. He becomes a st
 His scouts report Bone Wardens at the border. The Lich King’s brief written interlude keeps his voice cold and courtly.
 
 The selected companion remains the tutor. Generic piece speech follows the puzzle’s player color.
-Existing tokens and portraits may stand in with honest identity text. Region 4 requests the distinct map-region4 landscape.
+Matching Legion tokens and portraits are in place, including Flint's distinct lion portrait. The existing map-region4 landscape remains.
+See the [art review](../../faction-art-review.md).
 Integrated presentation evidence covers phone advice, speech history, reduced motion, classic pieces, and scene cancellation. See the [release record](../../complete-journey-release.md).
 
 ## Technique dependencies

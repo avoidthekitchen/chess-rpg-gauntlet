@@ -24,6 +24,7 @@ import { extname, join } from 'node:path';
 
 const MODEL = 'google/gemini-3-pro-image';
 const RAW_DIR = join('art', 'raw');
+const factionPrompts = JSON.parse(readFileSync(new URL('../art/faction-prompts.json', import.meta.url), 'utf8'));
 const STYLE_REF = join('art', 'reference', 'frog-mage-style.webp');
 
 const STYLE =
@@ -75,6 +76,17 @@ const HEADGEAR = {
 
 /** Token species and outfit per faction. A new region adds one entry here. */
 const FACTIONS = {
+  bandit: {
+    look: 'Masked highway thieves in dark olive and charcoal cloaks, brown leather neck ties and roadside gear. The raccoon has its natural eye mask; other species wear charcoal cloth eye masks. Keep every face visible. No blue or teal.',
+    species: {
+      pawn: 'a RACCOON with a natural black eye-mask, small rounded ears and grey-brown fur',
+      knight: 'a tawny HARE with long ears behind the horse-head helmet and a cream muzzle',
+      bishop: 'a black-and-white MAGPIE with a long straight beak and white throat patch',
+      rook: 'a stocky BADGER with black and cream lengthwise face stripes beneath a castle-tower helmet',
+      queen: 'a slim cinnamon-brown STOAT with small round ears and cream throat, not a fox; coronet has sharp spikes, no round finials',
+      king: 'ASHFANG, a mature grey WOLF with pointed ears, a long muzzle and a cheek ruff, not a lion',
+    },
+  },
   ally: {
     look: 'Clothing on the shoulders: cream with a small warm gold trim.',
     species: {
@@ -170,6 +182,11 @@ SPRITES['pawn-ally'] = {
   refs: ['public/sprites/token-pawn-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 
+// Approved species/look data are shared with the native generation manifest.
+for (const [faction, spec] of Object.entries(factionPrompts.factions)) {
+  FACTIONS[faction] = { look: spec.look, species: spec.subjects };
+}
+
 // ---- simplified board tokens (cyan-keyed; see KEY) ----
 // Ally tokens use the existing keyed token as the reference, so a regenerated token keeps its design.
 // Other factions use the ally pawn for style ONLY, so the new species isn't pulled toward ours.
@@ -222,6 +239,45 @@ for (const [piece, look] of Object.entries(BOG_LOOK)) {
     refs: [`public/sprites/token-${piece}-bog-b.webp`, `public/sprites/${piece}-ally.webp`],
   };
 }
+
+// Bandit production art was made with native OpenAI imagegen; full prompts live in art/bandit-prompts.json.
+// These entries keep the optional OpenRouter generator aware of the same approved designs.
+const banditPrompts = JSON.parse(readFileSync(new URL('../art/bandit-prompts.json', import.meta.url), 'utf8'));
+// Manifest prompts ask for transparency; the generator needs magenta. Fail loudly if the wording drifts.
+const swapBackground = (prompt, pattern, replacement) => {
+  const out = prompt.replace(pattern, replacement);
+  if (out === prompt) throw new Error(`Prompt background wording changed; update the swap for ${pattern}`);
+  return out;
+};
+for (const [piece, subject] of Object.entries(banditPrompts.portraits.subjects)) {
+  SPRITES[`${piece}-bandit`] = {
+    prompt: `${swapBackground(banditPrompts.portraits.common, 'All background genuinely transparent', 'Background follows the magenta instruction below')}\nSubject: ${subject}`,
+    style: false,
+    refs: [`public/sprites/token-${piece}-bandit-b.webp`, `public/sprites/${piece}-ally.webp`],
+  };
+}
+SPRITES.tadwell = {
+  prompt: swapBackground(banditPrompts.tadwell.prompt, 'Genuinely transparent background', 'Background follows the magenta instruction below'),
+  style: false, refs: ['public/sprites/knight-ally.webp'],
+};
+SPRITES['bg-map-region2'] = { prompt: banditPrompts.map.prompt, style: false, aspect: '4:3', refs: ['public/backgrounds/map-region1.webp'] };
+
+// Optional OpenRouter definitions; the delivered art used native OpenAI generation only.
+const onMagenta = prompt => swapBackground(prompt, /Background genuinely TRANSPARENT|GENUINELY TRANSPARENT background/gi,
+  m => (/^background/i.test(m) ? 'Background flat magenta' : 'Flat magenta background'));
+for (const [faction, subjects] of Object.entries(factionPrompts.portrait_details)) {
+  for (const [piece, subject] of Object.entries(subjects)) {
+    SPRITES[`${piece}-${faction}`] = {
+      prompt: onMagenta(`${factionPrompts.portrait_common}\nFaction: ${factionPrompts.factions[faction].portrait}\nSubject: ${subject}`),
+      style: false,
+      refs: [`public/sprites/token-${piece}-${faction}-b.webp`, `public/sprites/${piece}-ally.webp`],
+    };
+  }
+}
+SPRITES['lich-king'] = {
+  prompt: onMagenta(factionPrompts.generations.find(g => g.asset === 'lich-king').prompt),
+  style: false, refs: ['public/sprites/king-warden.webp', 'public/sprites/king-ally.webp'],
+};
 
 // ---- painted backgrounds (not cut out) ----
 SPRITES['bg-title'] = {

@@ -19,7 +19,7 @@ Independent teaching review is complete. Integrated checks and owner-accepted We
 | Companion | The selected Sir Hob, Sage Ollie, or Old Brick remains the coach |
 | Place | The Keep’s Gate; the Bone Wardens collectively host the review |
 | Completion | Review completion opens the gate. Stars, gold, armies and powers are not gates |
-| Presentation | Dedicated map-region5 landscape; existing piece art can stand in with honest identities |
+| Presentation | Dedicated map-region5 landscape; matching Warden tokens and portraits ([art review](../../faction-art-review.md)) |
 | Not provided | Opposition/key squares, Lucena, Philidor, sustained conversion, full games, measured learning gains |
 
 ## Teaching scope and sequence

@@ -9,3 +9,4 @@ data/raw
 dist-worker
 dist-worker-staging
 .wrangler
+output

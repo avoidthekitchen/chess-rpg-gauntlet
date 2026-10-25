@@ -1,5 +1,6 @@
-import { COURSE_CAST, COURSE_FOE_ART, courseFoeName } from '../game/courseCast';
-import { FACTION_SPECIES } from './speaker';
+import { COURSE_CAST, courseFoeArt, courseFoeName } from '../game/courseCast';
+import { FACTION_SPECIES, portraitFraming } from './speaker';
+import { portraitStyle } from './portrait';
 import { Chess, type PieceSymbol } from 'chess.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
@@ -70,17 +71,16 @@ describe('lesson speakers and story', () => {
     expect(companionSpeaker('b', 'Look again.')).toMatchObject({ name: 'Sage Ollie · Owl Bishop', type: 'b' });
   });
 
-  it('names each review host and uses chapter identity for reused enemy art', () => {
+  it('names each review host and uses matching faction species for moving pieces', () => {
     const hosts: Record<string, string> = { r3: 'The Cult Leader', r4: 'General Flint', r5: 'The Bone Wardens' };
-    const names: Record<string, string> = { r3: 'Shadow Cult · Pawn', r4: 'Iron Legion · Pawn', r5: 'Bone Wardens · Pawn' };
-    const prefixes: Record<string, string> = { r3: 'Shadow Cult · ', r4: 'Iron Legion · ', r5: 'Bone Wardens · ' };
+    const names: Record<string, string> = { r3: 'Moth Pawn', r4: 'Hedgehog Pawn', r5: 'Skeleton Mouse Pawn' };
     for (const lesson of COURSE_LESSONS.filter(lesson => lesson.regionId in hosts)) {
       const intro = courseIntro(lesson, 'b');
       expect(intro[0].name).toBe(lesson.review ? hosts[lesson.regionId] : names[lesson.regionId]);
       const chess = new Chess(lesson.show.fen);
       const move = chess.move(uciMove(lesson.show.moves[0]));
       const foe = courseMoveSpeaker(move, chess.turn(), [], lesson.regionId);
-      expect(foe.name).toContain(prefixes[lesson.regionId]);
+      expect(foe.name).toBe(FACTION_SPECIES[courseFoeArt(lesson.regionId)][foe.type]);
       expect(foe.line).not.toMatch(/toll|road|squelch/i);
     }
   });
@@ -207,12 +207,41 @@ describe('lesson guidance priority', () => {
 
 
 describe('honest portrait identity and compact advice', () => {
+  it('retains chapter art through introductions, moving pieces, promotions, and dialogue history', () => {
+    for (const lesson of COURSE_LESSONS) {
+      const opening = courseIntro(lesson, 'n')[0];
+      expect(opening.faction).toBe(courseFoeArt(lesson.regionId));
+      expect(coursePortrait(opening)).toContain(opening.character ? `${opening.character}.webp` : `-${opening.faction}.webp`);
+    }
+    for (const color of ['w', 'b'] as const) {
+      const chess = new Chess(color === 'w' ? '7k/8/8/8/8/8/8/R6K w - - 0 1' : 'r6k/8/8/8/8/8/8/7K b - - 0 1');
+      const move = chess.move(color === 'w' ? 'Ra2' : 'Ra7');
+      const info = courseMoveSpeaker(move, color === 'w' ? 'b' : 'w', [], 'r2');
+      expect(info).toMatchObject({ faction: 'bandit', name: 'Badger Rook', side: 'foe' });
+      const log = new CourseDialogueLog();
+      log.add(info, 'Position 1');
+      expect(coursePortrait(log.all[0].info)).toContain('rook-bandit.webp');
+      expect(coursePortrait(courseMoveSpeaker(move, color, [], 'r2'))).toContain('rook-ally.webp');
+    }
+    const chess = new Chess('7k/P7/6K1/8/8/8/8/8 w - - 0 1');
+    const promotion = courseMoveSpeaker(chess.move('a8=Q#'), 'b', ['Promotion', 'Mate'], 'r2');
+    expect(promotion).toMatchObject({ faction: 'bandit', type: 'q', name: 'Stoat Queen' });
+    expect(coursePortrait(promotion)).toContain('queen-bandit.webp');
+  });
+
+  it('keeps Tadwell distinct and preserves old rook framing', () => {
+    expect(portraitStyle('n', 'ally', 'tadwell')).toContain('tadwell.webp');
+    expect(portraitFraming('r', 'bandit')?.y).toBe(0);
+    expect(portraitFraming('r', 'ally')?.y).toBe(.5);
+  });
+
   it('names species only when the displayed portrait set matches them', () => {
     for (const [id, cast] of Object.entries(COURSE_CAST)) for (const type of Object.keys(cast.species) as PieceSymbol[]) {
       const name = courseFoeName(id, type);
-      const portrait = coursePortrait({ side: 'foe', type, name, line: 'Your move.' });
-      expect(portrait).toContain(`-${COURSE_FOE_ART}.webp`);
-      if (cast.speciesArt === COURSE_FOE_ART) expect(name).toBe(FACTION_SPECIES[COURSE_FOE_ART][type]);
+      const faction = courseFoeArt(id);
+      const portrait = coursePortrait({ side: 'foe', faction, type, name, line: 'Your move.' });
+      expect(portrait).toContain(`-${faction}.webp`);
+      if (cast.speciesArt) expect(name).toBe(FACTION_SPECIES[faction][type]);
       else {
         expect(name).toMatch(new RegExp(`^${cast.faction} · (Pawn|Knight|Bishop|Rook|Queen|King)$`));
         expect(name).not.toBe(cast.species[type]);

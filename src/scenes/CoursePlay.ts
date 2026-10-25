@@ -1,4 +1,4 @@
-import { COURSE_FOE_ART } from '../game/courseCast';
+import { courseFoeArt } from '../game/courseCast';
 import { Chess, type PieceSymbol, type Square } from 'chess.js';
 import { AMBUSH_HELP, hintAmbush, moveAmbush, nextAmbushWave, uciMove, wavePuzzle, type AmbushPuzzle } from '../game/ambush';
 import { courseLesson, courseRegion, type CourseLesson } from '../game/curriculum';
@@ -7,7 +7,7 @@ import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, le
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
-import { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
+import { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL, PhaserBoard, queueTokens, type PieceStyle } from '../ui/phaserBoard';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
@@ -103,6 +103,11 @@ export class CoursePlayScene extends BaseScene {
     this.preparePuzzle(lesson.show);
   }
 
+  /** Boot loads only ally and Bog (chapter 1) art; each later chapter's tokens arrive when its first lesson opens. */
+  preload() {
+    if (this.valid) queueTokens(this.load, this.textures, courseFoeArt(this.lesson.regionId));
+  }
+
   requestLayout() {
     // The board rebuild waits for an in-flight move; hide feedback until both agree again.
     this.feedbackLayoutPending = true;
@@ -139,7 +144,7 @@ export class CoursePlayScene extends BaseScene {
     coverImage(this, art ? `bg-${art}` : this.lesson.regionId === 'r1' ? 'bg-battle-bog' : 'bg-town', .4);
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
-      faction: COURSE_FOE_ART, style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
+      faction: courseFoeArt(this.lesson.regionId), style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
       onSquare: sq => this.onSquare(sq),
     });
     this.refresh();

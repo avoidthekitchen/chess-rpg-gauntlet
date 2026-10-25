@@ -17,12 +17,12 @@ export const COURSE_CAST: Record<string, CourseCast> = {
   r5: { speciesArt: 'warden', faction: 'Bone Wardens', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Frog Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'The gate is still guarded.', reviewOpening: 'Six boards stand before the gate. Take your place.', endingTitle: 'The gate is open.' },
   finale: { speciesArt: 'warden', faction: 'The Lich King’s army', species: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Frog Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' }, lessonOpening: 'Four boards. We have time.', reviewOpening: 'Four boards. We have time.', endingTitle: 'Pawnshire is free.' },
 };
-// Chapters without dedicated tokens and portraits retain honest Bog-art labels.
-export const courseFoeArt = (id: string) => courseCast(id).speciesArt ?? 'bog';
+// Unknown chapters, or chapters without dedicated tokens and portraits, use Bog art with honest faction labels.
+export const courseFoeArt = (id: string) => COURSE_CAST[id]?.speciesArt ?? 'bog';
 const chessNames: Record<PieceSymbol, string> = { p: 'Pawn', n: 'Knight', b: 'Bishop', r: 'Rook', q: 'Queen', k: 'King' };
 export function courseFoeName(id: string, piece: PieceSymbol): string {
-  const cast = courseCast(id);
-  return cast.speciesArt !== null ? cast.species[piece] : `${cast.faction} · ${chessNames[piece]}`;
+  const cast = COURSE_CAST[id];
+  return cast?.speciesArt ? cast.species[piece] : `${courseCast(id).faction} · ${chessNames[piece]}`;
 }
 
 export const courseCast = (id: string): CourseCast => COURSE_CAST[id] ?? COURSE_CAST.r2;

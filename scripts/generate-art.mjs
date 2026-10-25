@@ -243,22 +243,28 @@ for (const [piece, look] of Object.entries(BOG_LOOK)) {
 // Bandit production art was made with native OpenAI imagegen; full prompts live in art/bandit-prompts.json.
 // These entries keep the optional OpenRouter generator aware of the same approved designs.
 const banditPrompts = JSON.parse(readFileSync(new URL('../art/bandit-prompts.json', import.meta.url), 'utf8'));
+// Manifest prompts ask for transparency; the generator needs magenta. Fail loudly if the wording drifts.
+const swapBackground = (prompt, pattern, replacement) => {
+  const out = prompt.replace(pattern, replacement);
+  if (out === prompt) throw new Error(`Prompt background wording changed; update the swap for ${pattern}`);
+  return out;
+};
 for (const [piece, subject] of Object.entries(banditPrompts.portraits.subjects)) {
   SPRITES[`${piece}-bandit`] = {
-    prompt: `${banditPrompts.portraits.common.replace('All background genuinely transparent', 'Background follows the magenta instruction below')}\nSubject: ${subject}`,
+    prompt: `${swapBackground(banditPrompts.portraits.common, 'All background genuinely transparent', 'Background follows the magenta instruction below')}\nSubject: ${subject}`,
     style: false,
     refs: [`public/sprites/token-${piece}-bandit-b.webp`, `public/sprites/${piece}-ally.webp`],
   };
 }
 SPRITES.tadwell = {
-  prompt: banditPrompts.tadwell.prompt.replace('Genuinely transparent background', 'Background follows the magenta instruction below'),
+  prompt: swapBackground(banditPrompts.tadwell.prompt, 'Genuinely transparent background', 'Background follows the magenta instruction below'),
   style: false, refs: ['public/sprites/knight-ally.webp'],
 };
 SPRITES['bg-map-region2'] = { prompt: banditPrompts.map.prompt, style: false, aspect: '4:3', refs: ['public/backgrounds/map-region1.webp'] };
 
 // Optional OpenRouter definitions; the delivered art used native OpenAI generation only.
-const onMagenta = prompt => prompt.replace(/Background genuinely TRANSPARENT/gi, 'Background flat magenta')
-  .replace(/GENUINELY TRANSPARENT background/gi, 'Flat magenta background');
+const onMagenta = prompt => swapBackground(prompt, /Background genuinely TRANSPARENT|GENUINELY TRANSPARENT background/gi,
+  m => (/^background/i.test(m) ? 'Background flat magenta' : 'Flat magenta background'));
 for (const [faction, subjects] of Object.entries(factionPrompts.portrait_details)) {
   for (const [piece, subject] of Object.entries(subjects)) {
     SPRITES[`${piece}-${faction}`] = {

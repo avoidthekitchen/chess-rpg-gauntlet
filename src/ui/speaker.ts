@@ -1,5 +1,5 @@
 import type { Color, Move, PieceSymbol } from 'chess.js';
-import { COURSE_VOICES } from '../game/courseCast';
+import { COURSE_CAST, COURSE_VOICES } from '../game/courseCast';
 import type { TacticTag } from '../game/tactics';
 
 /**
@@ -24,21 +24,9 @@ export const SPECIES: Record<PieceSymbol, string> = {
   k: 'Lion King',
 };
 
-/** Each enemy faction has its own species; only the chess headgear is shared with ours. */
-export const FACTION_SPECIES: Record<Faction, Record<PieceSymbol, string>> = {
-  warden: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Frog Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' },
-  cult: { p: 'Moth Pawn', n: 'Bat Knight', b: 'Spider Bishop', r: 'Snail Rook', q: 'Cat Queen', k: 'Goat King' },
-  legion: { p: 'Hedgehog Pawn', n: 'Boar Knight', b: 'Heron Bishop', r: 'Armadillo Rook', q: 'Eagle Queen', k: 'Legion Lion King' },
-  bandit: { p: 'Raccoon Pawn', n: 'Hare Knight', b: 'Magpie Bishop', r: 'Badger Rook', q: 'Stoat Queen', k: 'Wolf King' },
-  bog: {
-    p: 'Bog Rat Pawn',
-    n: 'Bog Salamander Knight',
-    b: 'Bog Crow Bishop',
-    r: 'Snapping Turtle Rook',
-    q: 'Swamp Viper Queen',
-    k: 'Toad King',
-  },
-};
+/** Each enemy faction has its own species; only the chess headgear is shared with ours. Names live in COURSE_CAST. */
+const FACTION_REGION: Record<Faction, string> = { bog: 'r1', bandit: 'r2', cult: 'r3', legion: 'r4', warden: 'r5' };
+export const FACTION_SPECIES = Object.fromEntries(FACTIONS.map(f => [f, COURSE_CAST[FACTION_REGION[f]].species])) as Record<Faction, Record<PieceSymbol, string>>;
 
 const PIECE_NAMES: Record<PieceSymbol, string> = { p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen', k: 'king' };
 export const pieceName = (t: PieceSymbol) => PIECE_NAMES[t];
@@ -95,11 +83,11 @@ const factionLines = (region: string): Lines => ({
   move: Object.fromEntries(Object.entries(COURSE_VOICES[region]).map(([piece, line]) => [piece, [line]])) as Lines['move'],
 });
 const ENEMY: Record<Faction, Lines> = {
-  warden: factionLines('r5'), cult: factionLines('r3'), legion: factionLines('r4'),
+  warden: factionLines(FACTION_REGION.warden), cult: factionLines(FACTION_REGION.cult), legion: factionLines(FACTION_REGION.legion),
   bandit: {
+    ...factionLines(FACTION_REGION.bandit),
     checkmate: ['The account is settled.'], promotion: ['A change of trade.'],
     fork: ['Two tolls today.'], check: ['Mind your crown.'], capture: ['A fair toll.'],
-    move: { p: ['A little farther down the road.'], n: ['Over the wall I go!'], b: ['A long road from here.'], r: ['Make way. Heavy luggage.'], q: ['The toll keeper is watching.'], k: ['My chair stays right here.'] },
   },
   bog: {
     checkmate: ['The bog swallows your crown!'],

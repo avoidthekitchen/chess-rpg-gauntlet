@@ -1,11 +1,16 @@
 import { Chess } from 'chess.js';
 import { describe, expect, it } from 'vitest';
 import { COURSE_LESSONS } from '../game/curriculum';
-import { courseFoeArt } from '../game/courseCast';
+import { courseFoeArt, courseFoeName } from '../game/courseCast';
 import { courseSpeakerArt, reviewPortraitFile, storyPortraitStyle } from './courseArt';
 import { CourseDialogueLog, courseIntro, courseMoveSpeaker, coursePortrait } from './coursePresentation';
 
 describe('chapter and named portrait selection', () => {
+  it('gives an unknown chapter Bog art with honest faction labels, not another chapter’s species', () => {
+    expect(courseFoeArt('r6')).toBe('bog');
+    expect(courseFoeName('r6', 'p')).toMatch(/· Pawn$/);
+  });
+
   it('keeps the shared skeleton tokens while choosing the finale king portrait for either solver colour', () => {
     expect(courseFoeArt('r5')).toBe('warden');
     expect(courseFoeArt('finale')).toBe('warden');
@@ -48,6 +53,9 @@ describe('chapter and named portrait selection', () => {
     expect(storyPortraitStyle('The Bone Wardens', 'r5')).toContain('king-warden.webp');
     expect(storyPortraitStyle('The Cult Leader', 'r3')).toContain('king-cult.webp');
     expect(storyPortraitStyle('General Flint', 'r4')).toContain('king-legion.webp');
+    expect(storyPortraitStyle('Grubnak, the Toad Chief', 'r1')).toContain('king-bog.webp');
+    expect(storyPortraitStyle('Ashfang, the Bandit Lord', 'r2')).toContain('king-bandit.webp');
+    expect(storyPortraitStyle('General Flint', 'r3')).toBeNull();
     for (const region of ['r2', 'r4']) expect(storyPortraitStyle('Tadwell, the Frog Captain', region)).toContain('tadwell.webp');
     expect(storyPortraitStyle('Sir Hob', 'r4')).toBeNull();
   });

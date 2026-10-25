@@ -567,9 +567,7 @@ export class PhaserBoard {
   private hop(p: PieceNode, from: Square, to: Square): Promise<void> {
     const a = this.ground(from);
     const b = this.ground(to);
-    // A lower arc near the back rank, so the stretched knight stays below the header above the board.
-    const head = this.W * TOKEN_BOX.n[1] * TOKEN_ABOVE_BASE * 1.14;
-    const peak = Math.max(this.W * 0.5, Math.min(this.W * 0.95, (a.y + b.y) / 2 - head - this.W * 0.05));
+    const peak = this.W * 0.95;
     const dir = Math.sign(b.x - a.x) || 1;
     this.drawKnightPath(from, to);
     p.node.setDepth(1e6); // fly over everything
@@ -588,7 +586,12 @@ export class PhaserBoard {
           p.node.setPosition(a.x + (b.x - a.x) * k, a.y + (b.y - a.y) * k);
           p.pose.y = -h;
           p.pose.rotation = dir * 0.2 * Math.sin(Math.PI * k);
-          const s = 1 - 0.5 * (h / peak);
+          // Phone boards start just behind the header. Bound every frame, including
+          // stretch, rotation and texture rims; the arc's midpoint is not its highest point.
+          const ceiling = this.root.y + 8;
+          p.pose.y += Math.max(0, ceiling - p.body.getBounds().top);
+          const lift = Math.max(0, -p.pose.y);
+          const s = 1 - 0.5 * (lift / peak);
           p.shadow.setScale(s);
           p.shadow.alpha = 0.4 + 0.6 * s;
         },

@@ -3,6 +3,15 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Keep knight jumps below the header (PR #67)
+
+- Bound each flight frame using the rendered piece rectangle, including stretch, rotation, texture rims, and classic glyphs.
+- Reserve 8px above the piece because compact boards begin just behind the header. The shadow follows the remaining lift.
+- Four regression tests exercise the actual animation callback across both orientations, two piece styles, three square sizes, and both jump directions.
+- All four tests fail on the original PR animation and pass with the correction. `npm run ci` passes 39 files and 514 tests.
+- Chromium checked 40 fixture jumps through landing at 390×844, 1280×800, 375×812, 375×553, and 844×390.
+- Both piece styles and orientations kept visible pixels below the header. This is desktop viewport testing, not physical-device coverage.
+
 ## 2026-10-24 — Merge the accepted production curriculum
 
 - Merged #47 → #48 → #49 → #50 → #51 into main with merge commits, ending at `814140e`.

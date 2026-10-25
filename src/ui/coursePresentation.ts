@@ -102,6 +102,33 @@ export function coursePortrait(info: SpeakerInfo, extra = '') {
 export function courseDialogueRow(info: SpeakerInfo, extra = '') {
   return `<div class="course-dialogue ${info.side} ${extra}">${coursePortrait(info)}<div><strong>${esc(info.name)}</strong><p>${esc(info.line)}</p></div></div>`;
 }
+export interface CourseBanner { kind: 'tactic' | 'capture'; side: 'ally' | 'foe'; title: string; detail: string }
+const TACTIC_TITLES: [CourseCue, string][] = [['Mate', 'Checkmate!'], ['Fork', 'Fork!'], ['Double check', 'Double check!'], ['Promotion', 'Promotion!']];
+/**
+ * One banner per move. Tactics outrank a capture close-up, which outranks a plain check.
+ * Pawn captures alone get no banner, so routine trades stay quiet.
+ */
+export function courseBanner(move: Move, cues: readonly CourseCue[], solver: Color): CourseBanner | null {
+  const side = move.color === solver ? 'ally' : 'foe';
+  const shown = cues.filter(cue => cue !== 'Capture' || (move.captured && move.captured !== 'p'));
+  if (!shown.length) return null;
+  const tactic = TACTIC_TITLES.find(([cue]) => shown.includes(cue));
+  const detail = (title: string) => shown.filter(cue => cue !== title).join(' · ');
+  if (tactic) return { kind: 'tactic', side, title: tactic[1], detail: detail(tactic[0]) };
+  if (shown.includes('Capture')) {
+    const title = side === 'ally' ? captureLine(move) : `Their ${pieceName(move.promotion ?? move.piece)} takes your ${pieceName(move.captured!)}!`;
+    return { kind: 'capture', side, title, detail: detail('Capture') };
+  }
+  return { kind: 'tactic', side, title: 'Check!', detail: '' };
+}
+
+/** Banner for any move in a published line: accepted solver moves, and opponent replies after the setup move. */
+export function lineBanner(chess: Chess, move: Move, solver: Color, accepted: boolean, puzzleId: string, publishedIndex: number): CourseBanner | null {
+  if (accepted) return courseBanner(move, courseMoveCues(chess, move, true, puzzleId, publishedIndex), solver);
+  if (move.color === solver || publishedIndex < 1) return null;
+  return courseBanner(move, courseMoveCues(chess, move, true, puzzleId, -1), solver);
+}
+
 export function captureLine(move: Move) {
   return `${SPECIES[move.promotion ?? move.piece]} takes their ${pieceName(move.captured!)}!`;
 }

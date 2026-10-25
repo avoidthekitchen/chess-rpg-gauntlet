@@ -15,6 +15,8 @@ export interface JourneySave {
   version: 1;
   finaleComplete: boolean;
   endingSeen?: boolean;
+  /** Chapters whose first-visit introduction has been shown. */
+  introsSeen?: string[];
   difficulty: DifficultyId;
   starter: StarterType;
   currentRegion: string;
@@ -27,7 +29,7 @@ export interface JourneySave {
 }
 
 export function newJourney(difficulty: DifficultyId = 'knight', starter: StarterType = 'n'): JourneySave {
-  return { version: 1, finaleComplete: false, endingSeen: false, difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
+  return { version: 1, finaleComplete: false, endingSeen: false, introsSeen: [], difficulty, starter, currentRegion: COURSE_REGIONS[0].id, completed: [],
     stars: {}, attempts: 0, retryWaves: {}, active: null, lastResult: null };
 }
 
@@ -110,4 +112,13 @@ export function journeyMilestone(save: JourneySave, lessonId: string): 'chapter'
     save.active.run.status !== 'won') return null;
   if (lessonId === finalEncounter()) return journeyComplete(save) ? 'ending' : null;
   return lesson.regionId === finaleChapter()?.id ? 'interlude' : 'chapter';
+}
+
+/** The chapter whose introduction should open now, if any. Preview saves skip intros. */
+export function pendingIntro(save: JourneySave, preview: boolean): string | null {
+  if (preview || !regionUnlocked(save, save.currentRegion)) return null;
+  return save.introsSeen?.includes(save.currentRegion) ? null : save.currentRegion;
+}
+export function markIntroSeen(save: JourneySave, regionId: string) {
+  if (!save.introsSeen?.includes(regionId)) save.introsSeen = [...(save.introsSeen ?? []), regionId];
 }

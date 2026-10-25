@@ -13,7 +13,7 @@ An integrated beginner course is not built.
 3. **Progress through learning.** Complete lessons and revisit earlier skills. Gold, recruitment, powers, and live army bosses are not prerequisites.
 4. **Mistakes are recoverable.** Attempts can always be retried. No permanent lockout, lost save, or payment blocks learning.
 5. **A story worth following.** Keep named companions, faction personalities, painted maps, introductions, dialogue history, and accurate celebrations.
-6. **Readable on a phone.** Keep the board visible. Temporary speech may cover advice on compact screens, but never board squares or action buttons.
+6. **Readable on a phone.** Keep the board visible. Temporary speech may cover advice on compact screens, but never board squares or action buttons. Move banners briefly cover the board only between moves.
 
 **Product goal:** a polished web game and eventual commercial iOS app. The source is GPL-3; shipped content needs suitable reuse rights.
 Published sources support content reliability, but do not prove our syllabus produces measured learning gains.

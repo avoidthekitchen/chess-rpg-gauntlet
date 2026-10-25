@@ -200,3 +200,22 @@ describe('finale save recovery', () => {
     expect(loadJourney()!.finaleComplete).toBe(true);
   });
 });
+
+describe('chapter introductions seen', () => {
+  beforeEach(() => data.clear());
+  it('keeps known chapters and drops unknown ones', () => {
+    persistJourney({ ...newJourney(), introsSeen: ['r1', 'nowhere', 'r1', 7 as unknown as string] });
+    expect(loadJourney()!.introsSeen).toEqual(['r1']);
+  });
+  it('treats chapters already begun in older saves as introduced', () => {
+    const old = newJourney();
+    delete old.introsSeen;
+    old.completed = [first];
+    persistJourney(old);
+    expect(loadJourney()!.introsSeen).toEqual([COURSE_REGIONS[0].id]);
+    const fresh = newJourney();
+    delete fresh.introsSeen;
+    persistJourney(fresh);
+    expect(loadJourney()!.introsSeen).toEqual([]);
+  });
+});

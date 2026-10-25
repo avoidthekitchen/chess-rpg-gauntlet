@@ -20,12 +20,6 @@
 .course-play .ambush-panel .course-portrait { width:58px; height:78px; }
 .course-play .ambush-panel .course-dialogue { gap:11px; }
 .course-play .ambush-panel .course-dialogue p { font-size:17px; }
-.course-moment { position:absolute; display:flex; align-items:center; gap:16px; padding:12px 18px; pointer-events:none; border-top:3px solid #e0ab45; border-bottom:3px solid #e0ab45; background:#171218eb; box-shadow:0 5px 22px #0008; animation:course-moment-in .17s ease-out; }
-.course-moment .course-portrait { width:78px; height:104px; }
-.course-moment > div { flex:1; min-width:0; }
-.course-moment small { display:block; color:#e9ce91; font:600 11px/1.5 system-ui,sans-serif; text-transform:uppercase; letter-spacing:.08em; }
-.course-moment strong { display:block; color:#ffe5a3; font:700 clamp(20px,3vw,34px)/1.12 Alegreya,Georgia,serif; text-shadow:0 2px 2px #000; }
-.course-moment.capture .course-portrait { width:94px; height:126px; }
 .course-stars { display:flex; justify-content:space-around; gap:8px; margin:16px 0; padding:12px 0; border-top:1px solid #78613c; border-bottom:1px solid #78613c; }
 .course-stars > span { flex:1; text-align:center; color:#b2a48b; font:11px/1.4 system-ui,sans-serif; }
 .course-stars b { display:block; font-size:32px; line-height:1.15; font-weight:400; }
@@ -36,7 +30,6 @@
 .course-stars .new-star:nth-child(3) b { animation-delay:.5s; }
 .course-history-label { margin:18px 0 8px!important; padding-top:12px; border-top:1px solid #61503a; color:#c8b58d; font:11px/1.4 system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; }
 .course-history .course-dialogue { margin:8px 0 16px; }
-@keyframes course-moment-in { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
 @keyframes course-star-in { from { opacity:.2; transform:translateY(5px) scale(.7); } to { opacity:1; transform:translateY(0) scale(1); } }
 @media(max-width:639px) {
   .course-play .ambush-actions button { padding:9px 11px; font-size:12px; }
@@ -45,10 +38,6 @@
   .course-play .ambush-top { gap:8px; }
   .course-play .ambush-top button { padding:8px; font-size:11px; }
   .course-play .ambush-card { padding:22px 20px; }
-  .course-moment { gap:12px; padding:8px 12px; }
-  .course-moment.capture .course-portrait { width:72px; height:96px; }
-  .course-moment .course-portrait { width:60px; height:80px; }
-  .course-moment strong { font-size:23px; }
 }
 @media(max-height:650px) {
   .course-play .ambush-panel .course-portrait { width:44px; height:58px; }
@@ -56,11 +45,7 @@
   .course-play .ambush-panel .course-dialogue p { font-size:15px; }
   .course-play .ambush-panel .course-dialogue strong { font-size:9px; }
   .course-play .ambush-panel h2 { margin:6px 0; font-size:23px; }
-  .course-moment { gap:10px; padding:7px 10px; }
-  .course-moment .course-portrait,.course-moment.capture .course-portrait { width:52px; height:70px; }
-  .course-moment strong { font-size:21px; }
 }
-@media(prefers-reduced-motion:reduce) { .course-moment,.course-stars .new-star b { animation:none; } }
 
 .course-play .course-advice { margin:8px 0; color:#c9bca1; font:15px/1.3 Alegreya,Georgia,serif; }
 .course-play .course-advice strong { color:#e4cd9e; }
@@ -103,14 +88,43 @@
   .course-play .course-advice { font-size:15px; line-height:1.25; }
 }
 
-/* Feedback stays inside the advice area (or the desktop dialogue slot), off the board. */
-.course-play .course-moment { z-index:2; background:#171218; animation-name:course-feedback-in; overflow:hidden; }
-@keyframes course-feedback-in { from { transform:scale(.96); } to { transform:scale(1); } }
-.course-play .course-moment[hidden] { display:none; }
-.course-play .course-moment .course-portrait { height:var(--feedback-portrait-height, 96px); width:calc(var(--feedback-portrait-height, 96px) * .75); }
 .course-play .course-speech.toast .course-portrait { max-height:var(--feedback-portrait-height, 64px); }
 
 /* Completion text gets the phone screen after the final move finishes. */
 @media(max-width:639px) {
   .course-play.course-finished .ambush-panel { top:calc(80px + env(safe-area-inset-top))!important; max-height:calc(100dvh - 92px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important; background:#211c27; }
+}
+
+/* A slim lesson header, like the original game: 52px plus the safe area. */
+.course-play .ambush-top { padding:6px 12px; padding-top:calc(6px + env(safe-area-inset-top)); gap:12px; min-height:calc(52px + env(safe-area-inset-top)); box-sizing:border-box; }
+.course-play .ambush-top button { min-height:40px; }
+
+/* Talking portraits at the original sizes: 76x104 beside the board, 62x86 on phones. */
+.course-play .course-speech.persistent .course-portrait { width:76px; height:104px; }
+.course-play .course-speech.toast .course-portrait { width:auto; height:min(86px, var(--feedback-portrait-height, 86px)); max-height:none; aspect-ratio:62 / 86; }
+.course-play .course-speech.entering { animation:course-speech-in .32s cubic-bezier(.2,.8,.3,1); }
+@keyframes course-speech-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+/* Move banners fill the board's centre after a move lands. A tap skips them. */
+.course-banner { position:absolute; z-index:3; pointer-events:auto; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.course-banner.leaving { opacity:0; transform:translateY(-22px); transition:opacity .22s ease-in, transform .22s ease-in; }
+.course-banner.tactic { background:radial-gradient(ellipse 60% 34% at center, #0c090fb8 0%, #0c090f66 55%, transparent 100%); }
+.course-banner.tactic .course-banner-copy { text-align:center; animation:course-banner-pop .42s cubic-bezier(.3,1.6,.5,1) both; }
+.course-banner.tactic strong { display:block; font:700 clamp(44px,7vw,60px)/1.05 Alegreya,Georgia,serif; color:#ffd66b; -webkit-text-stroke:2px #1a0f08; paint-order:stroke fill; text-shadow:0 4px 0 #1a0f08,0 0 18px #000,0 6px 22px #000c; }
+.course-banner.tactic.foe strong { color:#ff8a73; }
+.course-banner small { display:block; margin-top:6px; font:700 12px/1.4 system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#f4e4bf; text-shadow:0 2px 4px #000; }
+.course-banner-band { position:relative; display:flex; align-items:center; gap:18px; width:100%; height:var(--band-height,140px); padding:10px 18px; box-sizing:border-box; background:#0c090fd6; border-top:3px solid #e0ab45; border-bottom:3px solid #e0ab45; box-shadow:0 8px 26px #000a; overflow:hidden; animation:course-band-in .14s ease-out both; }
+.course-banner.foe .course-banner-band { border-color:#e25a43; }
+.course-banner-band .course-portrait { height:calc(var(--band-height,140px) - 22px); width:auto; aspect-ratio:72 / 100; animation:course-portrait-in .34s cubic-bezier(.3,1.5,.5,1) both; }
+.course-banner-band .course-banner-copy { min-width:0; animation:course-copy-in .38s cubic-bezier(.2,.8,.3,1) .04s both; }
+.course-banner-band strong { display:block; font:700 clamp(21px,3.6vw,32px)/1.12 Alegreya,Georgia,serif; color:#ffd66b; text-shadow:0 2px 2px #000; }
+.course-banner.foe .course-banner-band strong { color:#ff8a73; }
+.course-banner-band small { margin:0 0 4px; }
+@keyframes course-banner-pop { 0% { opacity:0; transform:scale(.6); } 70% { opacity:1; transform:scale(1.08); } 100% { opacity:1; transform:scale(1); } }
+@keyframes course-band-in { from { opacity:0; } to { opacity:1; } }
+@keyframes course-portrait-in { from { transform:translateX(-120%); } to { transform:none; } }
+@keyframes course-copy-in { from { opacity:0; transform:translateX(40px); } to { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) {
+  .course-stars .new-star b,.course-play .course-speech.entering,.course-banner *,.course-banner-band { animation:none!important; }
+  .course-banner.leaving { transform:none; }
 }

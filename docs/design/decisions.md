@@ -24,7 +24,7 @@ These items remain future work. They do not block the accepted production curric
 - [ ] [Feedback and solution review #53](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/53): add position-specific wrong-move explanations and optional solution review.
 - [ ] [Save recovery notice #59](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/59): explain repaired or unreadable saves and offer a recovery path; keep the raw backup.
 - [ ] [Loading and bundle size #57](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/57): measure startup and lazy chapter artwork; check re-entry, failure, and offline behavior.
-- [ ] [Faction art and naming #60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60): expand artwork for Regions 3–5 and the finale; keep tokens readable and identity text accurate.
+- [ ] [Faction art and naming #60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60): expand artwork for Regions 2–5 and the finale; keep tokens readable and identity text accurate.
 - [ ] [Teaching-claim tests #54](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/54): consolidate shared checks.
 - [ ] [Legacy AI test cleanup #55](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/55): address flaky historical AI coverage as P3 work.
 - [ ] [Save, rollback, and keyboard checks #56](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/56): preserve save and rollback safeguards; complete native keyboard validation.

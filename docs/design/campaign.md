@@ -40,7 +40,7 @@ Allies and opponents may play either chess color; ivory and ebony identify color
 | [Lich King](regions/finale-lich-king.md) | Built | Mixed capstone of taught skills, using fresh published positions | The king who refused defeat finally accepts it |
 
 The final capstone does not require a full live engine game or a hired army.
-Draft PR #66 provides matching faction tokens and portraits for every chapter. See [the art review](../faction-art-review.md).
+Every chapter has matching faction tokens and portraits. See [the art review](../faction-art-review.md).
 Faction costumes and species do not change published boards or replies.
 
 ## Curriculum

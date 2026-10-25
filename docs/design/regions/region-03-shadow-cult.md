@@ -11,7 +11,7 @@ The source pack contains six guided lessons and a seven-wave mixed review, curat
 It preserves 57 published Lichess puzzles, including every setup move, reply, and endpoint.
 The chosen companion remains the coach. The Cult Leader hosts the review; no new named character or recruitment mechanic is introduced.
 
-Draft PR #66 adds matching Cult tokens and portraits. See the [art review](../../faction-art-review.md); these assets are not deployed.
+Matching Cult tokens and portraits are in place. See the [art review](../../faction-art-review.md).
 
 | Field | Content |
 | --- | --- |

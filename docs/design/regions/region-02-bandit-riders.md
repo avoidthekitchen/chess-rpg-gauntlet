@@ -36,9 +36,8 @@ The built chapter ending includes Tadwell, Ashfang, the crystal, and the selecte
 ## Art
 
 The planned faction species remain raccoon pawn, hare knight, magpie bishop, badger rook, stoat queen, and Ashfang the wolf king.
-The draft for [#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60) adds matching tokens, portraits, Tadwell, and the Kingsroad map.
-See [the art review](../../bandit-art-review.md) for screenshots and checks. This draft has not been deployed.
-The same draft now includes Regions 3–5 and the finale. See the [complete art review](../../faction-art-review.md).
+[#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60) added matching tokens, portraits, Tadwell, and the Kingsroad map.
+See [the art review](../../bandit-art-review.md) for screenshots and checks, and the [complete art review](../../faction-art-review.md) for Regions 3–5 and the finale.
 Identity text must match the art actually shown; board colors remain distinct from ally/opponent identity.
 
 ## Verification and playtest

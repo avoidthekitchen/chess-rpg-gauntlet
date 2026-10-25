@@ -40,31 +40,31 @@ Run `npm run dev`, then open `/art/review/bandit.html` to inspect the set again.
 
 ### Tokens at phone size
 
-![All six tokens in ivory and ebony, with grayscale boards](../output/playwright/bandit-board-proof.png)
+![All six tokens in ivory and ebony, with grayscale boards](review/bandit-board-proof.webp)
 
 ### Comparison with the previous artwork
 
-![Ally, Bog, and Bandit tokens enlarged for style comparison](../output/playwright/bandit-token-comparison.png)
+![Ally, Bog, and Bandit tokens enlarged for style comparison](review/bandit-token-comparison.webp)
 
 ### Figurines and dialogue-card crops
 
-![All seven portrait figurines beside their 76 by 104 pixel card crops](../output/playwright/bandit-portrait-proof.png)
+![All seven portrait figurines beside their 76 by 104 pixel card crops](review/bandit-portrait-proof.webp)
 
 ### In the game
 
-![The Kingsroad map with its route and six encounters](../output/playwright/bandit-map-desktop.png)
+![The Kingsroad map with its route and six encounters](review/bandit-map-desktop.webp)
 
-![Region 2 briefing with a Raccoon Pawn and Sir Hob](../output/playwright/bandit-briefing-desktop.png)
+![Region 2 briefing with a Raccoon Pawn and Sir Hob](review/bandit-briefing-desktop.webp)
 
-![Published practice board with ivory Bandits and the Wolf King dialogue portrait](../output/playwright/bandit-board-desktop.png)
+![Published practice board with ivory Bandits and the Wolf King dialogue portrait](review/bandit-board-desktop.webp)
 
-![Phone practice with Black allies and ivory Bandits](../output/playwright/bandit-board-phone-black.png)
+![Phone practice with Black allies and ivory Bandits](review/bandit-board-phone-black.webp)
 
-![Phone practice with White allies and ebony Bandits](../output/playwright/bandit-board-phone-white.png)
+![Phone practice with White allies and ebony Bandits](review/bandit-board-phone-white.webp)
 
-![Tadwell and Ashfang in the chapter ending on desktop](../output/playwright/bandit-story-desktop.png)
+![Tadwell and Ashfang in the chapter ending on desktop](review/bandit-story-desktop.webp)
 
-![Tadwell and Ashfang in the chapter ending on a phone](../output/playwright/bandit-story-phone.png)
+![Tadwell and Ashfang in the chapter ending on a phone](review/bandit-story-phone.webp)
 
 The ending screenshots use a completed-chapter fixture in the isolated Region 2 preview save. They do not claim a browser curriculum playthrough.
 

@@ -8,7 +8,7 @@ The game is 2D. Storybook fantasy in an animal world, at least as polished as In
 
 **Board tokens and portraits.** A phone board square is about 45 px, and the detailed figurines are hard to read at that size. So the board uses a simplified token for each piece that still shows the animal and its chess role at a glance, such as a lion's face under a cross-topped crown or an owl in a slit mitre. Each token is a bust of the animal wearing its chess headgear on a round base, like a real chess piece, and stays about one square tall so it doesn't hide the piece behind it. The detailed figurines become talking-head portraits beside the board when a piece moves or captures: tall portrait cards in the side panel on desktop, and a card floating at the bottom of the screen on phones.
 
-**Status.** Ally, Bog Goblin, Bandit Rider, Cult, Legion, and Warden sets have six tokens in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Each has six talking-head portraits (`public/sprites/<piece>-<faction>.webp`). Tadwell and the Lich King have separate portraits. All #60 assets are in [draft PR #66](https://github.com/avoidthekitchen/chess-rpg-gauntlet/pull/66); see [screenshots and checks](../faction-art-review.md). No deployment is included.
+**Status.** Ally, Bog Goblin, Bandit Rider, Cult, Legion, and Warden sets have six tokens in White and Black (`public/sprites/token-<piece>-<faction>-<w|b>.webp`). Each has six talking-head portraits (`public/sprites/<piece>-<faction>.webp`). Tadwell and the Lich King have separate portraits. Boot loads the ally and Bog sets; each lesson loads its chapter's tokens when it opens. See [screenshots and checks](../faction-art-review.md) for #60.
 
 - **Classic pieces toggle.** Players can switch to standard chess pieces, so what they learn carries over to real chess.
 - **Motion teaches movement.** The frog knight hops in an arc, the tortoise stomps in a straight line, the owl glides diagonally.
@@ -46,7 +46,7 @@ Two questions must be answerable at a glance on a 45 px phone square: **which ch
 | Queen | Swamp viper witch | Swamp Viper Queen |
 | King | Toad (Grubnak) | Toad King |
 
-**Bandit Riders (Region 2).** Masked highway thieves in dark olive cloaks, brown leather ties, and roadside gear. The raccoon's mask is its own; the others wear cloth masks. Native OpenAI generation produced the draft set; [the manifest](../../art/bandit-prompts.json) records its prompts and references. OpenRouter spend is $0.
+**Bandit Riders (Region 2).** Masked highway thieves in dark olive cloaks, brown leather ties, and roadside gear. The raccoon's mask is its own; the others wear cloth masks. Native OpenAI generation produced the set; [the manifest](../../art/bandit-prompts.json) records its prompts and references. OpenRouter spend is $0.
 
 | Piece | Species | Name in the game |
 | --- | --- | --- |
@@ -107,7 +107,7 @@ Decided 2026-10-24 in [#60](https://github.com/avoidthekitchen/chess-rpg-gauntle
 | 5 | `map-region2.webp`, the Kingsroad map | 1–2 | $0.30 |
 | | Retries | | $5.66 |
 
-The completed draft used native OpenAI generation: 51 originals and three targeted edits, with $0 OpenRouter spend.
+The #60 art used native OpenAI generation: 51 originals and three targeted edits, with $0 OpenRouter spend.
 The estimates above describe the optional API route. Track any future API spend as you go. If retries would push the total past $16, stop and ask the owner before generating more.
 
 ### Token pipeline

@@ -63,7 +63,7 @@ Ally pieces. Each living enemy faction has its own species and in-game names, li
 Decided 2026-10-24 ([#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60)). Living faction species stay distinct, except General Flint, the named lion general.
 The Bone Wardens copy our six species on purpose: the Lich King was a Lion King of Pawnshire.
 The Region 5 king is an unnamed warden. The Lich King appears only in the finale.
-All chapter sets now have matching tokens and portraits in draft PR #66. Species labels follow those assets.
+Every chapter set has matching tokens and portraits. Species labels follow those assets.
 A future unfinished set must retain faction plus chess-role labels until its art is complete.
 
 ## Places

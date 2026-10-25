@@ -63,44 +63,44 @@ Run `npm run dev`, then open `/art/review/factions.html?faction=warden`, `cult`,
 
 ### Bone Wardens and the Lich King
 
-![Wardens at 45 px in both colours and grayscale](../output/playwright/warden-board-proof.png)
+![Wardens at 45 px in both colours and grayscale](review/warden-board-proof.webp)
 
-![Warden figurines, card crops, and separate royal Lich King](../output/playwright/warden-portrait-proof.png)
+![Warden figurines, card crops, and separate royal Lich King](review/warden-portrait-proof.webp)
 
-![Finale practice board and Lich King dialogue](../output/playwright/finale-board-desktop.png)
+![Finale practice board and Lich King dialogue](review/finale-board-desktop.webp)
 
 ### Shadow Cult
 
-![Cult at 45 px in both colours and grayscale](../output/playwright/cult-board-proof.png)
+![Cult at 45 px in both colours and grayscale](review/cult-board-proof.webp)
 
-![Cult figurines and card crops](../output/playwright/cult-portrait-proof.png)
+![Cult figurines and card crops](review/cult-portrait-proof.webp)
 
 ### Iron Legion
 
-![Legion at 45 px in both colours and grayscale](../output/playwright/legion-board-proof.png)
+![Legion at 45 px in both colours and grayscale](review/legion-board-proof.webp)
 
-![Legion figurines and card crops](../output/playwright/legion-portrait-proof.png)
+![Legion figurines and card crops](review/legion-portrait-proof.webp)
 
 <details>
 <summary>Phone, landscape, and story views</summary>
 
-![Cult phone board](../output/playwright/cult-board-phone.png)
+![Cult phone board](review/cult-board-phone.webp)
 
-![Legion phone board](../output/playwright/legion-board-phone.png)
+![Legion phone board](review/legion-board-phone.webp)
 
-![Wardens phone board, playing Black](../output/playwright/warden-board-phone.png)
+![Wardens phone board, playing Black](review/warden-board-phone.webp)
 
-![Finale phone board](../output/playwright/finale-board-phone.png)
+![Finale phone board](review/finale-board-phone.webp)
 
-![WebKit short-phone view](../output/playwright/cult-webkit-short-phone.png)
+![WebKit short-phone view](review/cult-webkit-short-phone.webp)
 
-![Longest Gentle advice at 375 × 553 in WebKit](../output/playwright/legion-webkit-longest-advice.png)
+![Longest Gentle advice at 375 × 553 in WebKit](review/legion-webkit-longest-advice.webp)
 
-![WebKit landscape view](../output/playwright/finale-webkit-landscape.png)
+![WebKit landscape view](review/finale-webkit-landscape.webp)
 
-![Flint and Tadwell in the chapter ending](../output/playwright/legion-story-phone.png)
+![Flint and Tadwell in the chapter ending](review/legion-story-phone.webp)
 
-![Lich King in the final ending](../output/playwright/finale-story-desktop.png)
+![Lich King in the final ending](review/finale-story-desktop.webp)
 
 </details>
 

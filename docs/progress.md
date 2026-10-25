@@ -3,6 +3,18 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — Complete faction art for #60 in the same draft PR
+
+- The owner approved expanding PR #66 to Bone Wardens/finale, Shadow Cult, and Iron Legion after the Bandit checkpoint.
+- Added 18 keyed originals, 36 coloured tokens, 18 portraits, and the separate royal Lich King. OpenRouter spend remains $0.
+- The full issue contains 51 original illustrations, three native corrections, 24 committed cutouts, and 75 runtime assets.
+- Independent art review passed each 45 px colour/grayscale board, portrait crops, and final desktop/phone scenes.
+- Corrected the moth's mammalian face and top-aligned the snail rook crop. Retained normal tortoise and armadillo framing.
+- Finale king identity follows dialogue, history, banners, map stops, and ending. Earlier chapter replays keep the Lich portrait hidden.
+- Independent code/teaching review found no blockers. `npm run ci` passed type-check, build, and 513 tests.
+- Chromium accepted a published move in every remaining chapter. WebKit passed all 16 Gentle viewport checks, keyboard history, touch input, and classic pieces.
+- [The complete review](faction-art-review.md) records prompts, screenshots, fixtures, and device-emulation limits. The PR remains draft; nothing was deployed.
+
 ## 2026-10-24 — Bandit Riders art draft for #60
 
 - Added six keyed originals, twelve ivory/ebony board tokens, six faction portraits, Tadwell, and the Kingsroad map with native OpenAI generation.

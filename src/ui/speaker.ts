@@ -1,4 +1,5 @@
 import type { Color, Move, PieceSymbol } from 'chess.js';
+import { COURSE_VOICES } from '../game/courseCast';
 import type { TacticTag } from '../game/tactics';
 
 /**
@@ -9,8 +10,10 @@ import type { TacticTag } from '../game/tactics';
 
 export type Side = 'ally' | 'foe';
 /** Enemy factions, each with its own sprite set: Bog Goblins (`bog`), Region 1. Each region adds its own. */
-export const FACTIONS = ['bog', 'bandit'] as const;
+export const FACTIONS = ['bog', 'bandit', 'warden', 'cult', 'legion'] as const;
 export type Faction = (typeof FACTIONS)[number];
+export const CHARACTER_PORTRAITS = ['tadwell', 'lich-king'] as const;
+export type PortraitCharacter = (typeof CHARACTER_PORTRAITS)[number];
 
 export const SPECIES: Record<PieceSymbol, string> = {
   p: 'Mouse Pawn',
@@ -23,6 +26,9 @@ export const SPECIES: Record<PieceSymbol, string> = {
 
 /** Each enemy faction has its own species; only the chess headgear is shared with ours. */
 export const FACTION_SPECIES: Record<Faction, Record<PieceSymbol, string>> = {
+  warden: { p: 'Skeleton Mouse Pawn', n: 'Skeleton Frog Knight', b: 'Skeleton Owl Bishop', r: 'Skeleton Tortoise Rook', q: 'Skeleton Fox Queen', k: 'Skeleton Lion King' },
+  cult: { p: 'Moth Pawn', n: 'Bat Knight', b: 'Spider Bishop', r: 'Snail Rook', q: 'Cat Queen', k: 'Goat King' },
+  legion: { p: 'Hedgehog Pawn', n: 'Boar Knight', b: 'Heron Bishop', r: 'Armadillo Rook', q: 'Eagle Queen', k: 'Legion Lion King' },
   bandit: { p: 'Raccoon Pawn', n: 'Hare Knight', b: 'Magpie Bishop', r: 'Badger Rook', q: 'Stoat Queen', k: 'Wolf King' },
   bog: {
     p: 'Bog Rat Pawn',
@@ -50,15 +56,15 @@ export const FRAMING: Partial<Record<PieceSymbol, { size: number; x: number; y: 
   p: { size: 1.25, x: 0.5, y: 0.06 },
 };
 
-/** The bandit rook stands upright; the original tortoise's centred crop clips its tower. */
+/** Upright bandit/snail towers need top alignment; squat tortoise and armadillo rooks keep their centred crop. */
 export const portraitFraming = (type: PieceSymbol, faction: 'ally' | Faction) =>
-  faction === 'bandit' && type === 'r' ? { ...FRAMING.r!, y: 0 } : FRAMING[type];
+  (faction === 'bandit' || faction === 'cult') && type === 'r' ? { ...FRAMING.r!, y: 0 } : FRAMING[type];
 
 /**
  * Texture keys: the detailed figurine, and the token used when a figurine is missing,
  * in the speaker's chess color (`allyColor` is yours: White in battles, either in puzzles).
  */
-export const portraitKey = (type: PieceSymbol, side: Side, faction: Faction) => `${PIECE_NAMES[type]}-${side === 'ally' ? 'ally' : faction}`;
+export const portraitKey = (type: PieceSymbol, side: Side, faction: Faction, character?: PortraitCharacter) => character ?? `${PIECE_NAMES[type]}-${side === 'ally' ? 'ally' : faction}`;
 export const tokenPortraitKey = (type: PieceSymbol, side: Side, faction: Faction, allyColor: Color = 'w') => {
   const enemyColor: Color = allyColor === 'w' ? 'b' : 'w';
   return `token-${PIECE_NAMES[type]}-${side === 'ally' ? `ally-${allyColor}` : `${faction}-${enemyColor}`}`;
@@ -83,7 +89,13 @@ const ALLY: Lines = {
   },
 };
 
+const factionLines = (region: string): Lines => ({
+  checkmate: ['The board is settled.'], promotion: ['A new piece.'], fork: ['Two threats.'],
+  check: ['Mind the check.'], capture: ['One piece fewer.'],
+  move: Object.fromEntries(Object.entries(COURSE_VOICES[region]).map(([piece, line]) => [piece, [line]])) as Lines['move'],
+});
 const ENEMY: Record<Faction, Lines> = {
+  warden: factionLines('r5'), cult: factionLines('r3'), legion: factionLines('r4'),
   bandit: {
     checkmate: ['The account is settled.'], promotion: ['A change of trade.'],
     fork: ['Two tolls today.'], check: ['Mind your crown.'], capture: ['A fair toll.'],
@@ -113,6 +125,7 @@ export interface SpeakerInfo {
   side: Side;
   /** Art identity travels with dialogue through speech, banners and history. */
   faction?: Faction;
+  character?: PortraitCharacter;
   name: string;
   line: string;
   type: PieceSymbol;

@@ -1,4 +1,4 @@
-import { COURSE_OPENINGS, COURSE_VOICES, courseFoeArt, courseFoeName, courseCast } from '../game/courseCast';
+import { COURSE_OPENINGS, COURSE_VOICES, courseFoeName, courseCast } from '../game/courseCast';
 import { type Chess, type Color, type Move } from 'chess.js';
 import { isDoubleCheck } from '../game/ambush';
 import type { StarterType } from '../game/campaign';
@@ -6,6 +6,7 @@ import { STARTERS } from '../game/campaign';
 import { courseRegion, type CourseLesson } from '../game/curriculum';
 import { DialogueLog, holdMs, moveLabel } from './dialogue';
 import { esc } from './overlay';
+import { courseSpeakerArt } from './courseArt';
 import { portraitStyle } from './portrait';
 import { SPECIES, pieceName, type SpeakerInfo } from './speaker';
 
@@ -56,7 +57,7 @@ export function courseMoveSpeaker(move: Move, solver: Color, cues: readonly Cour
   else if (cues.includes('Check')) line = 'Check. Their king must answer.';
   else if (cues.includes('Capture')) line = 'Got you!';
   else line = { p: 'One step closer.', n: 'Hop to it!', b: 'Along the diagonal.', r: 'Slow and steady.', q: 'Watch closely.', k: 'Steady now.' }[type];
-  return { side, type, ...(side === 'foe' ? { faction: courseFoeArt(regionId) } : {}), name: side === 'ally' ? SPECIES[type] : courseFoeName(regionId, type), line };
+  return { side, type, ...courseSpeakerArt(regionId, type, side), name: side === 'ally' ? SPECIES[type] : courseFoeName(regionId, type), line };
 }
 
 const REACTIONS: Record<StarterType, { win: string; miss: string; wave: string }> = {
@@ -78,7 +79,8 @@ export function courseIntro(lesson: CourseLesson, starter: StarterType): Speaker
   const region = courseRegion(lesson.regionId);
   const cast = courseCast(lesson.regionId);
   const opening = lesson.review ? cast.reviewOpening : cast.lessonOpening;
-  return [{ side: 'foe', faction: courseFoeArt(lesson.regionId), type: lesson.review ? 'k' : 'p', name: lesson.review ? region?.bossName ?? 'The challenger' : courseFoeName(lesson.regionId, 'p'), line: COURSE_OPENINGS[lesson.id] ?? opening },
+  const type = lesson.review ? 'k' : 'p';
+  return [{ side: 'foe', ...courseSpeakerArt(lesson.regionId, type, 'foe'), type, name: lesson.review ? region?.bossName ?? 'The challenger' : courseFoeName(lesson.regionId, 'p'), line: COURSE_OPENINGS[lesson.id] ?? opening },
     companionSpeaker(starter, lesson.review ? 'Your turn. Read each board and choose your plan.' : INTRO[starter])];
 }
 
@@ -97,7 +99,7 @@ export class CourseDialogueLog {
 }
 
 export function coursePortrait(info: SpeakerInfo, extra = '') {
-  return `<span class="course-portrait ${info.side} ${extra}" style="${portraitStyle(info.type, info.side === 'ally' ? 'ally' : info.faction ?? 'bog')}" aria-hidden="true"></span>`;
+  return `<span class="course-portrait ${info.side} ${extra}" style="${portraitStyle(info.type, info.side === 'ally' ? 'ally' : info.faction ?? 'bog', info.character)}" aria-hidden="true"></span>`;
 }
 export function courseDialogueRow(info: SpeakerInfo, extra = '') {
   return `<div class="course-dialogue ${info.side} ${extra}">${coursePortrait(info)}<div><strong>${esc(info.name)}</strong><p>${esc(info.line)}</p></div></div>`;

@@ -24,6 +24,7 @@ import { extname, join } from 'node:path';
 
 const MODEL = 'google/gemini-3-pro-image';
 const RAW_DIR = join('art', 'raw');
+const factionPrompts = JSON.parse(readFileSync(new URL('../art/faction-prompts.json', import.meta.url), 'utf8'));
 const STYLE_REF = join('art', 'reference', 'frog-mage-style.webp');
 
 const STYLE =
@@ -181,6 +182,11 @@ SPRITES['pawn-ally'] = {
   refs: ['public/sprites/token-pawn-ally-w.webp', 'knight-ally', 'king-ally'],
 };
 
+// Approved species/look data are shared with the native generation manifest.
+for (const [faction, spec] of Object.entries(factionPrompts.factions)) {
+  FACTIONS[faction] = { look: spec.look, species: spec.subjects };
+}
+
 // ---- simplified board tokens (cyan-keyed; see KEY) ----
 // Ally tokens use the existing keyed token as the reference, so a regenerated token keeps its design.
 // Other factions use the ally pawn for style ONLY, so the new species isn't pulled toward ours.
@@ -249,6 +255,23 @@ SPRITES.tadwell = {
   style: false, refs: ['public/sprites/knight-ally.webp'],
 };
 SPRITES['bg-map-region2'] = { prompt: banditPrompts.map.prompt, style: false, aspect: '4:3', refs: ['public/backgrounds/map-region1.webp'] };
+
+// Optional OpenRouter definitions; the delivered art used native OpenAI generation only.
+const onMagenta = prompt => prompt.replace(/Background genuinely TRANSPARENT/gi, 'Background flat magenta')
+  .replace(/GENUINELY TRANSPARENT background/gi, 'Flat magenta background');
+for (const [faction, subjects] of Object.entries(factionPrompts.portrait_details)) {
+  for (const [piece, subject] of Object.entries(subjects)) {
+    SPRITES[`${piece}-${faction}`] = {
+      prompt: onMagenta(`${factionPrompts.portrait_common}\nFaction: ${factionPrompts.factions[faction].portrait}\nSubject: ${subject}`),
+      style: false,
+      refs: [`public/sprites/token-${piece}-${faction}-b.webp`, `public/sprites/${piece}-ally.webp`],
+    };
+  }
+}
+SPRITES['lich-king'] = {
+  prompt: onMagenta(factionPrompts.generations.find(g => g.asset === 'lich-king').prompt),
+  style: false, refs: ['public/sprites/king-warden.webp', 'public/sprites/king-ally.webp'],
+};
 
 // ---- painted backgrounds (not cut out) ----
 SPRITES['bg-title'] = {

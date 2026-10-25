@@ -71,17 +71,16 @@ describe('lesson speakers and story', () => {
     expect(companionSpeaker('b', 'Look again.')).toMatchObject({ name: 'Sage Ollie · Owl Bishop', type: 'b' });
   });
 
-  it('names each review host and uses chapter identity for reused enemy art', () => {
+  it('names each review host and uses matching faction species for moving pieces', () => {
     const hosts: Record<string, string> = { r3: 'The Cult Leader', r4: 'General Flint', r5: 'The Bone Wardens' };
-    const names: Record<string, string> = { r3: 'Shadow Cult · Pawn', r4: 'Iron Legion · Pawn', r5: 'Bone Wardens · Pawn' };
-    const prefixes: Record<string, string> = { r3: 'Shadow Cult · ', r4: 'Iron Legion · ', r5: 'Bone Wardens · ' };
+    const names: Record<string, string> = { r3: 'Moth Pawn', r4: 'Hedgehog Pawn', r5: 'Skeleton Mouse Pawn' };
     for (const lesson of COURSE_LESSONS.filter(lesson => lesson.regionId in hosts)) {
       const intro = courseIntro(lesson, 'b');
       expect(intro[0].name).toBe(lesson.review ? hosts[lesson.regionId] : names[lesson.regionId]);
       const chess = new Chess(lesson.show.fen);
       const move = chess.move(uciMove(lesson.show.moves[0]));
       const foe = courseMoveSpeaker(move, chess.turn(), [], lesson.regionId);
-      expect(foe.name).toContain(prefixes[lesson.regionId]);
+      expect(foe.name).toBe(FACTION_SPECIES[courseFoeArt(lesson.regionId)][foe.type]);
       expect(foe.line).not.toMatch(/toll|road|squelch/i);
     }
   });
@@ -212,7 +211,7 @@ describe('honest portrait identity and compact advice', () => {
     for (const lesson of COURSE_LESSONS) {
       const opening = courseIntro(lesson, 'n')[0];
       expect(opening.faction).toBe(courseFoeArt(lesson.regionId));
-      expect(coursePortrait(opening)).toContain(`-${opening.faction}.webp`);
+      expect(coursePortrait(opening)).toContain(opening.character ? `${opening.character}.webp` : `-${opening.faction}.webp`);
     }
     for (const color of ['w', 'b'] as const) {
       const chess = new Chess(color === 'w' ? '7k/8/8/8/8/8/8/R6K w - - 0 1' : 'r6k/8/8/8/8/8/8/7K b - - 0 1');

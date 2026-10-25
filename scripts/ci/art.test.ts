@@ -1,6 +1,7 @@
 import { existsSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { COURSE_CAST } from '../../src/game/courseCast';
+import { CHARACTER_PORTRAITS } from '../../src/ui/speaker';
 
 describe('shipped chapter art', () => {
   it('has complete token colours, source cutouts and portraits before species labels are enabled', () => {
@@ -15,7 +16,9 @@ describe('shipped chapter art', () => {
         expect(existsSync(new URL(`../../art/tokens/${cutout}`, import.meta.url)), cutout).toBe(true);
       }
     }
-    expect(existsSync(new URL('../../public/sprites/tadwell.webp', import.meta.url))).toBe(true);
+    for (const character of CHARACTER_PORTRAITS) {
+      expect(existsSync(new URL(`../../public/sprites/${character}.webp`, import.meta.url)), character).toBe(true);
+    }
   });
 
   it('keeps the encoded Kingsroad background within its 250 KiB transfer budget', () => {

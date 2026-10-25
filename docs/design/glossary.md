@@ -14,7 +14,7 @@ See [campaign](campaign.md) and [systems](systems.md) for current behavior.
 
 ## Pieces
 
-Ally pieces. Each living enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md). The skeleton factions are the one exception: they are undead copies of these species.
+Ally pieces. Each living enemy faction has its own species and in-game names, listed with the faction in [Art direction](art.md). General Flint deliberately remains a lion; skeleton factions are undead copies of these species.
 
 | Chess piece | Species name (portraits, tavern, starter screen) | Short name (status text, banners, advice) |
 | --- | --- | --- |
@@ -60,10 +60,11 @@ Ally pieces. Each living enemy faction has its own species and in-game names, li
 | Bone Wardens | 5 | Skeleton Mouse Pawn, Skeleton Frog Knight, Skeleton Owl Bishop, Skeleton Tortoise Rook, Skeleton Fox Queen, Skeleton Lion King |
 | The Lich King's army | Final | The Bone Wardens' names and art; the king's portrait is the Lich King |
 
-Decided 2026-10-24 ([#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60)). Living factions never reuse our species or another faction's.
+Decided 2026-10-24 ([#60](https://github.com/avoidthekitchen/chess-rpg-gauntlet/issues/60)). Living faction species stay distinct, except General Flint, the named lion general.
 The Bone Wardens copy our six species on purpose: the Lich King was a Lion King of Pawnshire.
 The Region 5 king is an unnamed warden. The Lich King appears only in the finale.
-Until a faction's art ships, its chapters show faction plus chess-role labels ("Iron Legion · Pawn"), not these species names.
+All chapter sets now have matching tokens and portraits in draft PR #66. Species labels follow those assets.
+A future unfinished set must retain faction plus chess-role labels until its art is complete.
 
 ## Places
 

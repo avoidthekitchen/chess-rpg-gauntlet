@@ -1,6 +1,7 @@
 # Bandit Riders art review — issue #60
 
-This draft implements Region 2 first. The other factions remain unchanged while the owner reviews this set.
+This records the first Region 2 checkpoint. The owner approved extending the same PR to all remaining factions.
+See [the complete faction review](faction-art-review.md) for final scope and current verification.
 No production or staging deployment is included.
 
 ## Assets and generation
@@ -77,8 +78,7 @@ The ending screenshots use a completed-chapter fixture in the isolated Region 2 
 - Played a complete published wave and entered the next wave, covering Black and White player boards. Checked the classic-piece toggle.
 - The final in-game browser session reported no artwork loading errors.
 
-## Continuing the same PR
+## Owner checkpoint
 
-Keep this PR in draft until the owner judges the assets and screenshots.
-Only after that review, add Bone Wardens, Shadow Cult, and Iron Legion to the same branch.
-Issue #60 remains open because this draft covers only Region 2.
+The owner accepted this direction and authorized all remaining #60 assets on 2026-10-25.
+Bone Wardens, Shadow Cult, Iron Legion, and the Lich King now join this same draft PR.

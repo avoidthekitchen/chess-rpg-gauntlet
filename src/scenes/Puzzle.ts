@@ -5,7 +5,7 @@ import type { StarterType } from '../game/campaign';
 import { THEME_TEXT, puzzleTheme } from '../puzzles';
 import { store } from '../store';
 import { esc, showModal } from '../ui/overlay';
-import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
+import { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
 import { speakerCard } from '../ui/portrait';
 import { BaseScene } from '../ui/screen';
 import { SPECIES, type SpeakerInfo } from '../ui/speaker';
@@ -92,7 +92,7 @@ export class PuzzleScene extends BaseScene {
     const sq = Math.min(W / BOARD_SPAN, (H - topH - 250 - safe.bottom) / BOARD_TALL, 64);
     const bw = sq * BOARD_SPAN;
     const pw = Math.min(W - 24, 560);
-    return { wide: false, short: false, board: { x: (W - bw) / 2, y: topH - 6, w: bw }, panel: { x: (W - pw) / 2, y: topH - 6 + sq * BOARD_TALL + 4, w: pw } };
+    return { wide: false, short: false, board: { x: (W - bw) / 2, y: topH - BOARD_HEADER_TUCK, w: bw }, panel: { x: (W - pw) / 2, y: topH - BOARD_HEADER_TUCK + sq * BOARD_TALL + 4, w: pw } };
   }
 
   protected build() {

@@ -7,7 +7,7 @@ import { journeyMilestone, finalEncounter, finaleChapter, beginJourneyLesson, le
 import { loadJourney, persistJourney } from '../journeySave';
 import { store } from '../store';
 import { closeModal, esc, isModalOpen, showModal } from '../ui/overlay';
-import { BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
+import { BOARD_HEADER_TUCK, BOARD_SPAN, BOARD_TALL, PhaserBoard, type PieceStyle } from '../ui/phaserBoard';
 import { BaseScene, goTo } from '../ui/screen';
 import { coverImage } from '../ui/widgets';
 import '../ui/ambush.css';
@@ -126,7 +126,7 @@ export class CoursePlayScene extends BaseScene {
     // Reserve room for the instruction and actions before sizing the phone board.
     const panelSpace = this.H < 650 ? 234 : 246;
     const width = Math.min(this.W - 8, (this.H - top - panelSpace - this.safe.bottom) * BOARD_SPAN / BOARD_TALL);
-    const y = top - 6;
+    const y = top - BOARD_HEADER_TUCK;
     return { x: (this.W - width) / 2, y, width, panelX: 12, panelY: y + width * BOARD_TALL / BOARD_SPAN + 2, panelWidth: this.W - 24 };
   }
 

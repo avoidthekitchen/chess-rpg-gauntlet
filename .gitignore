@@ -10,3 +10,4 @@ dist-worker
 dist-worker-staging
 .wrangler
 output
+.playwright-cli/

@@ -111,11 +111,12 @@ class AudioEngine {
     this.bedSlots = this.slots(2, this.bus.ambience);
     this.apply(true);
 
-    // Everything that needs a user gesture happens inside the first one.
+    // Everything that needs a user gesture happens inside the first one. Later taps
+    // restart any stream the browser refused, so one refusal never silences a screen.
     const unlock = () => {
       if (!this.ctx) return;
       if (this.ctx.state !== 'running') void this.ctx.resume().catch(() => {});
-      if (this.unlocked) return;
+      if (this.unlocked) { this.retryStreams(); return; }
       this.unlocked = true;
       this.resumeScape();
       const blank = silence();
@@ -179,6 +180,13 @@ class AudioEngine {
     this.playBed(scape.bed && MANIFEST.beds.includes(scape.bed) ? scape.bed : null, scape.ambienceLevel);
     const spots = scape.spots.filter((s) => MANIFEST.spots.includes(s)).join(',');
     if (spots !== this.spotKey) { this.spotKey = spots; this.scheduleSpot(); }
+  }
+
+  /** Restarts the current music and bed if the browser refused them, but never cuts a track's rest short. */
+  private retryStreams() {
+    if (document.hidden || !this.scape) return;
+    if (this.music?.el.paused && !this.music.resting) this.play(this.music, this.scape.musicLevel, FADE.in);
+    if (this.bed?.el.paused) this.play(this.bed, this.scape.ambienceLevel, FADE.in);
   }
 
   private slots(count: number, bus: GainNode): Slot[] {
@@ -373,7 +381,8 @@ class AudioEngine {
     if (variants > 1 && pick === this.lastVariant.get(name)) pick = (pick % variants) + 1;
     this.lastVariant.set(name, pick);
     void this.playBuffer(`sfx/${name}-${pick}.mp3`, this.bus.effects, o, true).then((source) => {
-      if (!source || !o.duck) return;
+      // An inaudible stinger must not hollow out the music.
+      if (!source || !o.duck || this.settings.effects === 0) return;
       this.duckFor(DUCK.stinger);
       source.addEventListener('ended', () => this.unduck(DUCK.stinger));
     });

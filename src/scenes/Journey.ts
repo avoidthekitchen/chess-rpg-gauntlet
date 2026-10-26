@@ -37,6 +37,7 @@ export class JourneyScene extends BaseScene {
   private starter: StarterType = 'n';
   private storyRegion = '';
   private stopReading: (() => void) | null = null;
+  private readTimer = 0;
   private shownPage = '';
 
   constructor() { super('journey'); }
@@ -46,7 +47,7 @@ export class JourneyScene extends BaseScene {
     this.page = data.page ?? 'title';
     if (this.page === 'setup') this.page = 'moves';
     this.storyRegion = data.storyRegion ?? '';
-    this.shownPage = ''; this.stopReading = null;
+    this.shownPage = ''; this.stopReading = null; this.readTimer = 0;
     if (this.page === 'story' && !courseRegion(this.storyRegion)?.lessons.every(id => this.save?.completed.includes(id))) this.page = 'map';
     if (this.page === 'interlude' && (!this.save || !finaleInterludeUnlocked(this.save))) this.page = 'map';
     if (this.page === 'ending' && !this.save?.finaleComplete) this.page = 'map';
@@ -65,7 +66,7 @@ export class JourneyScene extends BaseScene {
       const select = e.target as HTMLSelectElement;
       if (select.matches('[data-region-picker]') && !isModalOpen()) this.action(`region:${select.value}`);
     });
-    this.events.once('shutdown', () => { this.stopReading?.(); audio.hush(); this.hud.remove(); closeModal(); });
+    this.events.once('shutdown', () => { window.clearTimeout(this.readTimer); this.stopReading?.(); audio.hush(); this.hud.remove(); closeModal(); });
   }
 
   protected build() {
@@ -189,6 +190,7 @@ export class JourneyScene extends BaseScene {
     const pageKey = `${this.page}:${this.page === 'story' ? this.storyRegion : this.save?.currentRegion ?? ''}`;
     const newPage = pageKey !== this.shownPage;
     if (newPage) {
+      window.clearTimeout(this.readTimer);
       this.stopReading?.();
       if (this.shownPage && this.page !== 'title') audio.sfx('page', { gain: 0.8 });
       this.shownPage = pageKey;
@@ -254,7 +256,7 @@ export class JourneyScene extends BaseScene {
     // Story pages read themselves aloud when they open; the button reads them again.
     if (newPage && ['story', 'interlude', 'ending'].includes(this.page)) {
       const voices = this.pageVoices();
-      window.setTimeout(() => { if (this.hud.isConnected && this.shownPage === pageKey && !isModalOpen()) this.readAloud(voices); }, 900);
+      this.readTimer = window.setTimeout(() => { if (this.hud.isConnected && this.shownPage === pageKey && !isModalOpen()) this.readAloud(voices); }, 900);
     }
     this.maybeIntro();
   }
@@ -322,6 +324,8 @@ export class JourneyScene extends BaseScene {
     }
     if (action === 'moves') { this.showMoves('Ready'); return; }
     if (action === 'read') {
+      // The player has taken over; the page's automatic reading must not start later.
+      window.clearTimeout(this.readTimer);
       if (this.stopReading) this.stopReading();
       else this.readAloud(this.pageVoices());
       return;

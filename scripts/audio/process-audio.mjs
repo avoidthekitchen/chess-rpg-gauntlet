@@ -98,6 +98,8 @@ if (want('music')) {
 
 if (want('sfx') || want('ambience')) {
   const choices = json(join('audio', 'sfx-choices.json'));
+  // Effects no longer chosen leave the manifest (their old files are removed below).
+  if (want('sfx')) for (const name of Object.keys(manifest.sfx)) if (!choices[name]) delete manifest.sfx[name];
   const spec = json(join('audio', 'sfx.json'));
   for (const [name, choice] of Object.entries(choices)) {
     const isBed = name.startsWith('bed-'), isSpot = name.startsWith('spot-');

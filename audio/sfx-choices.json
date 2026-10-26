@@ -1,18 +1,9 @@
 {
  "place": {
   "takes": [
-   4,
-   6
+   4
   ],
   "length": 0.3
- },
- "lift": {
-  "takes": [
-   2,
-   1
-  ],
-  "gain": -6,
-  "length": 0.25
  },
  "stomp": {
   "takes": [

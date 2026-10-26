@@ -22,6 +22,9 @@ import { NARRATOR } from '../audio/voiceRoles';
 import type { VoiceLine } from '../audio/voiceScript';
 import type { BoardSound } from '../ui/phaserBoard';
 
+/** Milliseconds between spoken move lines. */
+const BARK_GAP = 12000;
+
 type Phase = 'briefing' | 'teaching' | 'demonstrating' | 'taught' | 'setup' | 'solving' | 'replying' | 'waveWon' | 'won' | 'lost';
 
 /** The published puzzle runner: presentation only; progress and chess stay in game/. */
@@ -59,6 +62,7 @@ export class CoursePlayScene extends BaseScene {
   private feedbackLayoutPending = false;
   /** Lines already spoken in this position, so a piece's catchphrase isn't repeated every move. */
   private voiced = new Set<string>();
+  private lastBark = 0;
   private stopReading: (() => void) | null = null;
   private briefingRead = false;
 
@@ -87,7 +91,7 @@ export class CoursePlayScene extends BaseScene {
     this.attemptNumber = this.exampleNumber = 0;
     this.earnedStars = []; this.coachKey = '';
     for (const info of courseIntro(lesson, save.starter)) this.journal.add(info, this.scope);
-    this.voiced.clear(); this.briefingRead = false;
+    this.voiced.clear(); this.lastBark = 0; this.briefingRead = false;
     audio.setScape(soundscape(lesson.review ? 'review' : 'lesson', lesson.regionId));
     this.style = store.get('pawnshire-journey-pieces') === 'classic' ? 'classic' : 'tokens';
     this.hud = document.createElement('div');
@@ -358,7 +362,7 @@ export class CoursePlayScene extends BaseScene {
         await this.moveMoment(banner, info, token); if (token !== this.session) return;
       }
       this.speech.show(info);
-      this.say(info);
+      this.bark(info, cues);
     }
     this.busy = false; this.flushLayout(); this.refresh();
   }
@@ -465,7 +469,7 @@ export class CoursePlayScene extends BaseScene {
       }
     }
     this.selected = this.chess.get(square)?.color === this.solver && this.selected !== square ? square : null;
-    if (this.selected) audio.sfx('lift', { pan: this.pan(this.selected) });
+    if (this.selected) audio.sfx('place', { pan: this.pan(this.selected), rate: 1.35, gain: 0.3 });
     this.refresh();
   }
 
@@ -525,11 +529,22 @@ export class CoursePlayScene extends BaseScene {
     else if (kind === 'fly') audio.sfx('fly', { pan: pan * 1.6, gain: 0.8 });
   }
 
-  /** Speaks a line once per position; reactions always speak. */
-  private say(info: SpeakerInfo, always = false) {
-    const id = `${this.scope}|${info.voice}|${info.line}`;
-    if (!always && this.voiced.has(id)) return;
+  /** Speaks a companion reaction. */
+  private say(info: SpeakerInfo) {
+    void audio.speak(info.voice, info.line);
+  }
+
+  /**
+   * Move lines speak sparingly, so thinking time stays quiet: each catchphrase once per
+   * lesson, our pieces only for real tactics, and never within BARK_GAP of the last one.
+   * The text still appears every time.
+   */
+  private bark(info: SpeakerInfo, cues: readonly string[]) {
+    if (info.side === 'ally' && !cues.some(cue => ['Check', 'Fork', 'Double check', 'Mate', 'Promotion'].includes(cue))) return;
+    const id = `${info.voice}|${info.line}`, now = performance.now();
+    if (this.voiced.has(id) || now - this.lastBark < BARK_GAP) return;
     this.voiced.add(id);
+    this.lastBark = now;
     void audio.speak(info.voice, info.line);
   }
 
@@ -571,7 +586,7 @@ export class CoursePlayScene extends BaseScene {
     }
     if (this.phase === 'lost') audio.sfx('sting-lost', { vary: false, duck: true });
     else if (!miss && !mated) audio.sfx('sting-wave', { vary: false, duck: true });
-    window.setTimeout(() => { if (token === this.session) this.say(info, true); }, miss ? 650 : 900);
+    window.setTimeout(() => { if (token === this.session) this.say(info); }, miss ? 650 : 900);
   }
 
   private home() {

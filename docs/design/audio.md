@@ -32,15 +32,15 @@ That is 253 lines. Teaching advice in the lesson panel is not voiced, so the pla
 - **Casting** lives in [audio/voices.json](../../audio/voices.json): one voice and one acting note per role, so a character sounds the same in every line.
 - **The player's king stays silent**, as [the story](story.md#recurring-characters) asks.
 - **Each recording is keyed by role and exact text.** A changed line has no recording until it is re-recorded, so stale audio never plays. A unit test fails until it is.
-- **A repeated piece catchphrase** speaks once per position; the text still appears every time.
+- **Move lines speak sparingly** so thinking time stays quiet. Each catchphrase speaks once per lesson, our pieces speak only for check, forks, mate and promotion, and spoken move lines are at least 12 seconds apart. The text still appears every time.
 - **The Lich King, his court, and the Bone Wardens** speak in a soft stone hall.
 
 ## Effects
 
 | Moment | Sound |
 | --- | --- |
-| Select a piece | A soft lift |
-| A piece lands | A felted wooden clack, two variants; queens and kings land lower |
+| Select a piece | A quiet, higher tap of the same clack |
+| A piece lands | One felted wooden clack for the whole set; queens and kings land lower |
 | Knight | A spring at take-off, a clack on landing |
 | Rook | A thud for each square, a heavier last step |
 | Capture | A cartoon bonk at the flash, a whoosh as the piece flies off |

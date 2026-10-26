@@ -96,6 +96,7 @@ Keep required notices and source obligations intact when changing dependencies o
 | Historical Stockfish distributions | GPL-3 | Archived distributions retain their notices and source obligations; current builds do not copy the engine |
 | Lichess Practice studies | Owner confirmed clearance on 2026-10-22 | Record study and chapter; write teaching text in our voice; credit Lichess |
 | Published courses, including Steps Method, Bain, Silman, Polgar, and Yusupov | Copyrighted | Use topic order as inspiration; do not copy their exercises or text |
+| Music, voices, and sound effects | Generated for Pawnshire through OpenRouter (Google Lyria 3, Gemini TTS, ByteDance Seed Audio); terms to confirm before app-store release | Credit AI assistance; keep prompts and choices in `audio/` |
 
 The earlier design considered chessground, recorded as GPL-3, as a board alternative. Pawnshire uses its own board.
 It recorded Lichess site code, `lichess-org/lila`, as AGPL-3; do not copy that code without resolving compatibility.

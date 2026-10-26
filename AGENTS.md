@@ -22,7 +22,7 @@ npm run deploy:staging   # preview deployment for review
 npm run deploy           # production deployment; separate release decision
 ```
 
-Never commit `data/raw/`, `art/raw/`, `dist/`, `dist-staging/`, `dist-worker/` or `dist-worker-staging/`. The raw puzzle download and raw art stay local.
+Never commit `data/raw/`, `art/raw/`, `audio/raw/`, `dist/`, `dist-staging/`, `dist-worker/` or `dist-worker-staging/`. The raw puzzle download, raw art and raw audio takes stay local.
 
 ## Where things are
 
@@ -33,6 +33,7 @@ The [README layout](README.md#layout) lists the folders. The ones you'll touch m
 - `src/scenes/`: one Phaser scene per screen.
 - `src/scenes/Journey.ts` and `CoursePlay.ts`: current map, journal, settings, and lessons. Retired screens are linked from `docs/legacy-retirement.md`.
 - `src/ui/phaserBoard.ts`: the board and its animations.
+- `src/audio/`: the sound engine and voice script. A changed dialogue line needs re-recording; see [Sound](docs/design/audio.md#making-and-changing-audio).
 
 ## Phaser 4 pitfalls we hit
 

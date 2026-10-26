@@ -11,3 +11,4 @@ dist-worker-staging
 .wrangler
 output
 .playwright-cli/
+audio/raw

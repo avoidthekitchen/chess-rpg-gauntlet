@@ -8,8 +8,13 @@ import { dpr, fitGame } from './ui/screen';
 import { C } from './ui/theme';
 import { JourneyScene } from './scenes/Journey';
 import { CoursePlayScene } from './scenes/CoursePlay';
+import { audio } from './audio/engine';
+import { installAudioUi } from './audio/ui';
 
 async function start() {
+  // Our own Web Audio engine plays everything; it waits for the first tap to start.
+  audio.start();
+  installAudioUi();
   // Phaser draws text onto canvases, so the web font must be ready first.
   try {
     await Promise.race([
@@ -34,6 +39,8 @@ async function start() {
     render: { antialias: true, mipmapFilter: 'LINEAR_MIPMAP_LINEAR' },
     // windowEvents off: releases outside the canvas (e.g. on an HTML dialog) must not count as taps.
     input: { activePointers: 2, windowEvents: false },
+    // Sound lives in src/audio, outside Phaser, so it carries across scenes and HTML screens.
+    audio: { noAudio: true },
     // Testing aid: ?loop=timeout keeps the game running in a hidden test browser, where requestAnimationFrame pauses.
     fps: new URLSearchParams(location.search).get('loop') === 'timeout' ? { forceSetTimeOut: true, target: 60 } : undefined,
     scene: [BootScene, JourneyScene, CoursePlayScene],
@@ -48,7 +55,7 @@ async function start() {
   };
   window.addEventListener('resize', onResize);
   window.visualViewport?.addEventListener('resize', onResize);
-  if (import.meta.env.DEV) Object.assign(window, { __game: game });
+  if (import.meta.env.DEV) Object.assign(window, { __game: game, __audio: audio });
 }
 
 void start();

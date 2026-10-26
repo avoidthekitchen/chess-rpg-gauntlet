@@ -15,6 +15,13 @@ import { companionReaction, lineBanner, type CourseBanner, companionSpeaker, Cou
 import { promotionChoicesHtml } from '../ui/promotionChoice';
 import type { SpeakerInfo } from '../ui/speaker';
 import '../ui/coursePresentation.css';
+import { audio } from '../audio/engine';
+import { soundscape } from '../audio/soundtrack';
+import { soundToggle, voiceAttr } from '../audio/ui';
+import { NARRATOR } from '../audio/voiceRoles';
+import type { VoiceLine } from '../audio/voiceScript';
+import type { BoardSound } from '../ui/phaserBoard';
+import { freshBarks, shouldBark } from '../audio/barks';
 
 type Phase = 'briefing' | 'teaching' | 'demonstrating' | 'taught' | 'setup' | 'solving' | 'replying' | 'waveWon' | 'won' | 'lost';
 
@@ -51,6 +58,10 @@ export class CoursePlayScene extends BaseScene {
   private exampleOnly = false;
   private valid = false;
   private feedbackLayoutPending = false;
+  /** Move lines already spoken in this lesson, and when the last one spoke (src/audio/barks.ts). */
+  private barks = freshBarks();
+  private stopReading: (() => void) | null = null;
+  private briefingRead = false;
 
   constructor() { super('course-play'); }
 
@@ -77,6 +88,8 @@ export class CoursePlayScene extends BaseScene {
     this.attemptNumber = this.exampleNumber = 0;
     this.earnedStars = []; this.coachKey = '';
     for (const info of courseIntro(lesson, save.starter)) this.journal.add(info, this.scope);
+    this.barks = freshBarks(); this.briefingRead = false;
+    audio.setScape(soundscape(lesson.review ? 'review' : 'lesson', lesson.regionId));
     this.style = store.get('pawnshire-journey-pieces') === 'classic' ? 'classic' : 'tokens';
     this.hud = document.createElement('div');
     this.hud.className = 'ambush-hud course-play';
@@ -91,6 +104,7 @@ export class CoursePlayScene extends BaseScene {
     });
     this.events.once('shutdown', () => {
       this.session++;
+      this.stopReading?.(); audio.hush(); audio.cancelEffects();
       this.holds.clear(); this.cueHolds.clear(); this.cue = null;
       settleJourney(this.save, true);
       persistJourney(this.save);
@@ -145,7 +159,7 @@ export class CoursePlayScene extends BaseScene {
     const l = this.layout();
     this.board = new PhaserBoard(this, l.x, l.y, l.width, {
       faction: courseFoeArt(this.lesson.regionId), style: this.style, intro: false, flipped: this.solver === 'b', allyColor: this.solver,
-      onSquare: sq => this.onSquare(sq),
+      onSquare: sq => this.onSquare(sq), onSound: sound => this.boardSound(sound),
     });
     this.refresh();
   }
@@ -181,13 +195,14 @@ export class CoursePlayScene extends BaseScene {
       this.hud.innerHTML = `<div class="ambush-launcher"><section class="ambush-card">
         <p class="journey-kicker">${esc(region.title)} · ${def.review ? region.kind === 'finale' ? 'Finale · Mixed challenge' : 'Chapter review' : 'Guided lesson'}</p>
         <h1>${esc(def.title)}</h1><p class="ambush-deck">${esc(def.objective)}</p>
-        <div class="ambush-story">${courseStoryBefore(def, this.save.starter).map(s => `<p>${esc(s)}</p>`).join('')}</div>
+        <div class="ambush-story">${courseStoryBefore(def, this.save.starter).map(s => `<p${voiceAttr(NARRATOR, s)}>${esc(s)}</p>`).join('')}</div>
         <div class="course-intro-dialogue">${courseIntro(def, this.save.starter).map(info => courseDialogueRow(info)).join('')}</div>
         <p>${def.waves.length} positions. ${help.misses === null ? 'Unlimited tries.' : `${help.misses} misses per attempt.`} You can always retry.</p>
         <p class="ambush-rules">${def.review ? 'A mix of ideas you have learned. Read the board and choose your plan.' : 'Watch your companion work through an example, then try it yourself.'}</p>
         <div class="ambush-actions">${def.review ? this.btn('begin', 'Face the challenge', true) : this.btn('teach', 'Show me', true) + this.btn('begin', 'Practice')}${this.btn('home', 'Back to map')}</div>
         <p class="ambush-footnote">★ Finish · ★ No misses · ★ No hints<br>Stars stay earned. Replays can earn any you missed.</p>
-      </section></div>`;
+      </section>${soundToggle('course-briefing-sound')}</div>`;
+      this.readBriefing();
       return;
     }
     let actions = '';
@@ -217,12 +232,12 @@ export class CoursePlayScene extends BaseScene {
     const stars = this.save.stars[def.id];
     const result = this.phase === 'won' ? `<div class="ambush-result course-victory">${courseDialogueRow(companionReaction(this.save.starter, 'win'), 'course-victory-voice')}
       <div class="course-stars" aria-label="Lesson stars">${[['Finished', this.save.completed.includes(def.id)], ['No misses', stars?.clean], ['No hints', stars?.noHint]].map(([label, earned]) => `<span role="img" aria-label="${label}: ${earned ? 'earned' : 'not earned'}${this.earnedStars.includes(String(label)) ? ', new star' : ''}" class="${earned ? 'earned' : ''} ${this.earnedStars.includes(String(label)) ? 'new-star' : ''}"><b aria-hidden="true">${earned ? '★' : '☆'}</b>${label}${this.earnedStars.includes(String(label)) ? '<small>New star</small>' : ''}</span>`).join('')}</div>
-      <p>${esc(def.takeaway)}</p>${def.after.map(s => `<p>${esc(s)}</p>`).join('')}</div>`
+      <p>${esc(def.takeaway)}</p>${def.after.map(s => `<p${voiceAttr(NARRATOR, s)}>${esc(s)}</p>`).join('')}</div>`
       : this.phase === 'lost' ? `<div class="ambush-result">${courseDialogueRow(companionReaction(this.save.starter, 'miss'))}<p>Your progress is safe. Retry from position 1. A similar position replaces the one you first missed.</p></div>` : '';
     const guidance = courseGuidance(this.message, def.objective, coach);
     const persistentSpeech = this.W >= 640 && this.W > this.H && this.H >= 650;
     const panelHeight = this.H - l.panelY - 8 - this.safe.bottom - (persistentSpeech && !['won', 'lost'].includes(this.phase) ? 170 : 0);
-    this.hud.innerHTML = `<header class="ambush-top">${this.btn('leave', '← Map')}<div><span class="journey-kicker">${esc(region.title)}</span><strong>${esc(def.title)}</strong></div>${this.btn('style', this.style === 'tokens' ? 'Classic pieces' : 'Animal pieces')}</header>
+    this.hud.innerHTML = `<header class="ambush-top">${this.btn('leave', '← Map')}<div><span class="journey-kicker">${esc(region.title)}</span><strong>${esc(def.title)}</strong></div>${this.btn('style', this.style === 'tokens' ? 'Classic pieces' : 'Animal pieces')}${soundToggle()}</header>
       <section class="ambush-panel" style="left:${l.panelX}px;top:${l.panelY}px;width:${l.panelWidth}px;max-height:${panelHeight}px" aria-label="Lesson controls">
       <div class="ambush-panel-scroll" tabindex="0" aria-label="Lesson status and companion advice">
       <div class="ambush-panel-top"><span class="journey-kicker">${teaching ? 'Watch and learn' : `${DIFFICULTIES[this.save.difficulty].label} · ${run?.misses ?? 0}${help.misses === null ? ' misses' : `/${help.misses} misses`}`}</span><span class="ambush-side">You play ${this.solver === 'w' ? 'White' : 'Black'}</span></div>
@@ -258,6 +273,8 @@ export class CoursePlayScene extends BaseScene {
   }
 
   private action(action: string) {
+    // Only moving the lesson along stops the narrator; switching piece style doesn't.
+    if (['teach', 'begin', 'watch', 'next', 'home', 'leave'].includes(action)) { this.stopReading?.(); this.stopReading = null; }
     if (action === 'history') return this.showHistory();
     if (action === 'home') return this.home();
     if (action === 'leave') return this.leave();
@@ -275,6 +292,7 @@ export class CoursePlayScene extends BaseScene {
     if (action === 'hint' && this.phase === 'solving' && !this.busy && run) {
       const hint = hintAmbush(this.lesson, run); this.save.active!.run = hint.run;
       this.hintSquare = hint.square; this.message = 'The green square shows the piece to move.';
+      if (hint.square) audio.sfx('hint', { pan: this.pan(hint.square), vary: false });
       persistJourney(this.save); this.refresh();
     }
   }
@@ -282,6 +300,7 @@ export class CoursePlayScene extends BaseScene {
   private begin() {
     if (!beginJourneyLesson(this.save, this.lesson.id)) return;
     this.session++; this.holds.clear(); this.cueHolds.clear(); this.cue = null; this.speech.clear(); this.busy = false;
+    audio.cancelEffects();
     this.attemptNumber++; this.earnedStars = [];
     persistJourney(this.save); void this.setupWave();
   }
@@ -327,6 +346,9 @@ export class CoursePlayScene extends BaseScene {
     this.busy = true;
     const animation = this.board?.animateMove(move); this.refresh();
     await animation; if (token !== this.session) return;
+    if (move.promotion) audio.sfx('promote', { pan: this.pan(move.to) });
+    if (this.chess.isCheckmate()) audio.sfx('sting-mate', { vary: false, duck: true });
+    else if (this.chess.isCheck()) audio.sfx('check', { pan: this.pan(move.to), gain: 0.85 });
     // Rebuild at the first idle point, before the next cue or dialogue begins.
     this.busy = false; this.flushLayout(); this.busy = true;
     if (!silent) {
@@ -338,6 +360,7 @@ export class CoursePlayScene extends BaseScene {
         await this.moveMoment(banner, info, token); if (token !== this.session) return;
       }
       this.speech.show(info);
+      this.bark(info, cues);
     }
     this.busy = false; this.flushLayout(); this.refresh();
   }
@@ -363,6 +386,7 @@ export class CoursePlayScene extends BaseScene {
     this.bannerElement?.remove();
     this.bannerElement = el; this.cue = banner;
     this.speechLayer.appendChild(el);
+    audio.sfx('swish', { gain: banner.kind === 'capture' ? 0.7 : 0.9 });
     this.renderSpeech();
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     await this.cueHolds.wait(still ? 600 : banner.kind === 'capture' ? 1300 : 1000);
@@ -443,6 +467,7 @@ export class CoursePlayScene extends BaseScene {
       }
     }
     this.selected = this.chess.get(square)?.color === this.solver && this.selected !== square ? square : null;
+    if (this.selected) audio.sfx('place', { pan: this.pan(this.selected), rate: 1.35, gain: 0.3 });
     this.refresh();
   }
 
@@ -460,6 +485,7 @@ export class CoursePlayScene extends BaseScene {
     }
     this.phase = 'replying'; this.hintSquare = null;
     this.speech.clear();
+    if (outcome.verdict === 'miss') audio.sfx('nudge', { delay: 0.45, vary: false });
     this.message = outcome.verdict === 'miss' ? 'That move misses the idea. Let’s look again.' : outcome.moves.length > 1 ? 'Good move. Watch their reply…' : 'Good move…';
     for (let i = 0; i < outcome.moves.length; i++) {
       await this.play(outcome.moves[i], token, outcome.verdict !== 'miss' && i === 0, 1 + run.step * 2 + i, outcome.verdict === 'miss'); if (token !== this.session) return;
@@ -469,6 +495,7 @@ export class CoursePlayScene extends BaseScene {
     }
     if (outcome.verdict === 'miss') {
       this.chess = new Chess(outcome.run.fen); this.lastMove = null;
+      audio.sfx('unswish', { gain: 0.8 });
       this.message = outcome.run.status === 'lost' ? 'Take a breath. A fresh attempt is ready when you are.' : 'Not quite. Your move is taken back. Check the threats and try again.';
     } else this.message = outcome.run.status === 'solving' ? 'Good. Keep going: finish the line.' : outcome.run.status === 'won' ? 'Well played. Every position solved.' : 'Position solved. Ready for another?';
     this.phase = outcome.run.status;
@@ -476,9 +503,90 @@ export class CoursePlayScene extends BaseScene {
       const info = companionReaction(this.save.starter, this.phase === 'won' ? 'win' : outcome.verdict === 'miss' ? 'miss' : 'wave');
       this.speech.show(info);
       this.journal.add(info, this.scope, (run.step + 1) * 2 - 1);
+      this.celebrateSound(info, outcome.verdict === 'miss');
     }
     if (this.phase === 'won') this.board?.celebrate();
     this.refresh(); this.flushLayout();
+  }
+
+  /** Pans a sound toward its square: a little left or right, never hard. */
+  private pan(square: Square) {
+    const file = 'abcdefgh'.indexOf(square[0]);
+    return ((this.solver === 'b' ? 3.5 - file : file - 3.5) / 3.5) * 0.4;
+  }
+
+  /** The board calls these at the frame each sound belongs to. */
+  private boardSound({ kind, square, piece }: BoardSound) {
+    const pan = this.pan(square);
+    const heavy = piece === 'q' || piece === 'k';
+    if (kind === 'land') audio.sfx('place', { pan, rate: heavy ? 0.9 : piece === 'p' ? 1.08 : 1, gain: piece === 'n' ? 1 : 0.9 });
+    else if (kind === 'hop') audio.sfx('hop', { pan, gain: 0.75 });
+    else if (kind === 'step') audio.sfx('stomp', { pan, gain: 0.7 });
+    else if (kind === 'step-land') audio.sfx('stomp-land', { pan });
+    else if (kind === 'hit') audio.sfx('hit', { pan });
+    else if (kind === 'fly') audio.sfx('fly', { pan: pan * 1.6, gain: 0.8 });
+  }
+
+  /** Speaks a companion reaction. */
+  private say(info: SpeakerInfo) {
+    void audio.speak(info.voice, info.line);
+  }
+
+  /** Move lines speak sparingly so thinking time stays quiet; the text still appears every time. */
+  private bark(info: SpeakerInfo, cues: readonly string[]) {
+    if (shouldBark(this.barks, info, cues, performance.now(), audio.hasVoice(info.voice, info.line) && audio.canSpeak)) void audio.speak(info.voice, info.line);
+  }
+
+  /** Runs `then` after `ms`, once any line still being spoken has finished (up to 6s more). */
+  private afterSpeech(ms: number, then: () => void) {
+    const token = this.session;
+    const start = performance.now() + ms;
+    const check = () => {
+      if (token !== this.session) return;
+      if (audio.speaking && performance.now() - start < 6000) { window.setTimeout(check, 150); return; }
+      then();
+    };
+    window.setTimeout(check, ms);
+  }
+
+  /** The briefing card reads its story, then the challenger and your companion speak. */
+  private readBriefing() {
+    if (this.briefingRead) return;
+    this.briefingRead = true;
+    const lines: VoiceLine[] = [
+      ...courseStoryBefore(this.lesson, this.save.starter).map(line => ({ role: NARRATOR, line })),
+      ...courseIntro(this.lesson, this.save.starter).filter(i => i.voice).map(i => ({ role: i.voice!, line: i.line })),
+    ];
+    const token = this.session;
+    window.setTimeout(() => { if (token === this.session && this.phase === 'briefing' && this.valid) this.readAloud(lines); }, 450);
+  }
+
+  /** Reads lines aloud; only the reading still in charge may clear itself when it ends. */
+  private readAloud(lines: VoiceLine[]) {
+    this.stopReading?.();
+    audio.prefetch(lines);
+    const stop = audio.readAloud(lines, i => { if (i === null && this.stopReading === stop) this.stopReading = null; });
+    this.stopReading = stop;
+  }
+
+  /** Music and voice for the end of a position, a lesson or an attempt. */
+  private celebrateSound(info: SpeakerInfo, miss: boolean) {
+    // A checkmate already rang its own fanfare as the move landed.
+    const mated = !miss && this.chess.isCheckmate();
+    if (this.phase === 'won') {
+      if (!mated || this.lesson.review) audio.sfx(this.lesson.review ? 'sting-chapter' : 'sting-win', { vary: false, duck: true, delay: mated ? 1.2 : 0 });
+      audio.sfx('confetti', { delay: 0.15, gain: 0.7 });
+      const stars = ['Finished', 'No misses', 'No hints'];
+      this.earnedStars.forEach(star => audio.sfx('star', { delay: 0.3 + [0.1, 0.3, 0.5][stars.indexOf(star)], rate: [1, 1.12, 1.26][stars.indexOf(star)], vary: false }));
+      const lines: VoiceLine[] = [{ role: info.voice!, line: info.line }, ...this.lesson.after.map(line => ({ role: NARRATOR, line }))];
+      audio.prefetch(lines);
+      // The winning move's own line finishes first, then the companion and narrator speak.
+      this.afterSpeech(this.lesson.review ? 2600 : 1700, () => { if (this.phase === 'won') this.readAloud(lines); });
+      return;
+    }
+    if (this.phase === 'lost') audio.sfx('sting-lost', { vary: false, duck: true });
+    else if (!miss && !mated) audio.sfx('sting-wave', { vary: false, duck: true });
+    this.afterSpeech(miss ? 650 : 900, () => this.say(info));
   }
 
   private home() {

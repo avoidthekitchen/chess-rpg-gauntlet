@@ -56,6 +56,10 @@ export function finaleInterlude(starter: StarterType): StoryLine[] {
   ];
 }
 
+/** Narrated openings of the finale pages. */
+export const INTERLUDE_LEAD = 'The first encounter is settled. Your companion draws up a chair beside you.';
+export const ENDING_LEAD = 'The Lich King accepts checkmate. The gates open, the banners rise, and the road home belongs to Pawnshire again.';
+
 export function journeyEnding(starter: StarterType): StoryLine[] {
   return [
     { speaker: 'The Lich King', line: 'I have kept this crown too long. Take it home.' },

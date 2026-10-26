@@ -1,0 +1,133 @@
+{
+  "model": "google/lyria-3-pro-preview",
+  "style": "Instrumental chamber music for Pawnshire, a hand-painted storybook chess adventure starring animal knights, for families. A small acoustic ensemble recorded intimately in a warm wooden room: each instrument clear, natural and close, gentle and even dynamics, an elegant ending that resolves and rings out to silence.",
+  "calm": "Minimal, meditative background music to think by, like a quiet lullaby: a duet of soft acoustic instruments, slow, sparse and steady at one gentle level from beginning to end, long sustained notes, plenty of space between phrases, and a simple repeating chord pattern.",
+  "tracks": {
+    "theme-main": {
+      "use": "Title screen and new-journey setup.",
+      "prompt": "Main title theme in chamber-folk style: concert harp and fingerpicked acoustic guitar under one memorable, singable melody, first on solo flute, then answered by clarinet, with a warm cello countermelody and soft pizzicato strings. Gentle, hopeful and quietly heroic, a lilting 3/4 waltz in D major at an easy tempo. Harp introduction, melody, a tender middle section, then a slightly fuller restatement at the same gentle level.",
+      "take": 2
+    },
+    "map-r1": {
+      "use": "The Bog map. Comic marsh goblins.",
+      "prompt": "Theme for the Bog, a misty marsh full of cheeky goblin toads and rats. A sneaky, comic bayou folk tune: a bouncy bassoon melody over plucked banjo, upright bass and soft marimba, with a light woodblock tiptoe. Playful and mischievous, moderate tempo, a minor key that keeps winking into major.",
+      "take": 1
+    },
+    "map-r2": {
+      "use": "The Kingsroad map. Bandit riders on the open road.",
+      "prompt": "Theme for the Kingsroad, an open country road where sly wolf bandits demand tolls. A storybook western ride: galloping fingerpicked acoustic guitar, a fiddle melody, a little harmonica, upright bass and coconut-shell hoofbeats. Sly and adventurous, moderate tempo, minor key with a smile.",
+      "take": 1
+    },
+    "map-r3": {
+      "use": "Shadow Cult map. Hushed and mysterious.",
+      "prompt": "Theme for villages held by a hushed, secretive cult. Mysterious and quietly uneasy but gentle enough for children, never horror: a celesta and music-box melody, glass harmonica, soft temple bells, low sustained cello and bass, and a slow heartbeat on a soft hand drum. Slow tempo, minor key, candlelit.",
+      "take": 1
+    },
+    "map-r4": {
+      "use": "The Iron March map. A proud, disciplined army.",
+      "prompt": "Theme for the Iron Legion, a proud company of animal guards in a storybook kingdom. A crisp little toy-soldier march for snare drum, piccolo, glockenspiel and pizzicato strings, with a warm cello line underneath. Dignified, determined and tidy, moderate march tempo, B-flat major.",
+      "take": 3
+    },
+    "map-r5": {
+      "use": "Bone Wardens map. Moonlit skeleton guards.",
+      "prompt": "Theme for the Bone Wardens, quiet skeleton animals guarding a moonlit road. A slow, gentle nocturne for a small chamber group: a wooden xylophone melody like softly rattling bones, harpsichord, pizzicato strings and a low clarinet. Watchful, charming and a little spooky, one quiet level throughout, G minor.",
+      "take": 4
+    },
+    "map-finale": {
+      "use": "The Lich King's keep.",
+      "prompt": "Theme for the Lich King, an ancient skeleton king who could never accept losing. A cold, courtly minuet: harpsichord and a solo cello melody over soft, low pipe organ chords, with a distant tolling bell. Elegant, melancholy and quietly menacing, slow 3/4 tempo, D minor, one steady gentle level.",
+      "take": 2
+    },
+    "lesson-r1": {
+      "use": "Bog lessons.",
+      "calm": true,
+      "prompt": "A soft fingerpicked acoustic guitar and a gentle marimba duet for a quiet marsh at dusk, cozy and unhurried, A minor.",
+      "take": 2,
+      "trim": [
+        0,
+        110
+      ],
+      "fadeOut": 5
+    },
+    "lesson-r2": {
+      "use": "Kingsroad lessons.",
+      "calm": true,
+      "prompt": "A slow nylon-string guitar and a soft violin duet for a quiet lane at sunset, relaxed and patient, E minor.",
+      "take": 2
+    },
+    "lesson-r3": {
+      "use": "Shadow Cult lessons.",
+      "calm": true,
+      "prompt": "A slow celesta and soft glass harmonica duet over a warm low cello drone, hushed and still like candlelight, C minor.",
+      "take": 1
+    },
+    "lesson-r4": {
+      "use": "Iron March lessons.",
+      "calm": true,
+      "prompt": "A warm solo French horn with soft sustained strings, long gentle notes like an army camp resting at night, noble and patient, F major.",
+      "take": 1,
+      "trim": [
+        0,
+        105
+      ],
+      "fadeOut": 5
+    },
+    "lesson-r5": {
+      "use": "Bone Wardens lessons.",
+      "calm": true,
+      "prompt": "A slow, soft harpsichord and gentle wooden xylophone duet under moonlight, quiet and watchful, G minor.",
+      "take": 2
+    },
+    "lesson-finale": {
+      "use": "Finale lessons.",
+      "calm": true,
+      "prompt": "A slow harpsichord and solo cello duet with soft low organ chords in a cold stone hall, still and solemn, D minor.",
+      "take": 2
+    },
+    "review-r1": {
+      "use": "Grubnak's review.",
+      "prompt": "Suspenseful but comic challenge music for a goblin toad chief: a steady, hypnotic bassoon and tuba ostinato with plucked banjo and soft marimba, like a sneaky tiptoe that never stops. One moderate, even level throughout, A minor.",
+      "take": 1,
+      "trim": [
+        0,
+        135
+      ],
+      "fadeOut": 5
+    },
+    "review-r2": {
+      "use": "Ashfang's review.",
+      "prompt": "Suspenseful, sly challenge music for a smooth wolf bandit lord: a steady, hypnotic upright bass and fingerpicked guitar ostinato with soft tremolo fiddle, like a slow ride at night. One moderate, even level throughout, E minor.",
+      "take": 1
+    },
+    "review-r3": {
+      "use": "The Cult Leader's review.",
+      "prompt": "Suspenseful, hushed challenge music for a cult leader: a slow, hypnotic low cello ostinato with a soft celesta motif and faint temple bells, still and secretive. One quiet, even level throughout, C minor.",
+      "take": 1
+    },
+    "review-r4": {
+      "use": "General Flint's review.",
+      "prompt": "Determined challenge music for a proud lion general: a steady, quiet snare and timpani pulse, a solo French horn call and low pizzicato strings, disciplined and focused. One moderate, even level throughout, D minor.",
+      "take": 2
+    },
+    "review-r5": {
+      "use": "The Bone Wardens' review.",
+      "prompt": "Suspenseful, watchful challenge music for skeleton gate guards: a slow, hypnotic low pizzicato ostinato with a soft wooden xylophone motif and harpsichord, moonlit and patient, a quiet chamber group at one even level throughout, G minor.",
+      "take": 2
+    },
+    "review-finale": {
+      "use": "The Lich King's final boards.",
+      "prompt": "Final challenge music for an ancient skeleton king's last chess game: a solemn, hypnotic harpsichord ostinato, soft low pipe organ and a solo cello melody, with a distant bell. Tense, cold and courtly, one steady level throughout, D minor.",
+      "take": 2
+    },
+    "story": {
+      "use": "Chapter-ending story pages.",
+      "prompt": "A warm, quietly triumphant storybook interlude after a chapter is won: harp and acoustic guitar with a flute melody answered by clarinet, soft strings, relieved and hopeful, a tender 3/4 waltz in D major at one gentle level.",
+      "take": 2
+    },
+    "ending": {
+      "use": "The ending and credits.",
+      "prompt": "Homecoming and credits music: a gentle, heartfelt chamber-folk waltz in D major, harp and acoustic guitar under a flute and clarinet melody, warm cello and soft strings, joyful, tender and grateful, like the last page of a beloved storybook.",
+      "take": 1
+    }
+  }
+}

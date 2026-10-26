@@ -1,0 +1,213 @@
+{
+  "model": "bytedance-seed/seed-audio-1-0",
+  "style": "Sound effect only: no music unless described, no voices, no speech. Clean, close-miked studio recording for a cozy, premium storybook chess game. Warm and soft rather than harsh, with silence after the sound.",
+  "ambienceStyle": "Ambience field recording only: no music, no voices, no speech. Natural, warm, high-fidelity stereo for a cozy storybook game, gentle and soft, without harsh hiss.",
+  "sounds": {
+    "place": {
+      "use": "A piece lands on its square.",
+      "prompt": "One wooden chess piece with a felt base set down on a wooden chessboard: a single short, soft, satisfying wooden tock. Dry room, no echo, 0.4 seconds."
+    },
+    "lift": {
+      "use": "Selecting one of your pieces.",
+      "prompt": "A small wooden chess piece lifted off a wooden board: a very soft, tiny wooden tick with a whisper of felt. Extremely subtle and short, 0.3 seconds."
+    },
+    "stomp": {
+      "use": "A rook's step, square by square.",
+      "prompt": "A heavy wooden game piece thudding down onto a wooden table: one soft, low, round wooden thump, dry, close, 0.4 seconds."
+    },
+    "stomp-land": {
+      "use": "The rook's last, heaviest step.",
+      "prompt": "A heavy wooden game piece landing firmly on a wooden table with a soft low thump and a tiny rattle of nearby wooden pieces, dry, close, 0.7 seconds."
+    },
+    "hop": {
+      "use": "A knight springs into its jump.",
+      "prompt": "A playful cartoon frog spring jump: a soft, springy, rising boing with a light puff of air, warm and gentle, 0.5 seconds."
+    },
+    "hit": {
+      "use": "The moment of a capture.",
+      "prompt": "A cartoon impact for a children's storybook game: a punchy, soft wooden bonk with a comic thump, like a toy knight bopped off the board. Short and dry, 0.4 seconds."
+    },
+    "fly": {
+      "use": "A captured piece is knocked flying.",
+      "prompt": "A quick cartoon whoosh of a small toy figure flung through the air, airy and playful, fading into the distance, 0.7 seconds."
+    },
+    "check": {
+      "use": "A king is put in check.",
+      "prompt": "A single clear ding of a small brass hand bell, bright but soft, with a short warm ring, 1 second."
+    },
+    "promote": {
+      "use": "A pawn becomes a new piece.",
+      "prompt": "A magical transformation: a rising harp glissando with soft twinkling chimes and a warm shimmer, wondrous and gentle, 1.5 seconds."
+    },
+    "hint": {
+      "use": "The hint lights a square.",
+      "prompt": "A soft fairy twinkle: three delicate, quiet celesta notes rising with a gentle sparkle of dust, 1 second."
+    },
+    "star": {
+      "use": "A star is earned (played higher for each star).",
+      "prompt": "A single warm glockenspiel note with a soft, sparkling shimmer: a gentle reward ding that rings out, 1.2 seconds."
+    },
+    "nudge": {
+      "use": "A move that misses the idea. Must not feel punishing.",
+      "prompt": "A gentle, friendly 'not quite' cue: two soft, rounded wooden marimba notes stepping down, warm and kind, 0.6 seconds."
+    },
+    "swish": {
+      "use": "A tactic banner sweeps across the board.",
+      "prompt": "A soft, warm whoosh of a cloth banner unfurling quickly through the air, gentle, 0.5 seconds."
+    },
+    "unswish": {
+      "use": "A missed move is taken back.",
+      "prompt": "A soft reverse whoosh, like a sheet of paper sliding back across a table, quiet and gentle, 0.4 seconds."
+    },
+    "page": {
+      "use": "Changing pages in the journey book.",
+      "prompt": "A single page of a thick, old storybook turning: a soft paper flutter, close and warm, 0.7 seconds."
+    },
+    "book": {
+      "use": "A chapter's story opens.",
+      "prompt": "An old leather-bound storybook opening: a soft creak of the spine and pages settling, warm and close, 1.5 seconds."
+    },
+    "tap": {
+      "use": "Buttons and choices.",
+      "prompt": "A soft wooden button click: a small, gentle, rounded wooden tick, like tapping a wooden game token on a table, very short, 0.15 seconds."
+    },
+    "confetti": {
+      "use": "Celebration when a lesson is won.",
+      "prompt": "A cheerful little burst of a party popper and fluttering paper confetti, light, festive and soft, 1.5 seconds."
+    },
+    "sting-wave": {
+      "use": "A position is solved.",
+      "prompt": "A short musical flourish: a warm harp run rising to a bright, happy major chord on harp and celesta, 2 seconds, rings out. Instrumental, no voices."
+    },
+    "sting-win": {
+      "use": "A lesson is complete.",
+      "prompt": "A short joyful victory fanfare for a storybook game: a French horn and strings call with a harp sweep, ending on a bright major chord, 4 seconds, rings out. Instrumental, no voices."
+    },
+    "sting-chapter": {
+      "use": "A chapter's review is won.",
+      "prompt": "A warm, triumphant orchestral victory fanfare for a storybook adventure: horns, strings, harp and timpani rising to a radiant major chord, 6 seconds, rings out. Instrumental, no voices."
+    },
+    "sting-lost": {
+      "use": "An attempt runs out of misses. Encouraging, not sad.",
+      "prompt": "A gentle, kind musical phrase: a soft clarinet and harp stepping down and resolving warmly, encouraging rather than sad, 3 seconds. Instrumental, no voices."
+    },
+    "sting-mate": {
+      "use": "Checkmate lands.",
+      "prompt": "A short dramatic orchestral hit for checkmate in a storybook game: a soft timpani roll into one bright brass and strings chord, 3 seconds, rings out. Instrumental, no voices."
+    }
+  },
+  "ambience": {
+    "bed-r1": {
+      "use": "The Bog.",
+      "prompt": "A peaceful, misty marsh at dusk: a soft, even bed of distant crickets and gentle water lapping against reeds, a light breeze. Steady and calm, with no single loud sounds, 30 seconds."
+    },
+    "bed-r2": {
+      "use": "The Kingsroad.",
+      "prompt": "An open country road on a mild afternoon: a soft breeze through tall grass and hedgerows, distant songbirds, leaves rustling. Steady and calm, with no single loud sounds, 30 seconds."
+    },
+    "bed-r3": {
+      "use": "Shadow Cult villages.",
+      "prompt": "Inside a quiet stone village chapel at night: a soft, steady, low room hum, a gentle draught, very faint distant water drips and a candle softly fluttering. Hushed and still, with no single loud sounds, recorded clearly and at a healthy level, 30 seconds."
+    },
+    "bed-r4": {
+      "use": "The Iron March.",
+      "prompt": "A windy hilltop army camp: a steady soft wind, banners and canvas tents flapping gently, a faint distant campfire crackle. Steady and calm, with no single loud sounds, 30 seconds."
+    },
+    "bed-r5": {
+      "use": "Bone Wardens.",
+      "prompt": "A moonlit graveyard road on a still night: a soft cool wind, very quiet crickets, leaves skittering faintly. Calm and a little eerie, with no single loud sounds, 30 seconds."
+    },
+    "bed-finale": {
+      "use": "The Lich King's keep.",
+      "prompt": "A vast, cold stone throne hall: a deep, soft wind moaning far away, a gentle fireplace crackle, a very faint hollow room tone. Calm and solemn, with no single loud sounds, 30 seconds."
+    },
+    "bed-home": {
+      "use": "Title and journey pages.",
+      "prompt": "A cozy cottage study by a fireplace: a gentle, warm, soft fire crackle and the faint hush of a quiet room. Steady and calm, with no single loud sounds, 30 seconds."
+    },
+    "spot-frog": {
+      "use": "Bog.",
+      "prompt": "One deep, friendly bullfrog croak from a nearby pond, then silence, 1.5 seconds."
+    },
+    "spot-frogs": {
+      "use": "Bog.",
+      "prompt": "Two small tree frogs chirping a few times across a marsh, then silence, 2 seconds."
+    },
+    "spot-plop": {
+      "use": "Bog.",
+      "prompt": "A small fish or frog plopping softly into still pond water, a gentle splash, then silence, 1 second."
+    },
+    "spot-heron": {
+      "use": "Bog.",
+      "prompt": "A distant marsh bird calling twice far across the water, then silence, 2 seconds."
+    },
+    "spot-hooves": {
+      "use": "Kingsroad.",
+      "prompt": "A single horse trotting past on a distant dirt road, fading away, 3 seconds."
+    },
+    "spot-crow": {
+      "use": "Kingsroad and Bone Wardens.",
+      "prompt": "A single crow cawing twice in the distance, then silence, 2 seconds."
+    },
+    "spot-lark": {
+      "use": "Kingsroad.",
+      "prompt": "A skylark singing a short bright trill high above a meadow, then silence, 2.5 seconds."
+    },
+    "spot-cart": {
+      "use": "Kingsroad.",
+      "prompt": "A wooden cart creaking slowly along a gravel road in the distance, 3 seconds."
+    },
+    "spot-chime": {
+      "use": "Shadow Cult.",
+      "prompt": "A single small temple bell struck softly, ringing out in a stone room, 3 seconds."
+    },
+    "spot-drip": {
+      "use": "Shadow Cult.",
+      "prompt": "Two slow water drips echoing softly in a stone cellar, 2 seconds."
+    },
+    "spot-door": {
+      "use": "Shadow Cult.",
+      "prompt": "An old wooden door creaking slowly open far down a stone corridor, 2.5 seconds."
+    },
+    "spot-flag": {
+      "use": "Iron March.",
+      "prompt": "A large canvas banner snapping in a gust of wind, 2 seconds."
+    },
+    "spot-drum": {
+      "use": "Iron March.",
+      "prompt": "A distant military snare drum playing a short, steady roll far across a valley, then silence, 3 seconds."
+    },
+    "spot-armor": {
+      "use": "Iron March.",
+      "prompt": "Soft metal armour plates clinking as a soldier walks past, 2 seconds."
+    },
+    "spot-horn": {
+      "use": "Iron March.",
+      "prompt": "A distant brass army horn calling one long note across hills, 3 seconds. Instrumental, no voices."
+    },
+    "spot-owl": {
+      "use": "Bone Wardens.",
+      "prompt": "An owl hooting softly twice in a dark wood, then silence, 2.5 seconds."
+    },
+    "spot-bones": {
+      "use": "Bone Wardens.",
+      "prompt": "A soft, light rattle of dry wooden bones, like a skeleton shifting its weight, comic rather than scary, 1.5 seconds."
+    },
+    "spot-gate": {
+      "use": "Bone Wardens.",
+      "prompt": "A heavy iron gate chain clinking slowly in the wind, 2 seconds."
+    },
+    "spot-toll": {
+      "use": "Finale.",
+      "prompt": "A single deep castle bell tolling once far away, ringing out, 4 seconds."
+    },
+    "spot-gust": {
+      "use": "Finale.",
+      "prompt": "A long, low gust of wind moaning through a stone castle window, 3 seconds."
+    },
+    "spot-ember": {
+      "use": "Finale.",
+      "prompt": "A fireplace log settling with a soft crackle and a pop of sparks, 2 seconds."
+    }
+  }
+}

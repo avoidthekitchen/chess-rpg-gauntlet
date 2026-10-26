@@ -63,6 +63,7 @@ Faction-specific art can improve each chapter without blocking its teaching cont
 | [Story and voice](design/story.md) | Setting, cast, chapter arc, and dialogue |
 | [Names](design/glossary.md) | Established names and terminology |
 | [Art](design/art.md) | Token readability, portraits, and storybook direction |
+| [Sound](design/audio.md) | Music, ambience, voices, effects, mixing, and the audio pipeline |
 | [Technical design](design/technical.md) | Architecture, deployment, and licensing |
 | [Decisions](design/decisions.md) | Current decisions, open work, and historical record |
 | [Playbook](playbook.md) | Content selection, verification, review, and release |

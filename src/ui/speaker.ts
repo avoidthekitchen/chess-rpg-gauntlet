@@ -117,6 +117,8 @@ export interface SpeakerInfo {
   name: string;
   line: string;
   type: PieceSymbol;
+  /** Voice role for a recorded line (src/audio/voiceRoles.ts); unvoiced when absent. */
+  voice?: string;
 }
 
 export interface SpeakerOpts {

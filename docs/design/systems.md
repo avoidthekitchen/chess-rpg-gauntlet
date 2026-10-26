@@ -138,6 +138,11 @@ Ratings guide selection; they do not promise how difficult a position feels to a
 | Speech reading time | 1.2s + 60ms per character, clamped to 3.2–9s | `holdMs` in `src/ui/dialogue.ts` |
 | History capacity | Last 120 lines per encounter | `CourseDialogueLog` in `src/ui/coursePresentation.ts` |
 | History portrait button | At least 44×44 CSS pixels | `src/ui/coursePresentation.css` |
+| Sound levels | Music 60, ambience 50, effects 80, voices 90 out of 100; sound on; slider gain is the square of its position | `DEFAULT_AUDIO` in `src/audio/settings.ts` |
+| Music and ambience by place | Music 90% on maps, 75% in lessons, 80% in reviews, 100% on title and story pages; ambience 100%, 55%, 50% | `soundscape` in `src/audio/soundtrack.ts` |
+| Music rest and ambience spacing | 9s of quiet between plays; a scattered sound every 7–19s | `MUSIC_REST`, `SPOT_GAP` in `soundtrack.ts` |
+| Spoken move lines | Each once per lesson; ours only for tactics; at least 12s apart | `BARK_GAP`, `SPOKEN_ALLY_CUES`, `shouldBark` in `src/audio/barks.ts`; tested in `src/audio/audio.test.ts` |
+| Ducking under speech | Music to 40%, ambience to 55%; stingers take music to 25%; music returns 0.6s after the last line | `DUCK`, `FADE` in `src/audio/engine.ts` |
 
 ### Legacy tuning and deferred systems
 

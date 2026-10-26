@@ -58,8 +58,8 @@ export const region4Seeds: LessonSeed[] = [
   },
   {
     id: 'r4-legion-review', title: 'Flint’s decision', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Read six fresh positions and choose a move that fits each board.',
-    takeaway: 'Check their threats, compare forcing moves, and calculate the reply. Let the board decide which idea you need.',
+    objective: 'Use what you’ve learned to find the best moves.',
+    takeaway: 'Check their threats first. Then look for a check or capture that pulls a defender away or opens a file.',
     before: 'General Flint sets out six boards. “Show me what my orders missed.”',
     after: 'Flint lowers his sword. “The Legion stands with Pawnshire.” A scout arrives: Bone Wardens gather at the border.',
     demo: 'Check both kings, compare checks and captures, and calculate the strongest reply.',

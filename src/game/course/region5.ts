@@ -13,7 +13,7 @@ export const region5Seeds: LessonSeed[] = [
   {
     id: 'r5-pawn-races', title: 'Two paths to the gate', theme: 'Pawn races', tag: 'promotion',
     objective: 'Count the pawn pushes in these short races, then see who promotes with check.',
-    takeaway: 'Most of these races use three pushes. One starts with a checking capture. Promotion with check can leave both sides with queens.',
+    takeaway: 'Count both pawns’ moves to promotion. A check forces a reply and can change the race.',
     before: 'Two skeleton mice hurry toward opposite gates. Your companion counts their footsteps.',
     after: 'Your companion counts the last step. The next reply still matters.',
     demo: 'Both pawns need three pushes. White moves first: push h6, h7, then promote with check before their pawn leaves e2.',
@@ -57,8 +57,8 @@ export const region5Seeds: LessonSeed[] = [
   },
   {
     id: 'r5-gate-review', title: 'The keep’s threshold', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Read each fresh board and choose the idea it needs.',
-    takeaway: 'Count each side’s moves, then calculate the reply. Small armies still need careful thought.',
+    objective: 'Use what you’ve learned to find the best moves.',
+    takeaway: 'With few pieces left, count both sides’ moves to promotion. Bring your king forward, and weigh every promotion choice.',
     before: 'The Bone Wardens set six boards before the keep. Your companion waits beside you.',
     after: 'The last Warden steps aside. The keep’s gate opens. Beyond it, the Lich King waits.',
     demo: 'Read the whole board. Compare your choices and test the opponent’s replies.',

@@ -5,7 +5,7 @@ export const finaleSeeds: LessonSeed[] = [
   {
     id: 'finale-threshold', title: 'Across the threshold', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Choose what each board needs, using the ideas learned along the journey.',
-    takeaway: 'Start with both kings. Compare forcing moves, calculate the reply, and take your time.',
+    takeaway: 'Start with both kings: whose is in danger? Then try checks, captures and threats, in that order.',
     before: 'The Lich King waits inside the keep. “I have kept your crown safe. You need only leave it here.”',
     after: 'The Lich King straightens a fallen piece. For once, he leaves it on the board.',
     demo: 'Check both kings, compare your possible moves, and calculate the opponent’s strongest reply.',
@@ -14,7 +14,7 @@ export const finaleSeeds: LessonSeed[] = [
   {
     id: 'finale-last-board', title: 'The last board', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Bring familiar ideas together. Calculate each position through its final reply.',
-    takeaway: 'You can learn from a mistake and try again. The kingdom’s journey is complete; every earlier lesson remains open for practice.',
+    takeaway: 'You can learn from a mistake and try again.',
     before: 'The Lich King touches the old crown. “Once, I would not accept the board before me.” Your companion waits at your side.',
     after: '“Checkmate,” says the Lich King. He lowers his hand. “I accept it.” The crown belongs to Pawnshire again.',
     demo: 'Look at both sides’ threats. Follow each candidate through the reply before choosing.',

@@ -86,8 +86,8 @@ const originalSeeds: LessonSeed[] = [
   },
   {
     id: 'r1-bog-review', title: 'Grubnak’s last stand', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Use what you learned. The next position will not name its tactic.',
-    takeaway: 'Check your king’s safety, scan forcing moves, and consider the reply. Recognize the idea before moving.',
+    objective: 'Use what you’ve learned to find the best moves.',
+    takeaway: 'Before every move, ask: Is my king safe? Is anything loose? What happens after I capture?',
     before: '“Grubnak keeps the crown!” The chief spreads four boards across the pantry table.',
     after: 'Saffron steps out of the pantry. “About time. The Kingsroad needs us next.”',
     demo: 'Scan checks, captures and threats. Compare your move with their strongest reply.',
@@ -140,8 +140,8 @@ const originalSeeds: LessonSeed[] = [
   },
   {
     id: 'r2-road-review', title: 'Ashfang’s reckoning', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Read each fresh position and choose the idea it needs.',
-    takeaway: 'Use checks, captures and threats together. Choose a tactic because the position supports it.',
+    objective: 'Use what you’ve learned to find the best moves.',
+    takeaway: 'Look for moves that do two jobs: a check that also attacks a piece, or a capture that removes a guard.',
     before: 'Ashfang sets down the last banners. “Four boards. Let us settle the account.”',
     after: 'Tadwell gathers the banners. Ashfang’s purse spills open: among the coins lies a dark crystal.',
     demo: 'Start with your king’s safety. Look for forcing moves, then calculate the reply.',

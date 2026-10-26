@@ -200,7 +200,7 @@ export class CoursePlayScene extends BaseScene {
         <p>${def.waves.length} positions. ${help.misses === null ? 'Unlimited tries.' : `${help.misses} misses per attempt.`} You can always retry.</p>
         <p class="ambush-rules">${def.review ? 'A mix of ideas you have learned. Read the board and choose your plan.' : 'Watch your companion work through an example, then try it yourself.'}</p>
         <div class="ambush-actions">${def.review ? this.btn('begin', 'Face the challenge', true) : this.btn('teach', 'Show me', true) + this.btn('begin', 'Practice')}${this.btn('home', 'Back to map')}</div>
-        <p class="ambush-footnote">★ Finish · ★ No misses · ★ No hints<br>Stars stay earned. Replays can earn any you missed.</p>
+        <p class="ambush-footnote">★ Finish · ★ No misses · ★ No hints<br>Replays can earn any stars you missed.</p>
       </section>${soundToggle('course-briefing-sound')}</div>`;
       this.readBriefing();
       return;
@@ -245,7 +245,7 @@ export class CoursePlayScene extends BaseScene {
       ${guidance.coach ? `<p class="course-advice"><strong>${esc(companionSpeaker(this.save.starter, '').name.split(' · ')[0])}:</strong> ${esc(guidance.coach)}</p>` : ''}
       ${guidance.status ? `<p class="ambush-status" role="status">${esc(guidance.status)}</p>` : ''}${result}
       ${run && !teaching && !['won', 'lost'].includes(this.phase) ? `<p class="ambush-bonuses">${run.misses === 0 ? '☆' : '–'} No misses &nbsp; ${run.hintsUsed === 0 ? '☆' : '–'} No hints</p>` : ''}
-      <p class="ambush-source">Published Lichess position${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? ` · <a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">${esc(this.puzzle.id)}</a>` : ''}</p>
+      ${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? `<p class="ambush-source"><a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">View puzzle on Lichess</a></p>` : ''}
       </div><div class="ambush-actions">${actions}</div></section>`;
     this.renderSpeech();
   }

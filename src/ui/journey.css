@@ -20,7 +20,6 @@
 .journey-title-subtitle { font-size:clamp(19px,3vw,25px); font-style:italic; text-shadow:0 2px 3px #120d10,0 0 8px #120d10; }
 .journey-title-actions { display:flex; flex-direction:column; gap:12px; width:240px; max-width:100%; margin:30px auto 0; }
 .journey-title-actions button { font-size:18px; min-height:48px; }
-.journey-title-footnote { font-size:15px; font-style:italic; color:#e0d3b8; text-shadow:0 2px 5px #000; margin:0!important; }
 .journey-welcome { max-width:650px; min-height:100%; margin:auto; padding:calc(28px + env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom)); display:flex; align-items:center; }
 .journey-setup,.journey-paper { width:100%; border:1px solid #8b7040; border-radius:10px; padding:30px; background:#211b24f5; box-shadow:0 12px 35px #0006; }
 .journey-setup h1 { font-size:40px; }

@@ -59,7 +59,7 @@ export const region3Seeds: LessonSeed[] = [
   {
     id: 'r3-cult-review', title: 'The sealed ledger', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Use what you’ve learned to find the best moves.',
-    takeaway: 'Look along the lines. A bishop, rook or queen may pin, skewer or uncover an attack through another piece.',
+    takeaway: 'Look along ranks, files and diagonals for pins and skewers. Moving a blocking piece can uncover another attack.',
     before: 'The Cult Leader rests a hand on the ledger. “Leave it closed. Keep your crown.”',
     after: 'The last seal breaks. Your companion opens the ledger.',
     demo: 'Check your king’s safety. Compare checks, captures, and threats, then calculate the reply.',

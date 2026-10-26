@@ -200,7 +200,7 @@ export class CoursePlayScene extends BaseScene {
         <p>${def.waves.length} positions. ${help.misses === null ? 'Unlimited tries.' : `${help.misses} misses per attempt.`} You can always retry.</p>
         <p class="ambush-rules">${def.review ? 'A mix of ideas you have learned. Read the board and choose your plan.' : 'Watch your companion work through an example, then try it yourself.'}</p>
         <div class="ambush-actions">${def.review ? this.btn('begin', 'Face the challenge', true) : this.btn('teach', 'Show me', true) + this.btn('begin', 'Practice')}${this.btn('home', 'Back to map')}</div>
-        <p class="ambush-footnote">★ Finish · ★ No misses · ★ No hints<br>Stars stay earned. Replays can earn any you missed.</p>
+        <p class="ambush-footnote">★ Finish · ★ No misses · ★ No hints<br>Replays can earn any stars you missed.</p>
       </section>${soundToggle('course-briefing-sound')}</div>`;
       this.readBriefing();
       return;

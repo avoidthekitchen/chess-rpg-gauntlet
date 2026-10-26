@@ -14,7 +14,7 @@ export const finaleSeeds: LessonSeed[] = [
   {
     id: 'finale-last-board', title: 'The last board', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Bring familiar ideas together. Calculate each position through its final reply.',
-    takeaway: 'You can learn from a mistake and try again. The kingdom’s journey is complete; every earlier lesson remains open for practice.',
+    takeaway: 'You can learn from a mistake and try again.',
     before: 'The Lich King touches the old crown. “Once, I would not accept the board before me.” Your companion waits at your side.',
     after: '“Checkmate,” says the Lich King. He lowers his hand. “I accept it.” The crown belongs to Pawnshire again.',
     demo: 'Look at both sides’ threats. Follow each candidate through the reply before choosing.',

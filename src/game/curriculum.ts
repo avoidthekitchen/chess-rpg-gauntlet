@@ -86,7 +86,7 @@ const originalSeeds: LessonSeed[] = [
   },
   {
     id: 'r1-bog-review', title: 'Grubnak’s last stand', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Use what you’ve learned to find the best move.',
+    objective: 'Use what you’ve learned to find the best moves.',
     takeaway: 'Check your king’s safety, scan forcing moves, and consider the reply. Recognize the idea before moving.',
     before: '“Grubnak keeps the crown!” The chief spreads four boards across the pantry table.',
     after: 'Saffron steps out of the pantry. “About time. The Kingsroad needs us next.”',

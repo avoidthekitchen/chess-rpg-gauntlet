@@ -10,6 +10,7 @@ Earlier draft, staging-only, and unwaived-benchmark statements describe those ch
 - Replaced the pawn-race pack summary with guidance about promotion timing and checks. Source positions and replies remain unchanged.
 - Lesson source links now say “View puzzle on Lichess”. They appear in the same example and result states; solving hides the old source label.
 - Kept full Lichess attribution, the AI-assistance credit, story, voices, and progression. No new recordings are needed.
+- Follow-up: removed the design rule from the page description and “Published positions” from the ending credits. Simplified Journal credits and the Grandmaster note. Cut repeated “stars stay earned” lines except on the quit dialog. Trimmed the last takeaway to its chess lesson. Review objectives now say “best moves”.
 - `npm run ci` passed type-check, production build, and all 330 tests. Existing checks verify every pawn-race source and neutral review wording.
 - Local browser checks covered title, map, Journal, settings, reset cancellation, and the first Gentle worked example.
 - Checked the settled example at 1280×800, 375×812, 375×553, and 844×390. Advice and action buttons fit; the source link uses the scrollable advice panel.

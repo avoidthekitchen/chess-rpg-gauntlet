@@ -4,12 +4,14 @@ import { COURSE_LESSONS, COURSE_REGIONS } from '../game/curriculum';
 import { chapterIntro, chapterStory, COMPANION_GREETINGS, ENDING_LEAD, finaleInterlude, INTERLUDE_LEAD, journeyEnding } from '../game/courseStory';
 import { companionReaction, courseIntro, courseMoveSpeaker, courseStoryBefore, type CourseCue } from '../ui/coursePresentation';
 import { BOSS_VOICES, COMPANION_VOICES, NARRATOR, storyVoice } from './voiceRoles';
+import { SPOKEN_ALLY_CUES } from './barks';
 
 export interface VoiceLine { role: string; line: string }
 
 const STARTER_IDS: StarterType[] = ['n', 'b', 'r'];
 const PIECES: PieceSymbol[] = ['p', 'n', 'b', 'r', 'q', 'k'];
-const ALLY_CUES: CourseCue[][] = [[], ['Capture'], ['Check'], ['Fork'], ['Double check'], ['Promotion'], ['Mate']];
+// Our pieces speak only for these moments (src/audio/barks.ts), so only these are recorded.
+const ALLY_CUES: CourseCue[][] = SPOKEN_ALLY_CUES.map((cue) => [cue]);
 
 /** A chapter's first-visit introduction, as the map's intro dialog shows it. */
 export function introVoices(regionId: string, starter: StarterType): (VoiceLine | null)[] {

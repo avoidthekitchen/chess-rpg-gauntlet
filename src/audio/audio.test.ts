@@ -3,6 +3,7 @@ import { COURSE_LESSONS, COURSE_REGIONS } from '../game/curriculum';
 import { companionReaction, courseIntro, courseMoveSpeaker } from '../ui/coursePresentation';
 import manifest from './audioManifest.json';
 import { SFX_NAMES } from './engine';
+import { BARK_GAP, freshBarks, shouldBark } from './barks';
 import { DEFAULT_AUDIO, parseAudioSettings, sliderGain } from './settings';
 import { soundscape, type SoundPlace } from './soundtrack';
 import { pieceVoice, storyVoice, voiceKey } from './voiceRoles';
@@ -121,5 +122,36 @@ describe('shipped audio', () => {
       ...Object.entries(manifest.voices).flatMap(([role, keys]) => keys.map((k) => `voice/${role}/${k}.mp3`)),
     ];
     expect([...shipped].sort()).toEqual(expected.sort());
+  });
+});
+
+describe('spoken move lines', () => {
+  const foe = { side: 'foe' as const, voice: 'r1-p', line: 'Squelch, squelch!' };
+  const ally = { side: 'ally' as const, voice: 'ally-n', line: 'Check. Their king must answer.' };
+
+  it('keeps our routine moves and captures quiet, and voices our tactics', () => {
+    expect(shouldBark(freshBarks(), { ...ally, line: 'Hop to it!' }, [], 0, true)).toBe(false);
+    expect(shouldBark(freshBarks(), { ...ally, line: 'Got you!' }, ['Capture'], 0, true)).toBe(false);
+    for (const cue of ['Check', 'Fork', 'Double check', 'Mate', 'Promotion']) expect(shouldBark(freshBarks(), ally, [cue], 0, true), cue).toBe(true);
+  });
+
+  it('speaks each line once per lesson', () => {
+    const memory = freshBarks();
+    expect(shouldBark(memory, foe, [], 0, true)).toBe(true);
+    expect(shouldBark(memory, foe, [], BARK_GAP * 10, true)).toBe(false);
+  });
+
+  it('keeps spoken move lines at least BARK_GAP apart, from the first move of a fresh page', () => {
+    const memory = freshBarks();
+    expect(shouldBark(memory, foe, [], 100, true)).toBe(true);
+    const other = { ...foe, voice: 'r1-b', line: 'Peering through the reeds…' };
+    expect(shouldBark(memory, other, [], 100 + BARK_GAP - 1, true)).toBe(false);
+    expect(shouldBark(memory, other, [], 100 + BARK_GAP, true)).toBe(true);
+  });
+
+  it('does not use up a line or the gap when it cannot be heard', () => {
+    const memory = freshBarks();
+    expect(shouldBark(memory, foe, [], 0, false)).toBe(false);
+    expect(shouldBark(memory, foe, [], 1, true)).toBe(true);
   });
 });

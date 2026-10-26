@@ -27,12 +27,13 @@ Each ambience bed is 30 seconds of steady texture. Short sounds land on it every
 ## Voices
 
 Every line in [the voice script](../../src/audio/voiceScript.ts) is recorded: chapter intros, story pages, greetings, lesson briefings, piece reactions, and companion praise.
-That is 253 lines. Teaching advice in the lesson panel is not voiced, so the player reads it at their own pace.
+That is 243 lines; our pieces' routine move lines are not recorded, since they never speak. Teaching advice in the lesson panel is not voiced, so the player reads it at their own pace.
 
 - **Casting** lives in [audio/voices.json](../../audio/voices.json): one voice and one acting note per role, so a character sounds the same in every line.
 - **The player's king stays silent**, as [the story](story.md#recurring-characters) asks.
 - **Each recording is keyed by role and exact text.** A changed line has no recording until it is re-recorded, so stale audio never plays. A unit test fails until it is.
-- **Move lines speak sparingly** so thinking time stays quiet. Each catchphrase speaks once per lesson, our pieces speak only for check, forks, mate and promotion, and spoken move lines are at least 12 seconds apart. The text still appears every time.
+- **Move lines speak sparingly** so thinking time stays quiet. Each catchphrase speaks once per lesson, our pieces speak only for check, forks, mate and promotion, and spoken move lines are at least 12 seconds apart. The text still appears every time. The rule is `shouldBark` in `src/audio/barks.ts`.
+- **Praise waits its turn.** After a winning move, the companion speaks once that move's line has finished.
 - **The Lich King, his court, and the Bone Wardens** speak in a soft stone hall.
 
 ## Effects

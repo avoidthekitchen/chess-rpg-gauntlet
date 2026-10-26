@@ -134,6 +134,8 @@ export class JourneyScene extends BaseScene {
       if (i === null && this.stopReading === stop) this.stopReading = null;
     });
     this.stopReading = stop;
+    // Show the reading at once; the first line may take a moment to load.
+    setReadAloud(this.hud, true);
   }
 
   /** The narrated lead and spoken lines of the story page on screen. */
@@ -264,7 +266,7 @@ export class JourneyScene extends BaseScene {
     // Story pages read themselves aloud when they open; the button reads them again.
     if (newPage && ['story', 'interlude', 'ending'].includes(this.page)) {
       const voices = this.pageVoices();
-      this.readTimer = window.setTimeout(() => { if (this.hud.isConnected && this.shownPage === pageKey && !isModalOpen()) this.readAloud(voices); }, 900);
+      this.readTimer = window.setTimeout(() => { if (this.hud.isConnected && this.shownPage === pageKey && !isModalOpen() && audio.voicesOn) this.readAloud(voices); }, 900);
     }
     this.maybeIntro();
   }
@@ -335,6 +337,7 @@ export class JourneyScene extends BaseScene {
       // The player has taken over; the page's automatic reading must not start later.
       window.clearTimeout(this.readTimer);
       if (this.stopReading) this.stopReading();
+      else if (!audio.voicesOn) this.toast(audio.settings.muted ? 'Sound is off. Tap the speaker button to hear the story.' : 'Voices are off. Turn them up in Settings.');
       else this.readAloud(this.pageVoices());
       return;
     }

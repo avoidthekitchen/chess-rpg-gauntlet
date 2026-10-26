@@ -50,7 +50,7 @@ export interface SfxOptions {
  * source: iOS only lets an element play after a tap has started it once, and a media
  * element can be connected to Web Audio only once.
  */
-interface Slot { el: HTMLAudioElement; gain: GainNode; channel: 'music' | 'ambience'; id: string | null; generation: number; timer: number; resting: boolean; primed: boolean }
+interface Slot { el: HTMLAudioElement; gain: GainNode; channel: 'music' | 'ambience'; id: string | null; url: string; generation: number; timer: number; resting: boolean; primed: boolean }
 
 /** A tenth of a second of silence, used to unlock each slot inside the first tap. */
 function silence() {
@@ -164,6 +164,9 @@ class AudioEngine {
   /** Whether a channel can be heard at all. */
   private on(channel: AudioChannel) { return !this.settings.muted && this.settings[channel] > 0; }
 
+  /** Whether voices are switched on (sound not muted and the voices slider above zero). */
+  get voicesOn() { return this.on('voices'); }
+
   /** True when a recorded line would be heard if spoken now. */
   get canSpeak() { return this.running && this.on('voices'); }
 
@@ -219,7 +222,7 @@ class AudioEngine {
         const gain = ctx.createGain();
         gain.gain.value = 0;
         ctx.createMediaElementSource(el).connect(gain).connect(bus);
-        const slot: Slot = { el, gain, channel, id: null, generation: 0, timer: 0, resting: false, primed: false };
+        const slot: Slot = { el, gain, channel, id: null, url: '', generation: 0, timer: 0, resting: false, primed: false };
         el.addEventListener('error', () => { if (slot.id) console.info(`Optional audio missing: ${slot.id}`); });
         out.push(slot);
       } catch { /* this browser can't stream into Web Audio: no music, effects still play */ }
@@ -227,10 +230,10 @@ class AudioEngine {
     return out;
   }
 
-  private fade(slot: Slot, level: number, seconds: number) {
+  private fade(slot: Slot, level: number, seconds: number, from = slot.gain.gain.value) {
     const t = this.ctx!.currentTime, g = slot.gain.gain;
     g.cancelScheduledValues(t);
-    g.setValueAtTime(g.value, t);
+    g.setValueAtTime(from, t);
     g.linearRampToValueAtTime(level, t + seconds);
   }
 
@@ -241,15 +244,22 @@ class AudioEngine {
     slot.id = id;
     slot.resting = false;
     this.fade(slot, 0, 0.01);
-    slot.el.src = `${base()}${folder}/${id}.mp3`;
+    // The file is fetched only when the channel can be heard (play sets the source).
+    slot.url = `${base()}${folder}/${id}.mp3`;
+    if (this.on(slot.channel)) slot.el.src = slot.url;
+    else slot.el.pause();
     this.play(slot, level, fade);
   }
 
   private play(slot: Slot, level: number, fade: number) {
     // A silenced channel stays paused; turning it back on starts it here.
     if (!this.on(slot.channel)) return;
+    if (slot.url && slot.el.getAttribute('src') !== slot.url) slot.el.src = slot.url;
+    // A paused slot starts from silence, so a retried or resumed play fades in rather than jumps.
+    const from = slot.el.paused ? 0 : undefined;
+    if (from === 0) this.fade(slot, 0, 0, 0);
     const generation = slot.generation;
-    void slot.el.play().then(() => { slot.primed = true; if (slot.generation === generation) this.fade(slot, level, fade); }, () => {});
+    void slot.el.play().then(() => { slot.primed = true; if (slot.generation === generation) this.fade(slot, level, fade, from); }, () => {});
   }
 
   /** Fades a slot out and frees it, unless it has been given a new track in the meantime. */
@@ -272,9 +282,9 @@ class AudioEngine {
   private playMusic(id: string | null, level: number) {
     const current = this.music;
     if (current && current.id === id) {
-      this.fade(current, level, 1);
-      // A play the browser refused earlier (a background tab, a strict autoplay rule) is retried.
+      // A play the browser refused earlier (a background tab, a strict autoplay rule) is retried with a fade-in.
       if (current.el.paused && !current.resting) this.play(current, level, FADE.in);
+      else this.fade(current, level, 1);
       return;
     }
     if (current) this.release(current);
@@ -303,8 +313,8 @@ class AudioEngine {
   private playBed(id: string | null, level: number) {
     const current = this.bed;
     if (current && current.id === id) {
-      this.fade(current, level, 1);
       if (current.el.paused) this.play(current, level, FADE.in);
+      else this.fade(current, level, 1);
       return;
     }
     window.clearInterval(this.bedTimer);

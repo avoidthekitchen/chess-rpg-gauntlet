@@ -50,6 +50,7 @@ export function soundSettings() {
 function refreshControls() {
   const s = audio.settings;
   for (const el of document.querySelectorAll<HTMLButtonElement>('[data-sound-toggle]')) {
+    if (el.getAttribute('aria-pressed') === String(s.muted)) continue;
     el.setAttribute('aria-pressed', String(s.muted));
     el.title = s.muted ? 'Sound is off' : 'Sound is on';
     el.innerHTML = icon(s.muted);
@@ -110,7 +111,7 @@ export function installAudioUi() {
     const el = e.target as HTMLInputElement;
     const channel = el.dataset.audioChannel as AudioChannel | undefined;
     if (channel) {
-      audio.set({ [channel]: Number(el.value) / 100 });
+      audio.set({ [channel]: Number(el.value) / 100 }, false);
       const out = el.parentElement?.querySelector('output');
       if (out) out.textContent = el.value;
     }
@@ -119,6 +120,6 @@ export function installAudioUi() {
     const el = e.target as HTMLInputElement;
     if (el.matches('[data-sound-master]')) audio.set({ muted: !el.checked });
     const channel = el.dataset.audioChannel as AudioChannel | undefined;
-    if (channel) preview(channel);
+    if (channel) { audio.set({ [channel]: Number(el.value) / 100 }); preview(channel); }
   });
 }

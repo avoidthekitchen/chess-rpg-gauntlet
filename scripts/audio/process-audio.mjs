@@ -77,6 +77,24 @@ const trimSilence = (threshold = -50, tail = 0.05) =>
 
 const manifest = existsSync(MANIFEST) ? json(MANIFEST) : { sfx: {}, music: [], beds: [], spots: [], voices: {} };
 
+// Raw takes live only on the machine that made them (audio/raw/ is not committed). Check that
+// every chosen music and effect take is here before changing anything, so a run on another
+// machine stops instead of deleting what ships. Voices keep their shipped file instead (below).
+{
+  const absent = [];
+  if (want('music')) for (const [id, t] of Object.entries(json(join('audio', 'music.json')).tracks)) {
+    if (t.take && !existsSync(join(RAW, 'music', `${id}-${t.take}.mp3`))) absent.push(`music/${id}-${t.take}.mp3`);
+  }
+  if (want('sfx') || want('ambience')) for (const [name, c] of Object.entries(json(join('audio', 'sfx-choices.json')))) {
+    if (!want(/^(bed|spot)-/.test(name) ? 'ambience' : 'sfx')) continue;
+    for (const t of c.takes) if (!existsSync(join(RAW, 'sfx', `${name}-${t}.mp3`))) absent.push(`sfx/${name}-${t}.mp3`);
+  }
+  if (absent.length) {
+    console.error(`Missing raw takes in audio/raw/ (nothing was changed):\n  ${absent.join('\n  ')}\nRegenerate them, or process only the groups you have takes for.`);
+    process.exit(1);
+  }
+}
+
 if (want('music')) {
   const spec = json(join('audio', 'music.json'));
   manifest.music = [];
@@ -119,7 +137,8 @@ if (want('sfx') || want('ambience')) {
     ];
     if (isBed) {
       const input = sources[0];
-      const len = duration(input);
+      // The fade-out goes at the end of the clip as trimmed, not the raw take.
+      const len = Math.min(duration(input) - (choice.trim?.[0] ?? 0), choice.trim ? choice.trim[1] - choice.trim[0] : Infinity, choice.length ?? Infinity);
       render(input, join(OUT, 'ambience', `${name}.mp3`), { filters: filters(['afade=t=in:d=0.5', `afade=t=out:st=${len - 0.5}:d=0.5`]), target: TARGET.bed + (choice.gain ?? 0), rate: 44100, bitrate: '96k' });
       console.log(`✓ ambience/${name}.mp3`);
       continue;
@@ -129,7 +148,6 @@ if (want('sfx') || want('ambience')) {
       console.log(`✓ ambience/${name}.mp3`);
       continue;
     }
-    for (const old of existsSync(join(OUT, 'sfx')) ? readdirSync(join(OUT, 'sfx')).filter((f) => f.startsWith(`${name}-`) && /^\d+\.mp3$/.test(f.slice(name.length + 1))) : []) rmSync(join(OUT, 'sfx', old));
     sources.forEach((input, i) => {
       render(input, join(OUT, 'sfx', `${name}-${i + 1}.mp3`), { filters: filters(['afade=t=in:d=0.004', 'areverse,afade=t=in:d=0.04,areverse'], input), target: TARGET.effect + (choice.gain ?? 0), rate: 44100, bitrate: '128k', mono: !choice.stereo, peak: -1 });
     });
@@ -137,13 +155,18 @@ if (want('sfx') || want('ambience')) {
     console.log(`✓ sfx/${name} ×${sources.length}`);
   }
   // The choices file is the whole list: anything not chosen leaves the manifest and the build.
-  const chosen = (prefix) => Object.keys(choices).filter((n) => prefix.test(n)).sort();
-  manifest.beds = chosen(/^bed-/);
-  manifest.spots = chosen(/^spot-/);
-  const keepAmbience = new Set([...manifest.beds, ...manifest.spots].map((n) => `${n}.mp3`));
-  for (const f of existsSync(join(OUT, 'ambience')) ? readdirSync(join(OUT, 'ambience')) : []) if (!keepAmbience.has(f)) rmSync(join(OUT, 'ambience', f));
-  const keepSfx = new Set(Object.entries(manifest.sfx).flatMap(([name, n]) => Array.from({ length: n }, (_, k) => `${name}-${k + 1}.mp3`)));
-  for (const f of existsSync(join(OUT, 'sfx')) ? readdirSync(join(OUT, 'sfx')) : []) if (!keepSfx.has(f)) rmSync(join(OUT, 'sfx', f));
+  // Each group reconciles only its own files, after every render has succeeded.
+  if (want('ambience')) {
+    const chosen = (prefix) => Object.keys(choices).filter((n) => prefix.test(n)).sort();
+    manifest.beds = chosen(/^bed-/);
+    manifest.spots = chosen(/^spot-/);
+    const keepAmbience = new Set([...manifest.beds, ...manifest.spots].map((n) => `${n}.mp3`));
+    for (const f of existsSync(join(OUT, 'ambience')) ? readdirSync(join(OUT, 'ambience')) : []) if (!keepAmbience.has(f)) rmSync(join(OUT, 'ambience', f));
+  }
+  if (want('sfx')) {
+    const keepSfx = new Set(Object.entries(manifest.sfx).flatMap(([name, n]) => Array.from({ length: n }, (_, k) => `${name}-${k + 1}.mp3`)));
+    for (const f of existsSync(join(OUT, 'sfx')) ? readdirSync(join(OUT, 'sfx')) : []) if (!keepSfx.has(f)) rmSync(join(OUT, 'sfx', f));
+  }
 }
 
 /**
@@ -195,14 +218,18 @@ if (want('voices')) {
   const { voiceScript } = await loadTs('/src/audio/voiceScript.ts');
   const { voiceKey } = await loadTs('/src/audio/voiceRoles.ts');
   const voices = {};
-  let missing = 0;
+  let missing = 0, kept = 0;
   for (const { role, line } of voiceScript()) {
     const key = voiceKey(role, line);
     const record = join(RAW, 'voice', role, `${key}.json`);
     const chosen = existsSync(record) ? json(record).chosen : null;
-    if (!chosen) { missing++; continue; }
     const output = join(OUT, 'voice', role, `${key}.mp3`);
     let input = join(RAW, 'voice', role, `${key}-${chosen}.wav`);
+    // No take on this machine: keep the shipped recording rather than deleting it.
+    if (!chosen || !existsSync(input)) {
+      if (existsSync(output)) { (voices[role] ??= []).push(key); kept++; } else missing++;
+      continue;
+    }
     const post = cast.roles[role].post;
     const trimmed = join(RAW, 'voice', role, `${key}-trim.wav`);
     // Clicks out first, then silence trimmed gently enough to keep soft final consonants.
@@ -218,7 +245,7 @@ if (want('voices')) {
   }
   for (const keys of Object.values(voices)) keys.sort();
   manifest.voices = Object.fromEntries(Object.entries(voices).sort());
-  console.log(`✓ voices: ${Object.values(voices).flat().length} lines${missing ? `, ${missing} without an accepted take` : ''}`);
+  console.log(`✓ voices: ${Object.values(voices).flat().length} lines${kept ? `, ${kept} kept as shipped (no raw take here)` : ''}${missing ? `, ${missing} without an accepted take` : ''}`);
 }
 
 manifest.music.sort();

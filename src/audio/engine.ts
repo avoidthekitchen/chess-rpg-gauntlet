@@ -50,7 +50,7 @@ export interface SfxOptions {
  * source: iOS only lets an element play after a tap has started it once, and a media
  * element can be connected to Web Audio only once.
  */
-interface Slot { el: HTMLAudioElement; gain: GainNode; id: string | null; generation: number; timer: number; resting: boolean }
+interface Slot { el: HTMLAudioElement; gain: GainNode; channel: 'music' | 'ambience'; id: string | null; generation: number; timer: number; resting: boolean; primed: boolean }
 
 /** A tenth of a second of silence, used to unlock each slot inside the first tap. */
 function silence() {
@@ -78,6 +78,7 @@ class AudioEngine {
   private lastVariant = new Map<string, number>();
   private listeners = new Set<() => void>();
   private unlocked = false;
+  private blank: string | null = null;
   private scape: Soundscape | null = null;
   private musicSlots: Slot[] = [];
   private bedSlots: Slot[] = [];
@@ -117,27 +118,25 @@ class AudioEngine {
     this.bus.ambience.connect(this.duck.ambience).connect(this.master);
     this.bus.effects.connect(this.master);
     this.bus.voices.connect(this.master);
-    this.musicSlots = this.slots(2, this.bus.music);
-    this.bedSlots = this.slots(2, this.bus.ambience);
+    this.musicSlots = this.slots(2, 'music');
+    this.bedSlots = this.slots(2, 'ambience');
     this.apply(true);
 
-    // Everything that needs a user gesture happens inside the first one. Later taps
-    // restart any stream the browser refused, so one refusal never silences a screen.
+    // Browsers allow sound only inside a tap. On touch screens only the end of a tap counts,
+    // so every tap retries: it restarts refused streams and unlocks any player not yet
+    // unlocked by playing silence through it.
     const unlock = () => {
       if (!this.ctx) return;
       if (this.ctx.state !== 'running') void this.ctx.resume().catch(() => {});
-      if (this.unlocked) { this.retryStreams(); return; }
-      this.unlocked = true;
-      this.resumeScape();
-      const blank = silence();
+      if (!this.unlocked) { this.unlocked = true; this.resumeScape(); this.notify(); }
+      else this.retryStreams();
       for (const slot of [...this.musicSlots, ...this.bedSlots]) {
-        if (slot.id) continue;
-        slot.el.src = blank;
-        void slot.el.play().then(() => { if (!slot.id) slot.el.pause(); }, () => {});
+        if (slot.primed || slot.id) continue;
+        slot.el.src = this.blank ??= silence();
+        void slot.el.play().then(() => { slot.primed = true; if (!slot.id) slot.el.pause(); }, () => {});
       }
-      this.notify();
     };
-    for (const type of ['pointerdown', 'keydown', 'touchend']) window.addEventListener(type, unlock, { capture: true, passive: true });
+    for (const type of ['pointerdown', 'pointerup', 'touchend', 'keydown']) window.addEventListener(type, unlock, { capture: true, passive: true });
     ctx.addEventListener('statechange', () => this.notify());
     document.addEventListener('visibilitychange', () => this.onVisibility());
     // Every effect is small; decode them up front so the first move already clicks.
@@ -150,12 +149,23 @@ class AudioEngine {
   subscribe(fn: () => void) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
   private notify() { for (const fn of this.listeners) fn(); }
 
-  set(change: Partial<AudioSettings>) {
+  /** Changes settings. Slider drags pass `save: false` and save once on release. */
+  set(change: Partial<AudioSettings>, save = true) {
     this.saved = { ...this.settings, ...change };
-    store.set(AUDIO_KEY, JSON.stringify(this.settings));
+    if (save) store.set(AUDIO_KEY, JSON.stringify(this.settings));
     this.apply();
+    // Silenced voices stop mid-line; silenced streams pause so they stop downloading.
+    if (change.muted === true || change.voices === 0) this.hush();
+    for (const slot of [this.music, this.bed]) if (slot && !this.on(slot.channel)) slot.el.pause();
+    this.retryStreams();
     this.notify();
   }
+
+  /** Whether a channel can be heard at all. */
+  private on(channel: AudioChannel) { return !this.settings.muted && this.settings[channel] > 0; }
+
+  /** True when a recorded line would be heard if spoken now. */
+  get canSpeak() { return this.running && this.on('voices'); }
 
   toggleMute() { this.set({ muted: !this.settings.muted }); }
 
@@ -194,13 +204,13 @@ class AudioEngine {
 
   /** Restarts the current music and bed if the browser refused them, but never cuts a track's rest short. */
   private retryStreams() {
-    if (document.hidden || !this.scape) return;
+    if (document.hidden || !this.scape || !this.unlocked) return;
     if (this.music?.el.paused && !this.music.resting) this.play(this.music, this.scape.musicLevel, FADE.in);
     if (this.bed?.el.paused) this.play(this.bed, this.scape.ambienceLevel, FADE.in);
   }
 
-  private slots(count: number, bus: GainNode): Slot[] {
-    const ctx = this.ctx!;
+  private slots(count: number, channel: Slot['channel']): Slot[] {
+    const ctx = this.ctx!, bus = this.bus[channel];
     const out: Slot[] = [];
     for (let i = 0; i < count; i++) {
       const el = new Audio();
@@ -209,7 +219,7 @@ class AudioEngine {
         const gain = ctx.createGain();
         gain.gain.value = 0;
         ctx.createMediaElementSource(el).connect(gain).connect(bus);
-        const slot: Slot = { el, gain, id: null, generation: 0, timer: 0, resting: false };
+        const slot: Slot = { el, gain, channel, id: null, generation: 0, timer: 0, resting: false, primed: false };
         el.addEventListener('error', () => { if (slot.id) console.info(`Optional audio missing: ${slot.id}`); });
         out.push(slot);
       } catch { /* this browser can't stream into Web Audio: no music, effects still play */ }
@@ -236,8 +246,10 @@ class AudioEngine {
   }
 
   private play(slot: Slot, level: number, fade: number) {
+    // A silenced channel stays paused; turning it back on starts it here.
+    if (!this.on(slot.channel)) return;
     const generation = slot.generation;
-    void slot.el.play().then(() => { if (slot.generation === generation) this.fade(slot, level, fade); }, () => {});
+    void slot.el.play().then(() => { slot.primed = true; if (slot.generation === generation) this.fade(slot, level, fade); }, () => {});
   }
 
   /** Fades a slot out and frees it, unless it has been given a new track in the meantime. */
@@ -283,7 +295,7 @@ class AudioEngine {
         slot.el.currentTime = 0;
         // In a hidden tab, start from the top when the player returns instead.
         if (document.hidden) { this.hiddenPaused.push(slot.el); return; }
-        void slot.el.play().catch(() => {});
+        if (this.on('music')) void slot.el.play().catch(() => {});
       }, MUSIC_REST * 1000);
     };
   }
@@ -322,7 +334,7 @@ class AudioEngine {
     const wait = SPOT_GAP.min + Math.random() * (SPOT_GAP.max - SPOT_GAP.min);
     this.spotTimer = window.setTimeout(() => {
       const spots = this.spotKey.split(',');
-      if (this.running && !document.hidden && spots[0]) {
+      if (this.running && !document.hidden && spots[0] && this.on('ambience')) {
         const name = spots[Math.floor(Math.random() * spots.length)];
         void this.playBuffer(`ambience/${name}.mp3`, this.bus.ambience, { gain: (0.5 + Math.random() * 0.4) * (this.scape?.ambienceLevel ?? 1), pan: (Math.random() * 2 - 1) * 0.7, vary: true });
       }
@@ -340,7 +352,8 @@ class AudioEngine {
       const paused = this.hiddenPaused;
       this.hiddenPaused = [];
       void this.ctx.resume().catch(() => {});
-      for (const el of paused) void el.play().catch(() => {});
+      const slots = [...this.musicSlots, ...this.bedSlots];
+      for (const el of paused) if (this.on(slots.find((s) => s.el === el)?.channel ?? 'music')) void el.play().catch(() => {});
     }
   }
 
@@ -359,7 +372,12 @@ class AudioEngine {
     pending = !ctx ? Promise.resolve(null) : fetch(`${base()}${path}`)
       .then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(String(r.status)))))
       .then((data) => ctx.decodeAudioData(data))
-      .catch(() => { console.info(`Optional audio missing: ${path}`); return null; });
+      .catch(() => {
+        // Forget a failure, so a network hiccup doesn't silence this sound for the session.
+        if (cache.get(path) === pending) cache.delete(path);
+        console.info(`Optional audio missing: ${path}`);
+        return null;
+      });
     cache.set(path, pending);
     if (!keep) while (this.recent.size > RECENT_BUFFERS) this.recent.delete(this.recent.keys().next().value!);
     return pending;

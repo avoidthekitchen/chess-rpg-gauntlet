@@ -62,7 +62,7 @@ export class CoursePlayScene extends BaseScene {
   private feedbackLayoutPending = false;
   /** Lines already spoken in this position, so a piece's catchphrase isn't repeated every move. */
   private voiced = new Set<string>();
-  private lastBark = 0;
+  private lastBark = -Infinity;
   private stopReading: (() => void) | null = null;
   private briefingRead = false;
 
@@ -91,7 +91,7 @@ export class CoursePlayScene extends BaseScene {
     this.attemptNumber = this.exampleNumber = 0;
     this.earnedStars = []; this.coachKey = '';
     for (const info of courseIntro(lesson, save.starter)) this.journal.add(info, this.scope);
-    this.voiced.clear(); this.lastBark = 0; this.briefingRead = false;
+    this.voiced.clear(); this.lastBark = -Infinity; this.briefingRead = false;
     audio.setScape(soundscape(lesson.review ? 'review' : 'lesson', lesson.regionId));
     this.style = store.get('pawnshire-journey-pieces') === 'classic' ? 'classic' : 'tokens';
     this.hud = document.createElement('div');
@@ -276,7 +276,8 @@ export class CoursePlayScene extends BaseScene {
   }
 
   private action(action: string) {
-    if (action !== 'history') { this.stopReading?.(); this.stopReading = null; }
+    // Only moving the lesson along stops the narrator; switching piece style doesn't.
+    if (['teach', 'begin', 'watch', 'next', 'home', 'leave'].includes(action)) { this.stopReading?.(); this.stopReading = null; }
     if (action === 'history') return this.showHistory();
     if (action === 'home') return this.home();
     if (action === 'leave') return this.leave();
@@ -541,6 +542,8 @@ export class CoursePlayScene extends BaseScene {
    */
   private bark(info: SpeakerInfo, cues: readonly string[]) {
     if (info.side === 'ally' && !cues.some(cue => ['Check', 'Fork', 'Double check', 'Mate', 'Promotion'].includes(cue))) return;
+    // A line that can't be heard (unrecorded, or sound off) uses up neither the line nor the gap.
+    if (!audio.hasVoice(info.voice, info.line) || !audio.canSpeak) return;
     const id = `${info.voice}|${info.line}`, now = performance.now();
     if (this.voiced.has(id) || now - this.lastBark < BARK_GAP) return;
     this.voiced.add(id);

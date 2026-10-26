@@ -56,7 +56,7 @@ Sounds pan slightly toward their square. Each play varies pitch a little, so rep
 
 ## Player controls
 
-- A speaker button on every screen mutes all sound.
+- A speaker button on every screen mutes all sound. Muting stops any line being spoken and pauses music and ambience, so nothing downloads while silent.
 - Settings has volume sliders for music, ambience, effects, and voices. Effects and voices play a sample when released.
 - Browsers allow sound only after a tap, so music starts with the first tap or key press.
 - Sound pauses when the game is in a background tab.
@@ -91,6 +91,8 @@ node scripts/audio/review-sfx.mjs hit               # compares the takes
 node scripts/audio/generate-voices.mjs              # records new or changed lines, checks each by transcript
 node scripts/audio/process-audio.mjs                # trims, levels, encodes, writes the manifest
 ```
+
+`process-audio.mjs` needs the chosen raw takes. If any are missing, it stops before changing anything; voices without a raw take keep their shipped recording.
 
 Choose takes in `audio/music.json` (`take`, optional `trim`) and `audio/sfx-choices.json`. Voices choose themselves: the first take whose transcript matches the line.
 If a voice keeps rewording a line, add a spoken spelling under `say` in `audio/voices.json`. The text on screen never changes.

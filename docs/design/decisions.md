@@ -60,7 +60,7 @@ Historical test counts, interrupted runs, and failures remain evidence of those 
 
 | Date | Decision |
 | --- | --- |
-| 2026-10-25 | The owner approved the first player-copy cleanup: remove the title's design-rule footnote, rename Journal credits, and simplify seven flagged interface and lesson passages. Keep attribution, chess positions, progression, and voiced dialogue. |
+| 2026-10-25 | The owner approved the first player-copy cleanup: remove the title's design-rule footnote, rename Journal credits, and simplify flagged interface and lesson passages. Keep attribution, chess positions, progression, and voiced dialogue. |
 | 2026-10-25 | The owner approved adding sound within a $10 OpenRouter budget, aiming for $3–5. Each chapter gets map, lesson and review music, ambience, and effects. Every fixed line of dialogue is voiced; lesson-panel advice is not. The player's king stays silent. The first set cost $8.24. See [Sound](audio.md). |
 | 2026-10-25 | The owner approved completing all #60 assets in draft PR #66. Native OpenAI generation provides all four new faction sets, Tadwell, the Lich King, and the Kingsroad map. The finale shares Warden tokens but alone shows the royal Lich portrait. Flint is the named lion exception to living-species uniqueness. Independent art and code reviews passed; no deployment is included. |
 | 2026-10-24 | Owner approved removing unused legacy code and tests in #55. Keep shared journey functionality, source reservations and immutable technique references. Old engine commands are retired. |

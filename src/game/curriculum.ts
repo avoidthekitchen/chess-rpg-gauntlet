@@ -140,7 +140,7 @@ const originalSeeds: LessonSeed[] = [
   },
   {
     id: 'r2-road-review', title: 'Ashfang’s reckoning', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Read each fresh position and choose the idea it needs.',
+    objective: 'Use what you’ve learned to find the best moves.',
     takeaway: 'Look for moves that do two jobs: a check that also attacks a piece, or a capture that removes a guard.',
     before: 'Ashfang sets down the last banners. “Four boards. Let us settle the account.”',
     after: 'Tadwell gathers the banners. Ashfang’s purse spills open: among the coins lies a dark crystal.',

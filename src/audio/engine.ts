@@ -24,6 +24,13 @@ const FADE = { out: 1.2, in: 2.2, bed: 3, unduck: 0.6 };
 /** Decoded voices and scattered ambience kept in memory; effects are always kept. */
 const RECENT_BUFFERS = 32;
 
+/** Every effect the game plays. The audio tests check this list against what ships. */
+export const SFX_NAMES = [
+  'place', 'hop', 'stomp', 'stomp-land', 'hit', 'fly', 'check', 'promote', 'hint', 'nudge', 'swish', 'unswish',
+  'page', 'book', 'tap', 'confetti', 'star', 'sting-wave', 'sting-win', 'sting-chapter', 'sting-lost', 'sting-mate',
+] as const;
+export type SfxName = (typeof SFX_NAMES)[number];
+
 export interface SfxOptions {
   gain?: number;
   /** Playback rate: above 1 is higher and shorter. */
@@ -274,6 +281,8 @@ class AudioEngine {
         if (slot.generation !== generation || this.music !== slot) return;
         slot.resting = false;
         slot.el.currentTime = 0;
+        // In a hidden tab, start from the top when the player returns instead.
+        if (document.hidden) { this.hiddenPaused.push(slot.el); return; }
         void slot.el.play().catch(() => {});
       }, MUSIC_REST * 1000);
     };
@@ -390,7 +399,7 @@ class AudioEngine {
   }
 
   /** Plays a sound effect by name, picking one of its recorded variants. */
-  sfx(name: string, o: SfxOptions = {}) {
+  sfx(name: SfxName, o: SfxOptions = {}) {
     const variants = MANIFEST.sfx[name];
     if (!variants || !this.running || this.settings.muted) return;
     let pick = 1 + Math.floor(Math.random() * variants);
@@ -492,7 +501,9 @@ class AudioEngine {
       }
       if (!stopped) { stopped = true; onLine(null); }
     };
-    void run();
+    // Start on the next microtask, so the caller holds the stop handle before any callback,
+    // even when no line has a recording and the reading ends at once.
+    void Promise.resolve().then(run);
     return () => {
       if (stopped) return;
       stopped = true;

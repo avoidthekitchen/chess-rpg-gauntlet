@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { COURSE_LESSONS, COURSE_REGIONS } from '../game/curriculum';
 import { companionReaction, courseIntro, courseMoveSpeaker } from '../ui/coursePresentation';
 import manifest from './audioManifest.json';
+import { SFX_NAMES } from './engine';
 import { DEFAULT_AUDIO, parseAudioSettings, sliderGain } from './settings';
 import { soundscape, type SoundPlace } from './soundtrack';
 import { pieceVoice, storyVoice, voiceKey } from './voiceRoles';
@@ -12,7 +13,6 @@ import cast from '../../audio/voices.json';
 
 // Paths of every shipped audio file (relative to public/audio), and the game's own source.
 const shipped = new Set(Object.keys(import.meta.glob('../../public/audio/**/*.mp3')).map((p) => p.replace('../../public/audio/', '')));
-const sources = import.meta.glob(['../**/*.ts', '!../**/*.test.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 const has = (role: string | undefined, line: string) => !!role && (manifest.voices as Record<string, string[]>)[role]?.includes(voiceKey(role, line));
 
 describe('audio settings', () => {
@@ -77,10 +77,6 @@ describe('voices', () => {
     expect(recorded.filter((k) => !scripted.has(k))).toEqual([]);
   });
 
-  it('ships a file for every recording in the manifest', () => {
-    for (const [role, keys] of Object.entries(manifest.voices)) for (const key of keys) expect(shipped.has(`voice/${role}/${key}.mp3`), `${role}/${key}`).toBe(true);
-  });
-
   it('voices the lines the lesson screen actually shows', () => {
     for (const lesson of COURSE_LESSONS) for (const starter of ['n', 'b', 'r'] as const) {
       for (const info of courseIntro(lesson, starter)) expect(has(info.voice, info.line), `${lesson.id} ${info.name}`).toBe(true);
@@ -112,16 +108,18 @@ describe('voices', () => {
   });
 });
 
-describe('sound effects', () => {
-  it('ships every effect the game plays', () => {
-    const used = new Set(Object.values(sources).flatMap((text) => [...text.matchAll(/audio\.sfx\('([\w-]+)'/g)].map((m) => m[1])));
-    expect(used.size).toBeGreaterThan(10);
-    for (const name of used) expect(manifest.sfx, name).toHaveProperty(name);
-    for (const [name, variants] of Object.entries(manifest.sfx)) for (let i = 1; i <= variants; i++) expect(shipped.has(`sfx/${name}-${i}.mp3`), `${name}-${i}`).toBe(true);
+describe('shipped audio', () => {
+  it('ships every effect the game can play, and only those', () => {
+    expect(Object.keys(manifest.sfx).sort()).toEqual([...SFX_NAMES].sort());
   });
 
-  it('ships every music track and ambience file in the manifest', () => {
-    for (const id of manifest.music) expect(shipped.has(`music/${id}.mp3`), id).toBe(true);
-    for (const id of [...manifest.beds, ...manifest.spots]) expect(shipped.has(`ambience/${id}.mp3`), id).toBe(true);
+  it('ships exactly the files in the manifest: none missing, none orphaned', () => {
+    const expected = [
+      ...manifest.music.map((id) => `music/${id}.mp3`),
+      ...[...manifest.beds, ...manifest.spots].map((id) => `ambience/${id}.mp3`),
+      ...Object.entries(manifest.sfx).flatMap(([name, n]) => Array.from({ length: n }, (_, i) => `sfx/${name}-${i + 1}.mp3`)),
+      ...Object.entries(manifest.voices).flatMap(([role, keys]) => keys.map((k) => `voice/${role}/${k}.mp3`)),
+    ];
+    expect([...shipped].sort()).toEqual(expected.sort());
   });
 });

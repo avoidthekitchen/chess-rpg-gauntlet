@@ -94,6 +94,7 @@ if (want('music')) {
     manifest.music.push(id);
     console.log(`✓ music/${id}.mp3 (take ${track.take}, ${(end - start).toFixed(0)}s)`);
   }
+  for (const f of existsSync(join(OUT, 'music')) ? readdirSync(join(OUT, 'music')) : []) if (!manifest.music.includes(f.slice(0, -4))) rmSync(join(OUT, 'music', f));
 }
 
 if (want('sfx') || want('ambience')) {
@@ -135,8 +136,14 @@ if (want('sfx') || want('ambience')) {
     manifest.sfx[name] = sources.length;
     console.log(`✓ sfx/${name} ×${sources.length}`);
   }
-  manifest.beds = existsSync(join(OUT, 'ambience')) ? readdirSync(join(OUT, 'ambience')).filter((f) => f.startsWith('bed-')).map((f) => f.slice(0, -4)) : [];
-  manifest.spots = existsSync(join(OUT, 'ambience')) ? readdirSync(join(OUT, 'ambience')).filter((f) => f.startsWith('spot-')).map((f) => f.slice(0, -4)) : [];
+  // The choices file is the whole list: anything not chosen leaves the manifest and the build.
+  const chosen = (prefix) => Object.keys(choices).filter((n) => prefix.test(n)).sort();
+  manifest.beds = chosen(/^bed-/);
+  manifest.spots = chosen(/^spot-/);
+  const keepAmbience = new Set([...manifest.beds, ...manifest.spots].map((n) => `${n}.mp3`));
+  for (const f of existsSync(join(OUT, 'ambience')) ? readdirSync(join(OUT, 'ambience')) : []) if (!keepAmbience.has(f)) rmSync(join(OUT, 'ambience', f));
+  const keepSfx = new Set(Object.entries(manifest.sfx).flatMap(([name, n]) => Array.from({ length: n }, (_, k) => `${name}-${k + 1}.mp3`)));
+  for (const f of existsSync(join(OUT, 'sfx')) ? readdirSync(join(OUT, 'sfx')) : []) if (!keepSfx.has(f)) rmSync(join(OUT, 'sfx', f));
 }
 
 /**

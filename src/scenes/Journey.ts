@@ -168,7 +168,7 @@ export class JourneyScene extends BaseScene {
     if (!lines.length) return;
     const voices = introVoices(region.id, save.starter);
     showModal({ eyebrow: region.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(region) + 1}`, title: region.title, wide: true,
-      html: `<div class="journey-intro">${lines.map((line, i) => this.dialogueRow(line, region.id, voices[i])).join('')}</div>`,
+      html: `${soundToggle('in-dialog')}<div class="journey-intro">${lines.map((line, i) => this.dialogueRow(line, region.id, voices[i])).join('')}</div>`,
       buttons: [{ label: 'Onward', kind: 'primary', onClick: () => this.stopReading?.() }], onDismiss: () => this.stopReading?.() });
     audio.sfx('book', { vary: false });
     // Let the book settle before the narrator begins.
@@ -200,7 +200,7 @@ export class JourneyScene extends BaseScene {
       return;
     }
     if (!this.save) {
-      this.hud.innerHTML = this.onboarding();
+      this.hud.innerHTML = soundToggle('corner') + this.onboarding();
       return;
     }
     const save = this.save;
@@ -302,7 +302,7 @@ export class JourneyScene extends BaseScene {
       if (!(t in STARTERS)) return;
       this.starter = t;
       showModal({ eyebrow: STARTERS[t].species, title: STARTERS[t].name,
-        html: `<div class="dlg ally journey-greeting"${voiceAttr(COMPANION_VOICES[t], COMPANION_GREETINGS[t])}><div class="dlg-pic" style="${portraitStyle(t, 'ally')}"></div><div><p>${esc(COMPANION_GREETINGS[t])}</p></div></div>`,
+        html: `${soundToggle('in-dialog')}<div class="dlg ally journey-greeting"${voiceAttr(COMPANION_VOICES[t], COMPANION_GREETINGS[t])}><div class="dlg-pic" style="${portraitStyle(t, 'ally')}"></div><div><p>${esc(COMPANION_GREETINGS[t])}</p></div></div>`,
         buttons: [{ label: `Ride out with ${STARTERS[t].name}`, kind: 'primary', onClick: () => { audio.hush(); window.setTimeout(() => { if (this.hud.isConnected && !this.save) this.action('start'); }); } }, { label: 'Choose again', kind: 'ghost', onClick: () => audio.hush() }],
         onDismiss: () => audio.hush() });
       void audio.speak(COMPANION_VOICES[t], COMPANION_GREETINGS[t]);

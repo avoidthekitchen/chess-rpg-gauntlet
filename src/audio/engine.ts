@@ -82,6 +82,9 @@ class AudioEngine {
   private voice: { source: AudioBufferSourceNode; token: number } | null = null;
   private voiceToken = 0;
   private ducks: number[] = [];
+  /** Effects not yet started, so leaving a screen can cancel them. */
+  private pending = new Map<AudioBufferSourceNode, number>();
+  private effectsEpoch = 0;
   private hiddenPaused: HTMLAudioElement[] = [];
 
   /** Builds the audio graph once. Safe to call before any user gesture. */
@@ -353,10 +356,10 @@ class AudioEngine {
     return pending;
   }
 
-  private async playBuffer(path: string, bus: GainNode, o: SfxOptions = {}, keep = false): Promise<AudioBufferSourceNode | null> {
+  private async playBuffer(path: string, bus: GainNode, o: SfxOptions = {}, keep = false, current = () => true): Promise<AudioBufferSourceNode | null> {
     const buffer = await this.buffer(path, keep);
     const ctx = this.ctx;
-    if (!buffer || !ctx || !this.running) return null;
+    if (!buffer || !ctx || !this.running || !current()) return null;
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     source.playbackRate.value = (o.rate ?? 1) * (o.vary === false ? 1 : 1 + (Math.random() - 0.5) * 0.05);
@@ -369,8 +372,21 @@ class AudioEngine {
       tail = tail.connect(panner);
     }
     tail.connect(bus);
-    source.start(ctx.currentTime + (o.delay ?? 0));
+    const at = ctx.currentTime + (o.delay ?? 0);
+    source.start(at);
+    this.pending.set(source, at);
+    source.addEventListener('ended', () => this.pending.delete(source));
     return source;
+  }
+
+  /**
+   * Cancels effects that are still loading or scheduled for later, such as a lesson's
+   * fanfare and star chimes when the player leaves straight away. Sounds already playing finish.
+   */
+  cancelEffects() {
+    this.effectsEpoch++;
+    const now = this.ctx?.currentTime ?? 0;
+    for (const [source, at] of this.pending) if (at > now) try { source.stop(); } catch { /* already ended */ }
   }
 
   /** Plays a sound effect by name, picking one of its recorded variants. */
@@ -380,11 +396,16 @@ class AudioEngine {
     let pick = 1 + Math.floor(Math.random() * variants);
     if (variants > 1 && pick === this.lastVariant.get(name)) pick = (pick % variants) + 1;
     this.lastVariant.set(name, pick);
-    void this.playBuffer(`sfx/${name}-${pick}.mp3`, this.bus.effects, o, true).then((source) => {
+    const epoch = this.effectsEpoch;
+    void this.playBuffer(`sfx/${name}-${pick}.mp3`, this.bus.effects, o, true, () => epoch === this.effectsEpoch).then((source) => {
       // An inaudible stinger must not hollow out the music.
       if (!source || !o.duck || this.settings.effects === 0) return;
-      this.duckFor(DUCK.stinger);
-      source.addEventListener('ended', () => this.unduck(DUCK.stinger));
+      // Duck when the stinger actually starts; a cancelled stinger never ducks.
+      window.setTimeout(() => {
+        if (!this.pending.has(source)) return;
+        this.duckFor(DUCK.stinger);
+        source.addEventListener('ended', () => this.unduck(DUCK.stinger));
+      }, (o.delay ?? 0) * 1000);
     });
   }
 
@@ -457,8 +478,14 @@ class AudioEngine {
       for (let i = 0; i < lines.length && !stopped; i++) {
         const v = lines[i];
         if (!v || !this.hasVoice(v.role, v.line)) continue;
+        await this.audible(() => stopped);
+        if (stopped) break;
+        const before = this.voiceToken;
         const done = await this.speak(v.role, v.line, () => { if (!stopped) onLine(i); });
-        if (stopped || !done) break;
+        if (stopped) break;
+        // Hidden mid-load, with no other line cutting in: read this line again on return.
+        if (!done && document.hidden && this.voiceToken === before + 1) { i--; continue; }
+        if (!done) break;
         const after = this.voiceToken;
         await new Promise((r) => window.setTimeout(r, gap * 1000));
         if (this.voiceToken !== after || this.speaking) break;
@@ -472,6 +499,13 @@ class AudioEngine {
       this.hush();
       onLine(null);
     };
+  }
+
+  /** Waits while the tab is hidden, then briefly for the audio to resume, so a reading pauses rather than ends. */
+  private async audible(stopped: () => boolean) {
+    const sleep = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
+    while (!stopped() && document.hidden) await sleep(250);
+    for (let i = 0; i < 8 && !stopped() && !this.running; i++) await sleep(125);
   }
 
   private duckFor(level: number) {

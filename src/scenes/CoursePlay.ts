@@ -103,7 +103,7 @@ export class CoursePlayScene extends BaseScene {
     });
     this.events.once('shutdown', () => {
       this.session++;
-      this.stopReading?.(); audio.hush();
+      this.stopReading?.(); audio.hush(); audio.cancelEffects();
       this.holds.clear(); this.cueHolds.clear(); this.cue = null;
       settleJourney(this.save, true);
       persistJourney(this.save);
@@ -298,6 +298,7 @@ export class CoursePlayScene extends BaseScene {
   private begin() {
     if (!beginJourneyLesson(this.save, this.lesson.id)) return;
     this.session++; this.holds.clear(); this.cueHolds.clear(); this.cue = null; this.speech.clear(); this.busy = false;
+    audio.cancelEffects();
     this.attemptNumber++; this.earnedStars = [];
     persistJourney(this.save); void this.setupWave();
   }

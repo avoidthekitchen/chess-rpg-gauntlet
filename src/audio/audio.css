@@ -5,7 +5,11 @@
 .sound-toggle svg { display:block; }
 .ambush-top .sound-toggle { width:38px; min-width:38px; height:38px; min-height:38px!important; }
 .ambush-launcher > .sound-toggle { position:fixed; z-index:2; top:calc(14px + env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right)); background:#19151cb8; backdrop-filter:blur(4px); }
-.journey-title-scene .sound-toggle { position:absolute; top:calc(14px + env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right)); background:#19151cb8; border-color:#75623e99; backdrop-filter:blur(4px); }
+.journey-title-scene .sound-toggle,.journey-hud > .sound-toggle.corner { position:fixed; z-index:2; top:calc(14px + env(safe-area-inset-top)); right:max(14px,env(safe-area-inset-right)); background:#19151cb8; border-color:#75623e99; backdrop-filter:blur(4px); }
+/* Voiced dialogs carry their own mute, since the backdrop covers the page's. */
+.ov-dialog:has(.sound-toggle.in-dialog) { position:relative; }
+.ov-dialog .sound-toggle.in-dialog { position:absolute; top:12px; right:12px; width:36px; min-width:36px; height:36px; color:#f0e7d4; background:#2c2533; border:1px solid #75623e; border-radius:7px; cursor:pointer; }
+.ov-dialog .sound-toggle.in-dialog[aria-pressed=true] { color:#a99fae; border-color:#69606d; }
 
 .sound-settings .sound-master { display:flex; align-items:center; gap:10px; font:600 15px system-ui,sans-serif; margin-bottom:14px; cursor:pointer; }
 .sound-settings .sound-master input { width:20px; height:20px; accent-color:#e0ab45; }

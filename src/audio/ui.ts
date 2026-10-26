@@ -21,8 +21,8 @@ export function soundToggle(extra = '') {
 }
 
 /** The story pages' Read aloud control; `setReadAloud` flips it while a page is being read. */
-export function readAloudButton() {
-  return `<button type="button" class="read-aloud" data-action="read" aria-pressed="false">${icon(false)}<span>Read aloud</span></button>`;
+export function readAloudButton(reading = false) {
+  return `<button type="button" class="read-aloud" data-action="read" aria-pressed="${reading}">${icon(false)}<span>${reading ? 'Stop reading' : 'Read aloud'}</span></button>`;
 }
 export function setReadAloud(root: HTMLElement, reading: boolean) {
   for (const b of root.querySelectorAll<HTMLButtonElement>('.read-aloud')) {

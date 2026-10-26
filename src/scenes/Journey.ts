@@ -169,10 +169,18 @@ export class JourneyScene extends BaseScene {
     const voices = introVoices(region.id, save.starter);
     showModal({ eyebrow: region.kind === 'finale' ? 'Finale' : `Chapter ${COURSE_REGIONS.indexOf(region) + 1}`, title: region.title, wide: true,
       html: `${soundToggle('in-dialog')}<div class="journey-intro">${lines.map((line, i) => this.dialogueRow(line, region.id, voices[i])).join('')}</div>`,
-      buttons: [{ label: 'Onward', kind: 'primary', onClick: () => this.stopReading?.() }], onDismiss: () => this.stopReading?.() });
+      buttons: [{ label: 'Onward', kind: 'primary', onClick: () => this.quietIntro() }], onDismiss: () => this.quietIntro() });
     audio.sfx('book', { vary: false });
-    // Let the book settle before the narrator begins.
-    window.setTimeout(() => { if (isModalOpen() && this.hud.isConnected) this.readAloud(voices); }, 700);
+    // Let the book settle before the narrator begins, and only while this same dialog is still open.
+    const dialog = document.querySelector('#overlay .ov-dialog');
+    window.clearTimeout(this.readTimer);
+    this.readTimer = window.setTimeout(() => { if (dialog?.isConnected && this.hud.isConnected) this.readAloud(voices); }, 700);
+  }
+
+  /** Closing the chapter intro stops its narration, including a start that is still pending. */
+  private quietIntro() {
+    window.clearTimeout(this.readTimer);
+    this.stopReading?.();
   }
 
   private toast(text: string) {
@@ -212,7 +220,7 @@ export class JourneyScene extends BaseScene {
     if (this.page === 'ending' || this.page === 'interlude') {
       const ending = this.page === 'ending';
       const lines = ending ? journeyEnding(save.starter) : finaleInterlude(save.starter);
-      body = `<section class="journey-paper journey-story journey-ending"><div class="journey-story-top"><p class="journey-kicker">${ending ? 'The journey is complete' : 'The Lich King · Between the tables'}</p>${readAloudButton()}</div>
+      body = `<section class="journey-paper journey-story journey-ending"><div class="journey-story-top"><p class="journey-kicker">${ending ? 'The journey is complete' : 'The Lich King · Between the tables'}</p>${readAloudButton(!!this.stopReading)}</div>
         <img class="journey-ending-companion" src="${import.meta.env.BASE_URL}sprites/${ART[save.starter]}-ally.webp" alt="${esc(STARTERS[save.starter].name)}"/>
         <h1>${ending ? 'A crown worth carrying.' : 'One last table.'}</h1>
         <p class="journey-story-lead"${voiceAttr(NARRATOR, ending ? ENDING_LEAD : INTERLUDE_LEAD)}>${ending ? ENDING_LEAD : INTERLUDE_LEAD}</p>
@@ -224,7 +232,7 @@ export class JourneyScene extends BaseScene {
       const nextChapter = COURSE_REGIONS[COURSE_REGIONS.indexOf(chapter) + 1];
       const lines = chapterStory(chapter.id, save.starter);
       const heading = courseCast(chapter.id).endingTitle;
-      body = `<section class="journey-paper journey-story"><div class="journey-story-top"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p>${readAloudButton()}</div><h1>${esc(heading)}</h1><p class="journey-story-lead"${voiceAttr(NARRATOR, chapter.outro)}>${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => this.storyLine(line, chapter.id)).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
+      body = `<section class="journey-paper journey-story"><div class="journey-story-top"><p class="journey-kicker">${esc(chapter.title)} · Chapter complete</p>${readAloudButton(!!this.stopReading)}</div><h1>${esc(heading)}</h1><p class="journey-story-lead"${voiceAttr(NARRATOR, chapter.outro)}>${esc(chapter.outro)}</p><div class="journey-story-lines">${lines.map(line => this.storyLine(line, chapter.id)).join('')}</div><div class="journey-actions">${nextChapter ? this.btn(`travel:${nextChapter.id}`, `Onward to ${nextChapter.title}`, 'primary') : this.btn('page:map', 'Return to your map', 'primary')}${this.btn('page:journal', 'Read your journal')}</div></section>`;
     } else if (this.page === 'settings') {
       body = `<section class="journey-paper journey-settings"><h1>Make yourself at home</h1><p>Adjust the help, your companion and the sound. Your lessons and stars stay earned.</p>${this.options()}${soundSettings()}<div class="journey-actions">${this.btn('page:map', 'Back to the journey', 'primary')}${this.btn('moves', 'Piece movement guide')}${this.btn('page:title', 'Title screen')}</div><hr><h2>A fresh start</h2><p>Reset all lessons and stars in this journey.</p>${this.btn('reset', 'Reset journey', 'quiet')}</section>`;
     } else if (this.page === 'journal') {

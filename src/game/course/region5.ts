@@ -58,7 +58,7 @@ export const region5Seeds: LessonSeed[] = [
   {
     id: 'r5-gate-review', title: 'The keep’s threshold', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Read each fresh board and choose the idea it needs.',
-    takeaway: 'Count each side’s moves, then calculate the reply. Small armies still need careful thought.',
+    takeaway: 'With few pieces left, count both sides’ moves to promotion. Bring your king forward, and weigh every promotion choice.',
     before: 'The Bone Wardens set six boards before the keep. Your companion waits beside you.',
     after: 'The last Warden steps aside. The keep’s gate opens. Beyond it, the Lich King waits.',
     demo: 'Read the whole board. Compare your choices and test the opponent’s replies.',

@@ -5,7 +5,7 @@ export const finaleSeeds: LessonSeed[] = [
   {
     id: 'finale-threshold', title: 'Across the threshold', theme: 'Mixed review', tag: 'mixed', review: true,
     objective: 'Choose what each board needs, using the ideas learned along the journey.',
-    takeaway: 'Start with both kings. Compare forcing moves, calculate the reply, and take your time.',
+    takeaway: 'Start with both kings: whose is in danger? Then try checks, captures and threats, in that order.',
     before: 'The Lich King waits inside the keep. “I have kept your crown safe. You need only leave it here.”',
     after: 'The Lich King straightens a fallen piece. For once, he leaves it on the board.',
     demo: 'Check both kings, compare your possible moves, and calculate the opponent’s strongest reply.',

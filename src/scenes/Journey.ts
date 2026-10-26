@@ -206,7 +206,7 @@ export class JourneyScene extends BaseScene {
       this.shownPage = pageKey;
     }
     if (this.page === 'title') {
-      this.hud.innerHTML = `<section class="journey-title-scene" aria-label="Pawnshire title screen">${soundToggle()}<div class="journey-title-copy"><h1>Pawnshire</h1><p class="journey-title-subtitle">A storybook chess tactics journey</p><div class="journey-title-actions">${this.save ? this.btn('continue', 'Continue', 'primary journey-continue') : ''}${this.btn('new', 'New journey', this.save ? '' : 'primary')}</div></div></section>`;
+      this.hud.innerHTML = `<section class="journey-title-scene" aria-label="Pawnshire title screen">${soundToggle()}<div class="journey-title-copy"><h1>Pawnshire</h1><p class="journey-title-subtitle">Win back your crown, one puzzle at a time.</p><div class="journey-title-actions">${this.save ? this.btn('continue', 'Continue', 'primary journey-continue') : ''}${this.btn('new', 'New journey', this.save ? '' : 'primary')}</div></div></section>`;
       return;
     }
     if (!this.save) {

@@ -44,7 +44,7 @@ export function soundSettings() {
   return `<fieldset class="sound-settings"><legend>Sound</legend>
     <label class="sound-master"><input type="checkbox" data-sound-master ${s.muted ? '' : 'checked'}/> <span>Play sound</span></label>
     <div class="sound-sliders${s.muted ? ' muted' : ''}">${AUDIO_CHANNELS.map((c) => `<label><span>${LABELS[c]}</span><input type="range" min="0" max="100" step="1" value="${Math.round(s[c] * 100)}" data-audio-channel="${c}" aria-label="${LABELS[c]} volume"/><output>${Math.round(s[c] * 100)}</output></label>`).join('')}</div>
-    <p class="journey-help">Music and voices start after your first tap. Sound stays on this device.</p></fieldset>`;
+    <p class="journey-help">Music and voices start after your first tap. Sound settings are saved on this device.</p></fieldset>`;
 }
 
 function refreshControls() {

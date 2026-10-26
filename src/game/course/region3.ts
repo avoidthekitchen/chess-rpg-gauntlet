@@ -58,7 +58,7 @@ export const region3Seeds: LessonSeed[] = [
   },
   {
     id: 'r3-cult-review', title: 'The sealed ledger', theme: 'Mixed review', tag: 'mixed', review: true,
-    objective: 'Read each fresh board and choose the idea it needs. These positions do not name the tactic.',
+    objective: 'Use what you’ve learned to find the best move.',
     takeaway: 'Check your king, inspect forcing moves, and calculate the reply. Follow the whole line before choosing.',
     before: 'The Cult Leader rests a hand on the ledger. “Leave it closed. Keep your crown.”',
     after: 'The last seal breaks. Your companion opens the ledger.',

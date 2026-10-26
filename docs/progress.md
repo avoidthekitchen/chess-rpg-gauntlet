@@ -3,6 +3,18 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-25 — First player-copy cleanup
+
+- Removed the title's contributor-rule footnote and its unused style. Renamed the Journal footer to “Puzzle credits”.
+- Shortened the Journal introduction, chapter selector, reset warning, and review objectives. Clarified that sound settings save on this device.
+- Replaced the pawn-race pack summary with guidance about promotion timing and checks. Source positions and replies remain unchanged.
+- Lesson source links now say “View puzzle on Lichess”. They appear in the same example and result states; solving hides the old source label.
+- Kept full Lichess attribution, the AI-assistance credit, story, voices, and progression. No new recordings are needed.
+- `npm run ci` passed type-check, production build, and all 330 tests. Existing checks verify every pawn-race source and neutral review wording.
+- Local browser checks covered title, map, Journal, settings, reset cancellation, and the first Gentle worked example.
+- Checked the settled example at 1280×800, 375×812, 375×553, and 844×390. Advice and action buttons fit; the source link uses the scrollable advice panel.
+- No browser errors were reported. These are desktop viewport checks, not physical-device tests. Nothing was deployed.
+
 ## 2026-10-25 — Review fixes for #66 and merge with main
 
 - Grubnak now has a chapter-end story portrait. Story portraits follow each chapter's `bossName`.

@@ -245,7 +245,7 @@ export class CoursePlayScene extends BaseScene {
       ${guidance.coach ? `<p class="course-advice"><strong>${esc(companionSpeaker(this.save.starter, '').name.split(' · ')[0])}:</strong> ${esc(guidance.coach)}</p>` : ''}
       ${guidance.status ? `<p class="ambush-status" role="status">${esc(guidance.status)}</p>` : ''}${result}
       ${run && !teaching && !['won', 'lost'].includes(this.phase) ? `<p class="ambush-bonuses">${run.misses === 0 ? '☆' : '–'} No misses &nbsp; ${run.hintsUsed === 0 ? '☆' : '–'} No hints</p>` : ''}
-      <p class="ambush-source">Published Lichess position${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? ` · <a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">${esc(this.puzzle.id)}</a>` : ''}</p>
+      ${teaching || ['waveWon', 'won', 'lost'].includes(this.phase) ? `<p class="ambush-source"><a href="${esc(this.puzzle.source)}" target="_blank" rel="noopener">View puzzle on Lichess</a></p>` : ''}
       </div><div class="ambush-actions">${actions}</div></section>`;
     this.renderSpeech();
   }

@@ -13,7 +13,7 @@ export const region5Seeds: LessonSeed[] = [
   {
     id: 'r5-pawn-races', title: 'Two paths to the gate', theme: 'Pawn races', tag: 'promotion',
     objective: 'Count the pawn pushes in these short races, then see who promotes with check.',
-    takeaway: 'Most of these races use three pushes. One starts with a checking capture. Promotion with check can leave both sides with queens.',
+    takeaway: 'Count both pawns’ moves to promotion. A check forces a reply and can change the race.',
     before: 'Two skeleton mice hurry toward opposite gates. Your companion counts their footsteps.',
     after: 'Your companion counts the last step. The next reply still matters.',
     demo: 'Both pawns need three pushes. White moves first: push h6, h7, then promote with check before their pawn leaves e2.',

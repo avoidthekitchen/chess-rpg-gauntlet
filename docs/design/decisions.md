@@ -4,6 +4,9 @@
 
 ## Current scope
 
+The owner chose the original painted Mouse Pawn icon for all sizes on 2026-10-29.
+Use direct reductions of `art/icon-concepts/b-mouse-pawn.png`; the simplified head-only draft was rejected.
+
 The complete five-Region curriculum and Lich King finale is the accepted production direction.
 The owner published it at https://unformedideas.com/chess-rpg/ on 2026-10-24.
 The original game is archived at https://unformedideas.com/alpha-chess-rpg/ as an [original-game reference](../alpha-reference.md).

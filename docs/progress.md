@@ -3,6 +3,14 @@
 One entry per build step. The latest entry follows the [curriculum-first scope](curriculum-first.md); older entries preserve historical decisions.
 Earlier draft, staging-only, and unwaived-benchmark statements describe those checkpoints. The later owner decisions supersede those restrictions.
 
+## 2026-10-29 — Mouse Pawn favicon
+
+- The owner selected the original painted Mouse Pawn for every icon size.
+- Replaced the chess-symbol favicon with 16, 32, and 48 pixel PNGs. Added a 180 pixel Apple touch icon.
+- Preserved the original composition and saved larger exports and concept previews under `art/icon-concepts/`.
+- `npm run ci` passed type-check, production build, and all 330 tests.
+- Verified all four built icon links resolve to PNG files with the expected dimensions and no alpha channel.
+
 ## 2026-10-25 — First player-copy cleanup
 
 - Removed the title's contributor-rule footnote and its unused style. Renamed the Journal footer to “Puzzle credits”.

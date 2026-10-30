@@ -1,0 +1,6 @@
+{
+  "tool": "Built-in image_gen",
+  "reference": "b-mouse-pawn.png",
+  "output": "b-mouse-small.png",
+  "prompt": "Edit the referenced Pawnshire Mouse Pawn icon into a purpose-designed tiny favicon companion. Preserve the same friendly mouse identity, round ears, ivory round pawn helmet with ball finial, warm brown fur and olive green square background. Tightly frame HEAD ONLY: remove the entire chess pedestal and remove scarf, head and ears occupy almost all square with 5% safe margin. Make face much larger than in reference. Dramatically simplify into bold inked storybook shapes: flat warm color fills, at most two broad shading tones per shape, no fur strokes, no painted grain, no whiskers, no helmet scratches, no tiny highlights, no fine folds. Large simple dark oval eyes, small dark nose, simple curved smile, broad cream muzzle, large warm peach ear interiors. Keep the ivory helmet silhouette clear with a simple round finial and one broad brim. Strong clean dark brown outlines. Recognizable when downsampled to 16x16 pixels, charming and visually consistent with original but deliberately much simpler. Uniform deep olive background, square corners, opaque, no text, no border, no mockup, a single square icon."
+}
